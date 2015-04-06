@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamFactory", "DreamFactory\DreamFactory.csproj", "{FA5911E0-AF52-47EA-AA7A-5222915C36D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamFactory.Demo", "DreamFactory.Demo\DreamFactory.Demo.csproj", "{131A8E0B-EDE3-4E03-87CB-2E98F9EB98B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamFactory.Tests", "DreamFactory.Tests\DreamFactory.Tests.csproj", "{2389DE39-7798-4FD8-B881-C0179B3992BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFA53618-8501-42F3-B8A9-CF7A84044FC8}"
+	ProjectSection(SolutionItems) = preProject
+		DreamFactoryNet.nuspec = DreamFactoryNet.nuspec
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C441D1A5-6444-4465-81B1-A01FBF2D9D38}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA5911E0-AF52-47EA-AA7A-5222915C36D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA5911E0-AF52-47EA-AA7A-5222915C36D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA5911E0-AF52-47EA-AA7A-5222915C36D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA5911E0-AF52-47EA-AA7A-5222915C36D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131A8E0B-EDE3-4E03-87CB-2E98F9EB98B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131A8E0B-EDE3-4E03-87CB-2E98F9EB98B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131A8E0B-EDE3-4E03-87CB-2E98F9EB98B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131A8E0B-EDE3-4E03-87CB-2E98F9EB98B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2389DE39-7798-4FD8-B881-C0179B3992BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2389DE39-7798-4FD8-B881-C0179B3992BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2389DE39-7798-4FD8-B881-C0179B3992BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2389DE39-7798-4FD8-B881-C0179B3992BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
