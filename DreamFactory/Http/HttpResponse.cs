@@ -2,14 +2,14 @@
 {
     using System;
     using System.IO;
-    using DreamFactory.Model;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// Represents generic HTTP response.
     /// </summary>
     public class HttpResponse : IHttpResponse
     {
+        private string content;
+
         private bool disposed;
 
         /// <summary>
@@ -45,19 +45,17 @@
         public Stream Body { get; private set; }
 
         /// <inheritdoc />
-        public TModel ReadAsJson<TModel>()
-            where TModel : class, IModel
+        public TObject ReadBody<TObject>() where TObject : class
         {
-            string json = ReadAsString();
-            return JsonConvert.DeserializeObject<TModel>(json);
+            ReadStringContent();
+            return Request.Serializer.Deserialize<TObject>(content);
         }
 
         /// <inheritdoc />
-        public string ReadAsString()
+        public string ReadBody()
         {
-            Body.Position = 0;
-            StreamReader streamReader = new StreamReader(Body);
-            return streamReader.ReadToEnd();
+            ReadStringContent();
+            return content;
         }
 
         /// <inheritdoc />
@@ -74,6 +72,18 @@
             {
                 Body.Dispose();
             }
+        }
+
+        private void ReadStringContent()
+        {
+            if (content != null)
+            {
+                return;
+            }
+
+            Body.Position = 0;
+            StreamReader streamReader = new StreamReader(Body);
+            content = streamReader.ReadToEnd();
         }
     }
 }

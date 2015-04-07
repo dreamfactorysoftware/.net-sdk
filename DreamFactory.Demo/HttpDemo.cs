@@ -4,6 +4,7 @@
     using System.IO;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Serialization;
 
     public static class HttpDemo
     {
@@ -21,7 +22,7 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response);
 
-            Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadAsString());
+            Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadBody());
 
             /*
              * Get random bytes as binary file from random.org

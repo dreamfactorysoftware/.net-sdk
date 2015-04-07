@@ -2,6 +2,7 @@
 {
     using DreamFactory.Api;
     using DreamFactory.Http;
+    using DreamFactory.Serialization;
 
     /// <summary>
     /// Represents DreamFactory REST API entry point.
@@ -22,6 +23,11 @@
         /// Gets <see cref="IHttpFacade"/> instance.
         /// </summary>
         IHttpFacade HttpFacade { get; }
+
+        /// <summary>
+        /// Gets <see cref="IObjectSerializer"/> instance.
+        /// </summary>
+        IObjectSerializer Serializer { get; }
 
         /// <summary>
         /// Factory method for creating serviceName API.

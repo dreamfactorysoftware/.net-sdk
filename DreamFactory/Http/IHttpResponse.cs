@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using DreamFactory.Model;
 
     /// <summary>
     /// Represents HTTP response.
@@ -20,21 +19,21 @@
         int Code { get; }
 
         /// <summary>
-        /// Gets HTTP response body stream.
+        /// Gets HTTP response body as Stream.
         /// </summary>
         Stream Body { get; }
 
         /// <summary>
-        /// Reads body content as JSON data.
+        /// Reads body content using Request.Serializer.
         /// </summary>
-        /// <typeparam name="TModel">Model DTO type.</typeparam>
-        /// <returns>Model DTO instance read from body.</returns>
-        TModel ReadAsJson<TModel>() where TModel : class, IModel;
+        /// <typeparam name="TObject">Object's type.</typeparam>
+        /// <returns>Object instance deserialized from body.</returns>
+        TObject ReadBody<TObject>() where TObject : class;
 
         /// <summary>
         /// Reads body content as string.
         /// </summary>
-        /// <returns>String read from body..</returns>
-        string ReadAsString();
+        /// <returns>Body content.</returns>
+        string ReadBody();
     }
 }

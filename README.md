@@ -59,8 +59,7 @@ HTTP layer is defined with the following interfaces:
 - `IHttpRequest` that represents an arbitrary HTTP request,
 - `IHttpResponse` that represents an HTTP response,
 
-The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFacade` class.
-Users can define their own implementations to use them in model-driven APIs.
+The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFacade` class. Users can define their own implementations to use them in model-driven APIs.
 
 `IHttpRequest` supports HTTP tunneling, by providing `SetTunneling(HttpMethod)` function. This function modifies the request instance in according with the tunneling feature supported by DreamFactory.
 
@@ -71,8 +70,11 @@ Consider the following example:
     IHttpRequest request = new HttpRequest(HttpMethod.Get, url, new HttpHeaders("Accept", "text/plain"));
     IHttpFacade httpFacade = new UnirestHttpFacade();
     IHttpResponse response = await httpFacade.SendAsync(request);
-    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadAsString());
+    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadBody());
 ```
+
+HTTP API supports pluggable serialization. SDK comes with `JsonObjectSerializer` that's built using Json.NET (Newtonsoft).
+To use your own serializer, use an alternative constructor that accepts `IObjectSerializer` instance.
 
 ### Model driven API overview
 

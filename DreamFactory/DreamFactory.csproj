@@ -93,6 +93,8 @@
     <Compile Include="Model\Logout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\RestApiVersion.cs" />
+    <Compile Include="Serialization\IObjectSerializer.cs" />
+    <Compile Include="Serialization\JsonObjectSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -112,7 +112,7 @@
             try
             {
                 string message = @default;
-                ErrorModel errorModel = response.ReadAsJson<ErrorModel>();
+                ErrorModel errorModel = response.ReadBody<ErrorModel>();
                 if (errorModel.error != null)
                 {
                     message = errorModel.error.First().message;

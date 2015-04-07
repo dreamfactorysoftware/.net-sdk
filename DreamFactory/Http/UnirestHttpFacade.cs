@@ -54,8 +54,8 @@
             UnirestRequest unirestRequest = factoryFunctions[request.Method](request.Url);
             if (request.Body != null)
             {
-                string bodyString = request.Body as string;
-                unirestRequest = bodyString != null ? unirestRequest.body(bodyString) : unirestRequest.body(request.Body);
+                string bodyString = request.Body as string ?? request.Serializer.Serialize(request.Body);
+                unirestRequest = unirestRequest.body(bodyString);
             }
 
             HttpResponse<Stream> unirestResponse = await unirestRequest.headers(dictionary).asBinaryAsync();
