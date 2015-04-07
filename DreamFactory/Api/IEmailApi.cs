@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents /email API.
     /// </summary>
-    public interface IEmailApi
+    public interface IEmailApi : IServiceApi
     {
     }
 }

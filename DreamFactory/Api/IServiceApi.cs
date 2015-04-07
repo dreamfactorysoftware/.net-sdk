@@ -1,9 +1,9 @@
 ﻿namespace DreamFactory.Api
 {
     /// <summary>
-    /// Represents /user API.
+    /// Marker interface for all REST API.
     /// </summary>
-    public interface IUserApi : IServiceApi
+    public interface IServiceApi
     {
     }
 }

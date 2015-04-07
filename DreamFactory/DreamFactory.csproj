@@ -66,15 +66,27 @@
   <ItemGroup>
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\IServiceApi.cs" />
     <Compile Include="Api\ISystemApi.cs" />
     <Compile Include="Api\IUserSessionApi.cs" />
     <Compile Include="Api\IFilesApi.cs" />
     <Compile Include="Api\IUserApi.cs" />
     <Compile Include="DreamFactoryException.cs" />
+    <Compile Include="Http\HttpAddress.cs" />
+    <Compile Include="Http\HttpHeaders.cs" />
     <Compile Include="Http\HttpMethod.cs" />
+    <Compile Include="Http\HttpRequest.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Http\HttpUtils.cs" />
     <Compile Include="Http\IHttpFacade.cs" />
     <Compile Include="Http\IHttpRequest.cs" />
     <Compile Include="Http\IHttpResponse.cs" />
+    <Compile Include="Http\UnirestHttpFacade.cs" />
+    <Compile Include="Model\FileResponse.cs" />
+    <Compile Include="Model\Login.cs" />
+    <Compile Include="Model\Resources.cs" />
+    <Compile Include="Model\Session.cs" />
+    <Compile Include="Model\SessionApp.cs" />
     <Compile Include="Rest\IRestContext.cs" />
     <Compile Include="Model\Error.cs" />
     <Compile Include="Model\IModel.cs" />

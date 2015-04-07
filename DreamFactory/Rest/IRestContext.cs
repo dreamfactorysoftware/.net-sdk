@@ -24,33 +24,13 @@
         IHttpFacade HttpFacade { get; }
 
         /// <summary>
-        /// Gets User API accessor.
+        /// Factory method for creating serviceName API.
         /// </summary>
-        IUserApi User { get; }
-
-        /// <summary>
-        /// Gets System API accessor.
-        /// </summary>
-        ISystemApi System { get; }
-
-        /// <summary>
-        /// Gets Email API accessor.
-        /// </summary>
-        IEmailApi Email { get; }
-
-        /// <summary>
-        /// Gets Database API accessor.
-        /// </summary>
-        /// <param name="serviceName">Database service name.</param>
-        /// <returns>Database API accessor specific to the selected service.</returns>
-        IDatabaseApi GetDatabaseApi(string serviceName);
-
-        /// <summary>
-        /// Gets Files API accessor.
-        /// </summary>
-        /// <param name="serviceName">Files service name.</param>
-        /// <returns>Files API accessor specific to the selected service.</returns>
-        IFilesApi GetFilesApi(string serviceName);
+        /// <param name="serviceName">Service name, or null for fixed services (e.g. /user).</param>
+        /// <typeparam name="TServiceApi">Service API type.</typeparam>
+        /// <returns></returns>
+        TServiceApi GetServiceApi<TServiceApi>(string serviceName = null)
+            where TServiceApi : IServiceApi;
 
         /// <summary>
         /// Sets application name.
@@ -63,5 +43,11 @@
         /// </summary>
         /// <param name="sessionToken">Session token.</param>
         void SetSessionToken(string sessionToken);
+
+        /// <summary>
+        /// Creates collection of application-name and session-token headers.
+        /// </summary>
+        /// <returns>New headers collection.</returns>
+        HttpHeaders CreateHeaders();
     }
 }

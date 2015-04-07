@@ -62,16 +62,40 @@ HTTP layer is defined with the following interfaces:
 The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFacade` class.
 Users can define their own implementations to use them in model-driven APIs.
 
-Internally, both Request and Response work with `System.IO.Stream` and send/receive data as multipart content. This allows handling of large requests as well as don't tie with specific data types.
-Externally, both Request and Response can deal with `Stream`s, `string`s and JSON models.
-
 `IHttpRequest` supports HTTP tunneling, by providing `SetTunneling(HttpMethod)` function. This function modifies the request instance in according with the tunneling feature supported by DreamFactory.
 
-For code samples, consider looking at the unit tests as well as the Demo program included with the solution.
+Consider the following example:
+
+```csharp
+    string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
+    IHttpRequest request = new HttpRequest(HttpMethod.Get, url, new HttpHeaders("Accept", "text/plain"));
+    IHttpFacade httpFacade = new UnirestHttpFacade();
+    IHttpResponse response = await httpFacade.SendAsync(request);
+    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadAsString());
+```
 
 ### Model driven API overview
 
+All APIs are defined per service and can be obtained by calling `IRestContext.GetService()` method:
+
+```csharp
+    IRestContext context = new RestContext(BaseAddress);
+    Login login = new Login {email = "user@mail.com", password = "qwerty"};
+    IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+    Session session = await userSessionApi.LoginAsync("admin", login);
+    Console.WriteLine("Logged in as {0}", session.display_name);
+```
+
+Specify service name for creating an interface to a named service:
+```csharp
+    IRestContext context = new RestContext(BaseAddress);
+    IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+    await filesApi.CreateFileAsync(...);
+```
+
 #### REST API versioning
+
+TODO: describe RestApiVersion enumeration and its effect.
 
 #### IRestContext interface
 

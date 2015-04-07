@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents /db API.
     /// </summary>
-    public interface IDatabaseApi
+    public interface IDatabaseApi : IServiceApi
     {
     }
 }

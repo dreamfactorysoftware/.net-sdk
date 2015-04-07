@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents /system API.
     /// </summary>
-    public interface ISystemApi
+    public interface ISystemApi : IServiceApi
     {
     }
 }

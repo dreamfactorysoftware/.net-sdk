@@ -1,12 +1,9 @@
 ﻿namespace DreamFactory.Http
 {
-    using System;
-    using System.IO;
-
     /// <summary>
     /// Represents HTTP request.
     /// </summary>
-    public interface IHttpRequest : IDisposable
+    public interface IHttpRequest
     {
         /// <summary>
         /// Gets HTTP method.
@@ -19,9 +16,14 @@
         string Url { get; }
 
         /// <summary>
-        /// Gets body stream.
+        /// Gets body object.
         /// </summary>
-        Stream Body { get; }
+        object Body { get; }
+
+        /// <summary>
+        /// Gets request headers.
+        /// </summary>
+        HttpHeaders Headers { get; }
 
         /// <summary>
         /// Sets tunneling mode.
