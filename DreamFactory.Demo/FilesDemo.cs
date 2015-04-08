@@ -14,7 +14,8 @@
             IRestContext context = new RestContext(baseAddress);
             Login login = new Login { email = "motodrug@gmail.com", password = "qwerty123" };
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            await userSessionApi.LoginAsync("todoangular", login);
+            Session session = await userSessionApi.LoginAsync("todoangular", login);
+            Console.WriteLine("Logged in as {0}", session.display_name);
 
             IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
             FileResponse response = await filesApi.CreateFileAsync("applications", "calendar/test.txt", "test", false);

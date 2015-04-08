@@ -6,18 +6,18 @@ namespace DreamFactory.Model
     /// <summary>
     /// Error response.
     /// </summary>
-    public class ErrorModel
+    public class Error
     {
         /// <summary>
-        /// Gets errors.
+        /// Gets errors details.
         /// </summary>
-        public List<Error> error{ get; set; }
+        public List<ErrorData> error { get; set; }
     }
 
     /// <summary>
     /// Error data.
     /// </summary>
-    public class Error
+    public class ErrorData
     {
         /// <summary>
         /// Gets error message.

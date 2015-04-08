@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Serialization;
 
     /// <inheritdoc />
@@ -78,6 +80,28 @@
             }
 
             return (TServiceApi)factory(serviceName);
+        }
+
+        /// <inheritdoc />
+        public async Task<Services> GetServicesAsync()
+        {
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
+
+            IHttpResponse response = await HttpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+
+            return ContentSerializer.Deserialize<Services>(response.Body);
+        }
+
+        /// <inheritdoc />
+        public async Task<Resources> GetResourcesAsync(string serviceName)
+        {
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.WithResources(serviceName).Build(), BaseHeaders);
+
+            IHttpResponse response = await HttpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+
+            return ContentSerializer.Deserialize<Resources>(response.Body);
         }
 
         private void RegisterService<TServiceApi>(Func<string, TServiceApi> factory)

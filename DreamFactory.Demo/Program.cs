@@ -12,9 +12,16 @@
             Console.WriteLine("DreamFactory REST API Demo");
 
             // HTTP functions demo
+            /*
             Console.WriteLine();
             Console.WriteLine("### HTTP functions demo");
             HttpDemo.Run().Wait();
+            */
+
+            // getServices and getResources
+            Console.WriteLine();
+            Console.WriteLine("### getServices and getResources demo");
+            DiscoveryDemo.Run(BaseAddress).Wait();
 
             // UserSession API
             Console.WriteLine();

@@ -119,10 +119,10 @@
             try
             {
                 string message = @default;
-                ErrorModel errorModel = serializer.Deserialize<ErrorModel>(response.Body);
-                if (errorModel.error != null)
+                Error error = serializer.Deserialize<Error>(response.Body);
+                if (error != null && error.error != null)
                 {
-                    message = errorModel.error.First().message;
+                    message = error.error.First().message;
                 }
 
                 return string.Format("{0} - {1}", response.Code, message);

@@ -64,6 +64,7 @@
     <Compile Include="HttpDemo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DiscoveryDemo.cs" />
     <Compile Include="UserSessionDemo.cs" />
   </ItemGroup>
   <ItemGroup>

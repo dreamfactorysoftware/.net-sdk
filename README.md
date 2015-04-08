@@ -22,9 +22,9 @@ When changing the target framework version, pay attention to dependent packages 
 
 The Visual Studio solution has three projects:
 
-* DreamFactory - the API library itself
-* DreamFactory.Demo - console program demonstrating API usage
-* DreamFactory.Tests - Unit Tests (MSTest)
+* DreamFactory       : the API library itself
+* DreamFactory.Demo  : console program demonstrating API usage
+* DreamFactory.Tests : Unit Tests (MSTest)
 
 The solution folder also contains ReSharper settings file (team-shared), as well as NuGet package specification file and this README file.
 
@@ -32,30 +32,30 @@ The solution folder also contains ReSharper settings file (team-shared), as well
 
 ### Basics
 
-All API calls are divided into three groups:
+All API calls are divided into the three groups:
 
 1. Simple HTTP API, for making arbitrary HTTP requests;
 2. Model-driven API matching the Swagger definitions,
    e.g. `Session session = await LoginAsync(new Login { email = "john@mail.com", password = "god" });`
 3. .NET friendly bindings and extensions, such as Entity Framework interoperability.
 
-All network-related API calls are made asynchronous. They can be `await`'ed and used with Task Parallel Library (TPL).
+Note that all network API calls are made to be asynchronous. They can be `await`'ed and used well together with Task Parallel Library (TPL).
 
 ### Errors handling
 
 - On wrong arguments (preconditions), expect `Argument*Exception` to be thrown,
 - On Bad HTTP status codes, expect `DreamFactoryException` to be thrown.
 
-`DreamFactoryException` is normally supplied with a reasonable message when provided by DreamFactory server.
+`DreamFactoryException` is normally supplied with a reasonable message provided by DreamFactory server.
 
 ### HTTP API overview
 
-Regular SDK' users will not be dealing with this API unless they have outstanding needs to perform advanced requests.
-However, it is very likely that these users will step down this API while debugging, therefore it's recommended to know the basics.
+Regular SDK users should not be dealing with this API unless they have outstanding needs to perform advanced queries.
+However, it is very likely that these users will step down this API while debugging, therefore it is recommended to know the basics.
 
 HTTP layer is defined with the following interfaces:
 
-- `IHttpFacade` with the single method SendAsync(),
+- `IHttpFacade` with the single method `SendAsync()`,
 - `IHttpRequest` representing HTTP request,
 - `IHttpResponse` representing HTTP response,
 
@@ -63,7 +63,7 @@ The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFac
 
 `IHttpRequest` supports HTTP tunneling, by providing `SetTunneling(HttpMethod)` function. This function modifies the request instance in according with the tunneling feature supported by DreamFactory.
 
-Consider the following example:
+Consider the following [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/HttpDemo.cs):
 
 ```csharp
     string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
@@ -72,9 +72,6 @@ Consider the following example:
     IHttpResponse response = await httpFacade.SendAsync(request);
     Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
 ```
-
-HTTP API supports pluggable serialization. SDK comes with `JsonObjectSerializer` that's built using Json.NET (Newtonsoft).
-To use your own serializer, use a constructor that accepts an `IObjectSerializer` instance.
 
 ### Model driven API overview
 
@@ -95,19 +92,31 @@ Specify service name for creating an interface to a named service:
     await filesApi.CreateFileAsync(...);
 ```
 
+HTTP API supports pluggable serialization. SDK comes with `JsonObjectSerializer` that is using Json.NET (Newtonsoft).
+To use a custom serializer, use a RestContext's constructor accepting an `IObjectSerializer` instance.
+
 #### REST API versioning
 
-TODO: describe RestApiVersion enumeration and its effect.
+Supported API versions defined by `RestApiVersion` enumeration. `V1` is used by default.
+SDK uses the version for building the complete URL, e.g. /rest for V1 and /api/v2 for V2.
+Building the URL is done transparently to the users.
 
 #### IRestContext interface
 
-TODO: review public properties and methods.
+Besides the `GetServiceApi<T>()` call, the interface offers services and resources discovery services:
 
-#### HTTP headers management
+- `GetServicesAsync()`
+- `GetResourcesAsync()`
+
+See the demo program for how to use them:
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DiscoveryDemo.cs
 
 #### User API
 
 ##### Session API
+
+The demo program:
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserSessionDemo.cs
 
 ##### Custom API
 
@@ -115,7 +124,10 @@ TODO: review public properties and methods.
 
 #### Database API
 
-#### Filesystem API
+#### Files API
+
+The demo program:
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
 
 #### Email API
 
