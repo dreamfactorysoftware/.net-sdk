@@ -1,12 +1,9 @@
 ﻿namespace DreamFactory.Http
 {
-    using System;
-    using System.IO;
-
     /// <summary>
     /// Represents HTTP response.
     /// </summary>
-    public interface IHttpResponse : IDisposable
+    public interface IHttpResponse
     {
         /// <summary>
         /// Gets the corresponding request instance.
@@ -19,21 +16,8 @@
         int Code { get; }
 
         /// <summary>
-        /// Gets HTTP response body as Stream.
+        /// Gets HTTP response body.
         /// </summary>
-        Stream Body { get; }
-
-        /// <summary>
-        /// Reads body content using Request.Serializer.
-        /// </summary>
-        /// <typeparam name="TObject">Object's type.</typeparam>
-        /// <returns>Object instance deserialized from body.</returns>
-        TObject ReadBody<TObject>() where TObject : class;
-
-        /// <summary>
-        /// Reads body content as string.
-        /// </summary>
-        /// <returns>Body content.</returns>
-        string ReadBody();
+        string Body { get; }
     }
 }

@@ -77,7 +77,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DummyTests.cs" />
+    <Compile Include="RestContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

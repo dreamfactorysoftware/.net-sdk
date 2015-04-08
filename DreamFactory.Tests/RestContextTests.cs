@@ -3,13 +3,13 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class DummyTests
+    public class RestContextTests
     {
         [TestMethod]
         public void ShouldPass()
         {
             // Arrange
-            
+
             // Act
             
             // Assert

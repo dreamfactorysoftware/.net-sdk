@@ -6,7 +6,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// Session.
     /// </summary>
-    public class Session : IModel
+    public class Session
     {
         /// <summary>
         /// Identifier for the current user.

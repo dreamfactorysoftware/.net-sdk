@@ -3,78 +3,99 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents immutable collection of HTTP headers.
+    /// Represents a collection of HTTP headers.
     /// </summary>
     public class HttpHeaders
     {
-        private readonly HttpHeaders previousInstance;
+        private readonly Dictionary<string, object> headers;
 
-        private readonly string headerKey;
+        /// <summary>
+        /// X-Dreamfactory-Application-Name header.
+        /// </summary>
+        public const string DreamFactoryApplicationHeader = "X-Dreamfactory-Application-Name";
 
-        private readonly object headerValue;
+        /// <summary>
+        /// X-DreamFactory-Session-Token header.
+        /// </summary>
+        public const string DreamFactorySessionTokenHeader = "X-DreamFactory-Session-Token";
+
+        /// <summary>
+        /// Content-Type header.
+        /// </summary>
+        public const string ContentTypeHeader = "Content-Type";
+
+        /// <summary>
+        /// Accept header.
+        /// </summary>
+        public const string AcceptHeader = "Accept";
+
+        /// <summary>
+        /// X-HTTP-Method header.
+        /// </summary>
+        internal const string TunnelingHeader = "X-HTTP-Method";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpHeaders"/> class.
         /// </summary>
-        /// <param name="key">Header's key.</param>
+        public HttpHeaders()
+        {
+            headers = new Dictionary<string, object>();
+        }
+
+        private HttpHeaders(Dictionary<string, object> others)
+        {
+            headers = others;
+        }
+
+        /// <summary>
+        /// Returns new collection with a new header included.
+        /// </summary>
+        /// <param name="key">Header's name.</param>
         /// <param name="value">Header's value.</param>
-        public HttpHeaders(string key, object value)
-            : this(null, key, value)
+        /// <returns>A new collection with a new header included.</returns>
+        public HttpHeaders Include(string key, object value)
         {
-        }
-
-        private HttpHeaders(HttpHeaders previous, string key, object value)
-        {
-            previousInstance = previous;
-            headerKey = key;
-            headerValue = value;
+            Dictionary<string, object> newHeaders = new Dictionary<string, object>(headers);
+            newHeaders[key] = value;
+            return new HttpHeaders(newHeaders);
         }
 
         /// <summary>
-        /// Creates new <see cref="HttpHeaders"/> instance with new key-value pair.
+        /// Returns new collection with a header excluded.
         /// </summary>
-        /// <param name="key">Header's key.</param>
+        /// <param name="key">Header's name.</param>
+        /// <returns>A new collection with a header excluded.</returns>
+        public HttpHeaders Exclude(string key)
+        {
+            Dictionary<string, object> newHeaders = new Dictionary<string, object>(headers);
+            newHeaders.Remove(key);
+            return new HttpHeaders(newHeaders);
+        }
+
+        /// <summary>
+        /// Overrides a header in the current instance.
+        /// </summary>
+        /// <param name="key">Header's name.</param>
         /// <param name="value">Header's value.</param>
-        /// <returns>New instance with given key-value pair added.</returns>
-        public HttpHeaders WithHeader(string key, object value)
+        public void Override(string key, object value = null)
         {
-            return new HttpHeaders(this, key, value);
+            if (value == null)
+            {
+                headers.Remove(key);
+            }
+            else
+            {
+                headers[key] = value;
+            }
         }
 
         /// <summary>
-        /// Appends another headers collection.
+        /// Returns a copy of the headers collection.
         /// </summary>
-        /// <param name="others">Another headers collection.</param>
-        /// <returns>New instance with other collection added.</returns>
-        public HttpHeaders WithHeaders(HttpHeaders others)
+        /// <returns></returns>
+        public Dictionary<string, object> Build()
         {
-            HttpHeaders next = this;
-
-            foreach (KeyValuePair<string, object> pair in others.GetHeaders())
-            {
-                next = next.WithHeader(pair.Key, pair.Value);
-            }
-
-            return next;
-        }
-
-        /// <summary>
-        /// Gets all headers.
-        /// </summary>
-        /// <returns>Sequence of key-value pairs.</returns>
-        public IEnumerable<KeyValuePair<string, object>> GetHeaders()
-        {
-            yield return new KeyValuePair<string, object>(headerKey, headerValue);
-
-            if (previousInstance == null)
-            {
-                yield break;
-            }
-
-            foreach (KeyValuePair<string, object> header in previousInstance.GetHeaders())
-            {
-                yield return header;
-            }
+            return new Dictionary<string, object>(headers);
         }
     }
 }

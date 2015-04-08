@@ -4,7 +4,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// Logout response.
     /// </summary>
-    public class Logout : IModel
+    public class Logout
     {
         /// <summary>
         /// Gets flag indicating logout request succeeded or not.

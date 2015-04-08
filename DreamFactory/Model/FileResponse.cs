@@ -6,7 +6,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// FileResponse.
     /// </summary>
-    public class FileResponseModel : IModel
+    public class FileResponseModel
     {
         /// <summary>
         /// File info.

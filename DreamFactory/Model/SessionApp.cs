@@ -4,7 +4,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// SessionApp.
     /// </summary>
-    public class SessionApp : IModel
+    public class SessionApp
     {
         /// <summary>
         /// Id of the application.

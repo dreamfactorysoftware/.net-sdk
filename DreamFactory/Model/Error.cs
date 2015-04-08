@@ -6,7 +6,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// Error response.
     /// </summary>
-    public class ErrorModel : IModel
+    public class ErrorModel
     {
         /// <summary>
         /// Gets errors.

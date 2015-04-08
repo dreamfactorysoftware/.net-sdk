@@ -1,7 +1,5 @@
 ﻿namespace DreamFactory.Serialization
 {
-    using System.Xml.Serialization;
-
     /// <summary>
     /// Represents custom object serializer.
     /// </summary>

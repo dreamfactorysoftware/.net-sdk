@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using unirest_net.http;
     using UnirestRequest = unirest_net.request.HttpRequest;
@@ -15,16 +13,11 @@
     {
         private readonly Dictionary<HttpMethod, Func<string, UnirestRequest>> factoryFunctions;
 
-        private readonly HttpHeaders customHeaders;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UnirestHttpFacade"/> class.
         /// </summary>
-        /// <param name="customHeaders">Optional custom headers added to each request.</param>
-        public UnirestHttpFacade(HttpHeaders customHeaders = null)
+        public UnirestHttpFacade()
         {
-            this.customHeaders = customHeaders;
-
             factoryFunctions = new Dictionary<HttpMethod, Func<string, UnirestRequest>>
             {
                 { HttpMethod.Get, Unirest.get },
@@ -43,23 +36,14 @@
                 throw new ArgumentNullException("request");
             }
 
-            HttpHeaders headers = request.Headers;
-            if (customHeaders != null)
-            {
-                headers = headers.WithHeaders(customHeaders);
-            }
-
-            Dictionary<string, object> dictionary = headers.GetHeaders().ToDictionary(x => x.Key, y => y.Value);
-
             UnirestRequest unirestRequest = factoryFunctions[request.Method](request.Url);
             if (request.Body != null)
             {
-                string bodyString = request.Body as string ?? request.Serializer.Serialize(request.Body);
-                unirestRequest = unirestRequest.body(bodyString);
+                unirestRequest = unirestRequest.body(request.Body);
             }
 
-            HttpResponse<Stream> unirestResponse = await unirestRequest.headers(dictionary).asBinaryAsync();
-            return new HttpResponse(request, unirestResponse.Code, unirestResponse.Raw);
+            HttpResponse<string> unirestResponse = await unirestRequest.headers(request.Headers.Build()).asStringAsync();
+            return new HttpResponse(request, unirestResponse.Code, unirestResponse.Body);
         }
     }
 }

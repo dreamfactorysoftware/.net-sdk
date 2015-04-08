@@ -4,7 +4,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// Login request.
     /// </summary>
-    public class Login : IModel
+    public class Login
     {
         /// <summary>
         /// e-mail.

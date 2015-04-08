@@ -60,9 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilesDemo.cs" />
     <Compile Include="HttpDemo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserSessionDemo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using DreamFactory.Model;
+    using DreamFactory.Serialization;
 
     /// <summary>
     /// Utility methods for testing HTTP status code.
@@ -13,11 +14,17 @@
         /// Throws DreamFactoryException on bad HTTP status code. 
         /// </summary>
         /// <param name="response"><see cref="IHttpResponse"/> instance.</param>
-        public static void ThrowOnBadStatus(IHttpResponse response)
+        /// <param name="serializer">Serializer instance.</param>
+        public static void ThrowOnBadStatus(IHttpResponse response, IObjectSerializer serializer)
         {
             if (response == null)
             {
                 throw new ArgumentNullException("response");
+            }
+
+            if (serializer == null)
+            {
+                throw new ArgumentNullException("serializer");
             }
 
             string message;
@@ -48,7 +55,7 @@
                     return;
             }
 
-            message = TryGetErrorMessage(response, message);
+            message = TryGetErrorMessage(response, serializer, message);
 
             DreamFactoryException exception = new DreamFactoryException(message);
             exception.Data.Add("Method", response.Request.Method);
@@ -107,12 +114,12 @@
             throw new ArgumentException("The url string is not a valid HTTP/S URL.");
         }
 
-        private static string TryGetErrorMessage(IHttpResponse response, string @default)
+        private static string TryGetErrorMessage(IHttpResponse response, IObjectSerializer serializer, string @default)
         {
             try
             {
                 string message = @default;
-                ErrorModel errorModel = response.ReadBody<ErrorModel>();
+                ErrorModel errorModel = serializer.Deserialize<ErrorModel>(response.Body);
                 if (errorModel.error != null)
                 {
                     message = errorModel.error.First().message;

@@ -1,7 +1,5 @@
 ﻿namespace DreamFactory.Http
 {
-    using DreamFactory.Serialization;
-
     /// <summary>
     /// Represents HTTP request.
     /// </summary>
@@ -23,14 +21,9 @@
         HttpHeaders Headers { get; }
 
         /// <summary>
-        /// Gets body object.
+        /// Gets body content.
         /// </summary>
-        object Body { get; }
-
-        /// <summary>
-        /// Gets object serializer.
-        /// </summary>
-        IObjectSerializer Serializer { get; }
+        string Body { get; }
 
         /// <summary>
         /// Sets tunneling mode.

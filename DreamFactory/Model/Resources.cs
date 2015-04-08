@@ -6,7 +6,7 @@ namespace DreamFactory.Model
     /// <summary>
     /// Resources.
     /// </summary>
-    public class Resources : IModel
+    public class Resources
     {
         /// <summary>
         /// Array of resources available by this service.

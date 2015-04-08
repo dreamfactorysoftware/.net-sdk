@@ -32,10 +32,10 @@ The solution folder also contains ReSharper settings file (team-shared), as well
 
 ### Basics
 
-All API calls can be logically divided into three layers:
+All API calls are divided into three groups:
 
-1. Simple HTTP functions, for making arbitrary HTTP requests;
-2. Model-driven API,
+1. Simple HTTP API, for making arbitrary HTTP requests;
+2. Model-driven API matching the Swagger definitions,
    e.g. `Session session = await LoginAsync(new Login { email = "john@mail.com", password = "god" });`
 3. .NET friendly bindings and extensions, such as Entity Framework interoperability.
 
@@ -51,13 +51,13 @@ All network-related API calls are made asynchronous. They can be `await`'ed and 
 ### HTTP API overview
 
 Regular SDK' users will not be dealing with this API unless they have outstanding needs to perform advanced requests.
-However, it is very likely that these users will step down this API while debugging, therefore knowing the basics would help developers.
+However, it is very likely that these users will step down this API while debugging, therefore it's recommended to know the basics.
 
 HTTP layer is defined with the following interfaces:
 
 - `IHttpFacade` with the single method SendAsync(),
-- `IHttpRequest` that represents an arbitrary HTTP request,
-- `IHttpResponse` that represents an HTTP response,
+- `IHttpRequest` representing HTTP request,
+- `IHttpResponse` representing HTTP response,
 
 The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFacade` class. Users can define their own implementations to use them in model-driven APIs.
 
@@ -67,22 +67,22 @@ Consider the following example:
 
 ```csharp
     string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
-    IHttpRequest request = new HttpRequest(HttpMethod.Get, url, new HttpHeaders("Accept", "text/plain"));
+    IHttpRequest request = new HttpRequest(HttpMethod.Get, url);
     IHttpFacade httpFacade = new UnirestHttpFacade();
     IHttpResponse response = await httpFacade.SendAsync(request);
-    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.ReadBody());
+    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
 ```
 
 HTTP API supports pluggable serialization. SDK comes with `JsonObjectSerializer` that's built using Json.NET (Newtonsoft).
-To use your own serializer, use an alternative constructor that accepts `IObjectSerializer` instance.
+To use your own serializer, use a constructor that accepts an `IObjectSerializer` instance.
 
 ### Model driven API overview
 
-All APIs are defined per service and can be obtained by calling `IRestContext.GetService()` method:
+All APIs are defined per service and can be obtained by calling `IRestContext.GetServiceApi<T>()` method:
 
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
-    Login login = new Login {email = "user@mail.com", password = "qwerty"};
+    Login login = new Login { email = "user@mail.com", password = "qwerty" };
     IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
     Session session = await userSessionApi.LoginAsync("admin", login);
     Console.WriteLine("Logged in as {0}", session.display_name);
@@ -100,6 +100,8 @@ Specify service name for creating an interface to a named service:
 TODO: describe RestApiVersion enumeration and its effect.
 
 #### IRestContext interface
+
+TODO: review public properties and methods.
 
 #### HTTP headers management
 

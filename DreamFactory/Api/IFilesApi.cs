@@ -23,8 +23,9 @@
         /// </summary>
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to create.</param>
+        /// <param name="base64">Set to true to receive file content encoded as Base64.</param>
         /// <returns>File content.</returns>
-        Task<string> GetFileAsync(string container, string filepath);
+        Task<string> GetFileAsync(string container, string filepath, bool base64 = false);
 
         /// <summary>
         /// Deletes one file.
