@@ -1,9 +1,9 @@
 ﻿namespace DreamFactory.Serialization
 {
     /// <summary>
-    /// Represents custom object serializer.
+    /// Represents content serializer.
     /// </summary>
-    public interface IObjectSerializer
+    public interface IContentSerializer
     {
         /// <summary>
         /// Gets content type string, e.g. application/json.

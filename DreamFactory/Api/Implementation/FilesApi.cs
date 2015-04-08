@@ -10,15 +10,15 @@
     {
         private readonly HttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
-        private readonly IObjectSerializer objectSerializer;
+        private readonly IContentSerializer contentSerializer;
         private readonly HttpHeaders baseHeaders;
         private readonly string serviceName;
 
-        public FilesApi(HttpAddress baseAddress, IHttpFacade httpFacade, IObjectSerializer objectSerializer, HttpHeaders baseHeaders, string serviceName)
+        public FilesApi(HttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string serviceName)
         {
             this.baseAddress = baseAddress;
             this.httpFacade = httpFacade;
-            this.objectSerializer = objectSerializer;
+            this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
             this.serviceName = serviceName;
         }
@@ -32,9 +32,9 @@
 
             IHttpResponse response = await httpFacade.SendAsync(request);
 
-            HttpUtils.ThrowOnBadStatus(response, objectSerializer);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            FileResponseModel model = objectSerializer.Deserialize<FileResponseModel>(response.Body);
+            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
             return model.file.FirstOrDefault();
         }
 
@@ -51,14 +51,14 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, objectSerializer);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             if (!base64)
             {
                 return response.Body;
             }
 
-            FileResponseModel model = objectSerializer.Deserialize<FileResponseModel>(response.Body);
+            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
             return model.file.First().content;
         }
 
@@ -69,9 +69,9 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, objectSerializer);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            FileResponseModel model = objectSerializer.Deserialize<FileResponseModel>(response.Body);
+            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
             return model.file.First();
         }
     }

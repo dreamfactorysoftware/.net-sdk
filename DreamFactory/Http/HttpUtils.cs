@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="response"><see cref="IHttpResponse"/> instance.</param>
         /// <param name="serializer">Serializer instance.</param>
-        public static void ThrowOnBadStatus(IHttpResponse response, IObjectSerializer serializer)
+        public static void ThrowOnBadStatus(IHttpResponse response, IContentSerializer serializer)
         {
             if (response == null)
             {
@@ -114,7 +114,7 @@
             throw new ArgumentException("The url string is not a valid HTTP/S URL.");
         }
 
-        private static string TryGetErrorMessage(IHttpResponse response, IObjectSerializer serializer, string @default)
+        private static string TryGetErrorMessage(IHttpResponse response, IContentSerializer serializer, string @default)
         {
             try
             {

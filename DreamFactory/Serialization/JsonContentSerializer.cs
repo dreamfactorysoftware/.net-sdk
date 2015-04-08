@@ -4,9 +4,9 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// JSON serializer.
+    /// JSON content serializer.
     /// </summary>
-    public class JsonObjectSerializer : IObjectSerializer
+    public class JsonContentSerializer : IContentSerializer
     {
         /// <inheritdoc />
         public string ContentType

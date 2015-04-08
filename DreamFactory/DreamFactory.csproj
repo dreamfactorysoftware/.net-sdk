@@ -81,11 +81,11 @@
     <Compile Include="Http\HttpUtils.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Model\Services.cs" />
-    <Compile Include="Serialization\IObjectSerializer.cs" />
+    <Compile Include="Serialization\IContentSerializer.cs" />
     <Compile Include="Http\IHttpFacade.cs" />
     <Compile Include="Http\IHttpRequest.cs" />
     <Compile Include="Http\IHttpResponse.cs" />
-    <Compile Include="Serialization\JsonObjectSerializer.cs" />
+    <Compile Include="Serialization\JsonContentSerializer.cs" />
     <Compile Include="Http\UnirestHttpFacade.cs" />
     <Compile Include="Model\FileResponse.cs" />
     <Compile Include="Model\Login.cs" />

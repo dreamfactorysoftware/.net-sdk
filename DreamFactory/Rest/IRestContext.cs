@@ -17,9 +17,9 @@
         IHttpFacade HttpFacade { get; }
 
         /// <summary>
-        /// Gets <see cref="IObjectSerializer"/> instance.
+        /// Gets <see cref="IContentSerializer"/> instance.
         /// </summary>
-        IObjectSerializer ContentSerializer { get; }
+        IContentSerializer ContentSerializer { get; }
 
         /// <summary>
         /// Gets base headers collection.

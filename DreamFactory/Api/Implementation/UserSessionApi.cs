@@ -9,14 +9,14 @@
     {
         private readonly HttpAddress httpAddress;
         private readonly IHttpFacade httpFacade;
-        private readonly IObjectSerializer objectSerializer;
+        private readonly IContentSerializer contentSerializer;
         private readonly HttpHeaders baseHeaders;
 
-        public UserSessionApi(HttpAddress httpAddress, IHttpFacade httpFacade, IObjectSerializer objectSerializer, HttpHeaders baseHeaders)
+        public UserSessionApi(HttpAddress httpAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
         {
             this.httpAddress = httpAddress.WithResources("user", "session");
             this.httpFacade = httpFacade;
-            this.objectSerializer = objectSerializer;
+            this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
         }
 
@@ -24,16 +24,16 @@
         {
             baseHeaders.Override(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
-            string loginContent = objectSerializer.Serialize(login);
+            string loginContent = contentSerializer.Serialize(login);
             IHttpRequest request = new HttpRequest(HttpMethod.Post,
                                                    httpAddress.Build(),
                                                    baseHeaders,
                                                    loginContent);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, objectSerializer);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            Session session = objectSerializer.Deserialize<Session>(response.Body);
+            Session session = contentSerializer.Deserialize<Session>(response.Body);
             baseHeaders.Override(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
 
             return session;
@@ -44,11 +44,11 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, httpAddress.Build(), baseHeaders);
             
             IHttpResponse response = await httpFacade.SendAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, objectSerializer);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             baseHeaders.Override(HttpHeaders.DreamFactorySessionTokenHeader);
 
-            return objectSerializer.Deserialize<Logout>(response.Body);
+            return contentSerializer.Deserialize<Logout>(response.Body);
         }
     }
 }

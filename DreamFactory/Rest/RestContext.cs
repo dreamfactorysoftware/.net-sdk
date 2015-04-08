@@ -22,7 +22,7 @@
         /// <param name="baseAddress">Base address (URL).</param>
         /// <param name="apiVersion">REST API version to use.</param>
         public RestContext(string baseAddress, RestApiVersion apiVersion = RestApiVersion.V1)
-            : this(baseAddress, new UnirestHttpFacade(), new JsonObjectSerializer(), apiVersion)
+            : this(baseAddress, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
         {
         }
 
@@ -31,9 +31,9 @@
         /// </summary>
         /// <param name="baseAddress">Base address (URL).</param>
         /// <param name="httpFacade">User defined instance of <see cref="IHttpFacade"/>.</param>
-        /// <param name="serializer">User defined instance of <see cref="IObjectSerializer"/>.</param>
+        /// <param name="serializer">User defined instance of <see cref="IContentSerializer"/>.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, IHttpFacade httpFacade, IObjectSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V1)
+        public RestContext(string baseAddress, IHttpFacade httpFacade, IContentSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V1)
         {
             HttpUtils.CheckUrlString(baseAddress);
 
@@ -63,7 +63,7 @@
         public IHttpFacade HttpFacade { get; private set; }
 
         /// <inheritdoc />
-        public IObjectSerializer ContentSerializer { get; private set; }
+        public IContentSerializer ContentSerializer { get; private set; }
 
         /// <inheritdoc />
         public HttpHeaders BaseHeaders { get; private set; }
