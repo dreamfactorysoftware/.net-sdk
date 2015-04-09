@@ -24,7 +24,7 @@
         /// <summary>
         /// Gets base headers collection.
         /// </summary>
-        HttpHeaders BaseHeaders { get; }
+        IHttpHeaders BaseHeaders { get; }
 
         /// <summary>
         /// Factory method for creating serviceName API.

@@ -16,6 +16,8 @@
 
         private readonly HttpAddress address;
 
+        private HttpHeaders httpHeaders;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RestContext"/> class.
         /// </summary>
@@ -55,8 +57,8 @@
             SetBaseHeaders();
 
             serviceFactories = new Dictionary<string, Func<string, IServiceApi>>();
-            RegisterService<IUserSessionApi>(name => new UserSessionApi(address, HttpFacade, ContentSerializer, BaseHeaders));
-            RegisterService<IFilesApi>(name => new FilesApi(address, HttpFacade, ContentSerializer, BaseHeaders, name));
+            RegisterService<IUserSessionApi>(name => new UserSessionApi(address, HttpFacade, ContentSerializer, httpHeaders));
+            RegisterService<IFilesApi>(name => new FilesApi(address, HttpFacade, ContentSerializer, httpHeaders, name));
         }
 
         /// <inheritdoc />
@@ -66,7 +68,7 @@
         public IContentSerializer ContentSerializer { get; private set; }
 
         /// <inheritdoc />
-        public HttpHeaders BaseHeaders { get; private set; }
+        public IHttpHeaders BaseHeaders { get { return httpHeaders; } }
 
         /// <inheritdoc />
         public TServiceApi GetServiceApi<TServiceApi>(string serviceName)
@@ -113,10 +115,10 @@
 
         private void SetBaseHeaders()
         {
-            BaseHeaders = new HttpHeaders()
-                .Include(HttpHeaders.DreamFactoryApplicationHeader, "admin")
-                .Include(HttpHeaders.ContentTypeHeader, ContentSerializer.ContentType)
-                .Include(HttpHeaders.AcceptHeader, ContentSerializer.ContentType);
+            httpHeaders = new HttpHeaders();
+            httpHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, "admin");
+            httpHeaders.AddOrUpdate(HttpHeaders.ContentTypeHeader, ContentSerializer.ContentType);
+            httpHeaders.AddOrUpdate(HttpHeaders.AcceptHeader, ContentSerializer.ContentType);
         }
     }
 }

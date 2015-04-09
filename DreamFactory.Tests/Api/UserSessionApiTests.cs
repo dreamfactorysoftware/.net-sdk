@@ -20,7 +20,7 @@
             // Arrange
             IRestContext context = CreateRestContext();
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            Login login = new Login { email = "user@mail.com", password = "userdream" };
+            Login login = CreateLogin();
 
             // Act
             Session session = userSessionApi.LoginAsync("admin", login).Result;
@@ -36,7 +36,7 @@
             // Arrange
             IRestContext context = CreateRestContext();
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            Login login = new Login { email = "user@mail.com", password = "userdream" };
+            Login login = CreateLogin();
 
             // Act
             userSessionApi.LoginAsync("admin", login).Wait();
@@ -68,7 +68,8 @@
             // Arrange
             IRestContext context = CreateRestContext();
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            context.BaseHeaders.Override(HttpHeaders.DreamFactorySessionTokenHeader, "test");
+            Login login = CreateLogin();
+            userSessionApi.LoginAsync("admin", login).Wait();
 
             // Act
             userSessionApi.LogoutAsync().Wait();
@@ -82,6 +83,11 @@
             IHttpFacade httpFacade = new TestDataHttpFacade();
             IRestContext context = new RestContext(BaseAddress, httpFacade, new JsonContentSerializer());
             return context;
+        }
+
+        private static Login CreateLogin()
+        {
+            return new Login { email = "user@mail.com", password = "userdream" };
         }
     }
 }

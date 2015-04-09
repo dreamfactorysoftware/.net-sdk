@@ -92,8 +92,8 @@ Specify service name for creating an interface to a named service:
     await filesApi.CreateFileAsync(...);
 ```
 
-HTTP API supports pluggable serialization. SDK comes with `JsonObjectSerializer` that is using Json.NET (Newtonsoft).
-To use a custom serializer, use a RestContext's constructor accepting an `IObjectSerializer` instance.
+HTTP API supports pluggable serialization. SDK comes with `JsonContentSerializer` that is using Json.NET (Newtonsoft).
+To use a custom serializer, use a RestContext's constructor accepting an `IContentSerializer` instance.
 
 #### REST API versioning
 

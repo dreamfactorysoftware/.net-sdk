@@ -18,7 +18,7 @@
         /// <summary>
         /// Gets request headers.
         /// </summary>
-        HttpHeaders Headers { get; }
+        IHttpHeaders Headers { get; }
 
         /// <summary>
         /// Gets body content.

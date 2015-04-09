@@ -11,10 +11,10 @@
         private readonly HttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
-        private readonly HttpHeaders baseHeaders;
+        private readonly IHttpHeaders baseHeaders;
         private readonly string serviceName;
 
-        public FilesApi(HttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string serviceName)
+        public FilesApi(HttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
         {
             this.baseAddress = baseAddress;
             this.httpFacade = httpFacade;

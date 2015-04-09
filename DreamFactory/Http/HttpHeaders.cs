@@ -1,11 +1,12 @@
 ﻿namespace DreamFactory.Http
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a collection of HTTP headers.
+    /// Represents HTTP headers collection.
     /// </summary>
-    public class HttpHeaders
+    public class HttpHeaders : IHttpHeaders
     {
         private readonly Dictionary<string, object> headers;
 
@@ -47,55 +48,65 @@
             headers = others;
         }
 
-        /// <summary>
-        /// Returns new collection with a new header included.
-        /// </summary>
-        /// <param name="key">Header's name.</param>
-        /// <param name="value">Header's value.</param>
-        /// <returns>A new collection with a new header included.</returns>
+        /// <inheritdoc />
         public HttpHeaders Include(string key, object value)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
             Dictionary<string, object> newHeaders = new Dictionary<string, object>(headers);
             newHeaders[key] = value;
             return new HttpHeaders(newHeaders);
         }
 
-        /// <summary>
-        /// Returns new collection with a header excluded.
-        /// </summary>
-        /// <param name="key">Header's name.</param>
-        /// <returns>A new collection with a header excluded.</returns>
+        /// <inheritdoc />
         public HttpHeaders Exclude(string key)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
             Dictionary<string, object> newHeaders = new Dictionary<string, object>(headers);
             newHeaders.Remove(key);
             return new HttpHeaders(newHeaders);
         }
 
-        /// <summary>
-        /// Overrides a header in the current instance.
-        /// </summary>
-        /// <param name="key">Header's name.</param>
-        /// <param name="value">Header's value.</param>
-        public void Override(string key, object value = null)
-        {
-            if (value == null)
-            {
-                headers.Remove(key);
-            }
-            else
-            {
-                headers[key] = value;
-            }
-        }
-
-        /// <summary>
-        /// Returns a copy of the headers collection.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Dictionary<string, object> Build()
         {
             return new Dictionary<string, object>(headers);
+        }
+
+        /// <summary>
+        /// Adds a header or update existing.
+        /// </summary>
+        /// <param name="key">Header's name.</param>
+        /// <param name="value">Header's value.</param>
+        public void AddOrUpdate(string key, object value)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            headers[key] = value;
+        }
+
+        /// <summary>
+        /// Deletes a header.
+        /// </summary>
+        /// <param name="key">Header's name.</param>
+        public void Delete(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            headers.Remove(key);
         }
     }
 }

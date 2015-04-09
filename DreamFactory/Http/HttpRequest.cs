@@ -13,7 +13,7 @@
         /// <param name="method">HTTP method.</param>
         /// <param name="url">URL.</param>
         /// <param name="headers">Headers collection.</param>
-        public HttpRequest(HttpMethod method, string url, HttpHeaders headers)
+        public HttpRequest(HttpMethod method, string url, IHttpHeaders headers)
         {
             HttpUtils.CheckUrlString(url);
 
@@ -64,7 +64,7 @@
         public string Body { get; private set; }
 
         /// <inheritdoc />
-        public HttpHeaders Headers { get; private set; }
+        public IHttpHeaders Headers { get; private set; }
 
         /// <inheritdoc />
         public void SetTunneling(HttpMethod method)

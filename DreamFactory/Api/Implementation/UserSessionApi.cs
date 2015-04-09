@@ -22,7 +22,7 @@
 
         public async Task<Session> LoginAsync(string applicationName, Login login)
         {
-            baseHeaders.Override(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
+            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
             string loginContent = contentSerializer.Serialize(login);
             IHttpRequest request = new HttpRequest(HttpMethod.Post,
@@ -34,7 +34,7 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.Override(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
 
             return session;
         }
@@ -46,7 +46,7 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            baseHeaders.Override(HttpHeaders.DreamFactorySessionTokenHeader);
+            baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
 
             return contentSerializer.Deserialize<Logout>(response.Body);
         }
