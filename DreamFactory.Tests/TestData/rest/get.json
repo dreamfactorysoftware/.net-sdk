@@ -1,0 +1,20 @@
+﻿{
+    "service": [
+        {
+            "name": "Database",
+            "api_name": "db"
+        },
+        {
+            "name": "Email Service",
+            "api_name": "email"
+        },
+        {
+            "name": "Local File Storage",
+            "api_name": "files"
+        },
+        {
+            "name": "Local Portal Service",
+            "api_name": "portal"
+        }
+    ]
+}

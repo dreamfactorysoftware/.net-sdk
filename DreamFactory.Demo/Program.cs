@@ -9,13 +9,12 @@
         static void Main()
         {
             Console.WriteLine("DreamFactory REST API Demo");
+            Console.WriteLine("Demo DSP address: {0}", BaseAddress);
 
             // HTTP functions demo
-            /*
             Console.WriteLine();
             Console.WriteLine("### HTTP functions demo");
             HttpDemo.Run().Wait();
-            */
 
             // getServices and getResources
             Console.WriteLine();

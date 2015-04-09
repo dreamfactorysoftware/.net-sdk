@@ -77,11 +77,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Api\FilesApiTests.cs" />
+    <Compile Include="Api\UserSessionApiTests.cs" />
     <Compile Include="Http\HttpAddressTests.cs" />
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
     <Compile Include="Rest\RestContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\JsonContentSerializerTests.cs" />
+    <Compile Include="TestDataHttpFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DreamFactory\DreamFactory.csproj">
@@ -91,7 +94,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestData\rest\files\applications\calendar\test.txt\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\files\applications\calendar\test.txt\delete.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\files\applications\calendar\test.txt\post.request.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\files\applications\calendar\test.txt\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\user\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\user\session\delete.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\user\session\post.request.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\user\session\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
