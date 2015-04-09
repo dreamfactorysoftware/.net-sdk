@@ -12,9 +12,8 @@
         {
             // Login first
             IRestContext context = new RestContext(baseAddress);
-            Login login = new Login {email = "pinebit@gmail.com", password = "lenasuxx"};
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            Session session = await userSessionApi.LoginAsync("admin", login);
+            Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 
             // List available services

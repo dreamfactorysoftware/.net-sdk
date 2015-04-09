@@ -4,7 +4,6 @@
 
     class Program
     {
-        // private const string BaseAddress = "http://pinebit.ddns.net";
         private const string BaseAddress = "https://dsp-pinebit.cloud.dreamfactory.com";
 
         static void Main()

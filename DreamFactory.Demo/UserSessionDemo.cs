@@ -12,9 +12,8 @@
         {
             // Login
             IRestContext context = new RestContext(baseAddress);
-            Login login = new Login {email = "motodrug@gmail.com", password = "qwerty123"};
             IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
-            Session session = await userSessionApi.LoginAsync("admin", login);
+            Session session = await userSessionApi.LoginAsync("admin", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 
             // Logout
