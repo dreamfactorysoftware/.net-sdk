@@ -48,7 +48,7 @@
 
         public IDatabaseApi CreateDatabaseApi(string serviceName)
         {
-            throw new NotImplementedException();
+            return new DatabaseApi(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName);
         }
     }
 }

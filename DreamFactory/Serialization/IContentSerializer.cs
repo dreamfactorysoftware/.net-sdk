@@ -23,5 +23,13 @@
         /// <param name="content">Content string.</param>
         /// <returns>Created object instance.</returns>
         TObject Deserialize<TObject>(string content) where TObject : class;
+
+        /// <summary>
+        /// Deserializes anonymous object from content string.
+        /// </summary>
+        /// <param name="content">Content string.</param>
+        /// <param name="typeInstance">Anonymous instance to derive its type.</param>
+        /// <returns>Created object instance.</returns>
+        TObject Deserialize<TObject>(string content, TObject typeInstance) where TObject : class;
     }
 }

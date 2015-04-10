@@ -124,6 +124,9 @@ https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/U
 
 #### Database API
 
+The demo program:
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
+
 #### Files API
 
 The demo program:

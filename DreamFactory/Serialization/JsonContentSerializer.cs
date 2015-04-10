@@ -35,5 +35,16 @@
 
             return JsonConvert.DeserializeObject<TObject>(content);
         }
+
+        /// <inheritdoc />
+        public TObject Deserialize<TObject>(string content, TObject typeInstance) where TObject : class
+        {
+            if (content == null)
+            {
+                throw new ArgumentNullException("content");
+            }
+
+            return JsonConvert.DeserializeAnonymousType(content, typeInstance);
+        }
     }
 }

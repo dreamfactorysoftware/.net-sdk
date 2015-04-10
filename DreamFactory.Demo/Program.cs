@@ -30,6 +30,11 @@
             Console.WriteLine();
             Console.WriteLine("### Files API demo");
             FilesDemo.Run(BaseAddress).Wait();
+
+            // Database API
+            Console.WriteLine();
+            Console.WriteLine("### Database API demo");
+            DatabaseDemo.Run(BaseAddress).Wait();
         }
     }
 }

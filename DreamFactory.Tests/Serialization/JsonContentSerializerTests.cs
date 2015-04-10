@@ -38,6 +38,20 @@
             serializer.Serialize(resources).ShouldBe(TestJson);
         }
 
+        [TestMethod]
+        public void ShouldDeserializeAnonymousObject()
+        {
+            // Arrange
+            JsonContentSerializer serializer = new JsonContentSerializer();
+
+            // Act
+            var resource = new { resource = new List<Resource>() };
+            resource = serializer.Deserialize(TestJson, resource);
+
+            // Assert
+            serializer.Serialize(resource).ShouldBe(TestJson);
+        }
+
         private static Resources CreateTestObject()
         {
             Resource foo = new Resource { name = "foo" };
