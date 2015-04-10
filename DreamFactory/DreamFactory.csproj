@@ -70,6 +70,9 @@
     <Compile Include="Api\IEmailApi.cs" />
     <Compile Include="Api\IServiceApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
+    <Compile Include="Model\FieldSchema.cs" />
+    <Compile Include="Model\RelatedSchema.cs" />
+    <Compile Include="Model\TableSchema.cs" />
     <Compile Include="Rest\IServiceFactory.cs" />
     <Compile Include="Api\ISystemApi.cs" />
     <Compile Include="Api\IUserSessionApi.cs" />

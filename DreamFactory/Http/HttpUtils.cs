@@ -27,6 +27,11 @@
                 throw new ArgumentNullException("serializer");
             }
 
+            if (response.Code >= 200 && response.Code < 300)
+            {
+                return;
+            }
+
             string message;
 
             switch (response.Code)
@@ -52,7 +57,8 @@
                     break;
 
                 default:
-                    return;
+                    message = string.Format("Got HTTP error: {0}", response.Code);
+                    break;
             }
 
             message = TryGetErrorMessage(response, serializer, message);

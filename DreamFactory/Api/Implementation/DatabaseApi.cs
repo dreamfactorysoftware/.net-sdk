@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Serialization;
 
     internal class DatabaseApi : IDatabaseApi
@@ -21,6 +23,81 @@
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
             this.serviceName = serviceName;
+        }
+
+        public async Task CreateTableAsync(TableSchema tableSchema)
+        {
+            if (tableSchema == null)
+            {
+                throw new ArgumentNullException("tableSchema");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema");
+
+            var tableSchemas = new { table = new List<TableSchema> { tableSchema } };
+            string body = contentSerializer.Serialize(tableSchemas);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            // TODO: ignore the response?
+        }
+
+        public async Task<bool> DeleteTableAsync(string tableName)
+        {
+            if (tableName == null)
+            {
+                throw new ArgumentNullException("tableName");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var success = new { success = false };
+            success = contentSerializer.Deserialize(response.Body, success);
+
+            return success.success;
+        }
+
+        public async Task<TableSchema> DescribeTableAsync(string tableName)
+        {
+            if (tableName == null)
+            {
+                throw new ArgumentNullException("tableName");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<TableSchema>(response.Body);
+        }
+
+        public async Task CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records)
+        {
+            if (tableName == null)
+            {
+                throw new ArgumentNullException("tableName");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
+
+            var recordsRequest = new { record = records.ToList() };
+            string data = contentSerializer.Serialize(recordsRequest);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, data);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            // TODO: get response model
         }
 
         public async Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName)

@@ -11,25 +11,25 @@
             Console.WriteLine("DreamFactory REST API Demo");
             Console.WriteLine("Demo DSP address: {0}", BaseAddress);
 
-            // HTTP functions demo
-            Console.WriteLine();
-            Console.WriteLine("### HTTP functions demo");
-            HttpDemo.Run().Wait();
+            //// HTTP functions demo
+            //Console.WriteLine();
+            //Console.WriteLine("### HTTP functions demo");
+            //HttpDemo.Run().Wait();
 
-            // getServices and getResources
-            Console.WriteLine();
-            Console.WriteLine("### getServices and getResources demo");
-            DiscoveryDemo.Run(BaseAddress).Wait();
+            //// getServices and getResources
+            //Console.WriteLine();
+            //Console.WriteLine("### getServices and getResources demo");
+            //DiscoveryDemo.Run(BaseAddress).Wait();
 
-            // UserSession API
-            Console.WriteLine();
-            Console.WriteLine("### UserSession API demo");
-            UserSessionDemo.Run(BaseAddress).Wait();
+            //// UserSession API
+            //Console.WriteLine();
+            //Console.WriteLine("### UserSession API demo");
+            //UserSessionDemo.Run(BaseAddress).Wait();
 
-            // Files API
-            Console.WriteLine();
-            Console.WriteLine("### Files API demo");
-            FilesDemo.Run(BaseAddress).Wait();
+            //// Files API
+            //Console.WriteLine();
+            //Console.WriteLine("### Files API demo");
+            //FilesDemo.Run(BaseAddress).Wait();
 
             // Database API
             Console.WriteLine();
