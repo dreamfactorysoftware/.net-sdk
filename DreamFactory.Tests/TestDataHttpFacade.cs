@@ -42,13 +42,6 @@
                 method = headers[HttpHeaders.TunnelingHeader].ToString().ToLowerInvariant();
             }
 
-            if (!headers.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader))
-            {
-                string error = CreateErrorResponse(400, "Request has no application name header");
-                response = new HttpResponse(request, 400, error);
-                return Task.FromResult(response);
-            }
-
             // Build request and response files lookup
             string[] parts = new Uri(request.Url).LocalPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             string resourcePath = Path.Combine(testDataPath, string.Join("\\", parts));

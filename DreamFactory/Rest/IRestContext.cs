@@ -1,7 +1,6 @@
 ﻿namespace DreamFactory.Rest
 {
     using System.Threading.Tasks;
-    using DreamFactory.Api;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Serialization;
@@ -27,12 +26,9 @@
         IHttpHeaders BaseHeaders { get; }
 
         /// <summary>
-        /// Factory method for creating serviceName API.
+        /// Gets <see cref="IServiceFactory"/> instance.
         /// </summary>
-        /// <param name="serviceName">Service name, or null for fixed services (e.g. /user).</param>
-        /// <typeparam name="TServiceApi">Service API type.</typeparam>
-        /// <returns>Created TServiceApi instance.</returns>
-        TServiceApi GetServiceApi<TServiceApi>(string serviceName = null) where TServiceApi : IServiceApi;
+        IServiceFactory Factory { get; }
 
         /// <summary>
         /// Gets services exposed from the current DSP.

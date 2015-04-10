@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Tests.Api
 {
     using DreamFactory.Api;
+    using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Rest;
@@ -17,8 +18,7 @@
         public void ShouldCreateFileAsync()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+            IFilesApi filesApi = CreateFilesApi();
 
             // Act
             FileResponse fileResponse = filesApi.CreateFileAsync("applications", "calendar/test.txt", "Hello").Result;
@@ -31,8 +31,7 @@
         public void ShouldGetFileAsync()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+            IFilesApi filesApi = CreateFilesApi();
 
             // Act
             string content = filesApi.GetFileAsync("applications", "calendar/test.txt").Result;
@@ -45,8 +44,7 @@
         public void ShouldDeleteFileAsync()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+            IFilesApi filesApi = CreateFilesApi();
 
             // Act
             FileResponse fileResponse = filesApi.DeleteFileAsync("applications", "calendar/test.txt").Result;
@@ -55,11 +53,13 @@
             fileResponse.path.ShouldBe("applications/calendar/test.txt");
         }
 
-        private static IRestContext CreateRestContext()
+        private static IFilesApi CreateFilesApi()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext(BaseAddress, httpFacade, new JsonContentSerializer());
-            return context;
+            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpHeaders headers = new HttpHeaders();
+            return new FilesApi(address, httpFacade, new JsonContentSerializer(), headers, "files");
         }
+
     }
 }

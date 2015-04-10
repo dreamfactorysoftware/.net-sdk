@@ -5,7 +5,7 @@
     using System.Linq;
     using DreamFactory.Rest;
 
-    internal class HttpAddress
+    internal class HttpAddress : IHttpAddress
     {
         private readonly string baseAddress;
 
@@ -15,6 +15,14 @@
 
         private readonly Dictionary<string, object> parameters;
 
+        public HttpAddress(string baseAddress, RestApiVersion version)
+        {
+            this.baseAddress = baseAddress;
+            this.version = version;
+            this.resources = new List<string>();
+            this.parameters = new Dictionary<string, object>();
+        }
+
         public HttpAddress(string baseAddress, RestApiVersion version, List<string> resources, Dictionary<string, object> parameters)
         {
             this.baseAddress = baseAddress;
@@ -23,22 +31,22 @@
             this.parameters = parameters;
         }
 
-        public HttpAddress WithBaseAddress(string value)
+        public IHttpAddress WithBaseAddress(string value)
         {
             return new HttpAddress(value, version, resources, parameters);
         }
 
-        public HttpAddress WithVersion(RestApiVersion value)
+        public IHttpAddress WithVersion(RestApiVersion value)
         {
             return new HttpAddress(baseAddress, value, resources, parameters);
         }
 
-        public HttpAddress WithResources(params string[] values)
+        public IHttpAddress WithResources(params string[] values)
         {
             return new HttpAddress(baseAddress, version, values.ToList(), parameters);
         }
 
-        public HttpAddress WithParameter(string name, object value)
+        public IHttpAddress WithParameter(string name, object value)
         {
             Dictionary<string, object> temp = new Dictionary<string, object>(parameters) { { name, value } };
 

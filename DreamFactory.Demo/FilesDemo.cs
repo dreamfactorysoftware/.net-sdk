@@ -12,12 +12,12 @@
         {
             // Must login first...
             IRestContext context = new RestContext(baseAddress);
-            IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+            IUserSessionApi userSessionApi = context.Factory.CreateUserSessionApi();
             Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 
             // Creating a file
-            IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+            IFilesApi filesApi = context.Factory.CreateFilesApi("files");
             FileResponse response = await filesApi.CreateFileAsync("applications", "calendar/test.txt", "test", false);
             Console.WriteLine("Created file: {0}", response.path);
 

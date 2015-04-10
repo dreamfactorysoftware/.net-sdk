@@ -8,13 +8,13 @@
 
     internal class FilesApi : IFilesApi
     {
-        private readonly HttpAddress baseAddress;
+        private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly IHttpHeaders baseHeaders;
         private readonly string serviceName;
 
-        public FilesApi(HttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
+        public FilesApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
         {
             this.baseAddress = baseAddress;
             this.httpFacade = httpFacade;
@@ -25,7 +25,7 @@
 
         public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
         {
-            HttpAddress address = baseAddress.WithResources(serviceName, container, filepath)
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath)
                                              .WithParameter("check_exist", checkExists);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
@@ -40,7 +40,7 @@
 
         public async Task<string> GetFileAsync(string container, string filepath, bool base64)
         {
-            HttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
 
             if (base64)
             {
@@ -64,7 +64,7 @@
 
         public async Task<FileResponse> DeleteFileAsync(string container, string filepath)
         {
-            HttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 

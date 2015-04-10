@@ -34,7 +34,7 @@
         /// <param name="url">URL.</param>
         /// <param name="headers">Headers collection.</param>
         /// <param name="body">Body content.</param>
-        public HttpRequest(HttpMethod method, string url, HttpHeaders headers, string body)
+        public HttpRequest(HttpMethod method, string url, IHttpHeaders headers, string body)
         {
             HttpUtils.CheckUrlString(url);
 

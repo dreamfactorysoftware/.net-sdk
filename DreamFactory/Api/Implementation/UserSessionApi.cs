@@ -7,12 +7,12 @@
 
     internal class UserSessionApi : IUserSessionApi
     {
-        private readonly HttpAddress httpAddress;
+        private readonly IHttpAddress httpAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly HttpHeaders baseHeaders;
 
-        public UserSessionApi(HttpAddress httpAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+        public UserSessionApi(IHttpAddress httpAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
         {
             this.httpAddress = httpAddress.WithResources("user", "session");
             this.httpFacade = httpFacade;

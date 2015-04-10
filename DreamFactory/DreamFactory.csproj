@@ -68,6 +68,8 @@
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
     <Compile Include="Api\IServiceApi.cs" />
+    <Compile Include="Http\IHttpAddress.cs" />
+    <Compile Include="Rest\IServiceFactory.cs" />
     <Compile Include="Api\ISystemApi.cs" />
     <Compile Include="Api\IUserSessionApi.cs" />
     <Compile Include="Api\IFilesApi.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\IHttpHeaders.cs" />
     <Compile Include="Model\Services.cs" />
+    <Compile Include="Rest\ServiceFactory.cs" />
     <Compile Include="Serialization\IContentSerializer.cs" />
     <Compile Include="Http\IHttpFacade.cs" />
     <Compile Include="Http\IHttpRequest.cs" />

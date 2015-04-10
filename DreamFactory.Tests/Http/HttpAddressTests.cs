@@ -33,7 +33,7 @@
         public void ShouldChangeVersion()
         {
             // Arrange
-            HttpAddress address = CreateTestHttpAddress();
+            IHttpAddress address = CreateTestHttpAddress();
 
             // Act
             address = address.WithVersion(RestApiVersion.V2);
@@ -46,7 +46,7 @@
         public void ShouldChangeResources()
         {
             // Arrange
-            HttpAddress address = CreateTestHttpAddress();
+            IHttpAddress address = CreateTestHttpAddress();
 
             // Act
             address = address.WithResources("system", "config");
@@ -59,7 +59,7 @@
         public void ShouldAddParameters()
         {
             // Arrange
-            HttpAddress address = CreateTestHttpAddress();
+            IHttpAddress address = CreateTestHttpAddress();
 
             // Act
             address = address.WithParameter("new", "value");
@@ -72,7 +72,7 @@
         public void ShouldChangeBaseAddress()
         {
             // Arrange
-            HttpAddress address = CreateTestHttpAddress();
+            IHttpAddress address = CreateTestHttpAddress();
 
             // Act
             address = address.WithBaseAddress("https://pinebit.ddns.net");
@@ -85,7 +85,7 @@
         public void ShouldNotModifyOriginal()
         {
             // Arrange
-            HttpAddress address = CreateTestHttpAddress();
+            IHttpAddress address = CreateTestHttpAddress();
             string result = address.Build();
 
             // Act
@@ -98,7 +98,7 @@
             address.Build().ShouldBe(result);
         }
 
-        private static HttpAddress CreateTestHttpAddress()
+        private static IHttpAddress CreateTestHttpAddress()
         {
             List<string> resources = new List<string> { "user", "session" };
             Dictionary<string, object> parameters = new Dictionary<string, object>

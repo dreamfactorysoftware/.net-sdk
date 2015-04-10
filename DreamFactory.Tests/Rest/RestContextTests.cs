@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Tests.Rest
 {
-    using DreamFactory.Api;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Rest;
@@ -74,32 +73,6 @@
 
             // Assert
             context.ContentSerializer.ShouldBeSameAs(serializer);
-        }
-
-        [TestMethod]
-        public void ShouldCreateUserSessionApi()
-        {
-            // Arrange
-            IRestContext context = new RestContext(BaseAddress);
-
-            // Act
-            IUserSessionApi api = context.GetServiceApi<IUserSessionApi>();
-
-            // Assert
-            api.ShouldNotBe(null);
-        }
-
-        [TestMethod]
-        public void ShouldCreateFilesApi()
-        {
-            // Arrange
-            IRestContext context = new RestContext(BaseAddress);
-
-            // Act
-            IFilesApi api = context.GetServiceApi<IFilesApi>("xyz");
-
-            // Assert
-            api.ShouldNotBe(null);
         }
 
         [TestMethod]

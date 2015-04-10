@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using DreamFactory.Api;
+    using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Rest;
@@ -18,8 +19,8 @@
         public void ShouldLoginAsync()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+            HttpHeaders headers;
+            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
             Login login = CreateLogin();
 
             // Act
@@ -34,26 +35,26 @@
         public void LoginShouldChangeBaseHeaders()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+            HttpHeaders headers;
+            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
             Login login = CreateLogin();
 
             // Act
             userSessionApi.LoginAsync("admin", login).Wait();
 
             // Assert
-            Dictionary<string, object> headers = context.BaseHeaders.Build();
-            headers.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
-            headers.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
+            Dictionary<string, object> _headers = headers.Build();
+            _headers.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
+            _headers.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
+            _headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
         }
 
         [TestMethod]
         public void ShouldLogoutAsync()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+            HttpHeaders headers;
+            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
 
             // Act
             Logout logout = userSessionApi.LogoutAsync().Result;
@@ -66,8 +67,8 @@
         public void LogoutShouldRemoveSessionToken()
         {
             // Arrange
-            IRestContext context = CreateRestContext();
-            IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+            HttpHeaders headers;
+            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
             Login login = CreateLogin();
             userSessionApi.LoginAsync("admin", login).Wait();
 
@@ -75,14 +76,15 @@
             userSessionApi.LogoutAsync().Wait();
 
             // Assert
-            context.BaseHeaders.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
+            headers.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
         }
 
-        private static IRestContext CreateRestContext()
+        private static IUserSessionApi CreateUserSessionApi(out HttpHeaders headers)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext(BaseAddress, httpFacade, new JsonContentSerializer());
-            return context;
+            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            headers = new HttpHeaders();
+            return new UserSessionApi(address, httpFacade, new JsonContentSerializer(), headers);
         }
 
         private static Login CreateLogin()

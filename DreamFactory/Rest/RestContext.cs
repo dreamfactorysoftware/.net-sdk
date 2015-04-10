@@ -1,10 +1,7 @@
 ﻿namespace DreamFactory.Rest
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using DreamFactory.Api;
-    using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Serialization;
@@ -12,8 +9,6 @@
     /// <inheritdoc />
     public class RestContext : IRestContext
     {
-        private readonly Dictionary<string, Func<string, IServiceApi>> serviceFactories;
-
         private readonly HttpAddress address;
 
         private HttpHeaders httpHeaders;
@@ -49,16 +44,14 @@
                 throw new ArgumentNullException("serializer");
             }
 
-            address = new HttpAddress(baseAddress, apiVersion, new List<string>(), new Dictionary<string, object>());
+            address = new HttpAddress(baseAddress, apiVersion);
 
             HttpFacade = httpFacade;
             ContentSerializer = serializer;
 
             SetBaseHeaders();
 
-            serviceFactories = new Dictionary<string, Func<string, IServiceApi>>();
-            RegisterService<IUserSessionApi>(name => new UserSessionApi(address, HttpFacade, ContentSerializer, httpHeaders));
-            RegisterService<IFilesApi>(name => new FilesApi(address, HttpFacade, ContentSerializer, httpHeaders, name));
+            Factory = new ServiceFactory(address, HttpFacade, ContentSerializer, httpHeaders);
         }
 
         /// <inheritdoc />
@@ -71,18 +64,7 @@
         public IHttpHeaders BaseHeaders { get { return httpHeaders; } }
 
         /// <inheritdoc />
-        public TServiceApi GetServiceApi<TServiceApi>(string serviceName)
-            where TServiceApi : IServiceApi
-        {
-            string serviceApiType = typeof (TServiceApi).FullName;
-            Func<string, IServiceApi> factory;
-            if (!serviceFactories.TryGetValue(serviceApiType, out factory))
-            {
-                throw new KeyNotFoundException(string.Format("Service {0} is unknown.", serviceApiType));
-            }
-
-            return (TServiceApi)factory(serviceName);
-        }
+        public IServiceFactory Factory { get; private set; }
 
         /// <inheritdoc />
         public async Task<Services> GetServicesAsync()
@@ -104,13 +86,6 @@
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
             return ContentSerializer.Deserialize<Resources>(response.Body);
-        }
-
-        private void RegisterService<TServiceApi>(Func<string, TServiceApi> factory)
-            where TServiceApi : class, IServiceApi
-        {
-            string serviceApiType = typeof(TServiceApi).FullName;
-            serviceFactories.Add(serviceApiType, factory);
         }
 
         private void SetBaseHeaders()

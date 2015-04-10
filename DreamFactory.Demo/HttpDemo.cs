@@ -12,7 +12,7 @@
              * Get random bytes as hex string from random.org
              */
 
-            string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
+            const string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
             IHttpRequest request = new HttpRequest(HttpMethod.Get, url, new HttpHeaders());
             IHttpFacade httpFacade = new UnirestHttpFacade();
 

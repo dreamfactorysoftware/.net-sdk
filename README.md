@@ -12,7 +12,7 @@ install-package DreamFactoryNet
 
 Note that the package is built against .NET 4.5 and if you need a different target version, then build the API from the source code.
 
-### Build From Source Code
+### Building From Source Code
 
 Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
 You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with 4.0 with no issues.
@@ -75,12 +75,12 @@ Consider the following [example](https://github.com/dreamfactorysoftware/.net-sd
 
 ### Model driven API overview
 
-All APIs are defined per service and can be obtained by calling `IRestContext.GetServiceApi<T>()` method:
+All APIs are defined per service and can be obtained via `IRestContext.Factory` methods:
 
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
     Login login = new Login { email = "user@mail.com", password = "qwerty" };
-    IUserSessionApi userSessionApi = context.GetServiceApi<IUserSessionApi>();
+    IUserSessionApi userSessionApi = context.Factory.UserSessionApi();
     Session session = await userSessionApi.LoginAsync("admin", login);
     Console.WriteLine("Logged in as {0}", session.display_name);
 ```
@@ -88,7 +88,7 @@ All APIs are defined per service and can be obtained by calling `IRestContext.Ge
 Specify service name for creating an interface to a named service:
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
-    IFilesApi filesApi = context.GetServiceApi<IFilesApi>("files");
+    IFilesApi filesApi = context.Factory.CreateFilesApi("files");
     await filesApi.CreateFileAsync(...);
 ```
 
@@ -103,7 +103,7 @@ Building the URL is done transparently to the users.
 
 #### IRestContext interface
 
-Besides the `GetServiceApi<T>()` call, the interface offers services and resources discovery services:
+Besides the `IRestContext.Factory` object, the interface offers services and resources discovery functions:
 
 - `GetServicesAsync()`
 - `GetResourcesAsync()`

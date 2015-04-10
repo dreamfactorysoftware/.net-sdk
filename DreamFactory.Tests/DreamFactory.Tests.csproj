@@ -83,6 +83,7 @@
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
     <Compile Include="Rest\RestContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\ServiceFactoryTests.cs" />
     <Compile Include="Serialization\JsonContentSerializerTests.cs" />
     <Compile Include="TestDataHttpFacade.cs" />
   </ItemGroup>
