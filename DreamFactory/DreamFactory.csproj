@@ -71,6 +71,8 @@
     <Compile Include="Api\IServiceApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\FieldSchema.cs" />
+    <Compile Include="Model\Helper\ITableSchemaBuilder.cs" />
+    <Compile Include="Model\Helper\TableSchemaBuilder.cs" />
     <Compile Include="Model\RelatedSchema.cs" />
     <Compile Include="Model\TableSchema.cs" />
     <Compile Include="Rest\IServiceFactory.cs" />

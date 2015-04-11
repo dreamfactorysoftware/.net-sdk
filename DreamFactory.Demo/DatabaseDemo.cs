@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model;
+    using DreamFactory.Model.Helper;
     using DreamFactory.Rest;
 
     public class DatabaseDemo
@@ -65,19 +66,11 @@
 
         private static TableSchema CreateTestTableSchema()
         {
-            List<FieldSchema> fields = new List<FieldSchema>
-                                       {
-                                           new FieldSchema { name = "id", type = "id", is_primary_key = true, auto_increment = true },
-                                           new FieldSchema { name = "first_name", type = "string", required = true },
-                                           new FieldSchema { name = "last_name", type = "string", required = true },
-                                           new FieldSchema { name = "age", type = "integer", required = true },
-                                           new FieldSchema { name = "active", type = "boolean", required = true }
-                                       };
-
-            return new TableSchema { name = "staff", primary_key = "id", field = fields };
+            ITableSchemaBuilder builder = new TableSchemaBuilder();
+            return builder.WithName("staff").WithFieldsFrom<StaffRecord>().Build();
         }
 
-        // Record's DTO for staff table
+        // ReSharper disable InconsistentNaming
         internal class StaffRecord
         {
             public int id { get; set; }
