@@ -23,6 +23,11 @@
 
         public async Task<bool> RegisterAsync(Register register, bool login = false)
         {
+            if (register == null)
+            {
+                throw new ArgumentNullException("register");
+            }
+
             var address = baseAddress.WithResources("user", "register");
             if (login)
             {
@@ -52,6 +57,16 @@
 
         public async Task<Session> LoginAsync(string applicationName, Login login)
         {
+            if (applicationName == null)
+            {
+                throw new ArgumentNullException("applicationName");
+            }
+
+            if (login == null)
+            {
+                throw new ArgumentNullException("login");
+            }
+
             var address = baseAddress.WithResources("user", "session");
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
@@ -96,6 +111,11 @@
 
         public async Task<bool> UpdateProfileAsync(ProfileRequest profileRequest)
         {
+            if (profileRequest == null)
+            {
+                throw new ArgumentNullException("profileRequest");
+            }
+
             var address = baseAddress.WithResources("user", "profile");
             string content = contentSerializer.Serialize(profileRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
@@ -120,6 +140,16 @@
 
         public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
         {
+            if (oldPassword == null)
+            {
+                throw new ArgumentNullException("oldPassword");
+            }
+
+            if (newPassword == null)
+            {
+                throw new ArgumentNullException("newPassword");
+            }
+
             var address = baseAddress.WithResources("user", "password");
             PasswordRequest data = new PasswordRequest { old_password = oldPassword, new_password = newPassword };
             string content = contentSerializer.Serialize(data);
@@ -133,6 +163,11 @@
 
         public async Task<PasswordResponse> RequestPasswordResetAsync(string email)
         {
+            if (email == null)
+            {
+                throw new ArgumentNullException("email");
+            }
+
             var address = baseAddress.WithResources("user", "password").WithParameter("reset", true);
             PasswordRequest data = new PasswordRequest { email = email };
             string content = contentSerializer.Serialize(data);
@@ -146,6 +181,16 @@
 
         public async Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code, string answer)
         {
+            if (email == null)
+            {
+                throw new ArgumentNullException("email");
+            }
+
+            if (newPassword == null)
+            {
+                throw new ArgumentNullException("newPassword");
+            }
+
             if (code != null && answer != null)
             {
                 throw new ArgumentException("You must specify either code or answer parameters but not both.", "answer");

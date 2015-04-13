@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
@@ -25,6 +26,21 @@
 
         public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
+            if (content == null)
+            {
+                throw new ArgumentNullException("content");
+            }
+
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath)
                                              .WithParameter("check_exist", checkExists);
 
@@ -39,6 +55,16 @@
 
         public async Task<string> GetFileAsync(string container, string filepath, bool base64)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
 
             if (base64)
@@ -63,6 +89,16 @@
 
         public async Task<FileResponse> DeleteFileAsync(string container, string filepath)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);

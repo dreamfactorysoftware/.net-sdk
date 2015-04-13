@@ -88,6 +88,11 @@
                 throw new ArgumentNullException("tableName");
             }
 
+            if (records == null)
+            {
+                throw new ArgumentNullException("records");
+            }
+
             IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
 
             var recordsRequest = new { record = records.ToList() };

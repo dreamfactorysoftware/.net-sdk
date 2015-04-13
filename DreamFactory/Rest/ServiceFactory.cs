@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Rest
 {
-    using System;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
@@ -28,7 +27,7 @@
 
         public ISystemApi CreateSystemApi()
         {
-            throw new NotImplementedException();
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
         }
 
         public IFilesApi CreateFilesApi(string serviceName)

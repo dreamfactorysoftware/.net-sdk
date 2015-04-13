@@ -7,7 +7,7 @@
     /// <summary>
     /// Represents /db API.
     /// </summary>
-    public interface IDatabaseApi : IServiceApi
+    public interface IDatabaseApi
     {
         /// <summary>
         /// Creates a new table using TRecord schema.

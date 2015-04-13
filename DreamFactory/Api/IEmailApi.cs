@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents /email API.
     /// </summary>
-    public interface IEmailApi : IServiceApi
+    public interface IEmailApi
     {
         /// <summary>
         /// Sends email(s).

@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents /user API.
     /// </summary>
-    public interface IUserApi : IServiceApi
+    public interface IUserApi
     {
         /// <summary>
         /// Register().

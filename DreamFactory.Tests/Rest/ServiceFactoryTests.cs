@@ -52,5 +52,15 @@
             // Assert
             api.ShouldNotBe(null);
         }
+
+        [TestMethod]
+        public void Should()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+        }
     }
 }

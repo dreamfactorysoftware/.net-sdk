@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents /files API.
     /// </summary>
-    public interface IFilesApi : IServiceApi
+    public interface IFilesApi
     {
         /// <summary>
         /// Creates a new file.

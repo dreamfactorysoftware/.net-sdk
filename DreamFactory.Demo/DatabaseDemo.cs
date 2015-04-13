@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
@@ -37,7 +38,7 @@
             }
 
             Console.WriteLine("Creating staff table schema...");
-            TableSchema staffTableSchema = CreateTestTableSchema();
+            TableSchema staffTableSchema = CreateTestTableSchema(); 
             await databaseApi.CreateTableAsync(staffTableSchema);
 
             // Describe table

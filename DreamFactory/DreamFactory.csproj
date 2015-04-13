@@ -70,7 +70,7 @@
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
     <Compile Include="Api\Implementation\UserApi.cs" />
-    <Compile Include="Api\IServiceApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\EmailAddress.cs" />
     <Compile Include="Model\EmailRequest.cs" />
