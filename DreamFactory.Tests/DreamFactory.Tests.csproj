@@ -120,6 +120,12 @@
     <None Include="TestData\rest\user\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\user\password\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\user\password\post.request.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\user\profile\post.request.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

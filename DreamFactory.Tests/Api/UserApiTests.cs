@@ -101,8 +101,6 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            Login login = CreateLogin();
-            userApi.LoginAsync("admin", login).Wait();
 
             // Act
             ProfileResponse profile = userApi.GetProfileAsync().Result;
@@ -117,8 +115,6 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            Login login = CreateLogin();
-            userApi.LoginAsync("admin", login).Wait();
             ProfileRequest profileRequest = new ProfileRequest
                                             {
                                                 first_name = "Alex",
@@ -136,6 +132,20 @@
 
             // Assert
             success.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldChangePasswordAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+
+            // Act
+            bool ok = userApi.ChangePasswordAsync("abc", "cba").Result;
+
+            // Assert
+            ok.ShouldBe(true);
         }
 
         private static IUserApi CreateUserApi(out HttpHeaders headers)

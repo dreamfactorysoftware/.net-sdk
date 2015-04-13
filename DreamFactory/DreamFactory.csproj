@@ -77,6 +77,8 @@
     <Compile Include="Model\FieldSchema.cs" />
     <Compile Include="Model\Helper\ITableSchemaBuilder.cs" />
     <Compile Include="Model\Helper\TableSchemaBuilder.cs" />
+    <Compile Include="Model\PasswordRequest.cs" />
+    <Compile Include="Model\PasswordResponse.cs" />
     <Compile Include="Model\ProfileRequest.cs" />
     <Compile Include="Model\ProfileResponse.cs" />
     <Compile Include="Model\Register.cs" />

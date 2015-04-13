@@ -51,5 +51,30 @@
         /// </summary>
         /// <returns>ProfileResponse data.</returns>
         Task<ProfileResponse> GetProfileAsync();
+
+        /// <summary>
+        /// changePassword().
+        /// </summary>
+        /// <param name="oldPassword">Old password.</param>
+        /// <param name="newPassword">New password.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> ChangePasswordAsync(string oldPassword, string newPassword);
+
+        /// <summary>
+        /// changePassword() requesting password reset.
+        /// </summary>
+        /// <param name="email">User's email to be used with code to validate email confirmation.</param>
+        /// <returns>PasswordResponse data.</returns>
+        Task<PasswordResponse> RequestPasswordResetAsync(string email);
+
+        /// <summary>
+        /// changePassword() completing password reset with either <paramref name="code"/> or <paramref name="answer"/>.
+        /// </summary>
+        /// <param name="email">User's email to be used with code to validate email confirmation.</param>
+        /// <param name="newPassword">New password.</param>
+        /// <param name="code">Confirmation code received in email.</param>
+        /// <param name="answer">Answer to user's security question.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code = null, string answer = null);
     }
 }
