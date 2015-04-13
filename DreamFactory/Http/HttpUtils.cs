@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Http
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Model;
     using DreamFactory.Serialization;
@@ -125,7 +126,8 @@
             try
             {
                 string message = @default;
-                Error error = serializer.Deserialize<Error>(response.Body);
+                var error = new { error = new List<Error>() };
+                error = serializer.Deserialize(response.Body, error);
                 if (error != null && error.error != null)
                 {
                     message = error.error.First().message;

@@ -2,7 +2,7 @@
 namespace DreamFactory.Model
 {
     /// <summary>
-    /// Related schema model.
+    /// Related schema.
     /// </summary>
     public class RelatedSchema
     {

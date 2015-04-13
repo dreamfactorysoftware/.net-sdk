@@ -82,8 +82,8 @@
 
         private string CreateErrorResponse(int code, string message)
         {
-            ErrorData errorData = new ErrorData { code = code, message = message };
-            Error error = new Error { error = new List<ErrorData> { errorData } };
+            Error errorData = new Error { code = code, message = message };
+            var error = new { error = new List<Error> { errorData } };
             return serializer.Serialize(error);
         }
     }

@@ -51,7 +51,7 @@
             return contentSerializer.Deserialize<Session>(response.Body);
         }
 
-        public async Task<Logout> LogoutAsync()
+        public async Task<bool> LogoutAsync()
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, httpAddress.Build(), baseHeaders);
             
@@ -60,7 +60,8 @@
 
             baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
 
-            return contentSerializer.Deserialize<Logout>(response.Body);
+            var logout = new { success = false };
+            return contentSerializer.Deserialize(response.Body, logout).success;
         }
     }
 }

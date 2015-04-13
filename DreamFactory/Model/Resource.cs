@@ -2,13 +2,13 @@
 namespace DreamFactory.Model
 {
     /// <summary>
-    /// Logout response.
+    /// Resource.
     /// </summary>
-    public class Logout
+    public class Resource
     {
         /// <summary>
-        /// Gets flag indicating logout request succeeded or not.
+        /// Name of the resource.
         /// </summary>
-        public bool success { get; set; }
+        public string name { get; set; }
     }
 }

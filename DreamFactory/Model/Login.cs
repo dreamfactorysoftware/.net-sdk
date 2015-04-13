@@ -2,7 +2,7 @@
 namespace DreamFactory.Model
 {
     /// <summary>
-    /// Login request.
+    /// Login.
     /// </summary>
     public class Login
     {

@@ -1,5 +1,7 @@
 ﻿namespace DreamFactory.Tests.Rest
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using DreamFactory.Http;
     using DreamFactory.Model;
     using DreamFactory.Rest;
@@ -82,12 +84,12 @@
             IRestContext context = CreateRestContext();
 
             // Act
-            Services services = context.GetServicesAsync().Result;
+            List<Service> services = context.GetServicesAsync().Result.ToList();
 
             // Assert
-            services.service.ShouldNotBeEmpty();
-            services.service.ShouldContain(x => x.api_name == "files");
-            services.service.ShouldContain(x => x.api_name == "email");
+            services.ShouldNotBeEmpty();
+            services.ShouldContain(x => x.api_name == "files");
+            services.ShouldContain(x => x.api_name == "email");
         }
 
         [TestMethod]
@@ -97,13 +99,13 @@
             IRestContext context = CreateRestContext();
 
             // Act
-            Resources resources = context.GetResourcesAsync("user").Result;
+            List<Resource> resources = context.GetResourcesAsync("user").Result.ToList();
 
             // Assert
-            resources.resource.ShouldNotBeEmpty();
-            resources.resource.ShouldContain(x => x.name == "password");
-            resources.resource.ShouldContain(x => x.name == "profile");
-            resources.resource.ShouldContain(x => x.name == "session");
+            resources.ShouldNotBeEmpty();
+            resources.ShouldContain(x => x.name == "password");
+            resources.ShouldContain(x => x.name == "profile");
+            resources.ShouldContain(x => x.name == "session");
         }
 
         private static IRestContext CreateRestContext()

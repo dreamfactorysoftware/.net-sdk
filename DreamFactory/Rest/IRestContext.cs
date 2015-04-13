@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Rest
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
@@ -33,14 +34,14 @@
         /// <summary>
         /// Gets services exposed from the current DSP.
         /// </summary>
-        /// <returns>List of service descriptors.</returns>
-        Task<Services> GetServicesAsync();
+        /// <returns>Sequence of service descriptors.</returns>
+        Task<IEnumerable<Service>> GetServicesAsync();
 
         /// <summary>
         /// Gets resources available for the service.
         /// </summary>
-        /// <returns>List of resources.</returns>
-        Task<Resources> GetResourcesAsync(string serviceName);
+        /// <returns>Sequence of resource descriptors.</returns>
+        Task<IEnumerable<Resource>> GetResourcesAsync(string serviceName);
 
     }
 }

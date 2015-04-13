@@ -1,21 +1,8 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model
 {
-    using System.Collections.Generic;
-
     /// <summary>
-    /// getServices() response.
-    /// </summary>
-    public class Services
-    {
-        /// <summary>
-        /// Gets collection of services.
-        /// </summary>
-        public List<Service> service { get; set; }
-    }
-
-    /// <summary>
-    /// A Service descriptor.
+    /// Service.
     /// </summary>
     public class Service
     {

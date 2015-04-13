@@ -22,12 +22,12 @@
             // Getting database interface
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");
 
-            Resources tables = await context.GetResourcesAsync("db");
-            string flatList = string.Join(", ", tables.resource.Select(x => x.name));
+            List<Resource> tables = new List<Resource>(await context.GetResourcesAsync("db"));
+            string flatList = string.Join(", ", tables.Select(x => x.name));
             Console.WriteLine("Existing tables: [{0}]", flatList);
 
             // Delete staff table if it exists
-            if (tables.resource.Any(x => x.name == "staff"))
+            if (tables.Any(x => x.name == "staff"))
             {
                 Console.WriteLine("Deleting table staff...");
                 if (await databaseApi.DeleteTableAsync("staff"))

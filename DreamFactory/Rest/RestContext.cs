@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Rest
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
@@ -67,25 +68,27 @@
         public IServiceFactory Factory { get; private set; }
 
         /// <inheritdoc />
-        public async Task<Services> GetServicesAsync()
+        public async Task<IEnumerable<Service>> GetServicesAsync()
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
 
             IHttpResponse response = await HttpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
-            return ContentSerializer.Deserialize<Services>(response.Body);
+            var services = new { service = new List<Service>() };
+            return ContentSerializer.Deserialize(response.Body, services).service;
         }
 
         /// <inheritdoc />
-        public async Task<Resources> GetResourcesAsync(string serviceName)
+        public async Task<IEnumerable<Resource>> GetResourcesAsync(string serviceName)
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.WithResources(serviceName).Build(), BaseHeaders);
 
             IHttpResponse response = await HttpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
-            return ContentSerializer.Deserialize<Resources>(response.Body);
+            var resources = new { resource = new List<Resource>() };
+            return ContentSerializer.Deserialize(response.Body, resources).resource;
         }
 
         private void SetBaseHeaders()

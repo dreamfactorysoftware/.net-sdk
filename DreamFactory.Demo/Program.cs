@@ -12,14 +12,14 @@
             Console.WriteLine("Demo DSP address: {0}", BaseAddress);
 
             // HTTP functions demo
-            //Console.WriteLine();
-            //Console.WriteLine("### HTTP functions demo");
-            //HttpDemo.Run().Wait();
+            Console.WriteLine();
+            Console.WriteLine("### HTTP functions demo");
+            HttpDemo.Run().Wait();
 
             // getServices and getResources
-            //Console.WriteLine();
-            //Console.WriteLine("### getServices and getResources demo");
-            //DiscoveryDemo.Run(BaseAddress).Wait();
+            Console.WriteLine();
+            Console.WriteLine("### getServices and getResources demo");
+            DiscoveryDemo.Run(BaseAddress).Wait();
 
             // UserSession API
             Console.WriteLine();
@@ -27,14 +27,14 @@
             UserSessionDemo.Run(BaseAddress).Wait();
 
             // Files API
-            //Console.WriteLine();
-            //Console.WriteLine("### Files API demo");
-            //FilesDemo.Run(BaseAddress).Wait();
+            Console.WriteLine();
+            Console.WriteLine("### Files API demo");
+            FilesDemo.Run(BaseAddress).Wait();
 
             // Database API
-            //Console.WriteLine();
-            //Console.WriteLine("### Database API demo");
-            //DatabaseDemo.Run(BaseAddress).Wait();
+            Console.WriteLine();
+            Console.WriteLine("### Database API demo");
+            DatabaseDemo.Run(BaseAddress).Wait();
         }
     }
 }

@@ -89,7 +89,7 @@
     <Compile Include="Http\HttpUtils.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\IHttpHeaders.cs" />
-    <Compile Include="Model\Services.cs" />
+    <Compile Include="Model\Service.cs" />
     <Compile Include="Rest\ServiceFactory.cs" />
     <Compile Include="Serialization\IContentSerializer.cs" />
     <Compile Include="Http\IHttpFacade.cs" />
@@ -99,12 +99,11 @@
     <Compile Include="Http\UnirestHttpFacade.cs" />
     <Compile Include="Model\FileResponse.cs" />
     <Compile Include="Model\Login.cs" />
-    <Compile Include="Model\Resources.cs" />
+    <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Session.cs" />
     <Compile Include="Model\SessionApp.cs" />
     <Compile Include="Rest\IRestContext.cs" />
     <Compile Include="Model\Error.cs" />
-    <Compile Include="Model\Logout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\RestApiVersion.cs" />
     <Compile Include="Rest\RestContext.cs" />

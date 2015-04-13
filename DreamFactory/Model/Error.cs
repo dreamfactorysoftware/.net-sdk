@@ -1,23 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model
 {
-    using System.Collections.Generic;
-
-    /// <summary>
-    /// Error response.
-    /// </summary>
-    public class Error
-    {
-        /// <summary>
-        /// Gets errors details.
-        /// </summary>
-        public List<ErrorData> error { get; set; }
-    }
-
     /// <summary>
     /// Error data.
     /// </summary>
-    public class ErrorData
+    public class Error
     {
         /// <summary>
         /// Gets error message.

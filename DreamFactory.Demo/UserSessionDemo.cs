@@ -21,8 +21,8 @@
             Console.WriteLine("Session ID={0}", session.session_id);
 
             // Logout
-            Logout logout = await userSessionApi.LogoutAsync();
-            Console.WriteLine("Logout {0}", logout.success ? "OK." : "failed.");
+            bool logout = await userSessionApi.LogoutAsync();
+            Console.WriteLine("Logout {0}", logout ? "OK." : "failed.");
         }
     }
 }

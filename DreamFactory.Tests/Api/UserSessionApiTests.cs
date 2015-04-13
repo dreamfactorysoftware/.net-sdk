@@ -73,10 +73,10 @@
             IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
 
             // Act
-            Logout logout = userSessionApi.LogoutAsync().Result;
+            bool logout = userSessionApi.LogoutAsync().Result;
 
             // Assert
-            logout.success.ShouldBe(true);
+            logout.ShouldBe(true);
         }
 
         [TestMethod]

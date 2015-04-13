@@ -4,7 +4,7 @@ namespace DreamFactory.Model
     using System.Collections.Generic;
 
     /// <summary>
-    /// Table's schema model.
+    /// Table schema.
     /// </summary>
     public class TableSchema
     {

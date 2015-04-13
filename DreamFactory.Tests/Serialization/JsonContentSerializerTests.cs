@@ -15,7 +15,7 @@
         public void ShouldSerializeObject()
         {
             // Arrange
-            Resources resources = CreateTestObject();
+            var resources = new { resource = CreateTestObject() };
             JsonContentSerializer serializer = new JsonContentSerializer();
 
             // Act
@@ -32,10 +32,10 @@
             JsonContentSerializer serializer = new JsonContentSerializer();
 
             // Act
-            Resources resources = serializer.Deserialize<Resources>(TestJson);
+            var resource = serializer.Deserialize<Resource>("{\"name\":\"foo\"}");
 
             // Assert
-            serializer.Serialize(resources).ShouldBe(TestJson);
+            serializer.Serialize(resource).ShouldBe("{\"name\":\"foo\"}");
         }
 
         [TestMethod]
@@ -52,11 +52,10 @@
             serializer.Serialize(resource).ShouldBe(TestJson);
         }
 
-        private static Resources CreateTestObject()
+        private static IEnumerable<Resource> CreateTestObject()
         {
-            Resource foo = new Resource { name = "foo" };
-            Resource bar = new Resource { name = "bar" };
-            return new Resources { resource = new List<Resource> { foo, bar } };
+            yield return new Resource { name = "foo" };
+            yield return new Resource { name = "bar" };
         }
     }
 }

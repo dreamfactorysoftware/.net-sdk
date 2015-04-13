@@ -28,7 +28,7 @@
         /// <summary>
         /// logout().
         /// </summary>
-        /// <returns>Logout object instance.</returns>
-        Task<Logout> LogoutAsync();
+        /// <returns>True if logout succeeded.</returns>
+        Task<bool> LogoutAsync();
     }
 }
