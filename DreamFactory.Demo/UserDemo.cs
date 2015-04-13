@@ -12,16 +12,19 @@
         {
             // Login
             IRestContext context = new RestContext(baseAddress);
-            IUserApi userSessionApi = context.Factory.CreateUserApi();
-            Session session = await userSessionApi.LoginAsync("admin", Utils.CreateLogin());
+            IUserApi userApi = context.Factory.CreateUserApi();
+            Session session = await userApi.LoginAsync("admin", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 
             // GetSession
-            session = await userSessionApi.GetSessionAsync();
+            session = await userApi.GetSessionAsync();
             Console.WriteLine("Session ID={0}", session.session_id);
 
+            var profile = await userApi.GetProfileAsync();
+            Console.WriteLine("Email from your profile={0}", profile.email);
+
             // Logout
-            bool logout = await userSessionApi.LogoutAsync();
+            bool logout = await userApi.LogoutAsync();
             Console.WriteLine("Logout {0}", logout ? "OK." : "failed.");
         }
     }

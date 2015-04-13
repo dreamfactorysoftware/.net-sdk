@@ -92,5 +92,30 @@
             var logout = new { success = false };
             return contentSerializer.Deserialize(response.Body, logout).success;
         }
+
+        public async Task<bool> UpdateProfileAsync(ProfileRequest profileRequest)
+        {
+            var address = baseAddress.WithResources("user", "profile");
+
+            string content = contentSerializer.Serialize(profileRequest);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var success = new { success = false };
+            return contentSerializer.Deserialize(response.Body, success).success;
+        }
+
+        public async Task<ProfileResponse> GetProfileAsync()
+        {
+            var address = baseAddress.WithResources("user", "profile");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<ProfileResponse>(response.Body);
+        }
     }
 }

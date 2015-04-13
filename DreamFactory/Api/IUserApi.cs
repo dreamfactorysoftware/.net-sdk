@@ -38,5 +38,18 @@
         /// </summary>
         /// <returns>True if logout succeeded.</returns>
         Task<bool> LogoutAsync();
+
+        /// <summary>
+        /// updateProfile().
+        /// </summary>
+        /// <param name="profileRequest">ProfileRequest data.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> UpdateProfileAsync(ProfileRequest profileRequest);
+
+        /// <summary>
+        /// getProfile().
+        /// </summary>
+        /// <returns>ProfileResponse data.</returns>
+        Task<ProfileResponse> GetProfileAsync();
     }
 }

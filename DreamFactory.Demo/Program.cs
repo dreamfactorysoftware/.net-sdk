@@ -23,7 +23,7 @@
 
             // UserSession API
             Console.WriteLine();
-            Console.WriteLine("### UserSession API demo");
+            Console.WriteLine("### User API demo");
             UserDemo.Run(BaseAddress).Wait();
 
             // Files API

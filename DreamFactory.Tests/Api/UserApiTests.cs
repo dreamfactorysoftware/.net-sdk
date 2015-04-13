@@ -20,11 +20,11 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserApi userSessionApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi(out headers);
             Login login = CreateLogin();
 
             // Act
-            Session session = userSessionApi.LoginAsync("admin", login).Result;
+            Session session = userApi.LoginAsync("admin", login).Result;
 
             // Assert
             session.display_name.ShouldBe("Andrei Smirnov");
@@ -36,12 +36,12 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserApi userSessionApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi(out headers);
             Login login = CreateLogin();
-            userSessionApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", login).Wait();
 
             // Act
-            Session session = userSessionApi.GetSessionAsync().Result;
+            Session session = userApi.GetSessionAsync().Result;
 
             // Assert
             session.session_id.ShouldNotBeEmpty();
@@ -52,11 +52,11 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserApi userSessionApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi(out headers);
             Login login = CreateLogin();
 
             // Act
-            userSessionApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", login).Wait();
 
             // Assert
             Dictionary<string, object> _headers = headers.Build();
@@ -70,10 +70,10 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserApi userSessionApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi(out headers);
 
             // Act
-            bool logout = userSessionApi.LogoutAsync().Result;
+            bool logout = userApi.LogoutAsync().Result;
 
             // Assert
             logout.ShouldBe(true);
@@ -84,15 +84,58 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserApi userSessionApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi(out headers);
             Login login = CreateLogin();
-            userSessionApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", login).Wait();
 
             // Act
-            userSessionApi.LogoutAsync().Wait();
+            userApi.LogoutAsync().Wait();
 
             // Assert
             headers.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void ShouldGetProfileAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            Login login = CreateLogin();
+            userApi.LoginAsync("admin", login).Wait();
+
+            // Act
+            ProfileResponse profile = userApi.GetProfileAsync().Result;
+
+            // Assert
+            profile.display_name.ShouldBe("pinebit");
+        }
+
+        [TestMethod]
+        public void ShouldUpdateProfileAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            Login login = CreateLogin();
+            userApi.LoginAsync("admin", login).Wait();
+            ProfileRequest profileRequest = new ProfileRequest
+                                            {
+                                                first_name = "Alex",
+                                                last_name = "Smith",
+                                                display_name = "Alex Smith",
+                                                default_app_id = 1,
+                                                email = "alex@user.com",
+                                                phone = null,
+                                                security_question = "to be or not to be?",
+                                                security_answer = "maybe",
+                                            };
+
+            // Act
+            bool success = userApi.UpdateProfileAsync(profileRequest).Result;
+
+            // Assert
+            success.ShouldBe(true);
         }
 
         private static IUserApi CreateUserApi(out HttpHeaders headers)
