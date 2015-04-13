@@ -134,5 +134,7 @@ https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/F
 
 #### Email API
 
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
+
 ### .NET specific bindings and extensions
 

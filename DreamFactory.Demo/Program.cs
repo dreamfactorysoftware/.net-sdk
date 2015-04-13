@@ -35,6 +35,11 @@
             Console.WriteLine();
             Console.WriteLine("### Database API demo");
             DatabaseDemo.Run(BaseAddress).Wait();
+
+            // Email API
+            Console.WriteLine();
+            Console.WriteLine("### Email API demo");
+            EmailDemo.Run(BaseAddress).Wait();
         }
     }
 }

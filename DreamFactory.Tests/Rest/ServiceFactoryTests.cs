@@ -39,5 +39,18 @@
             api.ShouldNotBe(null);
         }
 
+        [TestMethod]
+        public void ShouldCreateEmailApi()
+        {
+            // Arrange
+            HttpHeaders headers = new HttpHeaders();
+            IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
+
+            // Act
+            IEmailApi api = factory.CreateEmailApi("email");
+
+            // Assert
+            api.ShouldNotBe(null);
+        }
     }
 }

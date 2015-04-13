@@ -31,7 +31,6 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
-
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);

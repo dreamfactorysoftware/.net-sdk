@@ -43,7 +43,7 @@
 
         public IEmailApi CreateEmailApi(string serviceName)
         {
-            throw new NotImplementedException();
+            return new EmailApi(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName);
         }
 
         public IDatabaseApi CreateDatabaseApi(string serviceName)
