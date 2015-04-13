@@ -23,12 +23,7 @@
 
         public IUserApi CreateUserApi()
         {
-            throw new NotImplementedException();
-        }
-
-        public IUserSessionApi CreateUserSessionApi()
-        {
-            return new UserSessionApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+            return new UserApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
         }
 
         public ISystemApi CreateSystemApi()

@@ -11,7 +11,7 @@
     using Shouldly;
 
     [TestClass]
-    public class UserSessionApiTests
+    public class UserApiTests
     {
         private const string BaseAddress = "http://localhost";
 
@@ -20,7 +20,7 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            IUserApi userSessionApi = CreateUserApi(out headers);
             Login login = CreateLogin();
 
             // Act
@@ -36,7 +36,7 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            IUserApi userSessionApi = CreateUserApi(out headers);
             Login login = CreateLogin();
             userSessionApi.LoginAsync("admin", login).Wait();
 
@@ -52,7 +52,7 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            IUserApi userSessionApi = CreateUserApi(out headers);
             Login login = CreateLogin();
 
             // Act
@@ -70,7 +70,7 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            IUserApi userSessionApi = CreateUserApi(out headers);
 
             // Act
             bool logout = userSessionApi.LogoutAsync().Result;
@@ -84,7 +84,7 @@
         {
             // Arrange
             HttpHeaders headers;
-            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            IUserApi userSessionApi = CreateUserApi(out headers);
             Login login = CreateLogin();
             userSessionApi.LoginAsync("admin", login).Wait();
 
@@ -95,12 +95,12 @@
             headers.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
         }
 
-        private static IUserSessionApi CreateUserSessionApi(out HttpHeaders headers)
+        private static IUserApi CreateUserApi(out HttpHeaders headers)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
             HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
             headers = new HttpHeaders();
-            return new UserSessionApi(address, httpFacade, new JsonContentSerializer(), headers);
+            return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);
         }
 
         private static Login CreateLogin()

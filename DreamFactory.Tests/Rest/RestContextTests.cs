@@ -108,6 +108,20 @@
             resources.ShouldContain(x => x.name == "session");
         }
 
+        [TestMethod]
+        public void ShouldSetApplicationName()
+        {
+            // Arrange
+            IRestContext context = CreateRestContext();
+
+            // Act
+            context.SetApplicationName("foo");
+
+            // Assert
+            Dictionary<string, object> headers = context.BaseHeaders.Build();
+            headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("foo");
+        }
+
         private static IRestContext CreateRestContext()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();

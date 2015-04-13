@@ -24,7 +24,7 @@
             // UserSession API
             Console.WriteLine();
             Console.WriteLine("### UserSession API demo");
-            UserSessionDemo.Run(BaseAddress).Wait();
+            UserDemo.Run(BaseAddress).Wait();
 
             // Files API
             Console.WriteLine();

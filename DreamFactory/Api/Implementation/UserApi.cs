@@ -5,28 +5,58 @@
     using DreamFactory.Model;
     using DreamFactory.Serialization;
 
-    internal class UserSessionApi : IUserSessionApi
+    internal class UserApi : IUserApi
     {
-        private readonly IHttpAddress httpAddress;
+        private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly HttpHeaders baseHeaders;
 
-        public UserSessionApi(IHttpAddress httpAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+        public UserApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
         {
-            this.httpAddress = httpAddress.WithResources("user", "session");
+            this.baseAddress = baseAddress;
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
         }
 
+        public async Task<bool> RegisterAsync(Register register, bool login = false)
+        {
+            var address = baseAddress.WithResources("user", "register");
+            if (login)
+            {
+                address = address.WithParameter("login", true);
+            }
+
+            string content = contentSerializer.Serialize(register);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post,
+                                                   address.Build(),
+                                                   baseHeaders,
+                                                   content);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var success = new { success = false };
+            success = contentSerializer.Deserialize(response.Body, success);
+
+            if (success.success && login)
+            {
+                Session session = await GetSessionAsync();
+                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+            }
+
+            return success.success;
+        }
+
         public async Task<Session> LoginAsync(string applicationName, Login login)
         {
+            var address = baseAddress.WithResources("user", "session");
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
             string loginContent = contentSerializer.Serialize(login);
             IHttpRequest request = new HttpRequest(HttpMethod.Post,
-                                                   httpAddress.Build(),
+                                                   address.Build(),
                                                    baseHeaders,
                                                    loginContent);
 
@@ -41,10 +71,8 @@
 
         public async Task<Session> GetSessionAsync()
         {
-            IHttpRequest request = new HttpRequest(HttpMethod.Get,
-                                                   httpAddress.Build(),
-                                                   baseHeaders);
-
+            var address = baseAddress.WithResources("user", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
@@ -53,8 +81,9 @@
 
         public async Task<bool> LogoutAsync()
         {
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, httpAddress.Build(), baseHeaders);
-            
+            var address = baseAddress.WithResources("user", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 

@@ -6,13 +6,13 @@
     using DreamFactory.Model;
     using DreamFactory.Rest;
 
-    public static class UserSessionDemo
+    public static class UserDemo
     {
         public static async Task Run(string baseAddress)
         {
             // Login
             IRestContext context = new RestContext(baseAddress);
-            IUserSessionApi userSessionApi = context.Factory.CreateUserSessionApi();
+            IUserApi userSessionApi = context.Factory.CreateUserApi();
             Session session = await userSessionApi.LoginAsync("admin", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 

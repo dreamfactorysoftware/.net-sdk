@@ -79,7 +79,7 @@
   <ItemGroup>
     <Compile Include="Api\EmailApiTests.cs" />
     <Compile Include="Api\FilesApiTests.cs" />
-    <Compile Include="Api\UserSessionApiTests.cs" />
+    <Compile Include="Api\UserApiTests.cs" />
     <Compile Include="Http\HttpAddressTests.cs" />
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
     <Compile Include="Rest\RestContextTests.cs" />

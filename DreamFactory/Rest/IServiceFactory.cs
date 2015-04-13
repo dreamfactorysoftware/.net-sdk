@@ -14,12 +14,6 @@
         IUserApi CreateUserApi();
 
         /// <summary>
-        /// Creates <see cref="IUserSessionApi"/> instance.
-        /// </summary>
-        /// <returns><see cref="IUserSessionApi"/> instance.</returns>
-        IUserSessionApi CreateUserSessionApi();
-
-        /// <summary>
         /// Creates <see cref="ISystemApi"/> instance.
         /// </summary>
         /// <returns><see cref="ISystemApi"/> instance.</returns>

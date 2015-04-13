@@ -80,8 +80,8 @@ All APIs are defined per service and can be obtained via `IRestContext.Factory` 
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
     Login login = new Login { email = "user@mail.com", password = "qwerty" };
-    IUserSessionApi userSessionApi = context.Factory.UserSessionApi();
-    Session session = await userSessionApi.LoginAsync("admin", login);
+    IUserApi userApi = context.Factory.CreateUserApi();
+    Session session = await userApi.LoginAsync("admin", login);
     Console.WriteLine("Logged in as {0}", session.display_name);
 ```
 
@@ -113,12 +113,8 @@ https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/D
 
 #### User API
 
-##### Session API
-
 The demo program:
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserSessionDemo.cs
-
-##### Custom API
+https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs
 
 #### System API
 

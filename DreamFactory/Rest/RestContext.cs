@@ -68,6 +68,17 @@
         public IServiceFactory Factory { get; private set; }
 
         /// <inheritdoc />
+        public void SetApplicationName(string applicationName)
+        {
+            if (applicationName == null)
+            {
+                throw new ArgumentNullException("applicationName");
+            }
+
+            httpHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
+        }
+
+        /// <inheritdoc />
         public async Task<IEnumerable<Service>> GetServicesAsync()
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);

@@ -69,6 +69,7 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\IServiceApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\EmailAddress.cs" />
@@ -76,14 +77,13 @@
     <Compile Include="Model\FieldSchema.cs" />
     <Compile Include="Model\Helper\ITableSchemaBuilder.cs" />
     <Compile Include="Model\Helper\TableSchemaBuilder.cs" />
+    <Compile Include="Model\Register.cs" />
     <Compile Include="Model\RelatedSchema.cs" />
     <Compile Include="Model\TableSchema.cs" />
     <Compile Include="Rest\IServiceFactory.cs" />
     <Compile Include="Api\ISystemApi.cs" />
-    <Compile Include="Api\IUserSessionApi.cs" />
     <Compile Include="Api\IFilesApi.cs" />
     <Compile Include="Api\IUserApi.cs" />
-    <Compile Include="Api\Implementation\UserSessionApi.cs" />
     <Compile Include="DreamFactoryException.cs" />
     <Compile Include="Http\HttpAddress.cs" />
     <Compile Include="Http\HttpHeaders.cs" />

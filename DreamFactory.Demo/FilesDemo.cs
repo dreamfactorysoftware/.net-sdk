@@ -12,7 +12,7 @@
         {
             // Must login first...
             IRestContext context = new RestContext(baseAddress);
-            IUserSessionApi userSessionApi = context.Factory.CreateUserSessionApi();
+            IUserApi userSessionApi = context.Factory.CreateUserApi();
             Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
 

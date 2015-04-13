@@ -32,6 +32,12 @@
         IServiceFactory Factory { get; }
 
         /// <summary>
+        /// Sets application name header.
+        /// </summary>
+        /// <param name="applicationName">New application name.</param>
+        void SetApplicationName(string applicationName);
+
+        /// <summary>
         /// Gets services exposed from the current DSP.
         /// </summary>
         /// <returns>Sequence of service descriptors.</returns>

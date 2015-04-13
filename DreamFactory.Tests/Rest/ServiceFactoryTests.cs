@@ -12,14 +12,14 @@
     public class ServiceFactoryTests
     {
         [TestMethod]
-        public void ShouldCreateUserSessionApi()
+        public void ShouldCreateUserApi()
         {
             // Arrange
             HttpHeaders headers = new HttpHeaders();
             IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
 
             // Act
-            IUserSessionApi api = factory.CreateUserSessionApi();
+            IUserApi api = factory.CreateUserApi();
 
             // Assert
             api.ShouldNotBe(null);
