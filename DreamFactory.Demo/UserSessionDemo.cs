@@ -15,6 +15,9 @@
             IUserSessionApi userSessionApi = context.Factory.CreateUserSessionApi();
             Session session = await userSessionApi.LoginAsync("admin", Utils.CreateLogin());
             Console.WriteLine("Logged in as {0}", session.display_name);
+
+            // GetSession
+            session = await userSessionApi.GetSessionAsync();
             Console.WriteLine("Session ID={0}", session.session_id);
 
             // Logout

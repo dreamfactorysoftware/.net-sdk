@@ -39,6 +39,18 @@
             return session;
         }
 
+        public async Task<Session> GetSessionAsync()
+        {
+            IHttpRequest request = new HttpRequest(HttpMethod.Get,
+                                                   httpAddress.Build(),
+                                                   baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<Session>(response.Body);
+        }
+
         public async Task<Logout> LogoutAsync()
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, httpAddress.Build(), baseHeaders);

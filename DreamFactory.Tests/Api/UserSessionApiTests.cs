@@ -32,6 +32,22 @@
         }
 
         [TestMethod]
+        public void ShouldGetSessionAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserSessionApi userSessionApi = CreateUserSessionApi(out headers);
+            Login login = CreateLogin();
+            userSessionApi.LoginAsync("admin", login).Wait();
+
+            // Act
+            Session session = userSessionApi.GetSessionAsync().Result;
+
+            // Assert
+            session.session_id.ShouldNotBeEmpty();
+        }
+
+        [TestMethod]
         public void LoginShouldChangeBaseHeaders()
         {
             // Arrange

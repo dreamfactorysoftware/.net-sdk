@@ -9,7 +9,7 @@
     public interface IUserSessionApi : IServiceApi
     {
         /// <summary>
-        /// Login request.
+        /// login().
         /// </summary>
         /// <remarks>
         /// Successful login operation will set ApplicationName and SessionToken headers.
@@ -20,7 +20,13 @@
         Task<Session> LoginAsync(string applicationName, Login login);
 
         /// <summary>
-        /// Logout request.
+        /// getSession().
+        /// </summary>
+        /// <returns>Session object instance.</returns>
+        Task<Session> GetSessionAsync();
+
+        /// <summary>
+        /// logout().
         /// </summary>
         /// <returns>Logout object instance.</returns>
         Task<Logout> LogoutAsync();
