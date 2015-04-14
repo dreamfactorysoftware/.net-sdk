@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
+    using DreamFactory.Model.Database;
     using DreamFactory.Serialization;
 
     internal class DatabaseApi : IDatabaseApi

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Model;
+    using DreamFactory.Model.Database;
 
     /// <summary>
     /// Represents /db API.

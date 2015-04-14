@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+namespace DreamFactory.Model.Database
 {
     /// <summary>
     /// Related schema.

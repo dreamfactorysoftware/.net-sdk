@@ -1,21 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+namespace DreamFactory.Model.File
 {
     using System.Collections.Generic;
 
     /// <summary>
     /// FileResponse.
-    /// </summary>
-    public class FileResponseModel
-    {
-        /// <summary>
-        /// File info.
-        /// </summary>
-        public List<FileResponse> file { get; set; }
-    }
-
-    /// <summary>
-    /// File info.
     /// </summary>
     public class FileResponse
     {

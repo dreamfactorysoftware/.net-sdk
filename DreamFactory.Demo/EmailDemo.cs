@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model;
+    using DreamFactory.Model.Email;
+    using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public class EmailDemo

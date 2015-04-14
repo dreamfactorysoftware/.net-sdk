@@ -1,7 +1,9 @@
 ﻿namespace DreamFactory.Api
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Model;
+    using DreamFactory.Model.User;
 
     /// <summary>
     /// Represents /user API.
@@ -76,5 +78,18 @@
         /// <param name="answer">Answer to user's security question.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code = null, string answer = null);
+
+        /// <summary>
+        /// getDevices().
+        /// </summary>
+        /// <returns>Sequence of DeviceResponse data.</returns>
+        Task<IEnumerable<DeviceResponse>> GetDevicesAsync();
+
+        /// <summary>
+        /// setDevice().
+        /// </summary>
+        /// <param name="deviceRequest">DeviceRequest data.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> SetDeviceAsync(DeviceRequest deviceRequest);
     }
 }

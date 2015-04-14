@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using DreamFactory.Model.Database;
 
     /// <summary>
     /// <see cref="TableSchema"/> builder.

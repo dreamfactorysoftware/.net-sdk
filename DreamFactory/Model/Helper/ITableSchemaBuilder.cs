@@ -1,5 +1,7 @@
 ﻿namespace DreamFactory.Model.Helper
 {
+    using DreamFactory.Model.Database;
+
     /// <summary>
     /// Represents <see cref="TableSchema"/> builder.
     /// </summary>

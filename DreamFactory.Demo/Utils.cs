@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Demo
 {
     using DreamFactory.Model;
+    using DreamFactory.Model.User;
 
     internal static class Utils
     {

@@ -1,10 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+namespace DreamFactory.Model.User
 {
     /// <summary>
-    /// ProfileResponse.
+    /// ProfileRequest
     /// </summary>
-    public class ProfileResponse
+    public class ProfileRequest
     {
         /// <summary>
         /// Email address of the current user.
@@ -40,5 +40,10 @@ namespace DreamFactory.Model
         /// Id of the application to be launched at login.
         /// </summary>
         public int? default_app_id { get; set; }
+
+        /// <summary>
+        /// Answer to the security question.
+        /// </summary>
+        public string security_answer { get; set; } 
     }
 }

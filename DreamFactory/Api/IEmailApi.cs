@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using DreamFactory.Model;
+    using DreamFactory.Model.Email;
 
     /// <summary>
     /// Represents /email API.

@@ -4,6 +4,8 @@
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model;
+    using DreamFactory.Model.File;
+    using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public static class FilesDemo

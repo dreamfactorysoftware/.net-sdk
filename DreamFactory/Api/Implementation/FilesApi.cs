@@ -1,10 +1,11 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model;
+    using DreamFactory.Model.File;
     using DreamFactory.Serialization;
 
     internal class FilesApi : IFilesApi
@@ -24,7 +25,8 @@
             this.serviceName = serviceName;
         }
 
-        public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
+        public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content,
+            bool checkExists = true)
         {
             if (container == null)
             {
@@ -42,15 +44,16 @@
             }
 
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath)
-                                             .WithParameter("check_exist", checkExists);
+                .WithParameter("check_exist", checkExists);
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(),
+                baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
-            return model.file.FirstOrDefault();
+            var data = new { file = new List<FileResponse>() };
+            return contentSerializer.Deserialize(response.Body, data).file.First();
         }
 
         public async Task<string> GetFileAsync(string container, string filepath, bool base64)
@@ -83,8 +86,8 @@
                 return response.Body;
             }
 
-            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
-            return model.file.First().content;
+            var data = new { file = new List<FileResponse>() };
+            return contentSerializer.Deserialize(response.Body, data).file.First().content;
         }
 
         public async Task<FileResponse> DeleteFileAsync(string container, string filepath)
@@ -106,8 +109,8 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            FileResponseModel model = contentSerializer.Deserialize<FileResponseModel>(response.Body);
-            return model.file.First();
+            var data = new { file = new List<FileResponse>() };
+            return contentSerializer.Deserialize(response.Body, data).file.First();
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
+    using DreamFactory.Model.Email;
     using DreamFactory.Serialization;
 
     internal class EmailApi : IEmailApi

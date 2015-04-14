@@ -5,6 +5,7 @@
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Model;
+    using DreamFactory.Model.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

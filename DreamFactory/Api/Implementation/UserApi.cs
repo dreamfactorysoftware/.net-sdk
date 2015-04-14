@@ -1,9 +1,11 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
+    using DreamFactory.Model.User;
     using DreamFactory.Serialization;
 
     internal class UserApi : IUserApi
@@ -212,6 +214,36 @@
             }
 
             return success;
+        }
+
+        public async Task<IEnumerable<DeviceResponse>> GetDevicesAsync()
+        {
+            var address = baseAddress.WithResources("user", "device");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var data = new { record = new List<DeviceResponse>() };
+            return contentSerializer.Deserialize(response.Body, data).record;
+        }
+
+        public async Task<bool> SetDeviceAsync(DeviceRequest deviceRequest)
+        {
+            if (deviceRequest == null)
+            {
+                throw new ArgumentNullException("deviceRequest");
+            }
+
+            var address = baseAddress.WithResources("user", "device");
+            string content = contentSerializer.Serialize(deviceRequest);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var success = new { success = false };
+            return contentSerializer.Deserialize(response.Body, success).success;
         }
     }
 }
