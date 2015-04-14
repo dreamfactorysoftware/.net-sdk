@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using DreamFactory.Model;
     using DreamFactory.Model.User;
 
     /// <summary>
@@ -91,5 +90,32 @@
         /// <param name="deviceRequest">DeviceRequest data.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> SetDeviceAsync(DeviceRequest deviceRequest);
+
+        /// <summary>
+        /// getCustomSettings().
+        /// </summary>
+        /// <returns>Sequence of CustomSettings data.</returns>
+        Task<IEnumerable<CustomSetting>> GetCustomSettingsAsync();
+
+        /// <summary>
+        /// setCustomSettings();
+        /// </summary>
+        /// <param name="customSettings">Sequence of CustomSetting data.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> SetCustomSettingsAsync(IEnumerable<CustomSetting> customSettings);
+
+        /// <summary>
+        /// getCustomSetting().
+        /// </summary>
+        /// <param name="settingName">Name of the setting to retrieve.</param>
+        /// <returns>CustomSettings data.</returns>
+        Task<CustomSetting> GetCustomSettingAsync(string settingName);
+
+        /// <summary>
+        /// deleteCustomSetting().
+        /// </summary>
+        /// <param name="settingName">Name of the setting to delete.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> DeleteCustomSettingAsync(string settingName);
     }
 }

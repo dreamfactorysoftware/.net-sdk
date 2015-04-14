@@ -69,9 +69,13 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\Implementation\UserApi.Password.cs" />
+    <Compile Include="Api\Implementation\UserApi.Custom.cs" />
+    <Compile Include="Api\Implementation\UserApi.Session.cs" />
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
+    <Compile Include="Model\User\CustomSetting.cs" />
     <Compile Include="Model\User\DeviceRequest.cs" />
     <Compile Include="Model\User\DeviceResponse.cs" />
     <Compile Include="Model\Email\EmailAddress.cs" />
