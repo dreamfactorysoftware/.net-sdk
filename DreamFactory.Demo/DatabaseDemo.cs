@@ -2,26 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.Helper;
-    using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public class DatabaseDemo
     {
-        public static async Task Run(string baseAddress)
+        public static async Task Run(IRestContext context)
         {
-            // Login first
-            IRestContext context = new RestContext(baseAddress);
-            IUserApi userSessionApi = context.Factory.CreateUserApi();
-            Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
-            Console.WriteLine("Logged in as {0}", session.display_name);
-
             // Getting database interface
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");
 

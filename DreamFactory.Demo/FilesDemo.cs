@@ -3,21 +3,13 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Api;
-    using DreamFactory.Model;
     using DreamFactory.Model.File;
-    using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public static class FilesDemo
     {
-        public static async Task Run(string baseAddress)
+        public static async Task Run(IRestContext context)
         {
-            // Must login first...
-            IRestContext context = new RestContext(baseAddress);
-            IUserApi userSessionApi = context.Factory.CreateUserApi();
-            Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
-            Console.WriteLine("Logged in as {0}", session.display_name);
-
             // Creating a file
             IFilesApi filesApi = context.Factory.CreateFilesApi("files");
             FileResponse response = await filesApi.CreateFileAsync("applications", "calendar/test.txt", "test", false);

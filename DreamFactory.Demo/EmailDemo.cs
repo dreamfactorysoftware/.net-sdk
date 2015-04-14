@@ -4,21 +4,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Api;
-    using DreamFactory.Model;
     using DreamFactory.Model.Email;
-    using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public class EmailDemo
     {
-        public static async Task Run(string baseAddress)
+        public static async Task Run(IRestContext context)
         {
-            // Login first
-            IRestContext context = new RestContext(baseAddress);
-            IUserApi userSessionApi = context.Factory.CreateUserApi();
-            Session session = await userSessionApi.LoginAsync("todoangular", Utils.CreateLogin());
-            Console.WriteLine("Logged in as {0}", session.display_name);
-
             // Send an email
             Console.WriteLine("Sending email...");
             EmailRequest request = CreateEmailRequest();

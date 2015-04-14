@@ -3,29 +3,25 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Api;
-    using DreamFactory.Model;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     public static class UserDemo
     {
-        public static async Task Run(string baseAddress)
+        public static async Task Run(IRestContext context)
         {
-            // Login
-            IRestContext context = new RestContext(baseAddress);
+            // IUserApi provides all functions for user management
             IUserApi userApi = context.Factory.CreateUserApi();
-            Session session = await userApi.LoginAsync("admin", Utils.CreateLogin());
-            Console.WriteLine("Logged in as {0}", session.display_name);
 
-            // Get Session
-            session = await userApi.GetSessionAsync();
-            Console.WriteLine("Session ID={0}", session.session_id);
+            // getSession()
+            Session session = await userApi.GetSessionAsync();
+            Console.WriteLine("Session ID: {0}", session.session_id);
 
-            // Get Profile data
-            var profile = await userApi.GetProfileAsync();
-            Console.WriteLine("Email from your profile={0}", profile.email);
+            // getProfile()
+            ProfileResponse profile = await userApi.GetProfileAsync();
+            Console.WriteLine("Email from your profile: {0}", profile.email);
 
-            // Changing password
+            // changePassword()
             bool ok = await userApi.ChangePasswordAsync("userdream", "userdream1");
             if (ok)
             {
@@ -35,10 +31,6 @@
                     Console.WriteLine("Password was changed and reverted");
                 }
             }
-
-            // Logout
-            bool logout = await userApi.LogoutAsync();
-            Console.WriteLine("Logout {0}", logout ? "OK." : "failed.");
         }
     }
 }
