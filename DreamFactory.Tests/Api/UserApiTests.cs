@@ -1,10 +1,10 @@
 ﻿namespace DreamFactory.Tests.Api
 {
     using System.Collections.Generic;
+    using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -144,6 +144,43 @@
 
             // Act
             bool ok = userApi.ChangePasswordAsync("abc", "cba").Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldGetDevicesAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+
+            // Act
+            List<DeviceResponse> devices = userApi.GetDevicesAsync().Result.ToList();
+
+            // Assert
+            devices.ShouldNotBeEmpty();
+            devices.First().platform.ShouldBe("windows");
+        }
+
+        [TestMethod]
+        public void ShouldSetDeviceAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            DeviceRequest request = new DeviceRequest
+                                    {
+                                        id = 1,
+                                        uuid = "1",
+                                        platform = "windows",
+                                        model = "new",
+                                        version = "1"
+                                    };
+
+            // Act
+            bool ok = userApi.SetDeviceAsync(request).Result;
 
             // Assert
             ok.ShouldBe(true);

@@ -27,6 +27,11 @@
             Console.WriteLine("### User API demo");
             UserDemo.Run(context).Wait();
 
+            // UserSession API
+            Console.WriteLine();
+            Console.WriteLine("### Custom Settings demo");
+            CustomSettingsDemo.Run(context).Wait();
+
             // getServices and getResources
             Console.WriteLine();
             Console.WriteLine("### getServices and getResources demo");

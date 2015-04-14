@@ -1,15 +1,15 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model.User;
 
+    using CustomSetting = System.Collections.Generic.Dictionary<string, object>;
+    using CustomSettings = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, object>>;
+    
     internal partial class UserApi
     {
-        public async Task<IEnumerable<CustomSetting>> GetCustomSettingsAsync()
+        public async Task<CustomSettings> GetCustomSettingsAsync()
         {
             var address = baseAddress.WithResources("user", "custom");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
@@ -17,17 +17,10 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var data = new { record = new List<CustomSetting>() };
-            data = contentSerializer.Deserialize(response.Body, data);
-            if (data == null || data.record == null)
-            {
-                return Enumerable.Empty<CustomSetting>();
-            }
-
-            return data.record;
+            return contentSerializer.Deserialize<CustomSettings>(response.Body);
         }
 
-        public async Task<bool> SetCustomSettingsAsync(IEnumerable<CustomSetting> customSettings)
+        public async Task<bool> SetCustomSettingsAsync(CustomSettings customSettings)
         {
             if (customSettings == null)
             {
