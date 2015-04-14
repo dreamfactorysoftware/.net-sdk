@@ -186,6 +186,72 @@
             ok.ShouldBe(true);
         }
 
+        [TestMethod]
+        public void ShouldGetCustomSettingsAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+
+            // Act
+            Dictionary<string, Dictionary<string, object>> settings = userApi.GetCustomSettingsAsync().Result;
+
+            // Assert
+            settings.Count.ShouldBe(2);
+            settings["setting2"].Count.ShouldBe(1);
+            settings["setting2"]["enabled"].ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldSetCustomSettingsAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            Dictionary<string, Dictionary<string, object>> settings =
+                new Dictionary<string, Dictionary<string, object>>
+                {
+                    { "setting1", new Dictionary<string, object> { { "age", 33 }, { "name", "John" } } },
+                    { "setting2", new Dictionary<string, object> { { "enabled", true } } },
+                };
+
+            // Act
+            bool ok = userApi.SetCustomSettingsAsync(settings).Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldGetCustomSettingAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+
+            // Act
+            Dictionary<string, object> setting1 = userApi.GetCustomSettingAsync("setting1").Result;
+
+            // Assert
+            setting1.Count.ShouldBe(2);
+            setting1["age"].ShouldBe(33);
+            setting1["name"].ShouldBe("John");
+        }
+
+        [TestMethod]
+        public void ShouldDeleteCustomSettingAsync()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+
+            // Act
+            bool ok = userApi.DeleteCustomSettingAsync("setting1").Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
         private static IUserApi CreateUserApi(out HttpHeaders headers)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();

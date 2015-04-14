@@ -51,7 +51,7 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<CustomSetting>(response.Body);
+            return contentSerializer.Deserialize<CustomSettings>(response.Body)[settingName];
         }
 
         public async Task<bool> DeleteCustomSettingAsync(string settingName)
