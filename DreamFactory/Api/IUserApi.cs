@@ -4,6 +4,9 @@
     using System.Threading.Tasks;
     using DreamFactory.Model.User;
 
+    using CustomSetting = System.Collections.Generic.Dictionary<string, object>;
+    using CustomSettings = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, object>>;
+
     /// <summary>
     /// Represents /user API.
     /// </summary>
@@ -94,21 +97,21 @@
         /// <summary>
         /// getCustomSettings().
         /// </summary>
-        /// <returns>Sequence of CustomSettings data.</returns>
-        Task<IEnumerable<CustomSetting>> GetCustomSettingsAsync();
+        /// <returns>CustomSettings data.</returns>
+        Task<CustomSettings> GetCustomSettingsAsync();
 
         /// <summary>
         /// setCustomSettings();
         /// </summary>
-        /// <param name="customSettings">Sequence of CustomSetting data.</param>
+        /// <param name="customSettings">CustomSetting data.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> SetCustomSettingsAsync(IEnumerable<CustomSetting> customSettings);
+        Task<bool> SetCustomSettingsAsync(CustomSettings customSettings);
 
         /// <summary>
         /// getCustomSetting().
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <returns>CustomSettings data.</returns>
+        /// <returns>CustomSetting data.</returns>
         Task<CustomSetting> GetCustomSettingAsync(string settingName);
 
         /// <summary>
