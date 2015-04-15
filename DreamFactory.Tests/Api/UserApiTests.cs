@@ -260,15 +260,41 @@
             ok.ShouldBe(true);
         }
 
-        private static IUserApi CreateUserApi()
+        [TestMethod]
+        public void ShouldRequestPasswordResetAsync()
         {
-            HttpHeaders headers;
-            return CreateUserApi(out headers);
+            // Arrange
+            IUserApi userApi = CreateUserApi("reset");
+
+            // Act
+            PasswordResponse response = userApi.RequestPasswordResetAsync("user@mail.com").Result;
+
+            // Assert
+            response.security_question.ShouldBe("to be or not to be?");
         }
 
-        private static IUserApi CreateUserApi(out HttpHeaders headers)
+        [TestMethod]
+        public void ShouldCompletePasswordResetAsync()
         {
-            IHttpFacade httpFacade = new TestDataHttpFacade();
+            // Arrange
+            IUserApi userApi = CreateUserApi("complete");
+
+            // Act
+            bool ok = userApi.CompletePasswordResetAsync("user@mail.com", "qwerty", answer: "maybe").Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
+        private static IUserApi CreateUserApi(string suffix = null)
+        {
+            HttpHeaders headers;
+            return CreateUserApi(out headers, suffix);
+        }
+
+        private static IUserApi CreateUserApi(out HttpHeaders headers, string suffix = null)
+        {
+            IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
             HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
             headers = new HttpHeaders();
             return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);

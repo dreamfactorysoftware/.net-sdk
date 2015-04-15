@@ -16,8 +16,11 @@
 
         private readonly string testDataPath;
 
-        public TestDataHttpFacade()
+        private readonly string suffix;
+
+        public TestDataHttpFacade(string suffix = null)
         {
+            this.suffix = suffix;
             serializer = new JsonContentSerializer();
 
             Uri location = new Uri(Assembly.GetExecutingAssembly().CodeBase);
@@ -45,6 +48,10 @@
             // Build request and response files lookup
             string[] parts = new Uri(request.Url).LocalPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             string resourcePath = Path.Combine(testDataPath, string.Join("\\", parts));
+            if (suffix != null)
+            {
+                resourcePath = resourcePath + "-" + suffix;
+            }
             string responseFile = Path.Combine(resourcePath, method + ".json");
             string requestFile = Path.Combine(resourcePath, method + ".request.json");
 
