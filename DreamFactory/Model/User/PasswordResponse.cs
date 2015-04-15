@@ -14,6 +14,6 @@ namespace DreamFactory.Model.User
         /// <summary>
         /// True if password updated or reset request granted via email confirmation.
         /// </summary>
-        public bool success { get; set; }
+        public bool? success { get; set; }
     }
 }

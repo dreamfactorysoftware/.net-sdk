@@ -21,10 +21,9 @@
         {
             // Arrange
             IUserApi userApi = CreateUserApi();
-            Login login = CreateLogin();
 
             // Act
-            Session session = userApi.LoginAsync("admin", login).Result;
+            Session session = userApi.LoginAsync("admin", "user@mail.com", "userdream").Result;
 
             // Assert
             session.display_name.ShouldBe("Andrei Smirnov");
@@ -36,8 +35,7 @@
         {
             // Arrange
             IUserApi userApi = CreateUserApi();
-            Login login = CreateLogin();
-            userApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
 
             // Act
             Session session = userApi.GetSessionAsync().Result;
@@ -52,10 +50,9 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            Login login = CreateLogin();
 
             // Act
-            userApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
 
             // Assert
             Dictionary<string, object> dictionary = headers.Build();
@@ -83,8 +80,7 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            Login login = CreateLogin();
-            userApi.LoginAsync("admin", login).Wait();
+            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
 
             // Act
             userApi.LogoutAsync().Wait();
@@ -298,11 +294,6 @@
             HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
             headers = new HttpHeaders();
             return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);
-        }
-
-        private static Login CreateLogin()
-        {
-            return new Login { email = "user@mail.com", password = "userdream" };
         }
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="Model\Database\FieldSchema.cs" />
     <Compile Include="Model\Helper\ITableSchemaBuilder.cs" />
     <Compile Include="Model\Helper\TableSchemaBuilder.cs" />
+    <Compile Include="Model\User\Login.cs" />
     <Compile Include="Model\User\PasswordRequest.cs" />
     <Compile Include="Model\User\PasswordResponse.cs" />
     <Compile Include="Model\User\ProfileRequest.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Serialization\JsonContentSerializer.cs" />
     <Compile Include="Http\UnirestHttpFacade.cs" />
     <Compile Include="Model\File\FileResponse.cs" />
-    <Compile Include="Model\User\Login.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\User\Session.cs" />
     <Compile Include="Model\User\SessionApp.cs" />

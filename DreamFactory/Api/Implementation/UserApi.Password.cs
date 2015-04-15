@@ -27,7 +27,7 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<PasswordResponse>(response.Body).success;
+            return contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
         }
 
         public async Task<PasswordResponse> RequestPasswordResetAsync(string email)
@@ -73,7 +73,7 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).success;
+            bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
             if (success)
             {
                 Session session = await GetSessionAsync();

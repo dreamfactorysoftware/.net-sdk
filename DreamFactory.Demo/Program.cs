@@ -61,7 +61,7 @@
         static async Task Login(IRestContext context)
         {
             IUserApi userApi = context.Factory.CreateUserApi();
-            Session session = await userApi.LoginAsync(DefaultApp, new Login { email = "user@mail.com", password = "userdream" });
+            Session session = await userApi.LoginAsync(DefaultApp, "user@mail.com", "userdream");
             Console.WriteLine("Logged in as {0}", session.display_name);
         }
     }

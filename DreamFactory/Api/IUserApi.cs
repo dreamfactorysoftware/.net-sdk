@@ -27,9 +27,11 @@
         /// Successful login operation will set ApplicationName and SessionToken headers.
         /// </remarks>
         /// <param name="applicationName">Application name.</param>
-        /// <param name="login">Login data.</param>
+        /// <param name="email">Email.</param>
+        /// <param name="password">Password.</param>
+        /// <param name="duration">Session duration.</param>
         /// <returns>Session object instance.</returns>
-        Task<Session> LoginAsync(string applicationName, Login login);
+        Task<Session> LoginAsync(string applicationName, string email, string password, int duration = 0);
 
         /// <summary>
         /// getSession().
