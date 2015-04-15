@@ -79,9 +79,8 @@ All APIs are defined per service and can be obtained via `IRestContext.Factory` 
 
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
-    Login login = new Login { email = "user@mail.com", password = "qwerty" };
     IUserApi userApi = context.Factory.CreateUserApi();
-    Session session = await userApi.LoginAsync("admin", login);
+    Session session = await userApi.LoginAsync("admin", "user@mail.com", "qwerty");
     Console.WriteLine("Logged in as {0}", session.display_name);
 ```
 
@@ -113,24 +112,25 @@ https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/D
 
 #### User API
 
-The demo program:
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs
-
-#### System API
-
-#### Database API
-
-The demo program:
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs
+Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs
 
 #### Files API
 
-The demo program:
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs
+Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
+
+#### Database API
+
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs
+Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
 
 #### Email API
 
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs
+Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
 
-### .NET specific bindings and extensions
+#### System API
 
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs
+Demo program: *TBD*
