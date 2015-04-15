@@ -12,50 +12,43 @@
         {
             IUserApi userApi = context.Factory.CreateUserApi();
 
-            // Setting custom settings
-            Dictionary<string, Dictionary<string, object>> settings =
-                new Dictionary<string, Dictionary<string, object>>
-                {
-                    { "setting1", new Dictionary<string, object> { { "age", 33 }, { "name", "John" } } },
-                    { "setting2", new Dictionary<string, object> { { "enabled", true } } },
-                };
+            // Setting some preferences
+            UserPreferences preferences = new UserPreferences
+            {
+                flag = true,
+                array = new[] { "a", "b", "c" },
+                entity = new UserPreferences.Entity { rank = 4, role = "user" }
+            };
 
-            if (!await userApi.SetCustomSettingsAsync(settings))
+            if (await userApi.SetCustomSettingAsync("preferences", preferences))
             {
-                Console.WriteLine("Failed to create custom settings!");
-            }
-            else
-            {
-                Console.WriteLine("Created custom settings: setting1, setting2");
+                Console.WriteLine("Created custom settings: preferences");
             }
 
-            // Retrieving custom settings
-            Console.WriteLine("Retrieved custom settings:");
-            settings = await userApi.GetCustomSettingsAsync();
+            // Retrieving custom settings names
+            IEnumerable<string> names = await userApi.GetCustomSettingsAsync();
+            string flatList = string.Join(", ", names);
+            Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 
-            foreach (KeyValuePair<string, Dictionary<string, object>> setting in settings)
+            // Retrieving preferences back
+            UserPreferences instance = await userApi.GetCustomSettingAsync<UserPreferences>("preferences");
+            Console.WriteLine("Retrieved preferences back:");
+            Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.flag, instance.entity.rank);
+        }
+
+// ReSharper disable InconsistentNaming
+        internal class UserPreferences
+        {
+            public bool flag { get; set; }
+            public string[] array { get; set; }
+            public Entity entity { get; set; }
+
+            internal class Entity
             {
-                if (!setting.Key.StartsWith("setting"))
-                {
-                    continue;
-                }
-
-                Console.WriteLine("\tcustom setting '{0}'", setting.Key);
-                Console.WriteLine("\t{");
-
-                foreach (KeyValuePair<string, object> pair in setting.Value)
-                {
-                    Console.WriteLine("\t\tname: '{0}', values: {1}", pair.Key, pair.Value);
-                }
-
-                Console.WriteLine("\t}");
-
-                // Delete the custom setting
-                if (await userApi.DeleteCustomSettingAsync(setting.Key))
-                {
-                    Console.WriteLine("\t... and '{0}' is now deleted", setting.Key);
-                }
+                public int rank { get; set; }
+                public string role { get; set; }
             }
         }
+// ReSharper restore InconsistentNaming
     }
 }

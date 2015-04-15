@@ -1,15 +1,13 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-
-    using CustomSetting = System.Collections.Generic.Dictionary<string, object>;
-    using CustomSettings = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, object>>;
     
     internal partial class UserApi
     {
-        public async Task<CustomSettings> GetCustomSettingsAsync()
+        public async Task<IEnumerable<string>> GetCustomSettingsAsync()
         {
             var address = baseAddress.WithResources("user", "custom");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
@@ -17,18 +15,27 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<CustomSettings>(response.Body);
+            Dictionary<string, object> settings = new Dictionary<string, object>();
+            return contentSerializer.Deserialize(response.Body, settings).Keys;
         }
 
-        public async Task<bool> SetCustomSettingsAsync(CustomSettings customSettings)
+        public async Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity)
+            where TEntity : class, new()
         {
-            if (customSettings == null)
+            if (settingName == null)
             {
-                throw new ArgumentNullException("customSettings");
+                throw new ArgumentNullException("settingName");
+            }
+
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
             }
 
             var address = baseAddress.WithResources("user", "custom");
-            string content = contentSerializer.Serialize(customSettings);
+
+            Dictionary<string, TEntity> setting = new Dictionary<string, TEntity> { { settingName, entity } };
+            string content = contentSerializer.Serialize(setting);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
@@ -38,7 +45,8 @@
             return contentSerializer.Deserialize(response.Body, success).success;
         }
 
-        public async Task<CustomSetting> GetCustomSettingAsync(string settingName)
+        public async Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName)
+            where TEntity : class, new()
         {
             if (settingName == null)
             {
@@ -51,7 +59,8 @@
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<CustomSettings>(response.Body)[settingName];
+            Dictionary<string, TEntity> settings = new Dictionary<string, TEntity>();
+            return contentSerializer.Deserialize(response.Body, settings)[settingName];
         }
 
         public async Task<bool> DeleteCustomSettingAsync(string settingName)

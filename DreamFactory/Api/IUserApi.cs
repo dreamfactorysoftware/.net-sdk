@@ -4,9 +4,6 @@
     using System.Threading.Tasks;
     using DreamFactory.Model.User;
 
-    using CustomSetting = System.Collections.Generic.Dictionary<string, object>;
-    using CustomSettings = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, object>>;
-
     /// <summary>
     /// Represents /user API.
     /// </summary>
@@ -99,22 +96,25 @@
         /// <summary>
         /// getCustomSettings().
         /// </summary>
-        /// <returns>CustomSettings data.</returns>
-        Task<CustomSettings> GetCustomSettingsAsync();
+        /// <returns>Sequence of settings (names).</returns>
+        Task<IEnumerable<string>> GetCustomSettingsAsync();
 
         /// <summary>
         /// setCustomSettings();
         /// </summary>
-        /// <param name="customSettings">CustomSetting data.</param>
+        /// <param name="settingName">Name of the setting to retrieve.</param>
+        /// <param name="entity">Instance of the TEntity type.</param>
+        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> SetCustomSettingsAsync(CustomSettings customSettings);
+        Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity) where TEntity : class, new();
 
         /// <summary>
         /// getCustomSetting().
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
+        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
         /// <returns>CustomSetting data.</returns>
-        Task<CustomSetting> GetCustomSettingAsync(string settingName);
+        Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName) where TEntity: class, new();
 
         /// <summary>
         /// deleteCustomSetting().
