@@ -11,7 +11,7 @@
         /// Sets table's name.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
-        /// <returns>New builder instance.</returns>
+        /// <returns>Interface chaining.</returns>
         ITableSchemaBuilder WithName(string tableName);
 
         /// <summary>
@@ -21,14 +21,14 @@
         /// <param name="required">True if the field is required.</param>
         /// <param name="defaultValue">Field's default value.</param>
         /// <typeparam name="TField">Type of the field.</typeparam>
-        /// <returns>New builder instance.</returns>
+        /// <returns>Interface chaining.</returns>
         ITableSchemaBuilder WithField<TField>(string fieldName, bool required = false, TField defaultValue = default(TField));
 
         /// <summary>
         /// Adds the primary key field of type 'id'. 
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <returns>New builder instance.</returns>
+        /// <returns>Interface chaining.</returns>
         ITableSchemaBuilder WithKeyField(string fieldName);
 
         /// <summary>
@@ -39,7 +39,7 @@
         /// A field named 'id' of an integer type becomes the primary key.
         /// </remarks>
         /// <typeparam name="TRecord">Type of the POCO class.</typeparam>
-        /// <returns>New builder instance.</returns>
+        /// <returns>Interface chaining.</returns>
         ITableSchemaBuilder WithFieldsFrom<TRecord>() where TRecord : class, new();
 
         /// <summary>

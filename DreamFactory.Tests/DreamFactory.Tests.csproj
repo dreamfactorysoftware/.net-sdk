@@ -82,6 +82,7 @@
     <Compile Include="Api\UserApiTests.cs" />
     <Compile Include="Http\HttpAddressTests.cs" />
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
+    <Compile Include="Model\EmailRequestBuilderTests.cs" />
     <Compile Include="Rest\RestContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\ServiceFactoryTests.cs" />

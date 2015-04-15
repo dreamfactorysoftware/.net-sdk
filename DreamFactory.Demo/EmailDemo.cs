@@ -1,10 +1,10 @@
 ﻿namespace DreamFactory.Demo
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.Email;
+    using DreamFactory.Model.Helper;
     using DreamFactory.Rest;
 
     public class EmailDemo
@@ -13,16 +13,17 @@
         {
             // Send an email
             Console.WriteLine("Sending email...");
-            EmailRequest request = CreateEmailRequest();
+
+            // Using the builder is good for simple emails
+            EmailRequest request = new EmailRequestBuilder().AddTo("inbox@mail.com")
+                                                            .WithSubject("Hello")
+                                                            .WithBody("Hello, world!")
+                                                            .Build();
+
             IEmailApi emailApi = context.Factory.CreateEmailApi("email");
             int count = await emailApi.SendEmailAsync(request);
-            Console.WriteLine("{0} email(s) sent.", count);
-        }
 
-        private static EmailRequest CreateEmailRequest()
-        {
-            EmailAddress address = new EmailAddress { email = "motodrug@gmail.com" };
-            return new EmailRequest { to = new List<EmailAddress> { address }, subject = "Hello from the demo!", body_text = "Hello, moto!" };
+            Console.WriteLine("{0} email(s) sent.", count);
         }
     }
 }

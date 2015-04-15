@@ -36,7 +36,7 @@ All API calls are divided into the three groups:
 
 1. Simple HTTP API, for making arbitrary HTTP requests;
 2. Model-driven API matching the Swagger definitions,
-   e.g. `Session session = await LoginAsync(new Login { email = "john@mail.com", password = "god" });`
+   e.g. `Session session = await LoginAsync("admin", "john@mail.com", "god");`
 3. .NET friendly bindings and extensions, such as Entity Framework interoperability.
 
 Note that all network API calls are made to be asynchronous. They can be `await`'ed and used well together with Task Parallel Library (TPL).
@@ -126,6 +126,18 @@ Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFac
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
 
 #### Email API
+
+Sending an email will require `EmailRequest` object to be built.
+For an advanced use, construct this object manually by providing all essential information.
+For a simple use, consider using `EmailRequestBuilder` class that lets you building a request in few simple steps:
+
+```csharp
+EmailRequest request = new EmailRequestBuilder()
+							.AddTo("inbox@mail.com")
+							.WithSubject("Hello")
+							.WithBody("Hello, world!")
+							.Build();
+```
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs

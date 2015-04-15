@@ -75,6 +75,8 @@
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
+    <Compile Include="Model\Helper\EmailRequestBuilder.cs" />
+    <Compile Include="Model\Helper\IEmailRequestBuilder.cs" />
     <Compile Include="Model\User\DeviceRequest.cs" />
     <Compile Include="Model\User\DeviceResponse.cs" />
     <Compile Include="Model\Email\EmailAddress.cs" />
