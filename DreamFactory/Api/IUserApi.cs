@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="register">User information to register.</param>
         /// <param name="login">Login and create a session upon successful registration.</param>
-        /// <returns></returns>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> RegisterAsync(Register register, bool login = false);
 
         /// <summary>
@@ -40,7 +40,7 @@
         /// <summary>
         /// logout().
         /// </summary>
-        /// <returns>True if logout succeeded.</returns>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> LogoutAsync();
 
         /// <summary>

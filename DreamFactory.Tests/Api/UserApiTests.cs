@@ -20,8 +20,7 @@
         public void ShouldLoginAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
             Login login = CreateLogin();
 
             // Act
@@ -36,8 +35,7 @@
         public void ShouldGetSessionAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
             Login login = CreateLogin();
             userApi.LoginAsync("admin", login).Wait();
 
@@ -60,18 +58,17 @@
             userApi.LoginAsync("admin", login).Wait();
 
             // Assert
-            Dictionary<string, object> _headers = headers.Build();
-            _headers.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
-            _headers.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            _headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
+            Dictionary<string, object> dictionary = headers.Build();
+            dictionary.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
+            dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
+            dictionary[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
         }
 
         [TestMethod]
         public void ShouldLogoutAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             bool logout = userApi.LogoutAsync().Result;
@@ -100,8 +97,7 @@
         public void ShouldGetProfileAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             ProfileResponse profile = userApi.GetProfileAsync().Result;
@@ -114,8 +110,7 @@
         public void ShouldUpdateProfileAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
             ProfileRequest profileRequest = new ProfileRequest
                                             {
                                                 first_name = "Alex",
@@ -139,8 +134,7 @@
         public void ShouldChangePasswordAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             bool ok = userApi.ChangePasswordAsync("abc", "cba").Result;
@@ -153,8 +147,7 @@
         public void ShouldGetDevicesAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             List<DeviceResponse> devices = userApi.GetDevicesAsync().Result.ToList();
@@ -168,8 +161,7 @@
         public void ShouldSetDeviceAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
             DeviceRequest request = new DeviceRequest
                                     {
                                         id = 1,
@@ -189,10 +181,8 @@
         [TestMethod]
         public void ShouldGetCustomSettingsAsync()
         {
-            // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
-
+            IUserApi userApi = CreateUserApi();
+            
             // Act
             Dictionary<string, Dictionary<string, object>> settings = userApi.GetCustomSettingsAsync().Result;
 
@@ -206,8 +196,7 @@
         public void ShouldSetCustomSettingsAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
             Dictionary<string, Dictionary<string, object>> settings =
                 new Dictionary<string, Dictionary<string, object>>
                 {
@@ -226,8 +215,7 @@
         public void ShouldGetCustomSettingAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             Dictionary<string, object> setting1 = userApi.GetCustomSettingAsync("setting1").Result;
@@ -242,14 +230,40 @@
         public void ShouldDeleteCustomSettingAsync()
         {
             // Arrange
-            HttpHeaders headers;
-            IUserApi userApi = CreateUserApi(out headers);
+            IUserApi userApi = CreateUserApi();
 
             // Act
             bool ok = userApi.DeleteCustomSettingAsync("setting1").Result;
 
             // Assert
             ok.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldRegisterAsync()
+        {
+            // Arrange
+            IUserApi userApi = CreateUserApi();
+            Register register = new Register
+            {
+                email = "test@mail.com",
+                first_name = "first",
+                last_name = "last",
+                display_name = "display",
+                new_password = "qwerty"
+            };
+
+            // Act
+            bool ok = userApi.RegisterAsync(register).Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
+        private static IUserApi CreateUserApi()
+        {
+            HttpHeaders headers;
+            return CreateUserApi(out headers);
         }
 
         private static IUserApi CreateUserApi(out HttpHeaders headers)
