@@ -8,6 +8,19 @@
     /// </summary>
     public class JsonContentSerializer : IContentSerializer
     {
+        private readonly JsonSerializerSettings settings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonContentSerializer"/> class.
+        /// </summary>
+        public JsonContentSerializer()
+        {
+            settings = new JsonSerializerSettings
+                       {
+                           NullValueHandling = NullValueHandling.Ignore
+                       };
+        }
+
         /// <inheritdoc />
         public string ContentType
         {
@@ -22,7 +35,7 @@
                 throw new ArgumentNullException("instance");
             }
 
-            return JsonConvert.SerializeObject(instance);
+            return JsonConvert.SerializeObject(instance, settings);
         }
 
         /// <inheritdoc />
@@ -33,7 +46,7 @@
                 throw new ArgumentNullException("content");
             }
 
-            return JsonConvert.DeserializeObject<TObject>(content);
+            return JsonConvert.DeserializeObject<TObject>(content, settings);
         }
 
         /// <inheritdoc />
@@ -44,7 +57,7 @@
                 throw new ArgumentNullException("content");
             }
 
-            return JsonConvert.DeserializeAnonymousType(content, typeInstance);
+            return JsonConvert.DeserializeAnonymousType(content, typeInstance, settings);
         }
     }
 }
