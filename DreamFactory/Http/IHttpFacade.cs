@@ -8,10 +8,10 @@
     public interface IHttpFacade
     {
         /// <summary>
-        /// Sends HTTP request.
+        /// Sends HTTP request to receive body as string.
         /// </summary>
         /// <param name="request"><see cref="IHttpRequest"/> instance.</param>
         /// <returns><see cref="IHttpResponse"/> instance.</returns>
-        Task<IHttpResponse> SendAsync(IHttpRequest request);
+        Task<IHttpResponse> RequestAsync(IHttpRequest request);
     }
 }

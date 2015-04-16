@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     using unirest_net.http;
     using UnirestRequest = unirest_net.request.HttpRequest;
@@ -29,7 +30,7 @@
         }
 
         /// <inheritdoc />
-        public async Task<IHttpResponse> SendAsync(IHttpRequest request)
+        public async Task<IHttpResponse> RequestAsync(IHttpRequest request)
         {
             if (request == null)
             {
@@ -42,8 +43,13 @@
                 unirestRequest = unirestRequest.body(request.Body);
             }
 
-            HttpResponse<string> unirestResponse = await unirestRequest.headers(request.Headers.Build()).asStringAsync();
-            return new HttpResponse(request, unirestResponse.Code, unirestResponse.Body);
+            HttpResponse<Stream> unirestResponse = await unirestRequest.headers(request.Headers.Build()).asBinaryAsync();
+            using (MemoryStream memory = new MemoryStream())
+            {
+                await unirestResponse.Body.CopyToAsync(memory);
+                unirestResponse.Body.Dispose();
+                return new HttpResponse(request, unirestResponse.Code, memory.ToArray());
+            }
         }
     }
 }

@@ -39,7 +39,7 @@
             string body = contentSerializer.Serialize(tableSchemas);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             // TODO: ignore the response?
@@ -56,7 +56,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };
@@ -76,7 +76,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<TableSchema>(response.Body);
@@ -100,7 +100,7 @@
             string data = contentSerializer.Serialize(recordsRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, data);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             // TODO: get response model
@@ -117,7 +117,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var recordSet = new { record = new List<TRecord>() };

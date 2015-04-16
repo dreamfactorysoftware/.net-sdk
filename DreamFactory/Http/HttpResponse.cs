@@ -1,33 +1,36 @@
 ﻿namespace DreamFactory.Http
 {
     using System;
+    using System.IO;
 
     /// <summary>
     /// Represents generic HTTP response.
     /// </summary>
     public class HttpResponse : IHttpResponse
     {
+        private string bodyString;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpResponse"/> class.
         /// </summary>
         /// <param name="request">Originating request.</param>
         /// <param name="code">HTTP status code.</param>
-        /// <param name="body">HTTP response body.</param>
-        public HttpResponse(IHttpRequest request, int code, string body)
+        /// <param name="raw">HTTP response raw body</param>
+        public HttpResponse(IHttpRequest request, int code, byte[] raw)
         {
             if (request == null)
             {
                 throw new ArgumentNullException("request");
             }
 
-            if (body == null)
+            if (raw == null)
             {
-                throw new ArgumentNullException("body");
+                throw new ArgumentNullException("raw");
             }
 
             Request = request;
             Code = code;
-            Body = body;
+            RawBody = raw;
         }
 
         /// <inheritdoc />
@@ -37,6 +40,29 @@
         public int Code { get; private set; }
 
         /// <inheritdoc />
-        public string Body { get; private set; }
+        public string Body
+        {
+            get
+            {
+                if (bodyString == null)
+                {
+                    ReadBody();
+                }
+
+                return bodyString;
+            }
+        }
+
+        /// <inheritdoc />
+        public byte[] RawBody { get; private set; }
+
+        private void ReadBody()
+        {
+            using (MemoryStream memory = new MemoryStream(RawBody))
+            using (StreamReader reader = new StreamReader(memory))
+            {
+                bodyString = reader.ReadToEnd();
+            }
+        }
     }
 }

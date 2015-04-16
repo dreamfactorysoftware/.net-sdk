@@ -83,7 +83,7 @@
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
 
-            IHttpResponse response = await HttpFacade.SendAsync(request);
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
             var services = new { service = new List<Service>() };
@@ -95,7 +95,7 @@
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.WithResources(serviceName).Build(), BaseHeaders);
 
-            IHttpResponse response = await HttpFacade.SendAsync(request);
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
             var resources = new { resource = new List<Resource>() };

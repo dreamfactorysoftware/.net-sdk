@@ -42,7 +42,7 @@
                                                    baseHeaders,
                                                    content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };
@@ -68,7 +68,7 @@
             string content = contentSerializer.Serialize(profileRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };
@@ -80,7 +80,7 @@
             var address = baseAddress.WithResources("user", "profile");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<ProfileResponse>(response.Body);
@@ -91,7 +91,7 @@
             var address = baseAddress.WithResources("user", "device");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { record = new List<DeviceResponse>() };
@@ -115,7 +115,7 @@
             string content = contentSerializer.Serialize(deviceRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };

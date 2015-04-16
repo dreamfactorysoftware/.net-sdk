@@ -39,7 +39,7 @@
                                                    baseHeaders,
                                                    loginContent);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Session session = contentSerializer.Deserialize<Session>(response.Body);
@@ -52,7 +52,7 @@
         {
             var address = baseAddress.WithResources("user", "session");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<Session>(response.Body);
@@ -63,7 +63,7 @@
             var address = baseAddress.WithResources("user", "session");
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);

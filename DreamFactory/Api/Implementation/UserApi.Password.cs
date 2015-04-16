@@ -24,7 +24,7 @@
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
@@ -42,7 +42,7 @@
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<PasswordResponse>(response.Body);
@@ -70,7 +70,7 @@
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;

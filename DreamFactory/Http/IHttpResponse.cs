@@ -19,5 +19,10 @@
         /// Gets HTTP response body.
         /// </summary>
         string Body { get; }
+
+        /// <summary>
+        /// Gets raw bytes of body.
+        /// </summary>
+        byte[] RawBody { get; }
     }
 }

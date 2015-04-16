@@ -24,7 +24,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Get, url, new HttpHeaders());
 
             // Act
-            IHttpResponse response = httpFacade.SendAsync(request).Result;
+            IHttpResponse response = httpFacade.RequestAsync(request).Result;
 
             // Assert
             response.Code.ShouldBe(200);
@@ -43,7 +43,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Post, url, new HttpHeaders(), "body");
 
             // Act
-            IHttpResponse response = httpFacade.SendAsync(request).Result;
+            IHttpResponse response = httpFacade.RequestAsync(request).Result;
 
             // Assert
             response.Code.ShouldBe(200);
@@ -63,7 +63,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Put, url, new HttpHeaders(), "body");
 
             // Act
-            IHttpResponse response = httpFacade.SendAsync(request).Result;
+            IHttpResponse response = httpFacade.RequestAsync(request).Result;
 
             // Assert
             response.Code.ShouldBe(200);
@@ -83,7 +83,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Patch, url, new HttpHeaders(), "body");
 
             // Act
-            IHttpResponse response = httpFacade.SendAsync(request).Result;
+            IHttpResponse response = httpFacade.RequestAsync(request).Result;
 
             // Assert
             response.Code.ShouldBe(200);
@@ -103,7 +103,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, url, new HttpHeaders());
 
             // Act
-            IHttpResponse response = httpFacade.SendAsync(request).Result;
+            IHttpResponse response = httpFacade.RequestAsync(request).Result;
 
             // Assert
             response.Code.ShouldBe(200);

@@ -17,7 +17,7 @@
             IHttpFacade httpFacade = new UnirestHttpFacade();
 
             Console.WriteLine("Sending GET request: {0}", url);
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
 
             Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body.Trim());
         }

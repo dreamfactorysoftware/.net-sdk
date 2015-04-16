@@ -32,7 +32,7 @@
             string content = contentSerializer.Serialize(emailRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, baseAddress.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var emailsSent = new { count = 0 };

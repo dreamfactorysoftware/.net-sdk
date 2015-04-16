@@ -12,7 +12,7 @@
             var address = baseAddress.WithResources("user", "custom");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Dictionary<string, object> settings = new Dictionary<string, object>();
@@ -38,7 +38,7 @@
             string content = contentSerializer.Serialize(setting);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };
@@ -56,7 +56,7 @@
             var address = baseAddress.WithResources("user", "custom", settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Dictionary<string, TEntity> settings = new Dictionary<string, TEntity>();
@@ -73,7 +73,7 @@
             var address = baseAddress.WithResources("user", "custom", settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var success = new { success = false };

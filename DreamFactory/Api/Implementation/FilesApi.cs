@@ -45,7 +45,7 @@
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath).WithParameter("check_exist", checkExists);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { file = new List<FileResponse>() };
@@ -72,7 +72,7 @@
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
             IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { file = new List<FileResponse>() };
@@ -107,7 +107,7 @@
             string body = contentSerializer.Serialize(fileData);
             IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
@@ -126,7 +126,7 @@
             IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return response.Body;
@@ -148,7 +148,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { file = new List<FileResponse>() };

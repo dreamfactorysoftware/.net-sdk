@@ -16,7 +16,7 @@
             IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("as_access_components", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { resource = new List<string>() };
@@ -28,7 +28,7 @@
             IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("include_properties", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { container = new List<ContainerInfo>() };
@@ -43,7 +43,7 @@
             string body = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
@@ -61,7 +61,7 @@
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
             request.SetTunnelingWith(HttpMethod.Post);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
@@ -80,7 +80,7 @@
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);
@@ -103,7 +103,7 @@
             string body = contentSerializer.Serialize(containerData);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);
@@ -127,7 +127,7 @@
             string body = contentSerializer.Serialize(containerData);
             IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
@@ -144,7 +144,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);

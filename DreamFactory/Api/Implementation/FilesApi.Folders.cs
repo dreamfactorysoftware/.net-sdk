@@ -23,7 +23,7 @@
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<FolderResponse>(response.Body);
@@ -51,7 +51,7 @@
             string body = contentSerializer.Serialize(folderData);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<FolderResponse>(response.Body);
@@ -80,7 +80,7 @@
             string body = contentSerializer.Serialize(folderData);
             IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
@@ -102,7 +102,7 @@
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
-            IHttpResponse response = await httpFacade.SendAsync(request);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<FolderResponse>(response.Body);

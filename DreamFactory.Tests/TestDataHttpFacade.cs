@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model;
@@ -33,7 +34,7 @@
             }
         }
 
-        public Task<IHttpResponse> SendAsync(IHttpRequest request)
+        public Task<IHttpResponse> RequestAsync(IHttpRequest request)
         {
             IHttpResponse response;
 
@@ -59,10 +60,11 @@
             if (File.Exists(requestFile))
             {
                 string content = File.ReadAllText(requestFile);
+
                 if (string.Compare(request.Body, content, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
                     string error = CreateErrorResponse(400, string.Format("Content mismatch:\nExpected={0}\nReceived={1}", content, request.Body));
-                    response = new HttpResponse(request, 400, error);
+                    response = new HttpResponse(request, 400, GetStringBytes(error));
                     return Task.FromResult(response);
                 }
             }
@@ -70,18 +72,18 @@
             // Build response if possible
             try
             {
-                string content = File.ReadAllText(responseFile);
-                response = new HttpResponse(request, 200, content);
+                byte[] raw = File.ReadAllBytes(responseFile);
+                response = new HttpResponse(request, 200, raw);
             }
             catch (FileNotFoundException ex)
             {
                 string error = CreateErrorResponse(404, ex.Message);
-                response = new HttpResponse(request, 404, error);
+                response = new HttpResponse(request, 404, GetStringBytes(error));
             }
             catch (Exception ex)
             {
                 string error = CreateErrorResponse(500, ex.Message);
-                response = new HttpResponse(request, 500, error);
+                response = new HttpResponse(request, 500, GetStringBytes(error));
             }
 
             return Task.FromResult(response);
@@ -92,6 +94,11 @@
             Error errorData = new Error { code = code, message = message };
             var error = new { error = new List<Error> { errorData } };
             return serializer.Serialize(error);
+        }
+
+        private static byte[] GetStringBytes(string text)
+        {
+            return Encoding.UTF8.GetBytes(text);
         }
     }
 }
