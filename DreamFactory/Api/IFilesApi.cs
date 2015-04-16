@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Model.File;
@@ -44,6 +45,14 @@
         Task<ContainerResponse> GetContainerAsync(string container, ListingFlags flags);
 
         /// <summary>
+        /// Download the container files as ZIP archive.
+        /// </summary>
+        /// <param name="container">Container's name.</param>
+        /// <param name="flags">Combination of <see cref="ListingFlags"/> values.</param>
+        /// <returns>ZIP archive bytes.</returns>
+        Task<byte[]> DownloadContainerAsync(string container, ListingFlags flags);
+
+        /// <summary>
         /// Create container and/or add contents.
         /// </summary>
         /// <param name="container">Container's name.</param>
@@ -51,6 +60,15 @@
         /// <param name="checkExists">If true, the request fails when the file or folder to create already exists.</param>
         /// <returns><see cref="ContainerResponse"/>.</returns>
         Task<ContainerResponse> CreateContainerAsync(string container, ContainerRequest containerData, bool checkExists = true);
+
+        /// <summary>
+        /// Create container and/or add contents from a ZIP archive located at <paramref name="url"/>.
+        /// </summary>
+        /// <param name="container">Container's name.</param>
+        /// <param name="url">ZIP file location (URL).</param>
+        /// <param name="clean">Clean the current folder before extracting files and folders.</param>
+        /// <returns><see cref="ContainerResponse"/>.</returns>
+        Task<ContainerResponse> UploadContainerAsync(string container, string url, bool clean);
 
         /// <summary>
         /// Rename the container's name.
@@ -78,6 +96,15 @@
         Task<FolderResponse> GetFolderAsync(string container, string path, ListingFlags flags);
 
         /// <summary>
+        /// Download the folder files as ZIP archive.
+        /// </summary>
+        /// <param name="container">Container's name.</param>
+        /// <param name="path">The path of the folder you want to retrieve. This can be a sub-folder, with each level separated by a '/'.</param>
+        /// <param name="flags">Combination of <see cref="ListingFlags"/> values.</param>
+        /// <returns>ZIP archive bytes.</returns>
+        Task<byte[]> DownloadFolderAsync(string container, string path, ListingFlags flags);
+
+        /// <summary>
         /// Create folder and/or add contents.
         /// </summary>
         /// <param name="container">Container's name.</param>
@@ -86,6 +113,16 @@
         /// <param name="checkExists">If true, the request fails when the file or folder to create already exists.</param>
         /// <returns><see cref="FolderResponse"/>.</returns>
         Task<FolderResponse> CreateFolderAsync(string container, string path, FolderRequest folderData, bool checkExists = true);
+
+        /// <summary>
+        /// Create folder and/or add contents from a ZIP archive located at <paramref name="url"/>.
+        /// </summary>
+        /// <param name="container">Container's name.</param>
+        /// <param name="path">The path of the folder you want to create. This can be a sub-folder, with each level separated by a '/'.</param>
+        /// <param name="url">ZIP file location (URL).</param>
+        /// <param name="clean">Clean the current folder before extracting files and folders.</param>
+        /// <returns><see cref="FolderResponse"/>.</returns>
+        Task<FolderResponse> UploadFolderAsync(string container, string path, string url, bool clean);
 
         /// <summary>
         /// Rename the folder's name.
@@ -106,15 +143,23 @@
         Task<FolderResponse> DeleteFolderAsync(string container, string path, bool force = false, bool contentOnly = false);
 
         /// <summary>
-        /// Get the file contents.
+        /// Get the file contents as text (UTF8).
         /// </summary>
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to create.</param>
         /// <returns>File contents.</returns>
-        Task<string> GetFileAsync(string container, string filepath);
+        Task<string> GetTextFileAsync(string container, string filepath);
 
         /// <summary>
-        /// Create a new file.
+        /// Get the file contents as octet stream.
+        /// </summary>
+        /// <param name="container">Name of the container where the file exists.</param>
+        /// <param name="filepath">Path and name of the file to create.</param>
+        /// <returns>File contents.</returns>
+        Task<byte[]> GetBinaryFileAsync(string container, string filepath);
+
+        /// <summary>
+        /// Create a new text file.
         /// </summary>
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to create.</param>
@@ -122,6 +167,16 @@
         /// <param name="checkExists">If true, the call fails when the file to create already exists.</param>
         /// <returns>FileResponse object.</returns>
         Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true);
+
+        /// <summary>
+        /// Create a new binary file.
+        /// </summary>
+        /// <param name="container">Name of the container where the file exists.</param>
+        /// <param name="filepath">Path and name of the file to create.</param>
+        /// <param name="content">File contents.</param>
+        /// <param name="checkExists">If true, the call fails when the file to create already exists.</param>
+        /// <returns>FileResponse object.</returns>
+        Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] content, bool checkExists = true);
 
         /// <summary>
         /// Update contents of the file.

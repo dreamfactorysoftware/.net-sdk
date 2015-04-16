@@ -86,6 +86,23 @@
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);
         }
 
+        public async Task<byte[]> DownloadContainerAsync(string container, ListingFlags flags)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container);
+            address = AddListingParameters(address, flags).WithParameter("zip", true);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return response.RawBody;
+        }
+
         public async Task<ContainerResponse> CreateContainerAsync(string container, ContainerRequest containerData, bool checkExists = true)
         {
             if (container == null)
@@ -102,6 +119,34 @@
 
             string body = contentSerializer.Serialize(containerData);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<ContainerResponse>(response.Body);
+        }
+
+        public async Task<ContainerResponse> UploadContainerAsync(string container, string url, bool clean)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (url == null)
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            HttpUtils.CheckUrlString(url);
+
+            IHttpAddress address = baseAddress
+                .WithResources(serviceName, container)
+                .WithParameter("extract", true)
+                .WithParameter("clean", clean)
+                .WithParameter("url", url);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, string.Empty);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);

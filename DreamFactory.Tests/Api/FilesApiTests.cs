@@ -35,7 +35,7 @@
             IFilesApi filesApi = CreateFilesApi();
 
             // Act
-            string content = filesApi.GetFileAsync("applications", "calendar/test.txt").Result;
+            string content = filesApi.GetTextFileAsync("applications", "calendar/test.txt").Result;
 
             // Assert
             content.ShouldBe("Hello");

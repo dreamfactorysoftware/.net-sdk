@@ -29,6 +29,28 @@
             return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
+        public async Task<byte[]> DownloadFolderAsync(string container, string path, ListingFlags flags)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
+            address = AddListingParameters(address, flags).WithParameter("zip", true);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return response.RawBody;
+        }
+
         public async Task<FolderResponse> CreateFolderAsync(string container, string path, FolderRequest folderData, bool checkExists = true)
         {
             if (container == null)
@@ -50,6 +72,34 @@
 
             string body = contentSerializer.Serialize(folderData);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+        }
+
+        public async Task<FolderResponse> UploadFolderAsync(string container, string path, string url, bool clean)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (url == null)
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            HttpUtils.CheckUrlString(url);
+
+            IHttpAddress address = baseAddress
+                .WithResources(serviceName, container)
+                .WithParameter("extract", true)
+                .WithParameter("clean", clean)
+                .WithParameter("url", url);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, string.Empty);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);

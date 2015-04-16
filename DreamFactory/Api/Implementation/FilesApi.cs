@@ -10,6 +10,8 @@
 
     internal partial class FilesApi : IFilesApi
     {
+        private const string OctetStream = "application/octet-stream";
+
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
@@ -50,6 +52,11 @@
 
             var data = new { file = new List<FileResponse>() };
             return contentSerializer.Deserialize(response.Body, data).file.First();
+        }
+
+        public async Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] content, bool checkExists = true)
+        {
+            return await CreateFileAsync(container, filepath, GetString(content), checkExists);
         }
 
         public async Task<FileResponse> ReplaceFileAsync(string container, string filepath, string contents)
@@ -111,7 +118,7 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task<string> GetFileAsync(string container, string filepath)
+        public async Task<string> GetTextFileAsync(string container, string filepath)
         {
             if (container == null)
             {
@@ -130,6 +137,27 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return response.Body;
+        }
+
+        public async Task<byte[]> GetBinaryFileAsync(string container, string filepath)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders.Include(HttpHeaders.AcceptHeader, OctetStream));
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return response.RawBody;
         }
 
         public async Task<FileResponse> DeleteFileAsync(string container, string filepath)
@@ -180,6 +208,13 @@
             }
 
             return source;
+        }
+
+        static string GetString(byte[] bytes)
+        {
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
         }
     }
 }
