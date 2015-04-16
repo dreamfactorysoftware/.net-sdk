@@ -4,9 +4,9 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// A storage container.
+    /// A storage container information.
     /// </summary>
-    public class Container
+    public class ContainerInfo
     {
         /// <summary>
         /// Identifier/Name for the container.

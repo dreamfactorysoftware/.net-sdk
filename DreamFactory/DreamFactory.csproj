@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Api\Implementation\EmailApi.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.cs" />
+    <Compile Include="Api\Implementation\FilesApi.Containers.cs" />
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
@@ -75,7 +76,13 @@
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
-    <Compile Include="Model\File\Container.cs" />
+    <Compile Include="Model\File\ContainerInfo.cs" />
+    <Compile Include="Model\File\ContainerRequest.cs" />
+    <Compile Include="Model\File\ContainerResponse.cs" />
+    <Compile Include="Model\File\FileRequest.cs" />
+    <Compile Include="Model\File\FolderRequest.cs" />
+    <Compile Include="Model\File\FolderResponse.cs" />
+    <Compile Include="Model\File\ListFiles.cs" />
     <Compile Include="Model\Helper\EmailRequestBuilder.cs" />
     <Compile Include="Model\Helper\IEmailRequestBuilder.cs" />
     <Compile Include="Model\User\DeviceRequest.cs" />
