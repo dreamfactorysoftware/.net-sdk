@@ -69,7 +69,7 @@
 
         #region --- /files/{container} ---
 
-        public async Task<ContainerResponse> GetContainerAsync(string container, ListFiles mode)
+        public async Task<ContainerResponse> GetContainerAsync(string container, ListingFlags flags)
         {
             if (container == null)
             {
@@ -77,7 +77,7 @@
             }
 
             IHttpAddress address = baseAddress.WithResources(serviceName, container);
-            address = AddListingParameters(address, mode);
+            address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.SendAsync(request);

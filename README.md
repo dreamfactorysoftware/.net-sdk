@@ -138,6 +138,14 @@ Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFac
 
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
 
+##### Notes on metadata support
+
+TBD
+
+##### Notes on working with binary files
+
+TBD
+
 #### Database API
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs

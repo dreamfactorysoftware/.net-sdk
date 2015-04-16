@@ -25,8 +25,6 @@
             this.serviceName = serviceName;
         }
 
-        #region --- /files/{container}/{file_path} ---
-
         public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
         {
             if (container == null)
@@ -44,17 +42,73 @@
                 throw new ArgumentNullException("content");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath)
-                .WithParameter("check_exist", checkExists);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(),
-                baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath).WithParameter("check_exist", checkExists);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
 
             IHttpResponse response = await httpFacade.SendAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var data = new { file = new List<FileResponse>() };
             return contentSerializer.Deserialize(response.Body, data).file.First();
+        }
+
+        public async Task<FileResponse> ReplaceFileAsync(string container, string filepath, string contents)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
+            if (contents == null)
+            {
+                throw new ArgumentNullException("contents");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var data = new { file = new List<FileResponse>() };
+            return contentSerializer.Deserialize(response.Body, data).file.First();
+        }
+
+        public async Task RenameFileAsync(string container, string filepath, string newFile, string newType)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (filepath == null)
+            {
+                throw new ArgumentNullException("filepath");
+            }
+
+            if (newFile == null)
+            {
+                throw new ArgumentNullException("newFile");
+            }
+
+            if (newType == null)
+            {
+                throw new ArgumentNullException("newType");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+
+            var fileData = new { name = newFile, path = newFile, content_type = newType };
+            string body = contentSerializer.Serialize(fileData);
+            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
         public async Task<string> GetFileAsync(string container, string filepath)
@@ -101,28 +155,26 @@
             return contentSerializer.Deserialize(response.Body, data).file.First();
         }
 
-        #endregion
-
-        private static IHttpAddress AddListingParameters(IHttpAddress source, ListFiles mode)
+        private static IHttpAddress AddListingParameters(IHttpAddress source, ListingFlags mode)
         {
             int modeInt = (int)mode;
 
-            if ((modeInt & (int)ListFiles.IncludeFiles) != 0)
+            if ((modeInt & (int)ListingFlags.IncludeFiles) != 0)
             {
                 source.WithParameter("include_files", true);
             }
 
-            if ((modeInt & (int)ListFiles.IncludeFolders) != 0)
+            if ((modeInt & (int)ListingFlags.IncludeFolders) != 0)
             {
                 source.WithParameter("include_folders", true);
             }
 
-            if ((modeInt & (int)ListFiles.IncludeProperties) != 0)
+            if ((modeInt & (int)ListingFlags.IncludeProperties) != 0)
             {
                 source.WithParameter("include_properties", true);
             }
 
-            if ((modeInt & (int)ListFiles.IncludeSubFolders) != 0)
+            if ((modeInt & (int)ListingFlags.IncludeSubFolders) != 0)
             {
                 source.WithParameter("full_tree", true);
             }

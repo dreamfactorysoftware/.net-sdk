@@ -1,0 +1,111 @@
+﻿namespace DreamFactory.Api.Implementation
+{
+    using System;
+    using System.Threading.Tasks;
+    using DreamFactory.Http;
+    using DreamFactory.Model.File;
+
+    internal partial class FilesApi
+    {
+        public async Task<FolderResponse> GetFolderAsync(string container, string path, ListingFlags flags)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
+            address = AddListingParameters(address, flags);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+        }
+
+        public async Task<FolderResponse> CreateFolderAsync(string container, string path, FolderRequest folderData, bool checkExists = true)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            if (folderData == null)
+            {
+                throw new ArgumentNullException("folderData");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container).WithParameter("check_exist", checkExists);
+
+            string body = contentSerializer.Serialize(folderData);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+        }
+
+        public async Task RenameFolderAsync(string container, string path, string newFolder)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            if (newFolder == null)
+            {
+                throw new ArgumentNullException("newFolder");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
+
+            var folderData = new { name = newFolder, path = newFolder };
+            string body = contentSerializer.Serialize(folderData);
+            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        }
+
+        public async Task<FolderResponse> DeleteFolderAsync(string container, string path, bool force = false, bool contentOnly = false)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container)
+                                              .WithParameter("force", force)
+                                              .WithParameter("content_only", contentOnly);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.SendAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+        }
+    }
+}

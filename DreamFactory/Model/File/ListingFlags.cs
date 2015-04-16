@@ -1,9 +1,12 @@
 ﻿namespace DreamFactory.Model.File
 {
+    using System;
+
     /// <summary>
-    /// Files listing modes. To be combined with binary OR.
+    /// Files listing modes. Combine values with binary OR.
     /// </summary>
-    public enum ListFiles
+    [Flags]
+    public enum ListingFlags
     {
         /// <summary>
         /// Include files in the returned listing.
