@@ -29,6 +29,6 @@
         /// Sets tunneling mode.
         /// </summary>
         /// <param name="method">HTTP method for tunneling.</param>
-        void SetTunneling(HttpMethod method);
+        void SetTunnelingWith(HttpMethod method);
     }
 }

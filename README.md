@@ -92,7 +92,7 @@ Specify service name for creating an interface to a named service:
 ```
 
 HTTP API supports pluggable serialization. SDK comes with `JsonContentSerializer` that is using Json.NET (Newtonsoft).
-To use a custom serializer, use a RestContext's constructor accepting an `IContentSerializer` instance.
+To use a custom serializer, use the other `RestContext` constructor accepting an `IContentSerializer` instance.
 
 #### REST API versioning
 
@@ -113,19 +113,42 @@ https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/D
 #### User API
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs
+
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs
+
+##### Notes on user session management
+
+All API calls require Application-Name header to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
+
+* Both Application-Name and Session-ID headers are being set upon `IUserApi.LoginAsync()` completion,
+* Session-ID header gets removed upon `IUserApi.LogoutAsync()` completion,
+* Session-ID header gets updated if another login is made during `passwordChange()` call.
+
+To use/set another Application-Name, simply perform another `LoginAsync` call with a new `applicationName` parameter.
+
+##### Notes on custom settings
+
+This SDK is targeting .NET users, hence the primary focus is made towards strong-typing, rather than duck-typing.
+To deal with a custom setting, a user must have the corresponding DTO class matching the setting's schema.
+Please refer to the demo for sample API usage.
 
 #### Files API
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs
+
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
 
 #### Database API
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs
+
 Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
 
 #### Email API
+
+Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs
+
+Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
 
 Sending an email will require `EmailRequest` object to be built.
 For an advanced use, construct this object manually by providing all essential information.
@@ -139,10 +162,8 @@ EmailRequest request = new EmailRequestBuilder()
 							.Build();
 ```
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs
-Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
-
 #### System API
 
 Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs
-Demo program: *TBD*
+
+Demo program: NA

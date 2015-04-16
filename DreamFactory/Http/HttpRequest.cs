@@ -67,7 +67,7 @@
         public IHttpHeaders Headers { get; private set; }
 
         /// <inheritdoc />
-        public void SetTunneling(HttpMethod method)
+        public void SetTunnelingWith(HttpMethod method)
         {
             string httpMethod = HttpUtils.GetHttpMethodName(Method);
             Headers = Headers.Include(HttpHeaders.TunnelingHeader, httpMethod);

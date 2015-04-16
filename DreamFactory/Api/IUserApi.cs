@@ -10,7 +10,7 @@
     public interface IUserApi
     {
         /// <summary>
-        /// Register().
+        /// Register a new user in the system.
         /// </summary>
         /// <param name="register">User information to register.</param>
         /// <param name="login">Login and create a session upon successful registration.</param>
@@ -18,7 +18,7 @@
         Task<bool> RegisterAsync(Register register, bool login = false);
 
         /// <summary>
-        /// login().
+        /// Login and create a new user session.
         /// </summary>
         /// <remarks>
         /// Successful login operation will set ApplicationName and SessionToken headers.
@@ -31,32 +31,32 @@
         Task<Session> LoginAsync(string applicationName, string email, string password, int duration = 0);
 
         /// <summary>
-        /// getSession().
+        /// Retrieve the current user session information.
         /// </summary>
         /// <returns>Session object instance.</returns>
         Task<Session> GetSessionAsync();
 
         /// <summary>
-        /// logout().
+        /// Logout and destroy the current user session.
         /// </summary>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> LogoutAsync();
 
         /// <summary>
-        /// updateProfile().
+        /// Update the current user's profile information.
         /// </summary>
         /// <param name="profileRequest">ProfileRequest data.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> UpdateProfileAsync(ProfileRequest profileRequest);
 
         /// <summary>
-        /// getProfile().
+        /// Retrieve the current user's profile information.
         /// </summary>
         /// <returns>ProfileResponse data.</returns>
         Task<ProfileResponse> GetProfileAsync();
 
         /// <summary>
-        /// changePassword().
+        /// Change the current user's password.
         /// </summary>
         /// <param name="oldPassword">Old password.</param>
         /// <param name="newPassword">New password.</param>
@@ -64,14 +64,14 @@
         Task<bool> ChangePasswordAsync(string oldPassword, string newPassword);
 
         /// <summary>
-        /// changePassword() requesting password reset.
+        /// Request the current user's password reset.
         /// </summary>
         /// <param name="email">User's email to be used with code to validate email confirmation.</param>
         /// <returns>PasswordResponse data.</returns>
         Task<PasswordResponse> RequestPasswordResetAsync(string email);
 
         /// <summary>
-        /// changePassword() completing password reset with either <paramref name="code"/> or <paramref name="answer"/>.
+        /// Complete the current user's password reset with either security code or answer.
         /// </summary>
         /// <param name="email">User's email to be used with code to validate email confirmation.</param>
         /// <param name="newPassword">New password.</param>
@@ -81,26 +81,26 @@
         Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code = null, string answer = null);
 
         /// <summary>
-        /// getDevices().
+        /// Retrieve the current user's device information.
         /// </summary>
         /// <returns>Sequence of DeviceResponse data.</returns>
         Task<IEnumerable<DeviceResponse>> GetDevicesAsync();
 
         /// <summary>
-        /// setDevice().
+        /// Create a record of the current user's device information.
         /// </summary>
         /// <param name="deviceRequest">DeviceRequest data.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> SetDeviceAsync(DeviceRequest deviceRequest);
 
         /// <summary>
-        /// getCustomSettings().
+        /// Retrieve all custom user settings.
         /// </summary>
         /// <returns>Sequence of settings (names).</returns>
         Task<IEnumerable<string>> GetCustomSettingsAsync();
 
         /// <summary>
-        /// setCustomSettings();
+        /// Set or update one custom user setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
         /// <param name="entity">Instance of the TEntity type.</param>
@@ -109,7 +109,7 @@
         Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity) where TEntity : class, new();
 
         /// <summary>
-        /// getCustomSetting().
+        /// Retrieve one custom user setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
         /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
@@ -117,7 +117,7 @@
         Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName) where TEntity: class, new();
 
         /// <summary>
-        /// deleteCustomSetting().
+        /// Delete one custom user setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to delete.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
