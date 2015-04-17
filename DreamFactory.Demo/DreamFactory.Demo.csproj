@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="DatabaseDemo.cs" />
     <Compile Include="EmailDemo.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FilesDemo.cs" />
     <Compile Include="HttpDemo.cs" />
     <Compile Include="Program.cs" />

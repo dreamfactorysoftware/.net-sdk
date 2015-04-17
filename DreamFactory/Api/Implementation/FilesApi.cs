@@ -189,22 +189,22 @@
 
             if ((modeInt & (int)ListingFlags.IncludeFiles) != 0)
             {
-                source.WithParameter("include_files", true);
+                source = source.WithParameter("include_files", true);
             }
 
             if ((modeInt & (int)ListingFlags.IncludeFolders) != 0)
             {
-                source.WithParameter("include_folders", true);
+                source = source.WithParameter("include_folders", true);
             }
 
             if ((modeInt & (int)ListingFlags.IncludeProperties) != 0)
             {
-                source.WithParameter("include_properties", true);
+                source = source.WithParameter("include_properties", true);
             }
 
             if ((modeInt & (int)ListingFlags.IncludeSubFolders) != 0)
             {
-                source.WithParameter("full_tree", true);
+                source = source.WithParameter("full_tree", true);
             }
 
             return source;

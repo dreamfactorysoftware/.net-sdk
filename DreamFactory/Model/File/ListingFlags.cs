@@ -26,6 +26,11 @@
         /// <summary>
         /// Populate any available properties.
         /// </summary>
-        IncludeProperties = 8
+        IncludeProperties = 8,
+
+        /// <summary>
+        /// Enable all options.
+        /// </summary>
+        IncludeEverything = IncludeFiles | IncludeFolders | IncludeSubFolders | IncludeProperties
     }
 }

@@ -29,11 +29,6 @@ namespace DreamFactory.Model.File
         public string content_length { get; set; }
 
         /// <summary>
-        /// File content (when requested).
-        /// </summary>
-        public string content { get; set; }
-
-        /// <summary>
         /// A GMT date timestamp of when the file was last modified.
         /// </summary>
         public DateTime? last_modified { get; set; }
