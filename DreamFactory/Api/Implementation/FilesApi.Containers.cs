@@ -54,9 +54,9 @@
                 throw new ArgumentNullException("containers");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName);
+            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("force", true);
 
-            var data = new { container = containers.Select(x => new ContainerInfo { name = x, path = x }) };
+            var data = new { container = containers.Select(x => new { name = x, path = x }) };
             string body = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
             request.SetTunnelingWith(HttpMethod.Post);
@@ -67,7 +67,7 @@
 
         #endregion
 
-        #region --- /files/{container} ---
+        #region --- /files/{container}/ ---
 
         public async Task<ContainerResponse> GetContainerAsync(string container, ListingFlags flags)
         {
@@ -76,7 +76,7 @@
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -93,7 +93,7 @@
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
             address = AddListingParameters(address, flags).WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -115,7 +115,9 @@
                 throw new ArgumentNullException("containerData");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container).WithParameter("check_exist", checkExists);
+            IHttpAddress address =
+                baseAddress.WithResources(serviceName, container, string.Empty)
+                    .WithParameter("check_exist", checkExists);
 
             string body = contentSerializer.Serialize(containerData);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
@@ -126,7 +128,7 @@
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);
         }
 
-        public async Task<ContainerResponse> UploadContainerAsync(string container, string url, bool clean)
+        public async Task UploadContainerAsync(string container, string url, bool clean)
         {
             if (container == null)
             {
@@ -141,17 +143,15 @@
             HttpUtils.CheckUrlString(url);
 
             IHttpAddress address = baseAddress
-                .WithResources(serviceName, container)
+                .WithResources(serviceName, container, string.Empty)
                 .WithParameter("extract", true)
                 .WithParameter("clean", clean)
                 .WithParameter("url", url);
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, string.Empty);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<ContainerResponse>(response.Body);
         }
 
         public async Task RenameContainerAsync(string container, string newContainer)
@@ -166,7 +166,7 @@
                 throw new ArgumentNullException("newContainer");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
 
             ContainerInfo containerData = new ContainerInfo { name = newContainer, path = newContainer };
             string body = contentSerializer.Serialize(containerData);
@@ -176,23 +176,24 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task<ContainerResponse> DeleteContainerAsync(string container, bool force = false, bool contentOnly = false)
+        public async Task DeleteContainerAsync(string container, bool force = false, bool contents = false)
         {
             if (container == null)
             {
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container)
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
                                               .WithParameter("force", force)
-                                              .WithParameter("content_only", contentOnly);
+                                              .WithParameter("content_only", contents);
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+            var data = new { container = new { name = container, path = container }};
+            string body = contentSerializer.Serialize(data);
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
+            request.SetTunnelingWith(HttpMethod.Post);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<ContainerResponse>(response.Body);
         }
 
         #endregion

@@ -67,8 +67,7 @@
         /// <param name="container">Container's name.</param>
         /// <param name="url">ZIP file location (URL).</param>
         /// <param name="clean">Clean the current folder before extracting files and folders.</param>
-        /// <returns><see cref="ContainerResponse"/>.</returns>
-        Task<ContainerResponse> UploadContainerAsync(string container, string url, bool clean);
+        Task UploadContainerAsync(string container, string url, bool clean);
 
         /// <summary>
         /// Rename the container's name.
@@ -82,9 +81,8 @@
         /// </summary>
         /// <param name="container">The name of the container you want to delete from.</param>
         /// <param name="force">Set to true to force delete on a non-empty container.</param>
-        /// <param name="contentOnly">Set to true to only delete the contents of the container.</param>
-        /// <returns><see cref="ContainerResponse"/>.</returns>
-        Task<ContainerResponse> DeleteContainerAsync(string container, bool force = false, bool contentOnly = false);
+        /// <param name="contents">Set to true to only delete the contents of the container.</param>
+        Task DeleteContainerAsync(string container, bool force = false, bool contents = false);
 
         /// <summary>
         /// List the container's contents, including properties.
@@ -109,10 +107,9 @@
         /// </summary>
         /// <param name="container">Container's name.</param>
         /// <param name="path">The path of the folder you want to create. This can be a sub-folder, with each level separated by a '/'.</param>
-        /// <param name="folderData"><see cref="FolderRequest"/> instance.</param>
         /// <param name="checkExists">If true, the request fails when the file or folder to create already exists.</param>
         /// <returns><see cref="FolderResponse"/>.</returns>
-        Task<FolderResponse> CreateFolderAsync(string container, string path, FolderRequest folderData, bool checkExists = true);
+        Task CreateFolderAsync(string container, string path, bool checkExists = true);
 
         /// <summary>
         /// Create folder and/or add contents from a ZIP archive located at <paramref name="url"/>.
@@ -121,8 +118,7 @@
         /// <param name="path">The path of the folder you want to create. This can be a sub-folder, with each level separated by a '/'.</param>
         /// <param name="url">ZIP file location (URL).</param>
         /// <param name="clean">Clean the current folder before extracting files and folders.</param>
-        /// <returns><see cref="FolderResponse"/>.</returns>
-        Task<FolderResponse> UploadFolderAsync(string container, string path, string url, bool clean);
+        Task UploadFolderAsync(string container, string path, string url, bool clean);
 
         /// <summary>
         /// Rename the folder's name.

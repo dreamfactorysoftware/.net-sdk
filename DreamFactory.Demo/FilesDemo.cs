@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.File;
@@ -12,16 +11,17 @@
 
     public static class FilesDemo
     {
+        private const string TestContainer = "test";
+
         public static async Task Run(IRestContext context)
         {
             IFilesApi filesApi = context.Factory.CreateFilesApi("files");
 
+            // TODO: deletion is not working
             // await ContainerTest(filesApi);
 
-            // Create and list available containers
-            await filesApi.CreateContainersAsync(new[] { "tank" }, false);
-            var containers = filesApi.GetContainersAsync().Result.Select(x => x.name);
-            Console.WriteLine("Containers: [{0}]", containers.ToStringList());
+            // Creating a folder: test/inbox
+            // await filesApi.CreateFolderAsync(TestContainer, "inbox");
 
             // Creating a file
             FileResponse response = await filesApi.CreateFileAsync("tank", "test.txt", "test", false);
@@ -64,53 +64,23 @@
             }
             Console.WriteLine();
 
-            Console.WriteLine("GetContainerAsync(applications):");
-            ContainerResponse container = await filesApi.GetContainerAsync("applications", ListingFlags.IncludeEverything);
+            Console.WriteLine("GetContainerAsync({0}):", TestContainer);
+            ContainerResponse container = await filesApi.GetContainerAsync(TestContainer, ListingFlags.IncludeEverything);
             string json2 = JsonConvert.SerializeObject(container, Formatting.Indented);
             Console.WriteLine("{0}", json2);
             Console.WriteLine();
 
             string[] names = { "foo", "bar" };
-            Console.WriteLine("CreateContainersAsync(): {0}", names.ToStringList());
+            Console.WriteLine("CreateContainersAsync(foo, bar): {0}", names.ToStringList());
             await filesApi.CreateContainersAsync(names);
-            Console.WriteLine("DeleteContainersAsync(): {0}", names.ToStringList());
+            Console.WriteLine("DeleteContainersAsync(foo, bar): {0}", names.ToStringList());
             await filesApi.DeleteContainersAsync(names);
-
-            Console.WriteLine("CreateContainerAsync()");
-            ContainerRequest request = CreateContainerRequest();
-            ContainerResponse response = await filesApi.CreateContainerAsync("foo", request, false);
-            string json3 = JsonConvert.SerializeObject(response, Formatting.Indented);
-            Console.WriteLine("{0}", json3);
             Console.WriteLine();
-        }
 
-        private static ContainerRequest CreateContainerRequest()
-        {
-            return new ContainerRequest
-            {
-                name = "foo",
-                path = "foo",
-                folder = new List<FolderRequest> { CreateFolderRequest() },
-                file = new List<FileRequest> { CreateFileRequest() }
-            };
-        }
-
-        private static FolderRequest CreateFolderRequest()
-        {
-            return new FolderRequest
-            {
-                name = "folder",
-                path = "folder",
-            };
-        }
-
-        private static FileRequest CreateFileRequest()
-        {
-            return new FileRequest
-            {
-                name = "file.txt",
-                path = "folder/file.txt"
-            };
+            Console.WriteLine("UploadContainerAsync(newbie)");
+            await filesApi.UploadContainerAsync("newbie", "http://pinebit.ddns.net/test.zip", true);
+            Console.WriteLine("DeleteContainerAsync(newbie)");
+            await filesApi.DeleteContainerAsync("newbie", true);
         }
     }
 }

@@ -1,5 +1,7 @@
 # .NET SDK for the DreamFactory REST API
 
+> NOTE: The SDK is in active development phase. The API, structure and files can be changed at any time without a notification.
+
 ## Distribution
 
 DreamFactory REST API .NET SDK can be either downloaded from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or being built from the source code. The SDK has the only dependency on [unirest-net](http://unirest.io/net.html) library.
@@ -107,14 +109,11 @@ Besides the `IRestContext.Factory` object, the interface offers services and res
 - `GetServicesAsync()`
 - `GetResourcesAsync()`
 
-See the demo program for how to use them:
-https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DiscoveryDemo.cs
+See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DiscoveryDemo.cs) for usage details.
 
 #### User API
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs
-
-Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs
+> [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs)
 
 ##### Notes on user session management
 
@@ -134,29 +133,19 @@ Please refer to the demo for sample API usage.
 
 #### Files API
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs
-
-Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs
+> [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs)
 
 ##### Notes on metadata support
 
-TBD
-
-##### Notes on working with binary files
-
-TBD
+Reading/Writing of metadata associated with file entities (Container, Folder, File) are not supported yet.
 
 #### Database API
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs
-
-Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs
+> [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs)
 
 #### Email API
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs
-
-Demo program: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs
+> [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs)
 
 Sending an email will require `EmailRequest` object to be built.
 For an advanced use, construct this object manually by providing all essential information.
@@ -172,6 +161,4 @@ EmailRequest request = new EmailRequestBuilder()
 
 #### System API
 
-Interface: https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs
-
-Demo program: NA
+> [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) [DEMO - TBD]()

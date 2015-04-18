@@ -79,7 +79,7 @@
             }
 
             string temp = string.Join("&", parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value.ToString().ToLowerInvariant())));
-            return string.Format("{0}?{1}", address, temp);
+            return string.Format("{0}?{1}", address, Uri.EscapeUriString(temp));
         }
     }
 }

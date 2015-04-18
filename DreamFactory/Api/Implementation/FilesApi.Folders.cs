@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.File;
@@ -51,7 +52,7 @@
             return response.RawBody;
         }
 
-        public async Task<FolderResponse> CreateFolderAsync(string container, string path, FolderRequest folderData, bool checkExists = true)
+        public async Task CreateFolderAsync(string container, string path, bool checkExists = true)
         {
             if (container == null)
             {
@@ -63,23 +64,19 @@
                 throw new ArgumentNullException("path");
             }
 
-            if (folderData == null)
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty);
+            if (checkExists)
             {
-                throw new ArgumentNullException("folderData");
+                address = address.WithParameter("check_exist", true);
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container).WithParameter("check_exist", checkExists);
-
-            string body = contentSerializer.Serialize(folderData);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
-        public async Task<FolderResponse> UploadFolderAsync(string container, string path, string url, bool clean)
+        public async Task UploadFolderAsync(string container, string path, string url, bool clean)
         {
             if (container == null)
             {
@@ -103,8 +100,6 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
         public async Task RenameFolderAsync(string container, string path, string newFolder)

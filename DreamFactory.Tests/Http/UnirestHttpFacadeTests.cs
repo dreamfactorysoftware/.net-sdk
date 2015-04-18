@@ -11,7 +11,7 @@
     public class UnirestHttpFacadeTests
     {
         // If this port is busy on your machine, assign another one
-        private const string TestAddress = "http://localhost:8080/";
+        private const string TestAddress = "http://localhost:8888/";
 
         [TestMethod]
         public void ShouldSendGetRequest()
