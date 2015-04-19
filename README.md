@@ -113,7 +113,7 @@ See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/mas
 
 #### User API
 
-> [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs)
+> See [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs)
 
 ##### Notes on user session management
 
@@ -133,19 +133,24 @@ Please refer to the demo for sample API usage.
 
 #### Files API
 
-> [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs)
+> See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs)
+
+Summary on supported features:
+* CRUD operations on containers, folders and files,
+* Bulk files uploading/downloading in ZIP format,
+* Text and binary files reading/writing.
 
 ##### Notes on metadata support
 
-Reading/Writing of metadata associated with file entities (Container, Folder, File) are not supported yet.
+Reading/Writing of metadata associated with file entities (container, folder, file) are not supported yet.
 
 #### Database API
 
-> [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs)
+> See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs)
 
 #### Email API
 
-> [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs)
+> See [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs)
 
 Sending an email will require `EmailRequest` object to be built.
 For an advanced use, construct this object manually by providing all essential information.
@@ -161,4 +166,4 @@ EmailRequest request = new EmailRequestBuilder()
 
 #### System API
 
-> [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) [DEMO - TBD]()
+> See [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) and ... ops, demo is not there yet.

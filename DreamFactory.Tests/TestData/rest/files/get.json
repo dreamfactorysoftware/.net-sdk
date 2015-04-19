@@ -1,0 +1,56 @@
+﻿{
+  "container": [
+    {
+      "name": "applications",
+      "path": "applications",
+      "last_modified": "Fri, 27 Mar 2015 12:10:56 GMT",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    },
+    {
+      "name": "newbie",
+      "path": "newbie",
+      "last_modified": "Fri, 17 Apr 2015 16:15:54 GMT",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    },
+    {
+      "name": "plugins",
+      "path": "plugins",
+      "last_modified": "Fri, 27 Mar 2015 12:09:21 GMT",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    },
+    {
+      "name": "test",
+      "path": "test",
+      "last_modified": "Fri, 17 Apr 2015 16:15:10 GMT",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    }
+  ]
+}

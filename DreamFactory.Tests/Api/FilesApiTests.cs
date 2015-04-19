@@ -1,9 +1,11 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.File;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -14,6 +16,45 @@
     public class FilesApiTests
     {
         private const string BaseAddress = "http://localhost";
+
+        [TestMethod]
+        public void ShouldGetContainersAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act
+            List<ContainerInfo> list = filesApi.GetContainersAsync().Result.ToList();
+
+            // Assert
+            list.Count.ShouldBe(4);
+            ContainerInfo container = list.Single(x => x.name == "applications");
+            container.access.ShouldContain("GET");
+            container.access.ShouldContain("POST");
+            container.access.Count.ShouldBe(6);
+            DateTime time = container.last_modified ?? DateTime.Today;
+            DateTime.Compare(time, DateTime.Now).ShouldBeLessThan(0);
+        }
+
+        [TestMethod]
+        public void ShouldCreateContainersAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.CreateContainersAsync(new[] { "a", "b" }).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteContainersAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.DeleteContainersAsync(new[] { "a", "b" }).Wait();
+        }
 
         [TestMethod]
         public void ShouldCreateFileAsync()

@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Api
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Model.File;
