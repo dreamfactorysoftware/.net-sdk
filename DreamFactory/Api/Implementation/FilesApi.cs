@@ -59,7 +59,7 @@
             return await CreateFileAsync(container, filepath, GetString(content), checkExists);
         }
 
-        public async Task<FileResponse> ReplaceFileAsync(string container, string filepath, string contents)
+        public async Task ReplaceFileAsync(string container, string filepath, string contents)
         {
             if (container == null)
             {
@@ -81,9 +81,6 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var data = new { file = new List<FileResponse>() };
-            return contentSerializer.Deserialize(response.Body, data).file.First();
         }
 
         public async Task RenameFileAsync(string container, string filepath, string newFile, string newType)

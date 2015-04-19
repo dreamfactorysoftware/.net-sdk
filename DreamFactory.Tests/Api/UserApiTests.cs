@@ -16,6 +16,8 @@
     {
         private const string BaseAddress = "http://localhost";
 
+        #region --- Session ---
+
         [TestMethod]
         public void ShouldLoginAsync()
         {
@@ -89,6 +91,10 @@
             headers.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
         }
 
+        #endregion
+
+        #region --- Profile ---
+
         [TestMethod]
         public void ShouldGetProfileAsync()
         {
@@ -126,18 +132,9 @@
             success.ShouldBe(true);
         }
 
-        [TestMethod]
-        public void ShouldChangePasswordAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
+        #endregion
 
-            // Act
-            bool ok = userApi.ChangePasswordAsync("abc", "cba").Result;
-
-            // Assert
-            ok.ShouldBe(true);
-        }
+        #region --- Device ---
 
         [TestMethod]
         public void ShouldGetDevicesAsync()
@@ -173,6 +170,10 @@
             // Assert
             ok.ShouldBe(true);
         }
+
+        #endregion
+
+        #region --- Settings ---
 
         [TestMethod]
         public void ShouldGetCustomSettingsAsync()
@@ -229,6 +230,10 @@
             ok.ShouldBe(true);
         }
 
+        #endregion
+
+        #region --- Register ---
+
         [TestMethod]
         public void ShouldRegisterAsync()
         {
@@ -245,6 +250,24 @@
 
             // Act
             bool ok = userApi.RegisterAsync(register).Result;
+
+            // Assert
+            ok.ShouldBe(true);
+        }
+
+        #endregion
+
+        #region --- Password ---
+
+
+        [TestMethod]
+        public void ShouldChangePasswordAsync()
+        {
+            // Arrange
+            IUserApi userApi = CreateUserApi();
+
+            // Act
+            bool ok = userApi.ChangePasswordAsync("abc", "cba").Result;
 
             // Assert
             ok.ShouldBe(true);
@@ -275,6 +298,8 @@
             // Assert
             ok.ShouldBe(true);
         }
+
+        #endregion
 
         private static IUserApi CreateUserApi(string suffix = null)
         {

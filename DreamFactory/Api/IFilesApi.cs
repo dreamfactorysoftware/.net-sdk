@@ -179,8 +179,7 @@
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to update.</param>
         /// <param name="contents">New file contents.</param>
-        /// <returns>FileResponse object.</returns>
-        Task<FileResponse> ReplaceFileAsync(string container, string filepath, string contents);
+        Task ReplaceFileAsync(string container, string filepath, string contents);
 
         /// <summary>
         /// Rename the file.
