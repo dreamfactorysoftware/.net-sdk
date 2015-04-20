@@ -35,8 +35,18 @@
             return contentSerializer.Deserialize(response.Body, data).container;
         }
 
-        public async Task CreateContainersAsync(IEnumerable<string> containers, bool checkExists = true)
+        public async Task CreateContainersAsync(bool checkExists, params string[] containers)
         {
+            if (containers == null)
+            {
+                throw new ArgumentNullException("containers");
+            }
+
+            if (containers.Length < 1)
+            {
+                throw new ArgumentException("At least one container name must be provided", "containers");
+            }
+
             IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("check_exist", checkExists);
 
             var data = new { container = containers.Select(x => new ContainerInfo { name = x, path = x }) };
@@ -47,14 +57,19 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task DeleteContainersAsync(IEnumerable<string> containers)
+        public async Task DeleteContainersAsync(params string[] containers)
         {
             if (containers == null)
             {
                 throw new ArgumentNullException("containers");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("force", true);
+            if (containers.Length < 1)
+            {
+                throw new ArgumentException("At least one container name must be provided", "containers");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName);
 
             var data = new { container = containers.Select(x => new { name = x, path = x }) };
             string body = contentSerializer.Serialize(data);
@@ -103,31 +118,6 @@
             return response.RawBody;
         }
 
-        public async Task<ContainerResponse> CreateContainerAsync(string container, ContainerRequest containerData, bool checkExists = true)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (containerData == null)
-            {
-                throw new ArgumentNullException("containerData");
-            }
-
-            IHttpAddress address =
-                baseAddress.WithResources(serviceName, container, string.Empty)
-                    .WithParameter("check_exist", checkExists);
-
-            string body = contentSerializer.Serialize(containerData);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<ContainerResponse>(response.Body);
-        }
-
         public async Task UploadContainerAsync(string container, string url, bool clean)
         {
             if (container == null)
@@ -149,48 +139,6 @@
                 .WithParameter("url", url);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-        }
-
-        public async Task RenameContainerAsync(string container, string newContainer)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (newContainer == null)
-            {
-                throw new ArgumentNullException("newContainer");
-            }
-
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
-
-            ContainerInfo containerData = new ContainerInfo { name = newContainer, path = newContainer };
-            string body = contentSerializer.Serialize(containerData);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-        }
-
-        public async Task DeleteContainerAsync(string container, bool force = false, bool contents = false)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
-                                              .WithParameter("force", force)
-                                              .WithParameter("content_only", contents);
-
-            var data = new { container = new { name = container, path = container }};
-            string body = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
-            request.SetTunnelingWith(HttpMethod.Post);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);

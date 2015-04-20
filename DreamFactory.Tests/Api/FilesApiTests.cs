@@ -45,7 +45,7 @@
             IFilesApi filesApi = CreateFilesApi();
 
             // Act & Assert
-            filesApi.CreateContainersAsync(new[] { "a", "b" }).Wait();
+            filesApi.CreateContainersAsync(false, "a", "b").Wait();
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@
             IFilesApi filesApi = CreateFilesApi();
 
             // Act & Assert
-            filesApi.DeleteContainersAsync(new[] { "a", "b" }).Wait();
+            filesApi.DeleteContainersAsync("a", "b").Wait();
         }
 
         #endregion
@@ -125,16 +125,6 @@
 
             // Act & Assert
             filesApi.ReplaceFileAsync("applications", "calendar/test.txt", "Bye").Wait();
-        }
-
-        [TestMethod]
-        public void ShouldRenameFileAsync()
-        {
-            // Arrange
-            IFilesApi filesApi = CreateFilesApi();
-
-            // Act & Assert
-            filesApi.RenameFileAsync("applications", "calendar/test.txt", "new.txt", "text/plain").Wait();
         }
 
         [TestMethod]

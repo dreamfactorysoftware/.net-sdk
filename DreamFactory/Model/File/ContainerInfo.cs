@@ -1,4 +1,5 @@
-﻿namespace DreamFactory.Model.File
+﻿// ReSharper disable InconsistentNaming
+namespace DreamFactory.Model.File
 {
     using System;
     using System.Collections.Generic;

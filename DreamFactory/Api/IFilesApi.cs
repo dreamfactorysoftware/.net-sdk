@@ -24,16 +24,19 @@
         /// <summary>
         /// Create one or more containers.
         /// </summary>
-        /// <param name="containers">List of container names to create.</param>
         /// <param name="checkExists">If true, the call fails when the container to create already exists.</param>
+        /// <param name="containers">List of container names to create.</param>
         /// <returns></returns>
-        Task CreateContainersAsync(IEnumerable<string> containers, bool checkExists = true);
+        Task CreateContainersAsync(bool checkExists, params string[] containers);
 
         /// <summary>
         /// Delete one or more containers.
         /// </summary>
+        /// <remarks>
+        /// Only empty containers can be deleted.
+        /// </remarks>
         /// <param name="containers">List of containers to delete.</param>
-        Task DeleteContainersAsync(IEnumerable<string> containers);
+        Task DeleteContainersAsync(params string[] containers);
 
         /// <summary>
         /// List the container's contents, including properties.
@@ -52,36 +55,12 @@
         Task<byte[]> DownloadContainerAsync(string container, ListingFlags flags);
 
         /// <summary>
-        /// Create container and/or add contents.
-        /// </summary>
-        /// <param name="container">Container's name.</param>
-        /// <param name="containerData"><see cref="ContainerRequest"/> instance.</param>
-        /// <param name="checkExists">If true, the request fails when the file or folder to create already exists.</param>
-        /// <returns><see cref="ContainerResponse"/>.</returns>
-        Task<ContainerResponse> CreateContainerAsync(string container, ContainerRequest containerData, bool checkExists = true);
-
-        /// <summary>
         /// Create container and/or add contents from a ZIP archive located at <paramref name="url"/>.
         /// </summary>
         /// <param name="container">Container's name.</param>
         /// <param name="url">ZIP file location (URL).</param>
         /// <param name="clean">Clean the current folder before extracting files and folders.</param>
         Task UploadContainerAsync(string container, string url, bool clean);
-
-        /// <summary>
-        /// Rename the container's name.
-        /// </summary>
-        /// <param name="container">Current container's name.</param>
-        /// <param name="newContainer">New content_only.</param>
-        Task RenameContainerAsync(string container, string newContainer);
-
-        /// <summary>
-        /// Delete one container and/or its contents.
-        /// </summary>
-        /// <param name="container">The name of the container you want to delete from.</param>
-        /// <param name="force">Set to true to force delete on a non-empty container.</param>
-        /// <param name="contents">Set to true to only delete the contents of the container.</param>
-        Task DeleteContainerAsync(string container, bool force = false, bool contents = false);
 
         /// <summary>
         /// List the container's contents, including properties.
@@ -118,14 +97,6 @@
         /// <param name="url">ZIP file location (URL).</param>
         /// <param name="clean">Clean the current folder before extracting files and folders.</param>
         Task UploadFolderAsync(string container, string path, string url, bool clean);
-
-        /// <summary>
-        /// Rename the folder's name.
-        /// </summary>
-        /// <param name="container">Current container's name.</param>
-        /// <param name="path">The path of the folder you want to rename. This can be a sub-folder, with each level separated by a '/'.</param>
-        /// <param name="newFolder">New folder's name.</param>
-        Task RenameFolderAsync(string container, string path, string newFolder);
 
         /// <summary>
         /// Delete one folder and/or its contents.
@@ -180,15 +151,6 @@
         /// <param name="filepath">Path and name of the file to update.</param>
         /// <param name="contents">New file contents.</param>
         Task ReplaceFileAsync(string container, string filepath, string contents);
-
-        /// <summary>
-        /// Rename the file.
-        /// </summary>
-        /// <param name="container">Current container's name.</param>
-        /// <param name="filepath">The path of the file you want to rename.</param>
-        /// <param name="newFile">New file's name.</param>
-        /// <param name="newType">New file's contents type.</param>
-        Task RenameFileAsync(string container, string filepath, string newFile, string newType);
 
         /// <summary>
         /// Delete one file.

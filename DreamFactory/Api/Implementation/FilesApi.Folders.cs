@@ -1,7 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.File;
@@ -97,33 +96,6 @@
                 .WithParameter("url", url);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, string.Empty);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-        }
-
-        public async Task RenameFolderAsync(string container, string path, string newFolder)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (path == null)
-            {
-                throw new ArgumentNullException("path");
-            }
-
-            if (newFolder == null)
-            {
-                throw new ArgumentNullException("newFolder");
-            }
-
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
-
-            var folderData = new { name = newFolder, path = newFolder };
-            string body = contentSerializer.Serialize(folderData);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);

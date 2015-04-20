@@ -83,38 +83,6 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task RenameFileAsync(string container, string filepath, string newFile, string newType)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            if (newFile == null)
-            {
-                throw new ArgumentNullException("newFile");
-            }
-
-            if (newType == null)
-            {
-                throw new ArgumentNullException("newType");
-            }
-
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
-
-            var fileData = new { name = newFile, path = newFile, content_type = newType };
-            string body = contentSerializer.Serialize(fileData);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-        }
-
         public async Task<string> GetTextFileAsync(string container, string filepath)
         {
             if (container == null)
