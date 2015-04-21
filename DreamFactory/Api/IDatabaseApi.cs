@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     /// <summary>
@@ -10,6 +9,20 @@
     /// </summary>
     public interface IDatabaseApi
     {
+        /// <summary>
+        /// List all role accessible components.
+        /// </summary>
+        /// <returns>List of accessible resource names for the user's role.</returns>
+        Task<IEnumerable<TableInfo>> GetAccessComponentsAsync();
+
+        /// <summary>
+        /// List the table names in this storage.
+        /// </summary>
+        /// <param name="includeSchemas">Also return the names of the tables where the schema is retrievable.</param>
+        /// <param name="refresh">Refresh any cached copy of the resource list.</param>
+        /// <returns>Table names.</returns>
+        Task<IEnumerable<string>> GetTableNames(bool includeSchemas, bool refresh = false);
+
         /// <summary>
         /// Creates a new table using TRecord schema.
         /// </summary>

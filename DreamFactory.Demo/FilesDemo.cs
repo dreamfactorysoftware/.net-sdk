@@ -17,9 +17,9 @@
             IFilesApi filesApi = context.Factory.CreateFilesApi("files");
 
             // Display existing containers
-            Console.WriteLine("GetAccessComponentsAsync():");
-            IEnumerable<string> components = await filesApi.GetAccessComponentsAsync();
-            Console.WriteLine("{0}", components.ToStringList());
+            Console.WriteLine("GetContainerNamesAsync():");
+            IEnumerable<string> names = await filesApi.GetContainerNamesAsync();
+            Console.WriteLine("{0}", names.ToStringList());
             Console.WriteLine();
 
             // Creating a test container - tank

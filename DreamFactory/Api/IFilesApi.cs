@@ -10,16 +10,16 @@
     public interface IFilesApi
     {
         /// <summary>
-        /// List all role accessible resources.
-        /// </summary>
-        /// <returns>List of accessible resource names for the user's role.</returns>
-        Task<IEnumerable<string>> GetAccessComponentsAsync();
-
-        /// <summary>
-        /// List all containers with properties.
+        /// List all containers with access information.
         /// </summary>
         /// <returns>ContainerInfo objects for all containers.</returns>
-        Task<IEnumerable<ContainerInfo>> GetContainersAsync();
+        Task<IEnumerable<ContainerInfo>> GetAccessComponentsAsync();
+
+        /// <summary>
+        /// List all container names.
+        /// </summary>
+        /// <returns>All container names.</returns>        
+        Task<IEnumerable<string>> GetContainerNamesAsync();
 
         /// <summary>
         /// Create one or more containers.

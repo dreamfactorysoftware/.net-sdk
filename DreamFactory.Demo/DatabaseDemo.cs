@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.Helper;
     using DreamFactory.Rest;
@@ -17,12 +15,12 @@
             // Getting database interface
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");
 
-            List<Resource> tables = new List<Resource>(await context.GetResourcesAsync("db"));
-            string flatList = string.Join(", ", tables.Select(x => x.name));
-            Console.WriteLine("Existing tables: [{0}]", flatList);
+            // List available tables
+            List<string> tables = new List<string>(await databaseApi.GetTableNames(true));
+            Console.WriteLine("Existing tables: {0}", tables.ToStringList());
 
             // Delete staff table if it exists
-            if (tables.Any(x => x.name == "staff"))
+            if (tables.Contains("staff"))
             {
                 Console.WriteLine("Deleting table staff...");
                 if (await databaseApi.DeleteTableAsync("staff"))
@@ -69,13 +67,9 @@
         internal class StaffRecord
         {
             public int id { get; set; }
-
             public string first_name { get; set; }
-
             public string last_name { get; set; }
-
             public int age { get; set; }
-
             public bool active { get; set; }
 
             public override string ToString()

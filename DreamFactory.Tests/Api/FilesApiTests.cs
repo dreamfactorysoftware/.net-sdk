@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Tests.Api
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
@@ -20,22 +19,17 @@
         #region --- Containers ---
 
         [TestMethod]
-        public void ShouldGetContainersAsync()
+        public void ShouldGetContainerNamesAsync()
         {
             // Arrange
             IFilesApi filesApi = CreateFilesApi();
 
             // Act
-            List<ContainerInfo> list = filesApi.GetContainersAsync().Result.ToList();
+            List<string> names = filesApi.GetContainerNamesAsync().Result.ToList();
 
             // Assert
-            list.Count.ShouldBe(4);
-            ContainerInfo container = list.Single(x => x.name == "applications");
-            container.access.ShouldContain("GET");
-            container.access.ShouldContain("POST");
-            container.access.Count.ShouldBe(6);
-            DateTime time = container.last_modified ?? DateTime.Today;
-            DateTime.Compare(time, DateTime.Now).ShouldBeLessThan(0);
+            names.Count.ShouldBe(4);
+            names.Count(x => x == "applications").ShouldBe(1);
         }
 
         [TestMethod]

@@ -22,40 +22,40 @@
             // API calls require a session, hence we must login
             Login(context).Wait();
 
-            // UserSession API
-            Console.WriteLine();
-            Console.WriteLine("### User API demo");
-            UserDemo.Run(context).Wait();
+            //// UserSession API
+            //Console.WriteLine();
+            //Console.WriteLine("### User API demo");
+            //UserDemo.Run(context).Wait();
 
-            // UserSession API
-            Console.WriteLine();
-            Console.WriteLine("### Custom Settings demo");
-            CustomSettingsDemo.Run(context).Wait();
+            //// UserSession API
+            //Console.WriteLine();
+            //Console.WriteLine("### Custom Settings demo");
+            //CustomSettingsDemo.Run(context).Wait();
 
-            // getServices and getResources
-            Console.WriteLine();
-            Console.WriteLine("### getServices and getResources demo");
-            DiscoveryDemo.Run(context).Wait();
+            //// getServices and getResources
+            //Console.WriteLine();
+            //Console.WriteLine("### getServices and getResources demo");
+            //DiscoveryDemo.Run(context).Wait();
 
-            // Files API
-            Console.WriteLine();
-            Console.WriteLine("### Files API demo");
-            FilesDemo.Run(context).Wait();
+            //// Files API
+            //Console.WriteLine();
+            //Console.WriteLine("### Files API demo");
+            //FilesDemo.Run(context).Wait();
 
             // Database API
             Console.WriteLine();
             Console.WriteLine("### Database API demo");
             DatabaseDemo.Run(context).Wait();
 
-            // Email API
-            Console.WriteLine();
-            Console.WriteLine("### Email API demo");
-            EmailDemo.Run(context).Wait();
+            //// Email API
+            //Console.WriteLine();
+            //Console.WriteLine("### Email API demo");
+            //EmailDemo.Run(context).Wait();
 
-            // HTTP functions demo (do not require IRestContext)
-            Console.WriteLine();
-            Console.WriteLine("### HTTP functions demo");
-            HttpDemo.Run().Wait();
+            //// HTTP functions demo (do not require IRestContext)
+            //Console.WriteLine();
+            //Console.WriteLine("### HTTP functions demo");
+            //HttpDemo.Run().Wait();
         }
 
         static async Task Login(IRestContext context)

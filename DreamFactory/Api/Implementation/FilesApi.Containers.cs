@@ -11,28 +11,22 @@
     {
         #region --- /files ---
 
-        public async Task<IEnumerable<string>> GetAccessComponentsAsync()
+        public async Task<IEnumerable<ContainerInfo>> GetAccessComponentsAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("as_access_components", true);
+            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("include_properties", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var data = new { resource = new List<string>() };
-            return contentSerializer.Deserialize(response.Body, data).resource;
-        }
-
-        public async Task<IEnumerable<ContainerInfo>> GetContainersAsync()
-        {
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("include_properties", true);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
             var data = new { container = new List<ContainerInfo>() };
             return contentSerializer.Deserialize(response.Body, data).container;
+        }
+
+        public async Task<IEnumerable<string>> GetContainerNamesAsync()
+        {
+            var containers = await GetAccessComponentsAsync();
+            return containers.Select(x => x.name);
         }
 
         public async Task CreateContainersAsync(bool checkExists, params string[] containers)

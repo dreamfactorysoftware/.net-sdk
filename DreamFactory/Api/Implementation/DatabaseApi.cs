@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Serialization;
 
@@ -24,6 +23,41 @@
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
             this.serviceName = serviceName;
+        }
+
+        public async Task<IEnumerable<TableInfo>> GetAccessComponentsAsync()
+        {
+            IHttpAddress address = baseAddress.WithResources(serviceName);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var resource = new { resource = new List<TableInfo>() };
+            return contentSerializer.Deserialize(response.Body, resource).resource;
+        }
+
+        public async Task<IEnumerable<string>> GetTableNames(bool includeSchemas, bool refresh = false)
+        {
+            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("names_only", true);
+            
+            if (includeSchemas)
+            {
+                address = address.WithParameter("include_schemas", true);
+            }
+
+            if (refresh)
+            {
+                address = address.WithParameter("refresh", true);
+            }
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var resource = new { resource = new List<string>() };
+            return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
         public async Task CreateTableAsync(TableSchema tableSchema)
