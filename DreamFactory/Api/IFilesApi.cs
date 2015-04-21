@@ -62,6 +62,13 @@
         Task UploadContainerAsync(string container, string url, bool clean);
 
         /// <summary>
+        /// Delete one container and/or its contents.
+        /// </summary>
+        /// <param name="container">The name of the container you want to delete.</param>
+        /// <param name="force">Set to true to force delete on a non-empty container.</param>
+        Task DeleteContainerAsync(string container, bool force = false);
+
+        /// <summary>
         /// List the container's contents, including properties.
         /// </summary>
         /// <param name="container">Container's name.</param>

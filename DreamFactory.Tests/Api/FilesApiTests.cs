@@ -17,6 +17,8 @@
     {
         private const string BaseAddress = "http://localhost";
 
+        #region --- Containers ---
+
         [TestMethod]
         public void ShouldGetContainersAsync()
         {
@@ -35,8 +37,6 @@
             DateTime time = container.last_modified ?? DateTime.Today;
             DateTime.Compare(time, DateTime.Now).ShouldBeLessThan(0);
         }
-
-        #region --- Containers ---
 
         [TestMethod]
         public void ShouldCreateContainersAsync()
@@ -57,6 +57,99 @@
             // Act & Assert
             filesApi.DeleteContainersAsync("a", "b").Wait();
         }
+
+        [TestMethod]
+        public void ShouldDeleteContainerAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.DeleteContainerAsync("applications").Wait();
+        }
+
+        [TestMethod]
+        public void ShouldGetContainerAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act
+            ContainerResponse result = filesApi.GetContainerAsync("applications", ListingFlags.IncludeEverything).Result;
+
+            // Assert
+            result.ShouldNotBe(null);
+            result.name.ShouldBe("applications");
+            result.folder.Count.ShouldBe(11);
+            result.file.Count.ShouldBe(32);
+        }
+
+        [TestMethod]
+        public void ShouldDownloadContainerAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act
+            byte[] data = filesApi.DownloadContainerAsync("applications").Result;
+
+            // Assert
+            data.Length.ShouldBeGreaterThan(0);
+        }
+
+        #endregion
+
+        #region --- Folders ---
+
+        [TestMethod]
+        public void ShouldGetFolderAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act
+            FolderResponse folder = filesApi.GetFolderAsync("applications", "calendar", ListingFlags.IncludeEverything).Result;
+
+            // Assert
+            folder.ShouldNotBe(null);
+            folder.name.ShouldBe("calendar");
+            folder.folder.Count.ShouldBe(2);
+            folder.file.Count.ShouldBe(6);
+        }
+
+        [TestMethod]
+        public void ShouldCreateFolderAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.CreateFolderAsync("applications", "calendar").Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDownloadFolderAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act
+            byte[] data = filesApi.DownloadFolderAsync("applications", "calendar").Result;
+
+            // Assert
+            data.Length.ShouldBeGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void ShouldDeleteFolderAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.DeleteFolderAsync("applications", "calendar").Wait();
+        }
+
 
         #endregion
 
@@ -118,13 +211,24 @@
         }
 
         [TestMethod]
-        public void ShouldReplaceFileAsync()
+        public void ShouldReplaceTextFileContentsAsync()
         {
             // Arrange
             IFilesApi filesApi = CreateFilesApi();
 
             // Act & Assert
             filesApi.ReplaceFileContentsAsync("applications", "calendar/test.txt", "Bye").Wait();
+        }
+
+        [TestMethod]
+        public void ShouldReplaceBinaryFileContentsAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+            byte[] data = { 50, 51, 52, 53, 54, 55, 56, 57 };
+
+            // Act & Assert
+            filesApi.ReplaceFileContentsAsync("applications", "calendar/test.bin", data).Wait();
         }
 
         [TestMethod]

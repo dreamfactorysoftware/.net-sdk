@@ -144,6 +144,22 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
+        public async Task DeleteContainerAsync(string container, bool force = false)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
+                                              .WithParameter("force", force);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        }
+
         #endregion
     }
 }
