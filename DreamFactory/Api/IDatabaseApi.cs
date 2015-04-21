@@ -21,14 +21,19 @@
         /// <param name="includeSchemas">Also return the names of the tables where the schema is retrievable.</param>
         /// <param name="refresh">Refresh any cached copy of the resource list.</param>
         /// <returns>Table names.</returns>
-        Task<IEnumerable<string>> GetTableNames(bool includeSchemas, bool refresh = false);
+        Task<IEnumerable<string>> GetTableNames(bool includeSchemas = false, bool refresh = false);
 
         /// <summary>
-        /// Creates a new table using TRecord schema.
+        /// Creates a new table schema.
         /// </summary>
         /// <param name="tableSchema">Table schema.</param>
-        /// <returns>Flag indicating creation status.</returns>
         Task CreateTableAsync(TableSchema tableSchema);
+
+        /// <summary>
+        /// Updates the existing table schema.
+        /// </summary>
+        /// <param name="tableSchema">Table schema.</param>
+        Task UpdateTableAsync(TableSchema tableSchema);
 
         /// <summary>
         /// Deletes the specified table (aka drop).

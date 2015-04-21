@@ -16,7 +16,7 @@
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");
 
             // List available tables
-            List<string> tables = new List<string>(await databaseApi.GetTableNames(true));
+            List<string> tables = new List<string>(await databaseApi.GetTableNames(false));
             Console.WriteLine("Existing tables: {0}", tables.ToStringList());
 
             // Delete staff table if it exists

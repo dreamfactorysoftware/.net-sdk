@@ -60,23 +60,14 @@
             return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
-        public async Task CreateTableAsync(TableSchema tableSchema)
+        public Task CreateTableAsync(TableSchema tableSchema)
         {
-            if (tableSchema == null)
-            {
-                throw new ArgumentNullException("tableSchema");
-            }
+            return CreateOrUpdateTableAsync(HttpMethod.Post, tableSchema);
+        }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema");
-
-            var tableSchemas = new { table = new List<TableSchema> { tableSchema } };
-            string body = contentSerializer.Serialize(tableSchemas);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            // TODO: ignore the response?
+        public Task UpdateTableAsync(TableSchema tableSchema)
+        {
+            return CreateOrUpdateTableAsync(HttpMethod.Put, tableSchema);
         }
 
         public async Task<bool> DeleteTableAsync(string tableName)
@@ -162,6 +153,23 @@
             }
 
             return recordSet.record;
+        }
+
+        private async Task CreateOrUpdateTableAsync(HttpMethod httpMethod, TableSchema tableSchema)
+        {
+            if (tableSchema == null)
+            {
+                throw new ArgumentNullException("tableSchema");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema");
+
+            var tableSchemas = new { table = new List<TableSchema> { tableSchema } };
+            string body = contentSerializer.Serialize(tableSchemas);
+            IHttpRequest request = new HttpRequest(httpMethod, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
     }
 }
