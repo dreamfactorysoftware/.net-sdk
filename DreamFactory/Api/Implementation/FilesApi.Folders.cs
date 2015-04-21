@@ -19,7 +19,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty);
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -29,7 +29,7 @@
             return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
-        public async Task<byte[]> DownloadFolderAsync(string container, string path, ListingFlags flags)
+        public async Task<byte[]> DownloadFolderAsync(string container, string path)
         {
             if (container == null)
             {
@@ -41,8 +41,8 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path);
-            address = AddListingParameters(address, flags).WithParameter("zip", true);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty)
+                                              .WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -90,7 +90,7 @@
             HttpUtils.CheckUrlString(url);
 
             IHttpAddress address = baseAddress
-                .WithResources(serviceName, container)
+                .WithResources(serviceName, container, path, string.Empty)
                 .WithParameter("extract", true)
                 .WithParameter("clean", clean)
                 .WithParameter("url", url);
@@ -101,7 +101,7 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task<FolderResponse> DeleteFolderAsync(string container, string path, bool force = false, bool contentOnly = false)
+        public async Task DeleteFolderAsync(string container, string path, bool force = false)
         {
             if (container == null)
             {
@@ -113,16 +113,13 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container)
-                                              .WithParameter("force", force)
-                                              .WithParameter("content_only", contentOnly);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty)
+                                              .WithParameter("force", force);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
     }
 }

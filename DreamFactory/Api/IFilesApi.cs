@@ -50,9 +50,8 @@
         /// Download the container files as ZIP archive.
         /// </summary>
         /// <param name="container">Container's name.</param>
-        /// <param name="flags">Combination of <see cref="ListingFlags"/> values.</param>
         /// <returns>ZIP archive bytes.</returns>
-        Task<byte[]> DownloadContainerAsync(string container, ListingFlags flags);
+        Task<byte[]> DownloadContainerAsync(string container);
 
         /// <summary>
         /// Create container and/or add contents from a ZIP archive located at <paramref name="url"/>.
@@ -76,9 +75,8 @@
         /// </summary>
         /// <param name="container">Container's name.</param>
         /// <param name="path">The path of the folder you want to retrieve. This can be a sub-folder, with each level separated by a '/'.</param>
-        /// <param name="flags">Combination of <see cref="ListingFlags"/> values.</param>
         /// <returns>ZIP archive bytes.</returns>
-        Task<byte[]> DownloadFolderAsync(string container, string path, ListingFlags flags);
+        Task<byte[]> DownloadFolderAsync(string container, string path);
 
         /// <summary>
         /// Create folder and/or add contents.
@@ -104,9 +102,7 @@
         /// <param name="container">The name of the folder you want to delete from.</param>
         /// <param name="path">The path of the folder you want to delete. This can be a sub-folder, with each level separated by a '/'.</param>
         /// <param name="force">Set to true to force delete on a non-empty folder.</param>
-        /// <param name="contentOnly">Set to true to only delete the contents of the folder.</param>
-        /// <returns><see cref="FolderResponse"/>.</returns>
-        Task<FolderResponse> DeleteFolderAsync(string container, string path, bool force = false, bool contentOnly = false);
+        Task DeleteFolderAsync(string container, string path, bool force = false);
 
         /// <summary>
         /// Get the file contents as text (UTF8).
@@ -139,18 +135,26 @@
         /// </summary>
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to create.</param>
-        /// <param name="content">File contents.</param>
+        /// <param name="contents">File contents.</param>
         /// <param name="checkExists">If true, the call fails when the file to create already exists.</param>
         /// <returns>FileResponse object.</returns>
-        Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] content, bool checkExists = true);
+        Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] contents, bool checkExists = true);
 
         /// <summary>
-        /// Update contents of the file.
+        /// Update contents of the text file.
         /// </summary>
         /// <param name="container">Name of the container where the file exists.</param>
         /// <param name="filepath">Path and name of the file to update.</param>
-        /// <param name="contents">New file contents.</param>
-        Task ReplaceFileAsync(string container, string filepath, string contents);
+        /// <param name="contents">New file contents (text).</param>
+        Task ReplaceFileContentsAsync(string container, string filepath, string contents);
+
+        /// <summary>
+        /// Update contents of the binary file.
+        /// </summary>
+        /// <param name="container">Name of the container where the file exists.</param>
+        /// <param name="filepath">Path and name of the file to update.</param>
+        /// <param name="contents">New file contents (bytes).</param>
+        Task ReplaceFileContentsAsync(string container, string filepath, byte[] contents);
 
         /// <summary>
         /// Delete one file.

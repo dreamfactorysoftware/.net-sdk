@@ -23,28 +23,27 @@
             Console.WriteLine();
 
             // Creating a test container - tank
-            await filesApi.CreateContainersAsync(false, "tank");
+            await filesApi.CreateContainersAsync(false, TestContainer);
 
             // Creating a file
-            FileResponse response = await filesApi.CreateFileAsync("tank", "test.txt", "test", false);
+            FileResponse response = await filesApi.CreateFileAsync(TestContainer, "test.txt", "test", false);
             Console.WriteLine("Created file: {0}", response.path);
 
             // Reading the file
-            string content = await filesApi.GetTextFileAsync("tank", "test.txt");
+            string content = await filesApi.GetTextFileAsync(TestContainer, "test.txt");
             Console.WriteLine("GetFile content: {0}", content);
 
             // Deleting the file
-            response = await filesApi.DeleteFileAsync("tank", "test.txt");
+            response = await filesApi.DeleteFileAsync(TestContainer, "test.txt");
             Console.WriteLine("Deleted file: {0}", response.path);
 
             // Deleting the container
-            await filesApi.DeleteContainersAsync(new[] { "tank" });
-            Console.WriteLine("Container 'tank' deleted.");
+            await filesApi.DeleteContainersAsync(TestContainer);
+            Console.WriteLine("Container '{0}' deleted.", TestContainer);
 
-            // Downloading container
+            // Downloading a container
             Console.WriteLine("Downloading 'applications' container as zip archive...");
-            const ListingFlags flags = ListingFlags.IncludeFiles | ListingFlags.IncludeFolders | ListingFlags.IncludeSubFolders;
-            byte[] zip = await filesApi.DownloadContainerAsync("applications", flags);
+            byte[] zip = await filesApi.DownloadContainerAsync("applications");
             File.WriteAllBytes("applications-container.zip", zip);
             Console.WriteLine("Open applications-container.zip to see the contents.");
         }

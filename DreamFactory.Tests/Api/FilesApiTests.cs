@@ -124,7 +124,7 @@
             IFilesApi filesApi = CreateFilesApi();
 
             // Act & Assert
-            filesApi.ReplaceFileAsync("applications", "calendar/test.txt", "Bye").Wait();
+            filesApi.ReplaceFileContentsAsync("applications", "calendar/test.txt", "Bye").Wait();
         }
 
         [TestMethod]

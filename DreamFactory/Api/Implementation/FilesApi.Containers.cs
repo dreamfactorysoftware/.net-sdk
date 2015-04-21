@@ -101,15 +101,15 @@
             return contentSerializer.Deserialize<ContainerResponse>(response.Body);
         }
 
-        public async Task<byte[]> DownloadContainerAsync(string container, ListingFlags flags)
+        public async Task<byte[]> DownloadContainerAsync(string container)
         {
             if (container == null)
             {
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
-            address = AddListingParameters(address, flags).WithParameter("zip", true);
+            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
+                                              .WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);

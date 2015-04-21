@@ -54,12 +54,17 @@
             return contentSerializer.Deserialize(response.Body, data).file.First();
         }
 
-        public async Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] content, bool checkExists = true)
+        public async Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] contents, bool checkExists = true)
         {
-            return await CreateFileAsync(container, filepath, GetString(content), checkExists);
+            return await CreateFileAsync(container, filepath, GetString(contents), checkExists);
         }
 
-        public async Task ReplaceFileAsync(string container, string filepath, string contents)
+        public Task ReplaceFileContentsAsync(string container, string filepath, byte[] contents)
+        {
+            return ReplaceFileContentsAsync(container, filepath, GetString(contents));
+        }
+
+        public async Task ReplaceFileContentsAsync(string container, string filepath, string contents)
         {
             if (container == null)
             {
