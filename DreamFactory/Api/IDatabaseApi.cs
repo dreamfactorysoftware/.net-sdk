@@ -38,16 +38,26 @@
         /// <summary>
         /// Deletes the specified table (aka drop).
         /// </summary>
-        /// <param name="tableName">Table's name.</param>
+        /// <param name="tableName">Name of the table.</param>
         /// <returns>Flag indicating deletion status.</returns>
         Task<bool> DeleteTableAsync(string tableName);
 
         /// <summary>
-        /// Gets table schema.
+        /// Retrieve table definition for the given table.
         /// </summary>
-        /// <param name="tableName">Table's name.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="refresh">Refresh any cached copy of the schema.</param>
         /// <returns>Table schema model.</returns>
-        Task<TableSchema> DescribeTableAsync(string tableName);
+        Task<TableSchema> DescribeTableAsync(string tableName, bool refresh = false);
+
+        /// <summary>
+        /// Retrieve table definition for the given table.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="refresh">Refresh any cached copy of the schema.</param>
+        /// <returns>Table schema model.</returns>
+        Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh = false);
 
         /// <summary>
         /// Creates records in the specified table.
@@ -60,8 +70,71 @@
         /// <summary>
         /// Gets table records and creates TRecord instances.
         /// </summary>
-        /// <param name="tableName">Table name.</param>
+        /// <param name="tableName">Name of the table.</param>
         /// <returns>Sequence of TRecord instances created from the response.</returns>
         Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName);
+
+        /// <summary>
+        /// List callable stored procedures.
+        /// </summary>
+        /// <param name="refresh">Refresh any cached copy of the resource list.</param>
+        /// <returns>Names of the available stored procedures on this database.</returns>
+        Task<IEnumerable<string>> GetStoredProcNamesAsync(bool refresh = false);
+
+        /// <summary>
+        /// Call a stored procedure, ignoring its output.
+        /// </summary>
+        /// <param name="procedureName">Name of the stored procedure to call.</param>
+        /// <param name="parameters">Optional stored procedure parameters.</param>
+        Task CallStoredProc(string procedureName, params StoredProcParam[] parameters);
+
+        /// <summary>
+        /// Call a stored procedure with response of type <typeparamref name="TStoredProcResponse"/>.
+        /// </summary>
+        /// <param name="procedureName">Name of the stored procedure to call.</param>
+        /// <param name="parameters">Optional stored procedure parameters.</param>
+        /// <typeparam name="TStoredProcResponse">Type of the response.</typeparam>
+        /// <returns>Stored procedure response data.</returns>
+        Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
+            where TStoredProcResponse : class, new();
+
+        /// <summary>
+        /// Call a stored procedure with response of type <typeparamref name="TStoredProcResponse"/>.
+        /// </summary>
+        /// <param name="procedureName">Name of the stored procedure to call.</param>
+        /// <param name="wrapper">Name of a field in TStoredProcResponse receiving returned dataset.</param>
+        /// <param name="parameters">Optional stored procedure parameters.</param>
+        /// <typeparam name="TStoredProcResponse">Type of the response.</typeparam>
+        /// <returns>Stored procedure response data.</returns>
+        Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
+            where TStoredProcResponse : class, new();
+
+        /// <summary>
+        /// List callable stored functions.
+        /// </summary>
+        /// <param name="refresh">Refresh any cached copy of the resource list.</param>
+        /// <returns>Names of the available stored functions on this database.</returns>
+        Task<IEnumerable<string>> GetStoredFuncNamesAsync(bool refresh = false);
+
+        /// <summary>
+        /// Call a stored function with response of type <typeparamref name="TStoredFuncResponse"/>.
+        /// </summary>
+        /// <param name="functionName">Name of the stored function to call.</param>
+        /// <param name="parameters">Optional stored function parameters.</param>
+        /// <typeparam name="TStoredFuncResponse">Type of the response.</typeparam>
+        /// <returns>Stored procedure response data.</returns>
+        Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
+            where TStoredFuncResponse : class, new();
+
+        /// <summary>
+        /// Call a stored function with response of type <typeparamref name="TStoredFuncResponse"/>.
+        /// </summary>
+        /// <param name="functionName">Name of the stored function to call.</param>
+        /// <param name="wrapper">Name of a field in TStoredFuncResponse receiving returned dataset.</param>
+        /// <param name="parameters">Optional stored function parameters.</param>
+        /// <typeparam name="TStoredFuncResponse">Type of the response.</typeparam>
+        /// <returns>Stored function response data.</returns>
+        Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
+            where TStoredFuncResponse : class, new();
     }
 }

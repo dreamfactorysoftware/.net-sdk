@@ -8,7 +8,7 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Serialization;
 
-    internal class DatabaseApi : IDatabaseApi
+    internal partial class DatabaseApi : IDatabaseApi
     {
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
@@ -90,7 +90,7 @@
             return success.success;
         }
 
-        public async Task<TableSchema> DescribeTableAsync(string tableName)
+        public async Task<TableSchema> DescribeTableAsync(string tableName, bool refresh)
         {
             if (tableName == null)
             {
@@ -99,12 +99,44 @@
 
             IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
 
+            if (refresh)
+            {
+                address = address.WithParameter("refresh", true);
+            }
+
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<TableSchema>(response.Body);
+        }
+
+        public async Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh)
+        {
+            if (tableName == null)
+            {
+                throw new ArgumentNullException("tableName");
+            }
+
+            if (fieldName == null)
+            {
+                throw new ArgumentNullException("fieldName");
+            }
+
+            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName, fieldName);
+
+            if (refresh)
+            {
+                address = address.WithParameter("refresh", true);
+            }
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FieldSchema>(response.Body);
         }
 
         public async Task CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records)

@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Implementation\DatabaseApi.Stored.cs" />
     <Compile Include="Api\Implementation\EmailApi.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.cs" />
     <Compile Include="Api\Implementation\FilesApi.Folders.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
+    <Compile Include="Model\Database\StoredProcParam.cs" />
+    <Compile Include="Model\Database\StoredProcRequest.cs" />
     <Compile Include="Model\Database\TableInfo.cs" />
     <Compile Include="Model\File\ContainerInfo.cs" />
     <Compile Include="Model\File\ContainerRequest.cs" />
