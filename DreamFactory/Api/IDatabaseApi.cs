@@ -62,9 +62,9 @@
         /// <summary>
         /// Creates records in the specified table.
         /// </summary>
-        /// <param name="tableName">Table's name.</param>
-        /// <param name="records">Sequence of record instances.</param>
-        /// <typeparam name="TRecord">Record's type.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="records">Records to add.</param>
+        /// <typeparam name="TRecord">Type of the records.</typeparam>
         Task CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
 
         /// <summary>
@@ -73,6 +73,14 @@
         /// <param name="tableName">Name of the table.</param>
         /// <returns>Sequence of TRecord instances created from the response.</returns>
         Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName);
+
+        /// <summary>
+        /// Delete one or more records.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="records">Records to delete.</param>
+        /// <typeparam name="TRecord">Type of the records.</typeparam>
+        Task DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
 
         /// <summary>
         /// List callable stored procedures.
