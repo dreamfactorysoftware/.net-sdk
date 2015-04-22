@@ -3,8 +3,8 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Builder;
     using DreamFactory.Model.Email;
-    using DreamFactory.Model.Helper;
     using DreamFactory.Rest;
 
     public class EmailDemo

@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Model.Helper
+﻿namespace DreamFactory.Model.Builder
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,6 @@
     {
         private readonly List<FieldSchema> fields;
 
-        private readonly Dictionary<Type, string> types;
-
         private string tableName;
 
         /// <summary>
@@ -22,18 +20,6 @@
         public TableSchemaBuilder()
         {
             fields = new List<FieldSchema>();
-            types = new Dictionary<Type, string>
-            {
-                { typeof (string), "string" },
-                { typeof (int), "integer" },
-                { typeof (long), "integer" },
-                { typeof (bool), "boolean" },
-                { typeof (byte[]), "binary" },
-                { typeof (float), "float" },
-                { typeof (double), "double" },
-                { typeof (decimal), "decimal" },
-                { typeof (DateTime), "datetime" },
-            };
         }
 
         /// <inheritdoc />
@@ -46,7 +32,7 @@
         /// <inheritdoc />
         public ITableSchemaBuilder WithField<TField>(string fieldName, bool required = false, TField defaultValue = default(TField))
         {
-            string typeName = GetFieldTypeName(typeof (TField));
+            string typeName = TypeMap.GetTypeName(typeof (TField));
 
             FieldSchema field = new FieldSchema
             {
@@ -93,7 +79,7 @@
                     continue;
                 }
 
-                string typeName = GetFieldTypeName(propertyInfo.PropertyType);
+                string typeName = TypeMap.GetTypeName(propertyInfo.PropertyType);
 
                 FieldSchema field = new FieldSchema
                 {
@@ -112,17 +98,6 @@
         public TableSchema Build()
         {
             return new TableSchema { name = tableName, field = fields };
-        }
-
-        private string GetFieldTypeName(Type fieldType)
-        {
-            string typeName;
-            if (!types.TryGetValue(fieldType, out typeName))
-            {
-                throw new NotSupportedException("Field type is not supported: " + fieldType.Name);
-            }
-
-            return typeName;
         }
     }
 }

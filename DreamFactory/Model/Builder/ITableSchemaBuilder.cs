@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Model.Helper
+﻿namespace DreamFactory.Model.Builder
 {
     using DreamFactory.Model.Database;
 

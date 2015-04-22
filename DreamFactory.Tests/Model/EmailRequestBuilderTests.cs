@@ -1,8 +1,8 @@
 ﻿namespace DreamFactory.Tests.Model
 {
     using System.Linq;
+    using DreamFactory.Model.Builder;
     using DreamFactory.Model.Email;
-    using DreamFactory.Model.Helper;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Shouldly;
 
