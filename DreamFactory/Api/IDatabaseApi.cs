@@ -60,19 +60,44 @@
         Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh = false);
 
         /// <summary>
-        /// Creates records in the specified table.
+        /// Create records in the specified table.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="records">Records to add.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
-        Task CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
+        /// <returns>Sequence of created records.</returns>
+        Task<IEnumerable<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
 
         /// <summary>
-        /// Gets table records and creates TRecord instances.
+        /// Update records in the specified table.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
-        /// <returns>Sequence of TRecord instances created from the response.</returns>
+        /// <param name="records">Records to update.</param>
+        /// <typeparam name="TRecord">Type of the records.</typeparam>
+        Task UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
+
+        /// <summary>
+        /// Get all table records.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <returns>Sequence of retrieved records.</returns>
         Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName);
+
+        /// <summary>
+        /// Get table records by ids.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="keys">Sequence of keys (ids).</param>
+        /// <returns>Sequence of retrieved records.</returns>
+        Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord, TKeyField>(string tableName, params TKeyField[] keys);
+
+        /// <summary>
+        /// Get table records by filter.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="query">See <see cref="SqlQuery"/> class.</param>
+        /// <returns>Sequence of retrieved records.</returns>
+        Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query);
 
         /// <summary>
         /// Delete one or more records.

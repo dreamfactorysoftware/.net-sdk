@@ -43,19 +43,23 @@
             // Create new record
             Console.WriteLine("Creating {0} records...", TableName);
             List<StaffRecord> records = CreateStaffRecords().ToList();
-            await databaseApi.CreateRecordsAsync(TableName, records);
+            records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records));
 
-            // Get staff records
+            SqlQuery query = new SqlQuery("age > 30", "age");
+            var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
+            Console.WriteLine("Get records with SqlQuery: ages={0}", selection.Select(x => x.age.ToString()).ToStringList());
+
+            // Deleting one record
+            Console.WriteLine("Deleting second record...");
+            await databaseApi.DeleteRecordsAsync(TableName, records.Skip(1).Take(1));
+
+            // Get table records
             records = new List<StaffRecord>(await databaseApi.GetRecordsAsync<StaffRecord>(TableName));
             Console.WriteLine("Retrieved {0} records:", TableName);
             foreach (StaffRecord item in records)
             {
                 Console.WriteLine("\t{0}", item);
             }
-
-            // Deleting one record
-            Console.WriteLine("Deleting second record...");
-            await databaseApi.DeleteRecordsAsync(TableName, records.Skip(1).Take(1));
         }
 
         private static IEnumerable<StaffRecord> CreateStaffRecords()
