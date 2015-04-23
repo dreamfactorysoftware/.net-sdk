@@ -148,6 +148,38 @@ Reading/Writing of metadata associated with file entities (container, folder, fi
 
 > See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs)
 
+#### Notes on schema management
+
+To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
+```charp
+        // Your custom POCO
+        class StaffRecord
+        {
+            public int uid { get; set; }
+            public string first_name { get; set; }
+            public string last_name { get; set; }
+            public int age { get; set; }
+		}
+
+		// Create tabe schema from StaffRecord type
+		ITableSchemaBuilder builder = new TableSchemaBuilder();
+        builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+```
+
+API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
+
+#### Notes on table records operations
+
+* Input/Output is always a user-defined POCO classes that must match the corresponding table's schema;
+* `CreateRecordsAsync` returns the created records back to user with key fields (IDs) updated;
+* `GetRecordsAsync` has three overloads to retrieve: all records, records by ids and by given SQL query.
+
+#### Notes on stored procedures/functions
+
+When calling a stored procedure or function, some overloads use a collection of `StoreProcParams` instances. To simplify creating such a collection, consider using `StoreProcParamsBuilder` class.
+When response (or return values) is expected, a user must define `TStoredProcResponse` POCO that shall have fields for OUT-parameters and for wrapper.
+It's recommended to read the technical notes on stored procedures: https://github.com/dreamfactorysoftware/dsp-core/wiki/SQL-Stored-Procedures
+
 #### Email API
 
 > See [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs)
