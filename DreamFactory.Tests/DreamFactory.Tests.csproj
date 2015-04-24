@@ -77,12 +77,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Api\DatabaseApiTests.cs" />
     <Compile Include="Api\EmailApiTests.cs" />
     <Compile Include="Api\FilesApiTests.cs" />
     <Compile Include="Api\UserApiTests.cs" />
     <Compile Include="Http\HttpAddressTests.cs" />
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
     <Compile Include="Model\EmailRequestBuilderTests.cs" />
+    <Compile Include="Model\StoreProcParamsBuilderTests.cs" />
+    <Compile Include="Model\TableSchemaBuilderTests.cs" />
     <Compile Include="Rest\RestContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\ServiceFactoryTests.cs" />
@@ -97,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestData\rest\db-alt\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\db\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\email\post.request.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

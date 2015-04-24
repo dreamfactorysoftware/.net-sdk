@@ -36,7 +36,7 @@
             return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
-        public async Task<IEnumerable<string>> GetTableNames(bool includeSchemas, bool refresh = false)
+        public async Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
             IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("names_only", true);
             

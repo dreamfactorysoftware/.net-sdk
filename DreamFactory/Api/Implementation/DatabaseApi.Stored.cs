@@ -14,7 +14,7 @@
             return await GetNamesOnlyAsync("_proc", refresh);
         }
 
-        public async Task CallStoredProc(string procedureName, params StoredProcParam[] parameters)
+        public async Task CallStoredProcAsync(string procedureName, params StoredProcParam[] parameters)
         {
             if (procedureName == null)
             {
@@ -24,7 +24,7 @@
             await CallStoredProc("_proc", procedureName, null, parameters);
         }
 
-        public async Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
+        public async Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new()
         {
             if (procedureName == null)
@@ -37,7 +37,7 @@
             return contentSerializer.Deserialize<TStoredProcResponse>(response.Body);
         }
 
-        public async Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
+        public async Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new()
         {
             if (procedureName == null)
@@ -60,7 +60,7 @@
             return await GetNamesOnlyAsync("_func", refresh);
         }
 
-        public async Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
+        public async Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new()
         {
             if (functionName == null)
@@ -73,7 +73,7 @@
             return contentSerializer.Deserialize<TStoredFuncResponse>(response.Body);
         }
 
-        public async Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
+        public async Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new()
         {
             if (functionName == null)

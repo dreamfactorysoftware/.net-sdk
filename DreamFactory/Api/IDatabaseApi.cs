@@ -21,7 +21,7 @@
         /// <param name="includeSchemas">Also return the names of the tables where the schema is retrievable.</param>
         /// <param name="refresh">Refresh any cached copy of the resource list.</param>
         /// <returns>Table names.</returns>
-        Task<IEnumerable<string>> GetTableNames(bool includeSchemas = false, bool refresh = false);
+        Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas = false, bool refresh = false);
 
         /// <summary>
         /// Creates a new table schema.
@@ -119,7 +119,7 @@
         /// </summary>
         /// <param name="procedureName">Name of the stored procedure to call.</param>
         /// <param name="parameters">Optional stored procedure parameters.</param>
-        Task CallStoredProc(string procedureName, params StoredProcParam[] parameters);
+        Task CallStoredProcAsync(string procedureName, params StoredProcParam[] parameters);
 
         /// <summary>
         /// Call a stored procedure with response of type <typeparamref name="TStoredProcResponse"/>.
@@ -128,7 +128,7 @@
         /// <param name="parameters">Optional stored procedure parameters.</param>
         /// <typeparam name="TStoredProcResponse">Type of the response.</typeparam>
         /// <returns>Stored procedure response data.</returns>
-        Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
+        Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new();
 
         /// <summary>
@@ -139,7 +139,7 @@
         /// <param name="parameters">Optional stored procedure parameters.</param>
         /// <typeparam name="TStoredProcResponse">Type of the response.</typeparam>
         /// <returns>Stored procedure response data.</returns>
-        Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
+        Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new();
 
         /// <summary>
@@ -156,7 +156,7 @@
         /// <param name="parameters">Optional stored function parameters.</param>
         /// <typeparam name="TStoredFuncResponse">Type of the response.</typeparam>
         /// <returns>Stored procedure response data.</returns>
-        Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
+        Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new();
 
         /// <summary>
@@ -167,7 +167,7 @@
         /// <param name="parameters">Optional stored function parameters.</param>
         /// <typeparam name="TStoredFuncResponse">Type of the response.</typeparam>
         /// <returns>Stored function response data.</returns>
-        Task<TStoredFuncResponse> CallStoredFunc<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
+        Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new();
     }
 }

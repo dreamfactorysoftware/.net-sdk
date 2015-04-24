@@ -247,6 +247,5 @@
             HttpHeaders headers = new HttpHeaders();
             return new FilesApi(address, httpFacade, new JsonContentSerializer(), headers, "files");
         }
-
     }
 }

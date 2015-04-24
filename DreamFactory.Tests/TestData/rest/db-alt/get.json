@@ -1,0 +1,11 @@
+﻿{
+  "resource": [
+    "Events",
+    "staff",
+    "todo",
+    "_schema/",
+    "_schema/Events",
+    "_schema/staff",
+    "_schema/todo"
+  ]
+}
