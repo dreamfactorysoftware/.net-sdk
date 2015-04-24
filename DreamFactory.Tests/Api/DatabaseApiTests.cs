@@ -5,6 +5,7 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model.Builder;
     using DreamFactory.Model.Database;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -47,6 +48,54 @@
             names.ShouldContain("_schema/todo");
         }
 
+        [TestMethod]
+        public void ShouldCreateTableAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+            TableSchema schema = CreateTestTableSchema();
+
+            // Act & Assert
+            databaseApi.CreateTableAsync(schema).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldUpdateTableAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+            TableSchema schema = CreateTestTableSchema();
+
+            // Act & Assert
+            databaseApi.UpdateTableAsync(schema).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteTableAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+
+            // Act
+            bool success = databaseApi.DeleteTableAsync("staff").Result;
+
+            // Assert
+            success.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void ShouldDescribeTableAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+
+            // Act
+            TableSchema schema = databaseApi.DescribeTableAsync("staff").Result;
+
+            // Assert
+            schema.name.ShouldBe("staff");
+        }
+
         #endregion
 
         private static IDatabaseApi CreateDatabaseApi(string alt = null)
@@ -55,6 +104,22 @@
             HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new DatabaseApi(address, httpFacade, new JsonContentSerializer(), headers, "db");
+        }
+
+        private static TableSchema CreateTestTableSchema()
+        {
+            ITableSchemaBuilder builder = new TableSchemaBuilder();
+            return builder.WithName("staff").WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+        }
+
+        // ReSharper disable InconsistentNaming
+        internal class StaffRecord
+        {
+            public int uid { get; set; }
+            public string first_name { get; set; }
+            public string last_name { get; set; }
+            public int age { get; set; }
+            public bool active { get; set; }
         }
     }
 }

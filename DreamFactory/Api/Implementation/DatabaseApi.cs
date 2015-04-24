@@ -77,7 +77,6 @@
             }
 
             IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
-
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
