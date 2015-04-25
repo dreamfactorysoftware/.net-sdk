@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Model.Builder
 {
-    using System.Collections.Generic;
     using DreamFactory.Model.Database;
 
     /// <summary>
@@ -40,6 +39,6 @@
         /// Builds the array of <see cref="StoredProcParam"/>.
         /// </summary>
         /// <returns>Array of <see cref="StoredProcParam"/>.</returns>
-        IList<StoredProcParam> Build();
+        StoredProcParam[] Build();
     }
 }

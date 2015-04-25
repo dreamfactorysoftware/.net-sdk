@@ -207,7 +207,7 @@
                 new StoreProcParamsBuilder()
                     .WithOutParam<string>("bar")
                     .WithOutParam<int>("foo");
-            StoredProcParam[] parameters = builder.Build().ToArray();
+            StoredProcParam[] parameters = builder.Build();
 
             // Act
             ProcResponse result = databaseApi.CallStoredProcAsync<ProcResponse>("foo", "dataset", parameters).Result;
@@ -228,7 +228,7 @@
                 new StoreProcParamsBuilder()
                     .WithOutParam<string>("bar")
                     .WithOutParam<int>("foo");
-            StoredProcParam[] parameters = builder.Build().ToArray();
+            StoredProcParam[] parameters = builder.Build();
 
             // Act
             ProcResponse result = databaseApi.CallStoredFuncAsync<ProcResponse>("foo", "dataset", parameters).Result;

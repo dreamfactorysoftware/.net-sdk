@@ -84,9 +84,9 @@ namespace DreamFactory.Model.Builder
         }
 
         /// <inheritdoc />
-        public IList<StoredProcParam> Build()
+        public StoredProcParam[] Build()
         {
-            return parameters;
+            return parameters.ToArray();
         }
     }
 }
