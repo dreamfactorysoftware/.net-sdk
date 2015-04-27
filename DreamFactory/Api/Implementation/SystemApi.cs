@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.System;
@@ -66,6 +67,37 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        }
+
+        public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "app",
+                applicationId.ToString(CultureInfo.InvariantCulture))
+                .WithParameter("pkg", true)
+                .WithParameter("include_files", includeFiles)
+                .WithParameter("include_services", includeServices)
+                .WithParameter("include_schema", includeSchema);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return response.RawBody;
+        }
+
+        public async Task<byte[]> DownloadApplicationSdkAsync(int applicationId)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "app",
+                applicationId.ToString(CultureInfo.InvariantCulture))
+                .WithParameter("sdk", true);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return response.RawBody;
         }
 
         private async Task<IHttpResponse> CreateOrUpdateApps(HttpMethod method, params AppRequest[] apps)

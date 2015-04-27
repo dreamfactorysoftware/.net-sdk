@@ -64,6 +64,32 @@
             systemApi.DeleteAppsAsync(true, 1, 2, 3);
         }
 
+        [TestMethod]
+        public void ShouldDownloadApplicationPackageAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            byte[] data = systemApi.DownloadApplicationPackageAsync(1).Result;
+
+            // Assert
+            data.Length.ShouldBeGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void ShouldDownloadApplicationSdkAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            byte[] data = systemApi.DownloadApplicationSdkAsync(1).Result;
+
+            // Assert
+            data.Length.ShouldBeGreaterThan(0);
+        }
+
         private static ISystemApi CreateSystemApi(string suffix = null)
         {
             HttpHeaders headers;

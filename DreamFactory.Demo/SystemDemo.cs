@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
@@ -18,6 +19,13 @@
             // List apps
             IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
+
+            // Download app package & SDK
+            Console.WriteLine("Downloading app package and SDK...");
+            byte[] package = await systemApi.DownloadApplicationPackageAsync(1);
+            byte[] sdk = await systemApi.DownloadApplicationSdkAsync(1);
+            File.WriteAllBytes("todojquery-package.zip", package);
+            File.WriteAllBytes("todojquery-sdk.zip", sdk);
         }
     }
 }
