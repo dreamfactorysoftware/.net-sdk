@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model.File
 {
-    using System;
+    using global::System;
 
     /// <summary>
     /// FileResponse.

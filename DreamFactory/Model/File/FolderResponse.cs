@@ -1,8 +1,8 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model.File
 {
-    using System;
-    using System.Collections.Generic;
+    using global::System;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// FolderResponse.

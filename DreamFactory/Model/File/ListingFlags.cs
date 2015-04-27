@@ -1,6 +1,6 @@
 ﻿namespace DreamFactory.Model.File
 {
-    using System;
+    using global::System;
 
     /// <summary>
     /// Files listing modes. Combine values with binary OR.

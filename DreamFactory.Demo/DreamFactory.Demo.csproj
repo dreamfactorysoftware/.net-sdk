@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DiscoveryDemo.cs" />
     <Compile Include="CustomSettingsDemo.cs" />
+    <Compile Include="SystemDemo.cs" />
     <Compile Include="UserDemo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
 namespace DreamFactory.Model.Builder
 {
-    using System;
-    using System.Collections.Generic;
     using DreamFactory.Model.Database;
+    using global::System;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// Stored Proc (Func) parameters builder.

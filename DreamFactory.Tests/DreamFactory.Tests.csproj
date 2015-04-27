@@ -80,6 +80,7 @@
     <Compile Include="Api\DatabaseApiTests.cs" />
     <Compile Include="Api\EmailApiTests.cs" />
     <Compile Include="Api\FilesApiTests.cs" />
+    <Compile Include="Api\SystemApiTests.cs" />
     <Compile Include="Api\UserApiTests.cs" />
     <Compile Include="Http\HttpAddressTests.cs" />
     <Compile Include="Http\UnirestHttpFacadeTests.cs" />
@@ -239,6 +240,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="TestData\rest\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\app\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="TestData\rest\user\custom\post.json">

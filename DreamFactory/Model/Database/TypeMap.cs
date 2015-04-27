@@ -1,7 +1,7 @@
 ﻿namespace DreamFactory.Model.Database
 {
-    using System;
-    using System.Collections.Generic;
+    using global::System;
+    using global::System.Collections.Generic;
 
     internal static class TypeMap
     {

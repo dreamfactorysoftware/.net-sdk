@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model.Database
 {
-    using System;
+    using global::System;
 
     /// <summary>
     /// SQL query parameters used by IDatabaseApi.GetRecordsAsync().

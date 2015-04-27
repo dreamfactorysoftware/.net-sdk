@@ -1,8 +1,8 @@
 ﻿namespace DreamFactory.Model.Builder
 {
-    using System;
-    using System.Collections.Generic;
     using DreamFactory.Model.Email;
+    using global::System;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// <see cref="EmailRequest"/> builder.

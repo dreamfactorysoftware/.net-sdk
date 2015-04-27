@@ -1,9 +1,9 @@
 ﻿namespace DreamFactory.Model.Builder
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using DreamFactory.Model.Database;
+    using global::System;
+    using global::System.Collections.Generic;
+    using global::System.Reflection;
 
     /// <summary>
     /// <see cref="TableSchema"/> builder.

@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model.File
 {
-    using System.Collections.Generic;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// FolderRequest.
