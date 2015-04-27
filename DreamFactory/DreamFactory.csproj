@@ -95,6 +95,11 @@
     <Compile Include="Model\File\ListingFlags.cs" />
     <Compile Include="Model\Builder\EmailRequestBuilder.cs" />
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
+    <Compile Include="Model\System\AppResponse.cs" />
+    <Compile Include="Model\System\RelatedAppGroup.cs" />
+    <Compile Include="Model\System\RelatedRole.cs" />
+    <Compile Include="Model\System\RelatedService.cs" />
+    <Compile Include="Model\System\RelatedUser.cs" />
     <Compile Include="Model\User\DeviceRequest.cs" />
     <Compile Include="Model\User\DeviceResponse.cs" />
     <Compile Include="Model\Email\EmailAddress.cs" />

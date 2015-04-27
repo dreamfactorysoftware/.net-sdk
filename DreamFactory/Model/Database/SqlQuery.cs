@@ -1,4 +1,5 @@
-﻿namespace DreamFactory.Model.Database
+﻿// ReSharper disable InconsistentNaming
+namespace DreamFactory.Model.Database
 {
     using System;
 
