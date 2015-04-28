@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System;
 
     /// <summary>
@@ -14,6 +15,13 @@
         /// </summary>
         /// <returns>List of applications.</returns>
         Task<IEnumerable<AppResponse>> GetAppsAsync();
+
+        /// <summary>
+        /// Retrieve one or more applications.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of applications.</returns>
+        Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query);
 
         /// <summary>
         /// Create one or more applications.

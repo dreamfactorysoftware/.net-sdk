@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System;
     using DreamFactory.Rest;
 
@@ -17,7 +18,7 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // List apps
-            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync();
+            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(new SqlQuery("is_active=true"));
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
 
             // Download app package & SDK

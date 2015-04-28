@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System;
     using DreamFactory.Serialization;
 
@@ -26,6 +27,34 @@
         public async Task<IEnumerable<AppResponse>> GetAppsAsync()
         {
             IHttpAddress address = baseAddress.WithResources("system", "app");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var apps = new { record = new List<AppResponse>() };
+            return contentSerializer.Deserialize(response.Body, apps).record;
+        }
+
+        public async Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "app").WithParameter("filter", query.filter);
+
+            if (query.limit.HasValue)
+            {
+                address = address.WithParameter("limit", query.limit.Value);
+            }
+
+            if (query.offset.HasValue)
+            {
+                address = address.WithParameter("offset", query.offset.Value);
+            }
+
+            if (!string.IsNullOrEmpty(query.order))
+            {
+                address = address.WithParameter("order", query.order);
+            }
+
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
