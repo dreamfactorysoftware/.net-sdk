@@ -1,0 +1,42 @@
+﻿{
+  "record": [
+    {
+      "id": 1,
+      "created_date": "2015-04-07 00:57:47",
+      "created_by_id": null,
+      "last_modified_date": "2015-04-28 18:19:34",
+      "last_modified_by_id": null,
+      "display_name": "Andrei Smirnov",
+      "first_name": "Andrei",
+      "last_name": "Smirnov",
+      "email": "pinebit@gmail.com",
+      "phone": null,
+      "confirmed": true,
+      "is_active": true,
+      "is_sys_admin": true,
+      "role_id": null,
+      "default_app_id": null,
+      "user_source": 0,
+      "user_data": []
+    },
+    {
+      "id": 2,
+      "created_date": "2015-04-07 00:59:35",
+      "created_by_id": 1,
+      "last_modified_date": "2015-04-09 11:31:56",
+      "last_modified_by_id": 1,
+      "display_name": "John Black",
+      "first_name": "John",
+      "last_name": "Black",
+      "email": "user@mail.com",
+      "phone": null,
+      "confirmed": true,
+      "is_active": true,
+      "is_sys_admin": false,
+      "role_id": 1,
+      "default_app_id": null,
+      "user_source": 0,
+      "user_data": []
+    }
+  ]
+}

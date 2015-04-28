@@ -27,6 +27,49 @@
 
             // Assert
             apps.Count.ShouldBe(4);
+            apps.First().api_name.ShouldBe("todojquery");
+        }
+
+        [TestMethod]
+        public void ShouldGetUsersAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<UserResponse> users = systemApi.GetUsersAsync().Result.ToList();
+
+            // Assert
+            users.Count.ShouldBe(2);
+            users.First().display_name.ShouldBe("Andrei Smirnov");
+        }
+
+        [TestMethod]
+        public void ShouldGetRolesAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<RoleResponse> roles = systemApi.GetRolesAsync().Result.ToList();
+
+            // Assert
+            roles.Count.ShouldBe(1);
+            roles.First().name.ShouldBe("TestRole");
+        }
+
+        [TestMethod]
+        public void ShouldGetServicesAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<ServiceResponse> services = systemApi.GetServicesAsync().Result.ToList();
+
+            // Assert
+            services.Count.ShouldBe(4);
+            services.First().name.ShouldBe("Database");
         }
 
         [TestMethod]

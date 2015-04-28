@@ -1,0 +1,15 @@
+﻿{
+  "record": [
+    {
+      "id": 1,
+      "created_date": "2015-04-07 00:58:38",
+      "created_by_id": 1,
+      "last_modified_date": "2015-04-07 04:32:54",
+      "last_modified_by_id": 1,
+      "name": "TestRole",
+      "description": "",
+      "is_active": true,
+      "default_app_id": null
+    }
+  ]
+}

@@ -96,8 +96,12 @@
     <Compile Include="Model\Builder\EmailRequestBuilder.cs" />
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
     <Compile Include="Model\System\AppRequest.cs" />
+    <Compile Include="Model\System\RelatedApp.cs" />
     <Compile Include="Model\System\AppResponse.cs" />
     <Compile Include="Model\System\RelatedAppGroup.cs" />
+    <Compile Include="Model\System\ServiceResponse.cs" />
+    <Compile Include="Model\System\UserResponse.cs" />
+    <Compile Include="Model\System\RoleResponse.cs" />
     <Compile Include="Model\System\RelatedRole.cs" />
     <Compile Include="Model\System\RelatedService.cs" />
     <Compile Include="Model\System\RelatedUser.cs" />

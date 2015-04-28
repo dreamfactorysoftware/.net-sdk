@@ -263,6 +263,15 @@
     <None Include="TestData\rest\system\app\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\role\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\service\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\user\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\user\custom\post.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

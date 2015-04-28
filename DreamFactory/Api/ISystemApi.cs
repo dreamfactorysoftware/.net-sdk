@@ -13,15 +13,30 @@
         /// <summary>
         /// Retrieve one or more applications.
         /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
         /// <returns>List of applications.</returns>
-        Task<IEnumerable<AppResponse>> GetAppsAsync();
+        Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query = null);
 
         /// <summary>
-        /// Retrieve one or more applications.
+        /// Retrieve one or more roles.
         /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of applications.</returns>
-        Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query);
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of roles.</returns>
+        Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query = null);
+
+        /// <summary>
+        /// Retrieve one or more users.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of users.</returns>
+        Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query = null);
+
+        /// <summary>
+        /// Retrieve one or more services.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of services.</returns>
+        Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query = null);
 
         /// <summary>
         /// Create one or more applications.
@@ -59,5 +74,12 @@
         /// <param name="applicationId">Application ID.</param>
         /// <returns>SDK contents.</returns>
         Task<byte[]> DownloadApplicationSdkAsync(int applicationId);
+
+        /// <summary>
+        /// Retrieve one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of application groups.</returns>
+        Task<IEnumerable<RelatedAppGroup>> GetAppGroupsAsync(SqlQuery query = null);
     }
 }
