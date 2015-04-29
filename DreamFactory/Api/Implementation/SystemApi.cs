@@ -29,6 +29,11 @@
             return await QueryRecordsAsync<AppResponse>("app", query);
         }
 
+        public async Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query)
+        {
+            return await QueryRecordsAsync<AppGroupResponse>("app_group", query);
+        }
+
         public async Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query = null)
         {
             return await QueryRecordsAsync<RoleResponse>("role", query);
@@ -85,6 +90,11 @@
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
         }
 
+        public Task UpdateAppGroupsAsync(params AppGroupRequest[] appGroups)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app_group", appGroups);
+        }
+
         public Task UpdateRolesAsync(params RoleRequest[] roles)
         {
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "role", roles);
@@ -103,6 +113,11 @@
         public Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
         {
             return DeleteRecordsAsync("app", deleteStorage, ids);
+        }
+
+        public Task DeleteAppGroupsAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("app_group", false, ids);
         }
 
         public Task DeleteRolesAsync(params int[] ids)
@@ -149,39 +164,6 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return response.RawBody;
-        }
-
-        public async Task<IEnumerable<RelatedAppGroup>> GetAppGroupsAsync(SqlQuery query = null)
-        {
-            IHttpAddress address = baseAddress.WithResources("system", "app_group");
-
-            if (query != null)
-            {
-                address = address.WithParameter("filter", query.filter);
-
-                if (query.limit.HasValue)
-                {
-                    address = address.WithParameter("limit", query.limit.Value);
-                }
-
-                if (query.offset.HasValue)
-                {
-                    address = address.WithParameter("offset", query.offset.Value);
-                }
-
-                if (!string.IsNullOrEmpty(query.order))
-                {
-                    address = address.WithParameter("order", query.order);
-                }
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var apps = new { record = new List<RelatedAppGroup>() };
-            return contentSerializer.Deserialize(response.Body, apps).record;
         }
 
         #region --- Helpers ---

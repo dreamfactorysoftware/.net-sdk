@@ -95,6 +95,8 @@
     <Compile Include="Model\File\ListingFlags.cs" />
     <Compile Include="Model\Builder\EmailRequestBuilder.cs" />
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
+    <Compile Include="Model\System\AppGroupRequest.cs" />
+    <Compile Include="Model\System\AppGroupResponse.cs" />
     <Compile Include="Model\System\AppRequest.cs" />
     <Compile Include="Model\System\RelatedApp.cs" />
     <Compile Include="Model\System\AppResponse.cs" />

@@ -18,6 +18,13 @@
         Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query = null);
 
         /// <summary>
+        /// Retrieve one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query = null);
+
+        /// <summary>
         /// Retrieve one or more roles.
         /// </summary>
         /// <param name="query">Query parameters. Pass null to get all records.</param>
@@ -73,6 +80,12 @@
         Task UpdateAppsAsync(params AppRequest[] apps);
 
         /// <summary>
+        /// Update one or more application groups.
+        /// </summary>
+        /// <param name="appGroups">Application groups to update.</param>
+        Task UpdateAppGroupsAsync(params AppGroupRequest[] appGroups);
+
+        /// <summary>
         /// Update one or more roles.
         /// </summary>
         /// <param name="roles">Roles to update.</param>
@@ -96,6 +109,12 @@
         /// <param name="deleteStorage">If the app is hosted in a storage service, the storage will be deleted as well.</param>
         /// <param name="ids">Application IDs to delete.</param>
         Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids);
+
+        /// <summary>
+        /// Delete one or more application groups.
+        /// </summary>
+        /// <param name="ids">Application Group IDs to delete.</param>
+        Task DeleteAppGroupsAsync(params int[] ids);
 
         /// <summary>
         /// Delete one or more roles.
@@ -131,12 +150,5 @@
         /// <param name="applicationId">Application ID.</param>
         /// <returns>SDK contents.</returns>
         Task<byte[]> DownloadApplicationSdkAsync(int applicationId);
-
-        /// <summary>
-        /// Retrieve one or more application groups.
-        /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
-        /// <returns>List of application groups.</returns>
-        Task<IEnumerable<RelatedAppGroup>> GetAppGroupsAsync(SqlQuery query = null);
     }
 }
