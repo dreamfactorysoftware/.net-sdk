@@ -46,10 +46,49 @@
         Task<IEnumerable<AppResponse>> CreateAppsAsync(params AppRequest[] apps);
 
         /// <summary>
+        /// Create one or more users.
+        /// </summary>
+        /// <param name="users">Users to create.</param>
+        /// <returns>List of created users.</returns>
+        Task<IEnumerable<UserResponse>> CreateUsersAsync(params UserRequest[] users);
+
+        /// <summary>
+        /// Create one or more roles.
+        /// </summary>
+        /// <param name="roles">Roles to create.</param>
+        /// <returns>List of created roles.</returns>
+        Task<IEnumerable<RoleResponse>> CreateRolesAsync(params RoleRequest[] roles);
+
+        /// <summary>
+        /// Create one or more services.
+        /// </summary>
+        /// <param name="services">Services to create.</param>
+        /// <returns>List of created services.</returns>
+        Task<IEnumerable<ServiceResponse>> CreateServicesAsync(params ServiceRequest[] services);
+
+        /// <summary>
         /// Update one or more applications.
         /// </summary>
         /// <param name="apps">Applications to update.</param>
         Task UpdateAppsAsync(params AppRequest[] apps);
+
+        /// <summary>
+        /// Update one or more roles.
+        /// </summary>
+        /// <param name="roles">Roles to update.</param>
+        Task UpdateRolesAsync(params RoleRequest[] roles);
+
+        /// <summary>
+        /// Update one or more users.
+        /// </summary>
+        /// <param name="users">Users to update.</param>
+        Task UpdateUsersAsync(params UserRequest[] users);
+
+        /// <summary>
+        /// Update one or more services.
+        /// </summary>
+        /// <param name="services">Services to update.</param>
+        Task UpdateServicesAsync(params ServiceRequest[] services);
 
         /// <summary>
         /// Delete one or more applications.
@@ -57,6 +96,24 @@
         /// <param name="deleteStorage">If the app is hosted in a storage service, the storage will be deleted as well.</param>
         /// <param name="ids">Application IDs to delete.</param>
         Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids);
+
+        /// <summary>
+        /// Delete one or more roles.
+        /// </summary>
+        /// <param name="ids">Role IDs to delete.</param>
+        Task DeleteRolesAsync(params int[] ids);
+
+        /// <summary>
+        /// Delete one or more users.
+        /// </summary>
+        /// <param name="ids">User IDs to delete.</param>
+        Task DeleteUsersAsync(params int[] ids);
+
+        /// <summary>
+        /// Delete one or more services.
+        /// </summary>
+        /// <param name="ids">Service IDs to delete.</param>
+        Task DeleteServicesAsync(params int[] ids);
 
         /// <summary>
         /// Download the application as a DreamFactory package file.

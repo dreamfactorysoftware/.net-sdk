@@ -99,7 +99,10 @@
     <Compile Include="Model\System\RelatedApp.cs" />
     <Compile Include="Model\System\AppResponse.cs" />
     <Compile Include="Model\System\RelatedAppGroup.cs" />
+    <Compile Include="Model\System\RoleRequest.cs" />
+    <Compile Include="Model\System\ServiceRequest.cs" />
     <Compile Include="Model\System\ServiceResponse.cs" />
+    <Compile Include="Model\System\UserRequest.cs" />
     <Compile Include="Model\System\UserResponse.cs" />
     <Compile Include="Model\System\RoleResponse.cs" />
     <Compile Include="Model\System\RelatedRole.cs" />

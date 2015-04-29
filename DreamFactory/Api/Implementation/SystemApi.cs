@@ -46,36 +46,78 @@
 
         public async Task<IEnumerable<AppResponse>> CreateAppsAsync(params AppRequest[] apps)
         {
-            IHttpResponse response = await CreateOrUpdateApps(HttpMethod.Post, apps);
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "app", apps);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var responses = new { record = new List<AppResponse>() };
             return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public async Task UpdateAppsAsync(params AppRequest[] apps)
+        public async Task<IEnumerable<UserResponse>> CreateUsersAsync(params UserRequest[] users)
         {
-            await CreateOrUpdateApps(HttpMethod.Patch, apps);
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "user", users);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<UserResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public async Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
+        public async Task<IEnumerable<RoleResponse>> CreateRolesAsync(params RoleRequest[] roles)
         {
-            if (ids == null || ids.Length < 1)
-            {
-                throw new ArgumentException("At least one application ID must be specificed", "ids");
-            }
-
-            string list = string.Join(",", ids);
-            IHttpAddress address = baseAddress.WithResources("system", "app").WithParameter("ids", list);
-            if (deleteStorage)
-            {
-                address = address.WithParameter("delete_storage", true);
-            }
-            
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "roles", roles);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<RoleResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
+        }
+
+        public async Task<IEnumerable<ServiceResponse>> CreateServicesAsync(params ServiceRequest[] services)
+        {
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "services", services);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<ServiceResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
+        }
+
+        public Task UpdateAppsAsync(params AppRequest[] apps)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
+        }
+
+        public Task UpdateRolesAsync(params RoleRequest[] roles)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "role", roles);
+        }
+
+        public Task UpdateUsersAsync(params UserRequest[] users)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "user", users);
+        }
+
+        public Task UpdateServicesAsync(params ServiceRequest[] services)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "service", services);
+        }
+
+        public Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
+        {
+            return DeleteRecordsAsync("app", deleteStorage, ids);
+        }
+
+        public Task DeleteRolesAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("role", false, ids);
+        }
+
+        public Task DeleteUsersAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("user", false, ids);
+        }
+
+        public Task DeleteServicesAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("service", false, ids);
         }
 
         public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
@@ -142,15 +184,17 @@
             return contentSerializer.Deserialize(response.Body, apps).record;
         }
 
-        private async Task<IHttpResponse> CreateOrUpdateApps(HttpMethod method, params AppRequest[] apps)
+        #region --- Helpers ---
+
+        private async Task<IHttpResponse> CreateOrUpdateRecordsAsync<TRecord>(HttpMethod method, string resource, params TRecord[] records)
         {
-            if (apps == null || apps.Length < 1)
+            if (records == null || records.Length < 1)
             {
-                throw new ArgumentException("At least one application must be specificed", "apps");
+                throw new ArgumentException("At least one parameter must be specificed", "records");
             }
 
-            IHttpAddress address = baseAddress.WithResources("system", "app");
-            var requests = new { record = new List<AppRequest>(apps) };
+            IHttpAddress address = baseAddress.WithResources("system", resource);
+            var requests = new { record = new List<TRecord>(records) };
             string body = contentSerializer.Serialize(requests);
             IHttpRequest request = new HttpRequest(method, address.Build(), baseHeaders, body);
 
@@ -192,5 +236,27 @@
             var apps = new { record = new List<TRecord>() };
             return contentSerializer.Deserialize(response.Body, apps).record;
         }
+
+        private async Task DeleteRecordsAsync(string resource, bool setDeleteStorage, params int[] ids)
+        {
+            if (ids == null || ids.Length < 1)
+            {
+                throw new ArgumentException("At least one application ID must be specificed", "ids");
+            }
+
+            string list = string.Join(",", ids);
+            IHttpAddress address = baseAddress.WithResources("system", resource).WithParameter("ids", list);
+            if (setDeleteStorage)
+            {
+                address = address.WithParameter("delete_storage", true);
+            }
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        }
+
+        #endregion
     }
 }
