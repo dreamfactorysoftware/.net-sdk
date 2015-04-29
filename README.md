@@ -167,6 +167,7 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
 ```
 
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
+Related entities (records) are not retrieved (see related query parameter).
 
 #### Notes on table records operations
 
@@ -198,4 +199,10 @@ EmailRequest request = new EmailRequestBuilder()
 
 #### System API
 
-> See [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) and ... ops, demo is not there yet.
+> See [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/SystemDemo.cs)
+
+##### Current limitations
+
+* Reading/writing of metadata related to system records are not supported.
+* `EnvironmentResponse` has `PhpInfoSection` object is ignored on read.
+* Related entities are not retrieved (see related query parameter).
