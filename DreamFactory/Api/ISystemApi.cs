@@ -46,6 +46,13 @@
         Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query = null);
 
         /// <summary>
+        /// Retrieve one or more email templates.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null);
+
+        /// <summary>
         /// Create one or more applications.
         /// </summary>
         /// <param name="apps">Applications to create.</param>
@@ -72,6 +79,13 @@
         /// <param name="services">Services to create.</param>
         /// <returns>List of created services.</returns>
         Task<IEnumerable<ServiceResponse>> CreateServicesAsync(params ServiceRequest[] services);
+
+        /// <summary>
+        /// Create one or more email templates.
+        /// </summary>
+        /// <param name="templates">Email templates to create.</param>
+        /// <returns>List of created email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Update one or more applications.
@@ -104,6 +118,12 @@
         Task UpdateServicesAsync(params ServiceRequest[] services);
 
         /// <summary>
+        /// Update one or more email templates.
+        /// </summary>
+        /// <param name="templates">Email templates to update.</param>
+        Task UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
+
+        /// <summary>
         /// Delete one or more applications.
         /// </summary>
         /// <param name="deleteStorage">If the app is hosted in a storage service, the storage will be deleted as well.</param>
@@ -133,6 +153,12 @@
         /// </summary>
         /// <param name="ids">Service IDs to delete.</param>
         Task DeleteServicesAsync(params int[] ids);
+
+        /// <summary>
+        /// Delete one or more email templates.
+        /// </summary>
+        /// <param name="ids">Email template IDs to delete.</param>
+        Task DeleteEmailTemplatesAsync(params int[] ids);
 
         /// <summary>
         /// Download the application as a DreamFactory package file.

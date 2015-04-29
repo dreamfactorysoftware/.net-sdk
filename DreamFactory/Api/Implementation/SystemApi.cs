@@ -49,6 +49,11 @@
             return await QueryRecordsAsync<ServiceResponse>("service", query);
         }
 
+        public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null)
+        {
+            return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
+        }
+
         public async Task<IEnumerable<AppResponse>> CreateAppsAsync(params AppRequest[] apps)
         {
             IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "app", apps);
@@ -85,6 +90,15 @@
             return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
+        public async Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(params EmailTemplateRequest[] templates)
+        {
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "email_template", templates);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<EmailTemplateResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
+        }
+
         public Task UpdateAppsAsync(params AppRequest[] apps)
         {
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
@@ -110,6 +124,11 @@
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "service", services);
         }
 
+        public Task UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "email_template", templates);
+        }
+
         public Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
         {
             return DeleteRecordsAsync("app", deleteStorage, ids);
@@ -133,6 +152,11 @@
         public Task DeleteServicesAsync(params int[] ids)
         {
             return DeleteRecordsAsync("service", false, ids);
+        }
+
+        public Task DeleteEmailTemplatesAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("email_template", false, ids);
         }
 
         public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)

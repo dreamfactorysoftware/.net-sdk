@@ -98,6 +98,8 @@
     <Compile Include="Model\System\AppGroupRequest.cs" />
     <Compile Include="Model\System\AppGroupResponse.cs" />
     <Compile Include="Model\System\AppRequest.cs" />
+    <Compile Include="Model\System\EmailTemplateRequest.cs" />
+    <Compile Include="Model\System\EmailTemplateResponse.cs" />
     <Compile Include="Model\System\RelatedApp.cs" />
     <Compile Include="Model\System\AppResponse.cs" />
     <Compile Include="Model\System\RelatedAppGroup.cs" />
