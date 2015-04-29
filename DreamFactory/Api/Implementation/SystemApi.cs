@@ -6,11 +6,12 @@
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.Database;
-    using DreamFactory.Model.System;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Provider;
+    using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -61,6 +62,28 @@
             return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
         }
 
+        public async Task<IEnumerable<ProviderResponse>> GetProvidersAsync(int? userId = null)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "provider");
+            if (userId.HasValue)
+            {
+                address = address.WithParameter("user_id", userId.Value);
+            }
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var apps = new { record = new List<ProviderResponse>() };
+            return contentSerializer.Deserialize(response.Body, apps).record;
+        }
+
+        public async Task<IEnumerable<ProviderUserResponse>> GetProviderUserAsync(SqlQuery query = null)
+        {
+            return await QueryRecordsAsync<ProviderUserResponse>("provider_user", query);
+        }
+
         public async Task<IEnumerable<AppResponse>> CreateAppsAsync(params AppRequest[] apps)
         {
             IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "app", apps);
@@ -106,6 +129,24 @@
             return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
+        public async Task<IEnumerable<ProviderResponse>> CreateProvidersAsync(params ProviderRequest[] providers)
+        {
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "provider", providers);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<ProviderResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
+        }
+
+        public async Task<IEnumerable<ProviderUserResponse>> CreateProviderUsersAsync(params ProviderUserRequest[] providerUsers)
+        {
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "provider_user", providerUsers);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { record = new List<ProviderUserResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
+        }
+
         public Task UpdateAppsAsync(params AppRequest[] apps)
         {
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
@@ -136,6 +177,16 @@
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "email_template", templates);
         }
 
+        public Task UpdateProvidersAsync(params ProviderRequest[] providers)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider", providers);
+        }
+
+        public Task UpdateProviderUsersAsync(params ProviderUserRequest[] providerUsers)
+        {
+            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider_user", providerUsers);
+        }
+
         public Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
         {
             return DeleteRecordsAsync("app", deleteStorage, ids);
@@ -164,6 +215,16 @@
         public Task DeleteEmailTemplatesAsync(params int[] ids)
         {
             return DeleteRecordsAsync("email_template", false, ids);
+        }
+
+        public Task DeleteProvidersAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("provider", false, ids);
+        }
+
+        public Task DeleteProviderUsersAsync(params int[] ids)
+        {
+            return DeleteRecordsAsync("provider_user", false, ids);
         }
 
         public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)

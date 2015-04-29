@@ -1,8 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace DreamFactory.Model.System.Environment
 {
-    using global::System.Collections.Generic;
-
     /// <summary>
     /// EnvironmentResponse.
     /// </summary>

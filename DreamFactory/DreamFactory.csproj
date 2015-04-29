@@ -108,6 +108,11 @@
     <Compile Include="Model\System\App\RelatedApp.cs" />
     <Compile Include="Model\System\App\AppResponse.cs" />
     <Compile Include="Model\System\AppGroup\RelatedAppGroup.cs" />
+    <Compile Include="Model\System\ProviderUser\ProviderUserRequest.cs" />
+    <Compile Include="Model\System\ProviderUser\ProviderUserResponse.cs" />
+    <Compile Include="Model\System\Provider\ProviderConfigSettings.cs" />
+    <Compile Include="Model\System\Provider\ProviderRequest.cs" />
+    <Compile Include="Model\System\Provider\ProviderResponse.cs" />
     <Compile Include="Model\System\Role\RoleRequest.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />

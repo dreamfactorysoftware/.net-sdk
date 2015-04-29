@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Model.Database;
-    using DreamFactory.Model.System;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Provider;
+    using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -60,6 +61,20 @@
         Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null);
 
         /// <summary>
+        /// Retrieve one or more providers.
+        /// </summary>
+        /// <param name="userId">If specified, filter the providers by the user ID given.</param>
+        /// <returns>List of providers.</returns>
+        Task<IEnumerable<ProviderResponse>> GetProvidersAsync(int? userId = null);
+
+        /// <summary>
+        /// Retrieve one or more provider users.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of provider users.</returns>
+        Task<IEnumerable<ProviderUserResponse>> GetProviderUserAsync(SqlQuery query = null);
+
+        /// <summary>
         /// Create one or more applications.
         /// </summary>
         /// <param name="apps">Applications to create.</param>
@@ -93,6 +108,20 @@
         /// <param name="templates">Email templates to create.</param>
         /// <returns>List of created email templates.</returns>
         Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
+
+        /// <summary>
+        /// Create one or more providers.
+        /// </summary>
+        /// <param name="providers">Providers to create.</param>
+        /// <returns>List of created providers.</returns>
+        Task<IEnumerable<ProviderResponse>> CreateProvidersAsync(params ProviderRequest[] providers);
+
+        /// <summary>
+        /// Create one or more provider users.
+        /// </summary>
+        /// <param name="providerUsers">Provider users to create.</param>
+        /// <returns>List of created provider users.</returns>
+        Task<IEnumerable<ProviderUserResponse>> CreateProviderUsersAsync(params ProviderUserRequest[] providerUsers);
 
         /// <summary>
         /// Update one or more applications.
@@ -131,6 +160,18 @@
         Task UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
 
         /// <summary>
+        /// Update one or more providers.
+        /// </summary>
+        /// <param name="providers">Providers to update.</param>
+        Task UpdateProvidersAsync(params ProviderRequest[] providers);
+
+        /// <summary>
+        /// Update one or more provider users.
+        /// </summary>
+        /// <param name="providerUsers">Provider users to update.</param>
+        Task UpdateProviderUsersAsync(params  ProviderUserRequest[] providerUsers);
+
+        /// <summary>
         /// Delete one or more applications.
         /// </summary>
         /// <param name="deleteStorage">If the app is hosted in a storage service, the storage will be deleted as well.</param>
@@ -166,6 +207,18 @@
         /// </summary>
         /// <param name="ids">Email template IDs to delete.</param>
         Task DeleteEmailTemplatesAsync(params int[] ids);
+
+        /// <summary>
+        /// Delete one or more providers.
+        /// </summary>
+        /// <param name="ids">Provider IDs to delete.</param>
+        Task DeleteProvidersAsync(params int[] ids);
+
+        /// <summary>
+        /// Delete one or more provider users.
+        /// </summary>
+        /// <param name="ids">Provider user IDs to delete.</param>
+        Task DeleteProviderUsersAsync(params int[] ids);
 
         /// <summary>
         /// Download the application as a DreamFactory package file.
