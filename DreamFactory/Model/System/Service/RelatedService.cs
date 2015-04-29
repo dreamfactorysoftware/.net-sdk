@@ -1,13 +1,13 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.Service
 {
     using global::System;
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// ServiceResponse.
+    /// RelatedService.
     /// </summary>
-    public class ServiceResponse
+    public class RelatedService
     {
         /// <summary>
         /// Identifier of this service.
@@ -57,7 +57,7 @@ namespace DreamFactory.Model.System
         /// <summary>
         /// Any credentials data required by the service.
         /// </summary>
-        public Dictionary<string, object> credentials { get; set; }
+        public string credentials { get; set; }
 
         /// <summary>
         /// The format of the returned data of the service.
@@ -72,22 +72,12 @@ namespace DreamFactory.Model.System
         /// <summary>
         /// Additional URL parameters required by the service.
         /// </summary>
-        public List<KeyValuePair<string, object>> parameters { get; set; }
+        public string parameters { get; set; }
 
         /// <summary>
         /// Additional headers required by the service.
         /// </summary>
-        public List<string> headers { get; set; }
-
-        /// <summary>
-        /// Related apps by app to service assignment.
-        /// </summary>
-        public RelatedApps apps { get; set; }
-
-        /// <summary>
-        /// Related roles by service to role assignment.
-        /// </summary>
-        public RelatedRoles roles { get; set; }
+        public string headers { get; set; }
 
         /// <summary>
         /// Date this service was created.
@@ -108,5 +98,16 @@ namespace DreamFactory.Model.System
         /// User Id of who last modified this service. 
         /// </summary>
         public int? last_modified_by_id { get; set; }
+    }
+
+    /// <summary>
+    /// RelatedServices.
+    /// </summary>
+    public class RelatedServices
+    {
+        /// <summary>
+        /// Array of system user records.
+        /// </summary>
+        public List<RelatedService> record { get; set; }
     }
 }

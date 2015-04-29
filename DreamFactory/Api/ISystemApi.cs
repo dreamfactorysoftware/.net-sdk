@@ -4,6 +4,13 @@
     using System.Threading.Tasks;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System;
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
 
     /// <summary>
     /// Represents /system API.
@@ -176,5 +183,11 @@
         /// <param name="applicationId">Application ID.</param>
         /// <returns>SDK contents.</returns>
         Task<byte[]> DownloadApplicationSdkAsync(int applicationId);
+
+        /// <summary>
+        /// Retrieve environment information.
+        /// </summary>
+        /// <returns></returns>
+        Task<EnvironmentResponse> GetEnvironmentAsync();
     }
 }

@@ -6,6 +6,11 @@
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Model.System;
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -131,6 +136,19 @@
 
             // Assert
             data.Length.ShouldBeGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void ShouldGetEnvironmentAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            EnvironmentResponse environment = systemApi.GetEnvironmentAsync().Result;
+
+            // Assert
+            environment.server.server_os.ShouldBe("linux");
         }
 
         private static ISystemApi CreateSystemApi(string suffix = null)

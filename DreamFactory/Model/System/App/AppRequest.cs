@@ -1,13 +1,16 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.App
 {
-    using global::System;
+    using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// RelatedApp.
+    /// AppResponse.
     /// </summary>
-    public class RelatedApp
+    public class AppRequest
     {
         /// <summary>
         /// Identifier of this application.
@@ -80,34 +83,28 @@ namespace DreamFactory.Model.System
         public bool? requires_plugin { get; set; }
 
         /// <summary>
-        /// Date this application was created.
+        /// Related roles by Role.default_app_id.
         /// </summary>
-        public DateTime? created_date { get; set; }
+        public List<RelatedRoles> roles_default_app { get; set; }
 
         /// <summary>
-        /// User Id of who created this application.
+        /// Related users by User.default_app_id.
         /// </summary>
-        public int? created_by_id { get; set; }
+        public List<RelatedUsers> users_default_app { get; set; }
 
         /// <summary>
-        /// Date this application was last modified.
+        /// Related groups by app to group assignment.
         /// </summary>
-        public DateTime? last_modified_date { get; set; }
+        public List<RelatedAppGroups> app_groups { get; set; }
 
         /// <summary>
-        /// User Id of who last modified this application.
+        /// Related roles by app to role assignment.
         /// </summary>
-        public int? last_modified_by_id { get; set; }
-    }
+        public List<RelatedRoles> roles { get; set; }
 
-    /// <summary>
-    /// RelatedApps.
-    /// </summary>
-    public class RelatedApps
-    {
         /// <summary>
-        /// Array of records.
+        /// Related services by app to service assignment.
         /// </summary>
-        public List<RelatedApp> record { get; set; }
+        public List<RelatedServices> services { get; set; }
     }
 }

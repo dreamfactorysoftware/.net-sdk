@@ -1,10 +1,15 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.Role
 {
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
+    using global::System;
+
     /// <summary>
     /// RoleResponse.
     /// </summary>
-    public class RoleRequest
+    public class RoleResponse
     {
         /// <summary>
         /// Identifier of this role.
@@ -50,5 +55,25 @@ namespace DreamFactory.Model.System
         /// Related services by role assignment.
         /// </summary>
         public RelatedServices services { get; set; }
+
+        /// <summary>
+        /// Date this role was created.
+        /// </summary>
+        public DateTime? created_date { get; set; }
+
+        /// <summary>
+        /// User Id of who created this role.
+        /// </summary>
+        public int? created_by_id { get; set; }
+
+        /// <summary>
+        /// Date this role was last modified.
+        /// </summary>
+        public DateTime? last_modified_date { get; set; }
+
+        /// <summary>
+        /// User Id of who last modified this role.
+        /// </summary>
+        public int? last_modified_by_id { get; set; }
     }
 }

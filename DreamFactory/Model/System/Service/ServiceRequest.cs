@@ -1,13 +1,14 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.Service
 {
-    using global::System;
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.Role;
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// RelatedService.
+    /// ServiceResponse.
     /// </summary>
-    public class RelatedService
+    public class ServiceRequest
     {
         /// <summary>
         /// Identifier of this service.
@@ -57,7 +58,7 @@ namespace DreamFactory.Model.System
         /// <summary>
         /// Any credentials data required by the service.
         /// </summary>
-        public string credentials { get; set; }
+        public Dictionary<string, object> credentials { get; set; }
 
         /// <summary>
         /// The format of the returned data of the service.
@@ -72,42 +73,21 @@ namespace DreamFactory.Model.System
         /// <summary>
         /// Additional URL parameters required by the service.
         /// </summary>
-        public string parameters { get; set; }
+        public List<KeyValuePair<string, object>> parameters { get; set; }
 
         /// <summary>
         /// Additional headers required by the service.
         /// </summary>
-        public string headers { get; set; }
+        public List<string> headers { get; set; }
 
         /// <summary>
-        /// Date this service was created.
+        /// Related apps by app to service assignment.
         /// </summary>
-        public DateTime? created_date { get; set; }
+        public RelatedApps apps { get; set; }
 
         /// <summary>
-        /// User Id of who created this service.
+        /// Related roles by service to role assignment.
         /// </summary>
-        public int? created_by_id { get; set; }
-
-        /// <summary>
-        /// Date this service was last modified.
-        /// </summary>
-        public DateTime? last_modified_date { get; set; }
-
-        /// <summary>
-        /// User Id of who last modified this service. 
-        /// </summary>
-        public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedServices.
-    /// </summary>
-    public class RelatedServices
-    {
-        /// <summary>
-        /// Array of system user records.
-        /// </summary>
-        public List<RelatedService> record { get; set; }
+        public RelatedRoles roles { get; set; }
     }
 }

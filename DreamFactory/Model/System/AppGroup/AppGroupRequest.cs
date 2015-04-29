@@ -1,5 +1,8 @@
-﻿namespace DreamFactory.Model.System
+﻿// ReSharper disable InconsistentNaming
+namespace DreamFactory.Model.System.AppGroup
 {
+    using DreamFactory.Model.System.App;
+
     /// <summary>
     /// AppGroupResponse.
     /// </summary>

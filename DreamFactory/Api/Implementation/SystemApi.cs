@@ -7,6 +7,13 @@
     using DreamFactory.Http;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System;
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
     using DreamFactory.Serialization;
 
     internal class SystemApi : ISystemApi
@@ -188,6 +195,17 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return response.RawBody;
+        }
+
+        public async Task<EnvironmentResponse> GetEnvironmentAsync()
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "environment");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<EnvironmentResponse>(response.Body);
         }
 
         #region --- Helpers ---

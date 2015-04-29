@@ -1,6 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.App
 {
+    using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
     using global::System;
     using global::System.Collections.Generic;
 

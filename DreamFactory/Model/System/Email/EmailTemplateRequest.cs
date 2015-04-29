@@ -1,13 +1,13 @@
-﻿namespace DreamFactory.Model.System
+﻿// ReSharper disable InconsistentNaming
+namespace DreamFactory.Model.System.Email
 {
     using DreamFactory.Model.Email;
-    using global::System;
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// EmailTemplateResponse.
+    /// EmailTemplateRequest.
     /// </summary>
-    public class EmailTemplateResponse
+    public class EmailTemplateRequest
     {
         /// <summary>
         /// Identifier of this email template.
@@ -68,25 +68,5 @@
         /// Array of default name value pairs for template replacement.
         /// </summary>
         public List<string> defaults { get; set; }
-
-        /// <summary>
-        /// Date this email template was created.
-        /// </summary>
-        public DateTime? created_date { get; set; }
-
-        /// <summary>
-        /// User Id of who created this email template.
-        /// </summary>
-        public int? created_by_id { get; set; }
-
-        /// <summary>
-        /// Date this email template was last modified.
-        /// </summary>
-        public DateTime? last_modified_date { get; set; }
-
-        /// <summary>
-        /// User Id of who last modified this email template.
-        /// </summary>
-        public int? last_modified_by_id { get; set; }
     }
 }

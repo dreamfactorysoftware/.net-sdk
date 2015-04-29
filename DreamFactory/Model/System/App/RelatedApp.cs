@@ -1,12 +1,13 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System
+namespace DreamFactory.Model.System.App
 {
+    using global::System;
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// AppResponse.
+    /// RelatedApp.
     /// </summary>
-    public class AppRequest
+    public class RelatedApp
     {
         /// <summary>
         /// Identifier of this application.
@@ -79,28 +80,34 @@ namespace DreamFactory.Model.System
         public bool? requires_plugin { get; set; }
 
         /// <summary>
-        /// Related roles by Role.default_app_id.
+        /// Date this application was created.
         /// </summary>
-        public List<RelatedRoles> roles_default_app { get; set; }
+        public DateTime? created_date { get; set; }
 
         /// <summary>
-        /// Related users by User.default_app_id.
+        /// User Id of who created this application.
         /// </summary>
-        public List<RelatedUsers> users_default_app { get; set; }
+        public int? created_by_id { get; set; }
 
         /// <summary>
-        /// Related groups by app to group assignment.
+        /// Date this application was last modified.
         /// </summary>
-        public List<RelatedAppGroups> app_groups { get; set; }
+        public DateTime? last_modified_date { get; set; }
 
         /// <summary>
-        /// Related roles by app to role assignment.
+        /// User Id of who last modified this application.
         /// </summary>
-        public List<RelatedRoles> roles { get; set; }
+        public int? last_modified_by_id { get; set; }
+    }
 
+    /// <summary>
+    /// RelatedApps.
+    /// </summary>
+    public class RelatedApps
+    {
         /// <summary>
-        /// Related services by app to service assignment.
+        /// Array of records.
         /// </summary>
-        public List<RelatedServices> services { get; set; }
+        public List<RelatedApp> record { get; set; }
     }
 }
