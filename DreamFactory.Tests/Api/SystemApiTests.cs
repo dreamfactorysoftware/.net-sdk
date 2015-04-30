@@ -7,6 +7,7 @@
     using DreamFactory.Http;
     using DreamFactory.Model.System;
     using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
@@ -75,6 +76,20 @@
             // Assert
             services.Count.ShouldBe(4);
             services.First().name.ShouldBe("Database");
+        }
+
+        [TestMethod]
+        public void ShouldGetAppGroupAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<AppGroupResponse> apps = systemApi.GetAppGroupsAsync().Result.ToList();
+
+            // Assert
+            apps.Count.ShouldBe(1);
+            apps.First().name.ShouldBe("NewGroup");
         }
 
         [TestMethod]

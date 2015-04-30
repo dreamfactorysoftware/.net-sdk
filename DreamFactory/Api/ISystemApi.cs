@@ -10,6 +10,7 @@
     using DreamFactory.Model.System.Provider;
     using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
 
@@ -240,7 +241,13 @@
         /// <summary>
         /// Retrieve environment information.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>See <see cref="EnvironmentResponse"/>.</returns>
         Task<EnvironmentResponse> GetEnvironmentAsync();
+
+        /// <summary>
+        /// List all scripts.
+        /// </summary>
+        /// <returns>List of scripts.</returns>
+        Task<IEnumerable<ScriptResponse>> GetScriptsAsync();
     }
 }

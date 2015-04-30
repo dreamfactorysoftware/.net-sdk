@@ -1,0 +1,13 @@
+﻿{
+  "record": [
+    {
+      "id": 1,
+      "created_date": "2015-04-30 00:45:00",
+      "created_by_id": 1,
+      "last_modified_date": "2015-04-30 00:45:00",
+      "last_modified_by_id": 1,
+      "name": "NewGroup",
+      "description": "Group Description"
+    }
+  ]
+}

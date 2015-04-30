@@ -73,6 +73,10 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Update.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Create.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Get.cs" />
     <Compile Include="Api\Implementation\UserApi.Password.cs" />
     <Compile Include="Api\Implementation\UserApi.Custom.cs" />
     <Compile Include="Api\Implementation\UserApi.Session.cs" />
@@ -114,6 +118,7 @@
     <Compile Include="Model\System\Provider\ProviderRequest.cs" />
     <Compile Include="Model\System\Provider\ProviderResponse.cs" />
     <Compile Include="Model\System\Role\RoleRequest.cs" />
+    <Compile Include="Model\System\Script\ScriptResponse.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />
     <Compile Include="Model\System\User\UserRequest.cs" />

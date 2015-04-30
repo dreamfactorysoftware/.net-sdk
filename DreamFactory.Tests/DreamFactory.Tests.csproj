@@ -263,6 +263,9 @@
     <None Include="TestData\rest\system\app\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\app_group\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\system\environment\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
