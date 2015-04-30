@@ -5,10 +5,10 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model.System;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
@@ -106,6 +106,21 @@
             scripts.Count.ShouldBe(1);
             scripts.First().language.ShouldBe("js");
             scripts.First().event_name.ShouldBe("sample-scripts");
+        }
+
+        [TestMethod]
+        public void ShouldGetEventsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<EventCacheResponse> responses = systemApi.GetEventsAsync(true, false).Result.ToList();
+
+            // Assert
+            responses.Count.ShouldBe(5);
+            responses.First().name.ShouldBe("user");
+            responses.First().paths.Count.ShouldBe(8);
         }
 
         [TestMethod]

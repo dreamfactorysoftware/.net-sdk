@@ -7,6 +7,7 @@
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Provider;
     using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
@@ -274,5 +275,25 @@
         /// <param name="id">Script ID.</param>
         /// <param name="userScript">True if it is a user script.</param>
         Task DeleteScriptAsync(string id, bool userScript);
+
+        /// <summary>
+        /// Retrieve events and registered listeners.
+        /// </summary>
+        /// <param name="allEvents">If set to true, all events that are available are returned. Otherwise only events that are have registered listeners are returned.</param>
+        /// <param name="asCached">If set to true, the returned structure is identical the stored structure. If false, a simpler form is returned for client consumption.</param>
+        /// <returns>List of <see cref="EventCacheResponse"/>.</returns>
+        Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents, bool asCached);
+
+        /// <summary>
+        /// Register one or more event listeners.
+        /// </summary>
+        /// <param name="requests">Event registration records.</param>
+        Task RegisterEventsAsync(params EventRequest[] requests);
+
+        /// <summary>
+        /// Delete one or more event listeners.
+        /// </summary>
+        /// <param name="requests">Event registration records.</param>
+        Task UnregisterEventsAsync(params EventRequest[] requests);
     }
 }

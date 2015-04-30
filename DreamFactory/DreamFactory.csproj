@@ -73,6 +73,7 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Script.cs" />
     <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
     <Compile Include="Api\Implementation\SystemApi.Update.cs" />
@@ -113,6 +114,11 @@
     <Compile Include="Model\System\App\RelatedApp.cs" />
     <Compile Include="Model\System\App\AppResponse.cs" />
     <Compile Include="Model\System\AppGroup\RelatedAppGroup.cs" />
+    <Compile Include="Model\System\Event\EventCacheResponse.cs" />
+    <Compile Include="Model\System\Event\EventPaths.cs" />
+    <Compile Include="Model\System\Event\EventResponse.cs" />
+    <Compile Include="Model\System\Event\EventRequest.cs" />
+    <Compile Include="Model\System\Event\EventVerbs.cs" />
     <Compile Include="Model\System\ProviderUser\ProviderUserRequest.cs" />
     <Compile Include="Model\System\ProviderUser\ProviderUserResponse.cs" />
     <Compile Include="Model\System\Provider\ProviderConfigSettings.cs" />
