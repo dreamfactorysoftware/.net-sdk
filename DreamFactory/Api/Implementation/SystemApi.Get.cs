@@ -11,7 +11,6 @@
     using DreamFactory.Model.System.Provider;
     using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
-    using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
 
@@ -60,8 +59,8 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var apps = new { record = new List<ProviderResponse>() };
-            return contentSerializer.Deserialize(response.Body, apps).record;
+            var providers = new { record = new List<ProviderResponse>() };
+            return contentSerializer.Deserialize(response.Body, providers).record;
         }
 
         public async Task<IEnumerable<ProviderUserResponse>> GetProviderUserAsync(SqlQuery query = null)
@@ -78,18 +77,6 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<EnvironmentResponse>(response.Body);
-        }
-
-        public async Task<IEnumerable<ScriptResponse>> GetScriptsAsync()
-        {
-            IHttpAddress address = baseAddress.WithResources("system", "script");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var apps = new { script = new List<ScriptResponse>() };
-            return contentSerializer.Deserialize(response.Body, apps).script;
         }
 
         #region --- Helpers ---

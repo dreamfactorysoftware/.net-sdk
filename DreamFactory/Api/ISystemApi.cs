@@ -247,7 +247,32 @@
         /// <summary>
         /// List all scripts.
         /// </summary>
+        /// <param name="includeUserScripts">If true, user scripts will be returned along with the event scripts.</param>
         /// <returns>List of scripts.</returns>
-        Task<IEnumerable<ScriptResponse>> GetScriptsAsync();
+        Task<IEnumerable<ScriptResponse>> GetScriptsAsync(bool includeUserScripts);
+
+        /// <summary>
+        /// Write the specified script to the file system.
+        /// </summary>
+        /// <param name="id">Script ID.</param>
+        /// <param name="body">The body of the script to write.</param>
+        /// <param name="userScript">True if this is a user script.</param>
+        Task<ScriptResponse> WriteScriptAsync(string id, string body, bool userScript);
+
+        /// <summary>
+        /// Run the specified script.
+        /// </summary>
+        /// <param name="id">Script ID.</param>
+        /// <param name="userScript">True if it is a user script.</param>
+        /// <param name="logOutput">If true (the default), script output (not the returned result) will be sent to the log as "info".</param>
+        /// <returns>See <see cref="ScriptOutput"/>.</returns>
+        Task<ScriptOutput> RunScriptAsync(string id, bool userScript, bool logOutput);
+
+        /// <summary>
+        /// Delete script with ID provided.
+        /// </summary>
+        /// <param name="id">Script ID.</param>
+        /// <param name="userScript">True if it is a user script.</param>
+        Task DeleteScriptAsync(string id, bool userScript);
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace DreamFactory.Model.System.Script
+﻿// ReSharper disable InconsistentNaming
+namespace DreamFactory.Model.System.Script
 {
     using global::System;
 

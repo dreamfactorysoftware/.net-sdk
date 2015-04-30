@@ -10,6 +10,7 @@
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
@@ -85,11 +86,26 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<AppGroupResponse> apps = systemApi.GetAppGroupsAsync().Result.ToList();
+            List<AppGroupResponse> appGroups = systemApi.GetAppGroupsAsync().Result.ToList();
 
             // Assert
-            apps.Count.ShouldBe(1);
-            apps.First().name.ShouldBe("NewGroup");
+            appGroups.Count.ShouldBe(1);
+            appGroups.First().name.ShouldBe("NewGroup");
+        }
+
+        [TestMethod]
+        public void ShouldGetScriptsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<ScriptResponse> scripts = systemApi.GetScriptsAsync(true).Result.ToList();
+
+            // Assert
+            scripts.Count.ShouldBe(1);
+            scripts.First().language.ShouldBe("js");
+            scripts.First().event_name.ShouldBe("sample-scripts");
         }
 
         [TestMethod]
