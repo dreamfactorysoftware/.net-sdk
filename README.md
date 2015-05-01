@@ -1,3 +1,5 @@
+https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg
+
 # .NET SDK for the DreamFactory REST API
 
 > NOTE: The SDK is in active development phase. The API, structure and files can be changed at any time without a notification.
