@@ -155,7 +155,7 @@ Reading/Writing of metadata associated with file entities (container, folder, fi
 #### Notes on schema management
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
-```charp
+```csharp
         // Your custom POCO
         class StaffRecord
         {
