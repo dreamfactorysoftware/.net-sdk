@@ -73,6 +73,7 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Custom.cs" />
     <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Script.cs" />
     <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
