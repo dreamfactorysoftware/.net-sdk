@@ -77,6 +77,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Api\CustomSettingsApiTests.cs" />
     <Compile Include="Api\DatabaseApiTests.cs" />
     <Compile Include="Api\EmailApiTests.cs" />
     <Compile Include="Api\FilesApiTests.cs" />

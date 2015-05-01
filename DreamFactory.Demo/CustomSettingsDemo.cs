@@ -10,7 +10,7 @@
     {
         public static async Task Run(IRestContext context)
         {
-            IUserApi userApi = context.Factory.CreateUserApi();
+            ICustomSettingsApi settingsApi = context.Factory.CreateUserCustomSettingsApi();
 
             // Setting some preferences
             UserPreferences preferences = new UserPreferences
@@ -20,18 +20,18 @@
                 entity = new UserPreferences.Entity { rank = 4, role = "user" }
             };
 
-            if (await userApi.SetCustomSettingAsync("preferences", preferences))
+            if (await settingsApi.SetCustomSettingAsync("preferences", preferences))
             {
                 Console.WriteLine("Created custom settings: preferences");
             }
 
             // Retrieving custom settings names
-            IEnumerable<string> names = await userApi.GetCustomSettingsAsync();
+            IEnumerable<string> names = await settingsApi.GetCustomSettingsAsync();
             string flatList = string.Join(", ", names);
             Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 
             // Retrieving preferences back
-            UserPreferences instance = await userApi.GetCustomSettingAsync<UserPreferences>("preferences");
+            UserPreferences instance = await settingsApi.GetCustomSettingAsync<UserPreferences>("preferences");
             Console.WriteLine("Retrieved preferences back:");
             Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.flag, instance.entity.rank);
         }

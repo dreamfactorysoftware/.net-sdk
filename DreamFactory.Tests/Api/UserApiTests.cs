@@ -173,65 +173,6 @@
 
         #endregion
 
-        #region --- Settings ---
-
-        [TestMethod]
-        public void ShouldGetCustomSettingsAsync()
-        {
-            IUserApi userApi = CreateUserApi();
-
-            // Act
-            IEnumerable<string> names = userApi.GetCustomSettingsAsync().Result;
-
-            // Assert
-            names.Single().ShouldBe("preferences");
-        }
-
-        [TestMethod]
-        public void ShouldSetCustomSettingAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-            UserPreferences preferences = CreateUserPreferences();
-
-            // Act
-            bool ok = userApi.SetCustomSettingAsync("preferences", preferences).Result;
-
-            // Assert
-            ok.ShouldBe(true);
-        }
-
-        [TestMethod]
-        public void ShouldGetCustomSettingAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-
-            // Act
-            UserPreferences setting = userApi.GetCustomSettingAsync<UserPreferences>("preferences").Result;
-
-            // Assert
-            setting.flag.ShouldBe(true);
-            setting.array.Length.ShouldBe(3);
-            setting.entity.rank.ShouldBe(4);
-            setting.entity.role.ShouldBe("user");
-        }
-
-        [TestMethod]
-        public void ShouldDeleteCustomSettingAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-
-            // Act
-            bool ok = userApi.DeleteCustomSettingAsync("preferences").Result;
-
-            // Assert
-            ok.ShouldBe(true);
-        }
-
-        #endregion
-
         #region --- Register ---
 
         [TestMethod]
@@ -314,30 +255,5 @@
             headers = new HttpHeaders();
             return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);
         }
-
-        private static UserPreferences CreateUserPreferences()
-        {
-            return new UserPreferences
-            {
-                flag = true,
-                array = new[] { "a", "b", "c" },
-                entity = new UserPreferences.Entity { rank = 4, role = "user" }
-            };
-        }
-
-        // ReSharper disable InconsistentNaming
-        internal class UserPreferences
-        {
-            public bool flag { get; set; }
-            public string[] array { get; set; }
-            public Entity entity { get; set; }
-
-            internal class Entity
-            {
-                public int rank { get; set; }
-                public string role { get; set; }
-            }
-        }
-        // ReSharper restore InconsistentNaming
     }
 }

@@ -44,5 +44,15 @@
         {
             return new DatabaseApi(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName);
         }
+
+        public ICustomSettingsApi CreateUserCustomSettingsApi()
+        {
+            return new CustomSettingsApi(baseAddress, httpFacade, contentSerializer, baseHeaders, "user");
+        }
+
+        public ICustomSettingsApi CreateSystemCustomSettingsApi()
+        {
+            return new CustomSettingsApi(baseAddress, httpFacade, contentSerializer, baseHeaders, "system");
+        }
     }
 }

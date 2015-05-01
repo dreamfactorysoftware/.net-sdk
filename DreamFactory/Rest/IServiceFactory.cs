@@ -36,5 +36,17 @@
         /// </summary>
         /// <returns><see cref="IDatabaseApi"/> instance.</returns>
         IDatabaseApi CreateDatabaseApi(string serviceName);
+
+        /// <summary>
+        /// Creates <see cref="ICustomSettingsApi"/> instance for /user/custom.
+        /// </summary>
+        /// <returns><see cref="ICustomSettingsApi"/> instance.</returns>
+        ICustomSettingsApi CreateUserCustomSettingsApi();
+
+        /// <summary>
+        /// Creates <see cref="ICustomSettingsApi"/> instance for /system/custom.
+        /// </summary>
+        /// <returns><see cref="ICustomSettingsApi"/> instance.</returns>
+        ICustomSettingsApi CreateSystemCustomSettingsApi();
     }
 }

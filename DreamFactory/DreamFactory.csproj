@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ICustomSettingsApi.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.Records.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.Stored.cs" />
     <Compile Include="Api\Implementation\EmailApi.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Api\Implementation\FilesApi.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Custom.cs" />
+    <Compile Include="Api\Implementation\CustomSettingsApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Script.cs" />
     <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Api\Implementation\SystemApi.Create.cs" />
     <Compile Include="Api\Implementation\SystemApi.Get.cs" />
     <Compile Include="Api\Implementation\UserApi.Password.cs" />
-    <Compile Include="Api\Implementation\UserApi.Custom.cs" />
     <Compile Include="Api\Implementation\UserApi.Session.cs" />
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
