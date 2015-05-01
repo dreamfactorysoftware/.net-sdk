@@ -5,6 +5,7 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Config;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
@@ -295,5 +296,18 @@
         /// </summary>
         /// <param name="requests">Event registration records.</param>
         Task UnregisterEventsAsync(params EventRequest[] requests);
+
+        /// <summary>
+        /// Retrieve system configuration properties.
+        /// </summary>
+        /// <returns>See <see cref="ConfigResponse"/>.</returns>
+        Task<ConfigResponse> GetConfigAsync();
+
+        /// <summary>
+        /// Update one or more system configuration properties.
+        /// </summary>
+        /// <param name="config">New configuration properties.</param>
+        /// <returns>See <see cref="ConfigResponse"/>.</returns>
+        Task<ConfigResponse> SetConfigAsync(ConfigRequest config);
     }
 }

@@ -3,6 +3,7 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.System.Config;
     using DreamFactory.Serialization;
 
     internal partial class SystemApi : ISystemApi
@@ -49,6 +50,29 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return response.RawBody;
+        }
+
+        public async Task<ConfigResponse> GetConfigAsync()
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "config");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
+        }
+
+        public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "config");
+            string body = contentSerializer.Serialize(config);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
         }
     }
 }

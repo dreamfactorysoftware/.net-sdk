@@ -7,6 +7,7 @@
     using DreamFactory.Http;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Config;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
@@ -195,6 +196,22 @@
 
             // Assert
             environment.server.server_os.ShouldBe("linux");
+        }
+
+        [TestMethod]
+        public void ShouldGetConfigAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            ConfigResponse config = systemApi.GetConfigAsync().Result;
+
+            // Assert
+            config.db_version.ShouldBe("1.9.0");
+            config.install_name.ShouldBe("Bitnami Package");
+            config.paths.Count.ShouldBe(6);
+            config.states.operation_state.ShouldBe(-1);
         }
 
         private static ISystemApi CreateSystemApi(string suffix = null)

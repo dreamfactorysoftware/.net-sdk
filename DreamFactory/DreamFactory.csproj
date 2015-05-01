@@ -104,6 +104,10 @@
     <Compile Include="Model\System\AppGroup\AppGroupRequest.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupResponse.cs" />
     <Compile Include="Model\System\App\AppRequest.cs" />
+    <Compile Include="Model\System\Config\ConfigRequest.cs" />
+    <Compile Include="Model\System\Config\ConfigResponse.cs" />
+    <Compile Include="Model\System\Config\HostInfo.cs" />
+    <Compile Include="Model\System\Config\StateInfo.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />
     <Compile Include="Model\System\Email\EmailTemplateResponse.cs" />
     <Compile Include="Model\System\Environment\EnvironmentResponse.cs" />

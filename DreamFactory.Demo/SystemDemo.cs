@@ -8,6 +8,7 @@
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.Config;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
@@ -35,10 +36,15 @@
             byte[] sdk = await systemApi.DownloadApplicationSdkAsync(1);
             File.WriteAllBytes("todojquery-package.zip", package);
             File.WriteAllBytes("todojquery-sdk.zip", sdk);
+            Console.WriteLine();
 
             // Get environment info
             EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();
             Console.WriteLine("DreamFactory Server is running on {0}", environment.server.server_os);
+
+            // Get config
+            ConfigResponse config = await systemApi.GetConfigAsync();
+            Console.WriteLine("config.install_name = {0}", config.install_name);
         }
     }
 }
