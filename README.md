@@ -34,14 +34,14 @@ The solution folder also contains ReSharper settings file (team-shared), as well
 
 ### Basics
 
-All API calls are divided into the three groups:
+The API provides the following functions:
 
 1. Simple HTTP API, for making arbitrary HTTP requests;
 2. Model-driven API matching the Swagger definitions,
    e.g. `Session session = await LoginAsync("admin", "john@mail.com", "god");`
-3. .NET friendly bindings and extensions, such as Entity Framework interoperability.
+3. Model extensions and builders to ease working with object instances.
 
-Note that all network API calls are made to be asynchronous. They can be `await`'ed and used well together with Task Parallel Library (TPL).
+All network-related API calls are made to be asynchronous. They can be `await`'ed and used well together with Task Parallel Library (TPL).
 
 ### Errors handling
 
@@ -125,9 +125,13 @@ All API calls require Application-Name header to be set and many others require 
 
 To use/set another Application-Name, simply perform another `LoginAsync` call with a new `applicationName` parameter.
 
-##### Notes on custom settings
+#### CustomSettings API
 
-This SDK is targeting .NET users, hence the primary focus is made towards strong-typing, rather than duck-typing.
+> See [ICustomSettingsApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ICustomSettingsApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/CustomSettingsDemo.cs)
+
+The API can be created for user and system namespace.
+
+Because the SDK is targeting .NET users, the primary focus is made towards strong-typing, rather than duck-typing.
 To deal with a custom setting, a user must have the corresponding DTO class matching the setting's schema.
 Please refer to the demo for sample API usage.
 
@@ -206,3 +210,4 @@ EmailRequest request = new EmailRequestBuilder()
 * Reading/writing of metadata related to system records are not supported.
 * `EnvironmentResponse` has `PhpInfoSection` object is ignored on read.
 * Related entities are not retrieved (see related query parameter).
+* Unregister event listeners is not supported.
