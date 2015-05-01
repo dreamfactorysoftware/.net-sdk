@@ -1,2 +1,5 @@
 language: csharp
 solution: DreamFactoryNet.sln
+script:
+  - xbuild DreamFactory/DreamFactory.csproj
+  
