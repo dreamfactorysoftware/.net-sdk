@@ -6,6 +6,7 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Device;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
@@ -322,5 +323,18 @@
         /// <param name="constant">Identifier of the enumeration type to retrieve.</param>
         /// <returns>Key-value pairs.</returns>
         Task<Dictionary<string, string>> GetConstantAsync(string constant);
+
+        /// <summary>
+        /// Retrieve one or more devices.
+        /// </summary>
+        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <returns>List of devices.</returns>
+        Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query = null);
+
+        /// <summary>
+        /// Delete one or more devices.
+        /// </summary>
+        /// <param name="ids">Device IDs to delete.</param>
+        Task DeleteDevices(params int[] ids);
     }
 }

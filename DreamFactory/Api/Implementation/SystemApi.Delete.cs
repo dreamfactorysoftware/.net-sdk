@@ -46,6 +46,11 @@
             return DeleteRecordsAsync("provider_user", false, ids);
         }
 
+        public Task DeleteDevices(params int[] ids)
+        {
+            return DeleteRecordsAsync("device", false, ids);
+        }
+
         #region --- Helpers ---
 
         private async Task DeleteRecordsAsync(string resource, bool setDeleteStorage, params int[] ids)

@@ -108,6 +108,7 @@
     <Compile Include="Model\System\Config\ConfigResponse.cs" />
     <Compile Include="Model\System\Config\HostInfo.cs" />
     <Compile Include="Model\System\Config\StateInfo.cs" />
+    <Compile Include="Model\System\Device\DeviceResponse.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />
     <Compile Include="Model\System\Email\EmailTemplateResponse.cs" />
     <Compile Include="Model\System\Environment\EnvironmentResponse.cs" />

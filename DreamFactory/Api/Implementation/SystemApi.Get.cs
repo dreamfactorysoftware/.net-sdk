@@ -6,6 +6,7 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Device;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Provider;
@@ -77,6 +78,34 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<EnvironmentResponse>(response.Body);
+        }
+
+        public async Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query)
+        {
+            return await QueryRecordsAsync<DeviceResponse>("device", query);
+        }
+
+        public async Task<IEnumerable<string>> GetConstantsAsync()
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "constant");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            Dictionary<string, object> types = contentSerializer.Deserialize<Dictionary<string, object>>(response.Body);
+            return types.Keys;
+        }
+
+        public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
+        {
+            IHttpAddress address = baseAddress.WithResources("system", "constant", constant);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(response.Body)[constant];
         }
 
         #region --- Helpers ---

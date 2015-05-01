@@ -1,8 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.System.Config;
@@ -75,29 +73,6 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             return contentSerializer.Deserialize<ConfigResponse>(response.Body);
-        }
-
-        public async Task<IEnumerable<string>> GetConstantsAsync()
-        {
-            IHttpAddress address = baseAddress.WithResources("system", "constant");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            Dictionary<string, object> types = contentSerializer.Deserialize<Dictionary<string, object>>(response.Body);
-            return types.Keys;
-        }
-
-        public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
-        {
-            IHttpAddress address = baseAddress.WithResources("system", "constant", constant);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(response.Body)[constant];
         }
     }
 }
