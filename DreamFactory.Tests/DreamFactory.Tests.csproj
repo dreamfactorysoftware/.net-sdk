@@ -269,6 +269,12 @@
     <None Include="TestData\rest\system\config\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\constant\content_types\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\constant\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\system\environment\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,0 +1,18 @@
+﻿{
+  "content_types": {
+    "JSON": 0,
+    "XML": 1,
+    "CSV": 3,
+    "PSV": 4,
+    "TSV": 5,
+    "HTML": 6,
+    "TEXT": 7,
+    "JAVASCRIPT": 8,
+    "CSS": 9,
+    "RDF": 10,
+    "PDF": 11,
+    "ATOM": 12,
+    "RSS": 13,
+    "WWW": 14
+  }
+}

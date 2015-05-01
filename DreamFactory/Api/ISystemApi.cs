@@ -309,5 +309,18 @@
         /// <param name="config">New configuration properties.</param>
         /// <returns>See <see cref="ConfigResponse"/>.</returns>
         Task<ConfigResponse> SetConfigAsync(ConfigRequest config);
+
+        /// <summary>
+        /// Get all enumerated types.
+        /// </summary>
+        /// <returns>List of enumeration types.</returns>
+        Task<IEnumerable<string>> GetConstantsAsync();
+
+        /// <summary>
+        /// Get enumerated type constant values.
+        /// </summary>
+        /// <param name="constant">Identifier of the enumeration type to retrieve.</param>
+        /// <returns>Key-value pairs.</returns>
+        Task<Dictionary<string, string>> GetConstantAsync(string constant);
     }
 }

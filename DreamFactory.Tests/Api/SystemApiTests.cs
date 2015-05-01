@@ -214,6 +214,34 @@
             config.states.operation_state.ShouldBe(-1);
         }
 
+        [TestMethod]
+        public void ShouldGetConstantsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<string> types = systemApi.GetConstantsAsync().Result.ToList();
+
+            // Assert
+            types.Count.ShouldBe(19);
+            types.ShouldContain("content_types");
+        }
+
+        [TestMethod]
+        public void ShouldGetConstantAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            Dictionary<string, string> constant = systemApi.GetConstantAsync("content_types").Result;
+
+            // Assert
+            constant.Count.ShouldBe(14);
+            constant.Keys.ShouldContain("HTML");
+        }
+
         private static ISystemApi CreateSystemApi(string suffix = null)
         {
             HttpHeaders headers;

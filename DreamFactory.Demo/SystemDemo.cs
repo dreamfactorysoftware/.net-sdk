@@ -45,6 +45,10 @@
             // Get config
             ConfigResponse config = await systemApi.GetConfigAsync();
             Console.WriteLine("config.install_name = {0}", config.install_name);
+
+            // Get constant
+            Dictionary<string, string> contentTypes = await systemApi.GetConstantAsync("content_types");
+            Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
         }
     }
 }
