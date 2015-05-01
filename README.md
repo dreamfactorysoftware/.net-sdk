@@ -1,4 +1,4 @@
-https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg
+![Build status](https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg)
 
 # .NET SDK for the DreamFactory REST API
 
