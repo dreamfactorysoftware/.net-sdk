@@ -343,6 +343,6 @@
         /// Delete one or more devices.
         /// </summary>
         /// <param name="ids">Device IDs to delete.</param>
-        Task DeleteDevices(params int[] ids);
+        Task DeleteDevicesAsync(params int[] ids);
     }
 }

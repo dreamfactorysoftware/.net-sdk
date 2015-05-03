@@ -46,7 +46,7 @@
             return DeleteRecordsAsync("provider_user", false, ids);
         }
 
-        public Task DeleteDevices(params int[] ids)
+        public Task DeleteDevicesAsync(params int[] ids)
         {
             return DeleteRecordsAsync("device", false, ids);
         }
