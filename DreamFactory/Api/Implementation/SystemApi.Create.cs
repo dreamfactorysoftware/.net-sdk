@@ -86,7 +86,7 @@
                 throw new ArgumentException("At least one parameter must be specificed", "records");
             }
 
-            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
+            IHttpAddress address = baseAddress.WithResources(SystemService, resource).WithParameter("fields", "*");
             var requests = new { record = new List<TRecord>(records) };
             string body = contentSerializer.Serialize(requests);
             IHttpRequest request = new HttpRequest(method, address.Build(), baseHeaders, body);
