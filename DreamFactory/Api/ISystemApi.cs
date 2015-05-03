@@ -131,49 +131,57 @@
         /// Update one or more applications.
         /// </summary>
         /// <param name="apps">Applications to update.</param>
-        Task UpdateAppsAsync(params AppRequest[] apps);
+        /// <returns>List of updated applications.</returns>
+        Task<IEnumerable<AppResponse>> UpdateAppsAsync(params AppRequest[] apps);
 
         /// <summary>
         /// Update one or more application groups.
         /// </summary>
         /// <param name="appGroups">Application groups to update.</param>
-        Task UpdateAppGroupsAsync(params AppGroupRequest[] appGroups);
+        /// <returns>List of updated application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(params AppGroupRequest[] appGroups);
 
         /// <summary>
         /// Update one or more roles.
         /// </summary>
         /// <param name="roles">Roles to update.</param>
-        Task UpdateRolesAsync(params RoleRequest[] roles);
+        /// <returns>List of updated roles.</returns>
+        Task<IEnumerable<RoleResponse>> UpdateRolesAsync(params RoleRequest[] roles);
 
         /// <summary>
         /// Update one or more users.
         /// </summary>
         /// <param name="users">Users to update.</param>
+        /// <returns>List of updated users.</returns>
         Task<IEnumerable<UserResponse>> UpdateUsersAsync(params UserRequest[] users);
 
         /// <summary>
         /// Update one or more services.
         /// </summary>
         /// <param name="services">Services to update.</param>
-        Task UpdateServicesAsync(params ServiceRequest[] services);
+        /// <returns>List of updated services.</returns>
+        Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(params ServiceRequest[] services);
 
         /// <summary>
         /// Update one or more email templates.
         /// </summary>
         /// <param name="templates">Email templates to update.</param>
-        Task UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
+        /// <returns>List of updated email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Update one or more providers.
         /// </summary>
         /// <param name="providers">Providers to update.</param>
-        Task UpdateProvidersAsync(params ProviderRequest[] providers);
+        /// <returns>List of updated providers.</returns>
+        Task<IEnumerable<ProviderResponse>> UpdateProvidersAsync(params ProviderRequest[] providers);
 
         /// <summary>
         /// Update one or more provider users.
         /// </summary>
         /// <param name="providerUsers">Provider users to update.</param>
-        Task UpdateProviderUsersAsync(params  ProviderUserRequest[] providerUsers);
+        /// <returns>List of updated provider users.</returns>
+        Task<IEnumerable<ProviderUserResponse>> UpdateProviderUsersAsync(params  ProviderUserRequest[] providerUsers);
 
         /// <summary>
         /// Delete one or more applications.

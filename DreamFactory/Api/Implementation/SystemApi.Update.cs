@@ -14,47 +14,60 @@
 
     internal partial class SystemApi
     {
-        public Task UpdateAppsAsync(params AppRequest[] apps)
+        public async Task<IEnumerable<AppResponse>> UpdateAppsAsync(params AppRequest[] apps)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app", apps);
+            var responses = new { record = new List<AppResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateAppGroupsAsync(params AppGroupRequest[] appGroups)
+        public async Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(params AppGroupRequest[] appGroups)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app_group", appGroups);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "app_group", appGroups);
+            var responses = new { record = new List<AppGroupResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateRolesAsync(params RoleRequest[] roles)
+        public async Task<IEnumerable<RoleResponse>> UpdateRolesAsync(params RoleRequest[] roles)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "role", roles);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "role", roles);
+            var responses = new { record = new List<RoleResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
         public async Task<IEnumerable<UserResponse>> UpdateUsersAsync(params UserRequest[] users)
         {
             var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "user", users);
-
             var responses = new { record = new List<UserResponse>() };
             return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateServicesAsync(params ServiceRequest[] services)
+        public async Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(params ServiceRequest[] services)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "service", services);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "service", services);
+            var responses = new { record = new List<ServiceResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates)
+        public async Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "email_template", templates);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "email_template", templates);
+            var responses = new { record = new List<EmailTemplateResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateProvidersAsync(params ProviderRequest[] providers)
+        public async Task<IEnumerable<ProviderResponse>> UpdateProvidersAsync(params ProviderRequest[] providers)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider", providers);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider", providers);
+            var responses = new { record = new List<ProviderResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
-        public Task UpdateProviderUsersAsync(params ProviderUserRequest[] providerUsers)
+        public async Task<IEnumerable<ProviderUserResponse>> UpdateProviderUsersAsync(params ProviderUserRequest[] providerUsers)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider_user", providerUsers);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "provider_user", providerUsers);
+            var responses = new { record = new List<ProviderUserResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
     }
 }
