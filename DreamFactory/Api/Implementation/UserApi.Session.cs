@@ -29,7 +29,7 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            var address = baseAddress.WithResources("user", "session");
+            var address = baseAddress.WithResources(UserService, "session");
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
             Login login = new Login { email = email, password = password, duration = duration };
@@ -50,7 +50,7 @@
 
         public async Task<Session> GetSessionAsync()
         {
-            var address = baseAddress.WithResources("user", "session");
+            var address = baseAddress.WithResources(UserService, "session");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
@@ -60,7 +60,7 @@
 
         public async Task<bool> LogoutAsync()
         {
-            var address = baseAddress.WithResources("user", "session");
+            var address = baseAddress.WithResources(UserService, "session");
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);

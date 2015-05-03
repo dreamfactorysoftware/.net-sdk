@@ -10,7 +10,7 @@
     {
         public async Task<IEnumerable<ScriptResponse>> GetScriptsAsync(bool includeUserScripts)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "script")
+            IHttpAddress address = baseAddress.WithResources(SystemService, "script")
                                               .WithParameter("include_script_body", true)
                                               .WithParameter("include_user_scripts", includeUserScripts);
 
@@ -35,7 +35,7 @@
                 throw new ArgumentNullException("body");
             }
 
-            IHttpAddress address = baseAddress.WithResources("system", "script", id);
+            IHttpAddress address = baseAddress.WithResources(SystemService, "script", id);
             if (userScript)
             {
                 address = address.WithParameter("is_user_script", true);
@@ -56,7 +56,7 @@
                 throw new ArgumentNullException("id");
             }
 
-            IHttpAddress address = baseAddress.WithResources("system", "script", id)
+            IHttpAddress address = baseAddress.WithResources(SystemService, "script", id)
                                               .WithParameter("log_output", logOutput);
             if (userScript)
             {
@@ -78,7 +78,7 @@
                 throw new ArgumentNullException("id");
             }
 
-            IHttpAddress address = baseAddress.WithResources("system", "script", id);
+            IHttpAddress address = baseAddress.WithResources(SystemService, "script", id);
             if (userScript)
             {
                 address = address.WithParameter("is_user_script", true);

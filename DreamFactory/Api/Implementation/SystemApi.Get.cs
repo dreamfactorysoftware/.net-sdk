@@ -49,7 +49,7 @@
 
         public async Task<IEnumerable<ProviderResponse>> GetProvidersAsync(int? userId = null)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "provider");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "provider");
             if (userId.HasValue)
             {
                 address = address.WithParameter("user_id", userId.Value);
@@ -71,7 +71,7 @@
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            IHttpAddress address = baseAddress.WithResources("system", "environment");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "environment");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -87,7 +87,7 @@
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            IHttpAddress address = baseAddress.WithResources("system", "constant");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "constant");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -99,7 +99,7 @@
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "constant", constant);
+            IHttpAddress address = baseAddress.WithResources(SystemService, "constant", constant);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -112,7 +112,7 @@
 
         private async Task<IEnumerable<TRecord>> QueryRecordsAsync<TRecord>(string resource, SqlQuery query)
         {
-            IHttpAddress address = baseAddress.WithResources("system", resource);
+            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
 
             if (query != null)
             {

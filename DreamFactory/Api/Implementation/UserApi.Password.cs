@@ -19,7 +19,7 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            var address = baseAddress.WithResources("user", "password");
+            var address = baseAddress.WithResources(UserService, "password");
             PasswordRequest data = new PasswordRequest { old_password = oldPassword, new_password = newPassword };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
@@ -37,7 +37,7 @@
                 throw new ArgumentNullException("email");
             }
 
-            var address = baseAddress.WithResources("user", "password").WithParameter("reset", true);
+            var address = baseAddress.WithResources(UserService, "password").WithParameter("reset", true);
             PasswordRequest data = new PasswordRequest { email = email };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
@@ -65,7 +65,7 @@
                 throw new ArgumentException("You must specify either code or answer parameters but not both.", "answer");
             }
 
-            var address = baseAddress.WithResources("user", "password").WithParameter("login", true);
+            var address = baseAddress.WithResources(UserService, "password").WithParameter("login", true);
             PasswordRequest data = new PasswordRequest { email = email, new_password = newPassword, code = code, security_answer = answer };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);

@@ -8,6 +8,8 @@
 
     internal partial class SystemApi : ISystemApi
     {
+        private const string SystemService = "system";
+
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
@@ -23,7 +25,7 @@
 
         public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "app",
+            IHttpAddress address = baseAddress.WithResources(SystemService, "app",
                 applicationId.ToString(CultureInfo.InvariantCulture))
                 .WithParameter("pkg", true)
                 .WithParameter("include_files", includeFiles)
@@ -40,7 +42,7 @@
 
         public async Task<byte[]> DownloadApplicationSdkAsync(int applicationId)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "app",
+            IHttpAddress address = baseAddress.WithResources(SystemService, "app",
                 applicationId.ToString(CultureInfo.InvariantCulture))
                 .WithParameter("sdk", true);
 
@@ -54,7 +56,7 @@
 
         public async Task<ConfigResponse> GetConfigAsync()
         {
-            IHttpAddress address = baseAddress.WithResources("system", "config");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "config");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -65,7 +67,7 @@
 
         public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            IHttpAddress address = baseAddress.WithResources("system", "config");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "config");
             string body = contentSerializer.Serialize(config);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders, body);
 

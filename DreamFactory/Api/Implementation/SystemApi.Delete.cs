@@ -61,7 +61,7 @@
             }
 
             string list = string.Join(",", ids);
-            IHttpAddress address = baseAddress.WithResources("system", resource).WithParameter("ids", list);
+            IHttpAddress address = baseAddress.WithResources(SystemService, resource).WithParameter("ids", list);
             if (setDeleteStorage)
             {
                 address = address.WithParameter("delete_storage", true);
