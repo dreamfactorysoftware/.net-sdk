@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.System.App;
@@ -28,9 +29,12 @@
             return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "role", roles);
         }
 
-        public Task UpdateUsersAsync(params UserRequest[] users)
+        public async Task<IEnumerable<UserResponse>> UpdateUsersAsync(params UserRequest[] users)
         {
-            return CreateOrUpdateRecordsAsync(HttpMethod.Patch, "user", users);
+            var response = await CreateOrUpdateRecordsAsync(HttpMethod.Patch, "user", users);
+
+            var responses = new { record = new List<UserResponse>() };
+            return contentSerializer.Deserialize(response.Body, responses).record;
         }
 
         public Task UpdateServicesAsync(params ServiceRequest[] services)

@@ -37,17 +37,20 @@
                 is_active = true
             };
 
-            // Creating new user
             users = await systemApi.CreateUsersAsync(newUser);
             user = users.Single(x => x.email == NewEmail);
             Console.WriteLine("CreateUsersAsync(): {0}", context.ContentSerializer.Serialize(user));
+
+            newUser.id = user.id;
+            newUser.display_name = "Andrei Smirnov";
+            user = (await systemApi.UpdateUsersAsync(newUser)).Single(x => x.email == NewEmail);
+            Console.WriteLine("UpdateUsersAsync(): new display_name={0}", user.display_name);
 
             await DeleteUser(user, systemApi);
         }
 
         private static async Task DeleteUser(UserResponse user, ISystemApi systemApi)
         {
-            // Delete test user if it exists already
             Debug.Assert(user.id.HasValue, "User ID must be set");
             await systemApi.DeleteUsersAsync(user.id.Value);
             Console.WriteLine("DeleteUsersAsync():: id={0}", user.id);

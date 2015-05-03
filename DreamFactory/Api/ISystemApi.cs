@@ -149,7 +149,7 @@
         /// Update one or more users.
         /// </summary>
         /// <param name="users">Users to update.</param>
-        Task UpdateUsersAsync(params UserRequest[] users);
+        Task<IEnumerable<UserResponse>> UpdateUsersAsync(params UserRequest[] users);
 
         /// <summary>
         /// Update one or more services.
