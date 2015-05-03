@@ -34,7 +34,7 @@
 
         public async Task<IEnumerable<RoleResponse>> CreateRolesAsync(params RoleRequest[] roles)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "roles", roles);
+            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "role", roles);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var responses = new { record = new List<RoleResponse>() };

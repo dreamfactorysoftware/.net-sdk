@@ -18,18 +18,34 @@
         private const string Email = "admin@mail.com";
         private const string Password = "dream";
 
+        private static readonly ConsoleColor[] Colors =
+        {
+            ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Yellow
+        };
+
         static void Main()
         {
             Console.WriteLine("Integration test");
+
             RunTest().Wait();
+
+            Console.ResetColor();
         }
 
         static async Task RunTest()
         {
             IRestContext context = new RestContext(BaseAddress);
-            
+
+            SwitchColor();
             await Login(context);
+
+            SwitchColor();
             await SystemUserTest.RunTest(context);
+
+            SwitchColor();
+            await SystemRoleTest.RunTest(context);
+
+            SwitchColor();
             await Logout(context);
         }
 
@@ -45,6 +61,18 @@
             IUserApi userApi = context.Factory.CreateUserApi();
             bool success = await userApi.LogoutAsync();
             Console.WriteLine("Logged out, success={0}", success);
+        }
+
+        static void SwitchColor()
+        {
+            int index = Array.IndexOf(Colors, Console.ForegroundColor) + 1;
+            if (index >= Colors.Length)
+            {
+                index = 0;
+            }
+
+            Console.ForegroundColor = Colors[index];
+            Console.WriteLine();
         }
     }
 }
