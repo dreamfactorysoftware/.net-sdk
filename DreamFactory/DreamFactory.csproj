@@ -125,11 +125,6 @@
     <Compile Include="Model\System\Event\EventResponse.cs" />
     <Compile Include="Model\System\Event\EventRequest.cs" />
     <Compile Include="Model\System\Event\EventVerbs.cs" />
-    <Compile Include="Model\System\ProviderUser\ProviderUserRequest.cs" />
-    <Compile Include="Model\System\ProviderUser\ProviderUserResponse.cs" />
-    <Compile Include="Model\System\Provider\ProviderConfigSettings.cs" />
-    <Compile Include="Model\System\Provider\ProviderRequest.cs" />
-    <Compile Include="Model\System\Provider\ProviderResponse.cs" />
     <Compile Include="Model\System\Role\RoleRequest.cs" />
     <Compile Include="Model\System\Script\ScriptResponse.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />

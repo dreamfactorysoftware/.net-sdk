@@ -9,8 +9,6 @@
     using DreamFactory.Model.System.Device;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
-    using DreamFactory.Model.System.Provider;
-    using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -45,28 +43,6 @@
         public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null)
         {
             return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
-        }
-
-        public async Task<IEnumerable<ProviderResponse>> GetProvidersAsync(int? userId = null)
-        {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "provider");
-            if (userId.HasValue)
-            {
-                address = address.WithParameter("user_id", userId.Value);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var providers = new { record = new List<ProviderResponse>() };
-            return contentSerializer.Deserialize(response.Body, providers).record;
-        }
-
-        public async Task<IEnumerable<ProviderUserResponse>> GetProviderUserAsync(SqlQuery query = null)
-        {
-            return await QueryRecordsAsync<ProviderUserResponse>("provider_user", query);
         }
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()

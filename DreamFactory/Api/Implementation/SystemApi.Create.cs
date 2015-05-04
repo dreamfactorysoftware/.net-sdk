@@ -6,8 +6,6 @@
     using DreamFactory.Http;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.Email;
-    using DreamFactory.Model.System.Provider;
-    using DreamFactory.Model.System.ProviderUser;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -56,24 +54,6 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             var responses = new { record = new List<EmailTemplateResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
-        }
-
-        public async Task<IEnumerable<ProviderResponse>> CreateProvidersAsync(params ProviderRequest[] providers)
-        {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "provider", providers);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<ProviderResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
-        }
-
-        public async Task<IEnumerable<ProviderUserResponse>> CreateProviderUsersAsync(params ProviderUserRequest[] providerUsers)
-        {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "provider_user", providerUsers);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<ProviderUserResponse>() };
             return contentSerializer.Deserialize(response.Body, responses).record;
         }
 

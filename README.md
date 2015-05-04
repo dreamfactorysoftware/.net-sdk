@@ -213,3 +213,4 @@ EmailRequest request = new EmailRequestBuilder()
 * `EnvironmentResponse` has `PhpInfoSection` object is ignored on read.
 * Related entities are not retrieved (see related query parameter).
 * Unregister event listeners is not supported.
+* Provider and UserProvider APIs are not supported.
