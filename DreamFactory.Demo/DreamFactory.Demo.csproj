@@ -70,6 +70,7 @@
     <Compile Include="HttpDemo.cs" />
     <Compile Include="IntegrationTest\DevicesTest.cs" />
     <Compile Include="IntegrationTest\SystemRoleTest.cs" />
+    <Compile Include="IntegrationTest\SystemScriptTest.cs" />
     <Compile Include="IntegrationTest\SystemUserTest.cs" />
     <Compile Include="IntegrationTest\Test.cs" />
     <Compile Include="Program.cs" />

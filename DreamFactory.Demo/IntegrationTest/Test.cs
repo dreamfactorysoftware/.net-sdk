@@ -49,6 +49,9 @@
             await DevicesTest.RunTest(context);
 
             SwitchColor();
+            await SystemScriptTest.RunTest(context);
+
+            SwitchColor();
             await Logout(context);
         }
 

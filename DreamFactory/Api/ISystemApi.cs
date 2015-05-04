@@ -265,26 +265,32 @@
         /// <summary>
         /// Write the specified script to the file system.
         /// </summary>
-        /// <param name="id">Script ID.</param>
+        /// <param name="scriptId">Script ID.</param>
         /// <param name="body">The body of the script to write.</param>
-        /// <param name="userScript">True if this is a user script.</param>
-        Task<ScriptResponse> WriteScriptAsync(string id, string body, bool userScript);
+        Task<ScriptResponse> WriteScriptAsync(string scriptId, string body);
 
         /// <summary>
         /// Run the specified script.
         /// </summary>
-        /// <param name="id">Script ID.</param>
-        /// <param name="userScript">True if it is a user script.</param>
+        /// <param name="scriptId">Script ID.</param>
+        /// <param name="parameters">Script parameters passed in with query.</param>
         /// <param name="logOutput">If true (the default), script output (not the returned result) will be sent to the log as "info".</param>
-        /// <returns>See <see cref="ScriptOutput"/>.</returns>
-        Task<ScriptOutput> RunScriptAsync(string id, bool userScript, bool logOutput);
+        /// <returns>Script's result.</returns>
+        Task<string> RunScriptAsync(string scriptId, Dictionary<string, object> parameters, bool logOutput = false);
+
+        /// <summary>
+        /// Run the specified script.
+        /// </summary>
+        /// <param name="scriptId">Script ID.</param>
+        /// <param name="logOutput">If true (the default), script output (not the returned result) will be sent to the log as "info".</param>
+        /// <returns>Script's result.</returns>
+        Task<string> RunScriptAsync(string scriptId, bool logOutput = false);
 
         /// <summary>
         /// Delete script with ID provided.
         /// </summary>
-        /// <param name="id">Script ID.</param>
-        /// <param name="userScript">True if it is a user script.</param>
-        Task DeleteScriptAsync(string id, bool userScript);
+        /// <param name="scriptId">Script ID.</param>
+        Task DeleteScriptAsync(string scriptId);
 
         /// <summary>
         /// Retrieve events and registered listeners.
