@@ -43,10 +43,10 @@
                 unirestRequest = unirestRequest.body(request.Body);
             }
 
-            HttpResponse<Stream> unirestResponse = await unirestRequest.headers(request.Headers.Build()).asBinaryAsync();
+            HttpResponse<Stream> unirestResponse = await unirestRequest.headers(request.Headers.Build()).asBinaryAsync().ConfigureAwait(false);
             using (MemoryStream memory = new MemoryStream())
             {
-                await unirestResponse.Body.CopyToAsync(memory);
+                await unirestResponse.Body.CopyToAsync(memory).ConfigureAwait(false);
                 unirestResponse.Body.Dispose();
                 return new HttpResponse(request, unirestResponse.Code, memory.ToArray());
             }
