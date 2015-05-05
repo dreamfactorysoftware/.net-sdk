@@ -67,7 +67,7 @@ The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFac
 
 `IHttpRequest` supports HTTP tunneling, by providing `SetTunneling(HttpMethod)` function. This function modifies the request instance in according with the tunneling feature supported by DreamFactory.
 
-Consider the following [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/HttpDemo.cs):
+Consider the following [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/HttpDemo.cs):
 
 ```csharp
     string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
@@ -111,11 +111,11 @@ Besides the `IRestContext.Factory` object, the interface offers services and res
 - `GetServicesAsync()`
 - `GetResourcesAsync()`
 
-See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DiscoveryDemo.cs) for usage details.
+See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/DiscoveryDemo.cs) for usage details.
 
 #### User API
 
-> See [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/UserDemo.cs)
+> See [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/UserDemo.cs)
 
 ##### Notes on user session management
 
@@ -129,7 +129,7 @@ To use/set another Application-Name, simply perform another `LoginAsync` call wi
 
 #### CustomSettings API
 
-> See [ICustomSettingsApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ICustomSettingsApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/CustomSettingsDemo.cs)
+> See [ICustomSettingsApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ICustomSettingsApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/CustomSettingsDemo.cs)
 
 The API can be created for user and system namespace.
 
@@ -139,7 +139,7 @@ Please refer to the demo for sample API usage.
 
 #### Files API
 
-> See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/FilesDemo.cs)
+> See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/FilesDemo.cs)
 
 Summary on supported features:
 * CRUD operations on containers, folders and files,
@@ -152,7 +152,7 @@ Reading/Writing of metadata associated with file entities (container, folder, fi
 
 #### Database API
 
-> See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/DatabaseDemo.cs)
+> See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/DatabaseDemo.cs)
 
 #### Notes on schema management
 
@@ -189,7 +189,7 @@ It's recommended to read the technical notes on stored procedures: https://githu
 
 #### Email API
 
-> See [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/EmailDemo.cs)
+> See [IEmailApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IEmailApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/EmailDemo.cs)
 
 Sending an email will require `EmailRequest` object to be built.
 For an advanced use, construct this object manually by providing all essential information.
@@ -205,7 +205,7 @@ EmailRequest request = new EmailRequestBuilder()
 
 #### System API
 
-> See [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/SystemDemo.cs)
+> See [ISystemApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ISystemApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/SystemDemo.cs)
 
 ##### Current limitations
 
