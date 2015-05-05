@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Demo
+﻿namespace DreamFactory.Demo.Demo
 {
     using System;
     using System.Collections.Generic;

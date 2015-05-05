@@ -3,71 +3,77 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Demo.Demo;
+    using DreamFactory.Demo.IntegrationTest;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
     class Program
     {
-        private const string BaseAddress = "https://dsp-pinebit.cloud.dreamfactory.com";
-        private const string DefaultApp = "todoangular";
+        /*
+         *  Change these settings to match your local DF installation.
+         */
 
+        private const string BaseAddress = "http://localhost";
+        private const string DefaultApp = "todoangular";
+        private const string Email = "admin@mail.com";
+        private const string Password = "dream";
+
+        delegate Task TestRunner(IRestContext context);
+
+        /// <summary>
+        /// This program runs both integration tests and demos.
+        /// </summary>
         static void Main()
         {
-            Console.WriteLine("DreamFactory REST API Demo");
+            Console.Title = "DreamFactory REST API Demo";
             Console.WriteLine("Using DSP address: {0}", BaseAddress);
 
-            // RestContext is the root object providing access to all APIs
+            // Add your tests/demo here
+            TestRunner[] tests =
+            {
+                Login,
+                SystemUserTest.Run,
+                SystemRoleTest.Run,
+                SystemDeviceTest.Run,
+                SystemScriptTest.Run,
+                SystemEventTest.Run,
+                UserDemo.Run,
+                CustomSettingsDemo.Run,
+                DatabaseDemo.Run,
+                DiscoveryDemo.Run,
+                EmailDemo.Run,
+                FilesDemo.Run,
+                SystemDemo.Run,
+                HttpDemo.Run,
+                Logout
+            };
+
             IRestContext context = new RestContext(BaseAddress);
 
-            // API calls require a session, hence we must login
-            Login(context).Wait();
+            Array.ForEach(tests, test =>
+            {
+                Console.WriteLine();
+                test(context).Wait();
+            });
 
-            // UserSession API
+            Console.ResetColor();
             Console.WriteLine();
-            Console.WriteLine("### User API demo");
-            UserDemo.Run(context).Wait();
-
-            // UserSession API
-            Console.WriteLine();
-            Console.WriteLine("### Custom Settings demo");
-            CustomSettingsDemo.Run(context).Wait();
-
-            // getServices and getResources
-            Console.WriteLine();
-            Console.WriteLine("### getServices and getResources demo");
-            DiscoveryDemo.Run(context).Wait();
-
-            // Files API
-            Console.WriteLine();
-            Console.WriteLine("### Files API demo");
-            FilesDemo.Run(context).Wait();
-
-            // Database API
-            Console.WriteLine();
-            Console.WriteLine("### Database API demo");
-            DatabaseDemo.Run(context).Wait();
-
-            // Email API
-            Console.WriteLine();
-            Console.WriteLine("### Email API demo");
-            EmailDemo.Run(context).Wait();
-
-            // System API
-            Console.WriteLine();
-            Console.WriteLine("### System API demo");
-            SystemDemo.Run(context).Wait();
-
-            // HTTP functions demo (do not require IRestContext)
-            Console.WriteLine();
-            Console.WriteLine("### HTTP functions demo");
-            HttpDemo.Run().Wait();
+            Console.WriteLine("Total tests: {0}.", tests.Length);
         }
 
         static async Task Login(IRestContext context)
         {
             IUserApi userApi = context.Factory.CreateUserApi();
-            Session session = await userApi.LoginAsync(DefaultApp, "user@mail.com", "userdream");
+            Session session = await userApi.LoginAsync(DefaultApp, Email, Password);
             Console.WriteLine("Logged in as {0}", session.display_name);
+        }
+
+        static async Task Logout(IRestContext context)
+        {
+            IUserApi userApi = context.Factory.CreateUserApi();
+            bool success = await userApi.LogoutAsync();
+            Console.WriteLine("Logged out, success={0}", success);
         }
     }
 }

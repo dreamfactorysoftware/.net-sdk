@@ -1,12 +1,13 @@
-﻿namespace DreamFactory.Demo
+﻿namespace DreamFactory.Demo.Demo
 {
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Rest;
 
     public static class HttpDemo
     {
-        public static async Task Run()
+        public static async Task Run(IRestContext context)
         {
             /*
              * Get random bytes as hex string from random.org

@@ -13,7 +13,7 @@
         private const string ScriptId = "dummybear";
 
         // ReSharper disable PossibleMultipleEnumeration
-        public static async Task RunTest(IRestContext context)
+        public static async Task Run(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 

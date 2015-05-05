@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Demo
+﻿namespace DreamFactory.Demo.Demo
 {
     using System;
     using System.Threading.Tasks;
@@ -22,11 +22,11 @@
             Console.WriteLine("Email from your profile: {0}", profile.email);
 
             // changePassword()
-            bool ok = await userApi.ChangePasswordAsync("userdream", "userdream1");
+            bool ok = await userApi.ChangePasswordAsync("dream", "dream1");
             if (ok)
             {
                 // Changing password back
-                if (await userApi.ChangePasswordAsync("userdream1", "userdream"))
+                if (await userApi.ChangePasswordAsync("dream1", "dream"))
                 {
                     Console.WriteLine("Password was changed and reverted");
                 }
