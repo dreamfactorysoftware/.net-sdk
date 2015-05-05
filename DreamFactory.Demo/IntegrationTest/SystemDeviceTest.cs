@@ -10,7 +10,7 @@
     using DreamFactory.Rest;
     using SystemDeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
 
-    public static class DevicesTest
+    public static class SystemDeviceTest
     {
 // ReSharper disable PossibleMultipleEnumeration
         public static async Task RunTest(IRestContext context)

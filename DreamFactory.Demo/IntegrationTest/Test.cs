@@ -13,10 +13,12 @@
 
     public static class Test
     {
-        private const string BaseAddress = "http://localhost:8888";
+        private const string BaseAddress = "http://localhost";
         private const string DefaultApp = "todoangular";
         private const string Email = "admin@mail.com";
         private const string Password = "dream";
+
+        delegate Task TestRunner(IRestContext context);
 
         private static readonly ConsoleColor[] Colors =
         {
@@ -27,35 +29,27 @@
         {
             Console.WriteLine("Integration test");
 
-            RunTest().Wait();
+            // Add your tests here
+            TestRunner[] tests =
+            {
+                Login,
+                SystemUserTest.RunTest,
+                SystemRoleTest.RunTest,
+                SystemDeviceTest.RunTest,
+                SystemScriptTest.RunTest,
+                SystemEventTest.RunTest,
+                Logout
+            };
 
-            Console.ResetColor();
-        }
-
-        static async Task RunTest()
-        {
             IRestContext context = new RestContext(BaseAddress);
 
-            SwitchColor();
-            await Login(context);
+            Array.ForEach(tests, test =>
+            {
+                SwitchColor();
+                test(context).Wait();
+            });
 
-            SwitchColor();
-            await SystemUserTest.RunTest(context);
-
-            SwitchColor();
-            await SystemRoleTest.RunTest(context);
-
-            SwitchColor();
-            await DevicesTest.RunTest(context);
-
-            SwitchColor();
-            await SystemScriptTest.RunTest(context);
-
-            SwitchColor();
-            await SystemEventTest.RunTest(context);
-
-            SwitchColor();
-            await Logout(context);
+            Console.ResetColor();
         }
 
         static async Task Login(IRestContext context)
