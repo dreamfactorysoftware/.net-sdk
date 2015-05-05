@@ -69,6 +69,7 @@
     <Compile Include="FilesDemo.cs" />
     <Compile Include="HttpDemo.cs" />
     <Compile Include="IntegrationTest\DevicesTest.cs" />
+    <Compile Include="IntegrationTest\SystemEventTest.cs" />
     <Compile Include="IntegrationTest\SystemRoleTest.cs" />
     <Compile Include="IntegrationTest\SystemScriptTest.cs" />
     <Compile Include="IntegrationTest\SystemUserTest.cs" />

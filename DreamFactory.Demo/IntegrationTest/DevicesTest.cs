@@ -8,16 +8,16 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
-    using DeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
+    using SystemDeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
 
     public static class DevicesTest
     {
-         // ReSharper disable PossibleMultipleEnumeration
+// ReSharper disable PossibleMultipleEnumeration
         public static async Task RunTest(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
             
-            IEnumerable<DeviceResponse> devices = await systemApi.GetDevicesAsync();
+            IEnumerable<SystemDeviceResponse> devices = await systemApi.GetDevicesAsync();
             await DeleteAnyDevices(devices, systemApi);
 
             IUserApi userApi = context.Factory.CreateUserApi();
@@ -38,7 +38,7 @@
             await DeleteAnyDevices(devices, systemApi);
         }
 
-        private static async Task DeleteAnyDevices(IEnumerable<DeviceResponse> devices, ISystemApi systemApi)
+        private static async Task DeleteAnyDevices(IEnumerable<SystemDeviceResponse> devices, ISystemApi systemApi)
         {
             if (devices.Any())
             {

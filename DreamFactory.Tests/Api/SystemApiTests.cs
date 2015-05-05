@@ -116,7 +116,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<EventCacheResponse> responses = systemApi.GetEventsAsync(true, false).Result.ToList();
+            List<EventCacheResponse> responses = systemApi.GetEventsAsync(true).Result.ToList();
 
             // Assert
             responses.Count.ShouldBe(5);

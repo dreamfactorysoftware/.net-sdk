@@ -8,20 +8,15 @@
 
     internal partial class SystemApi
     {
-        public async Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents, bool asCached)
+        public async Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "event");
+            IHttpAddress address = baseAddress.WithResources(SystemService, "event").WithParameter("as_cached", false);
             if (allEvents)
             {
                 address = address.WithParameter("all_events", true);
             }
-            if (asCached)
-            {
-                address = address.WithParameter("as_cached", true);
-            }
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 

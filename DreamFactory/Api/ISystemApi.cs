@@ -252,9 +252,8 @@
         /// Retrieve events and registered listeners.
         /// </summary>
         /// <param name="allEvents">If set to true, all events that are available are returned. Otherwise only events that are have registered listeners are returned.</param>
-        /// <param name="asCached">If set to true, the returned structure is identical the stored structure. If false, a simpler form is returned for client consumption.</param>
         /// <returns>List of <see cref="EventCacheResponse"/>.</returns>
-        Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents, bool asCached);
+        Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents);
 
         /// <summary>
         /// Register one or more event listeners.

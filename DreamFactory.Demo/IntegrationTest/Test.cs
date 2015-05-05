@@ -13,7 +13,7 @@
 
     public static class Test
     {
-        private const string BaseAddress = "http://localhost";
+        private const string BaseAddress = "http://localhost:8888";
         private const string DefaultApp = "todoangular";
         private const string Email = "admin@mail.com";
         private const string Password = "dream";
@@ -50,6 +50,9 @@
 
             SwitchColor();
             await SystemScriptTest.RunTest(context);
+
+            SwitchColor();
+            await SystemEventTest.RunTest(context);
 
             SwitchColor();
             await Logout(context);
