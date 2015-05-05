@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <authors>DreamFactory</authors>
     <owners>DreamFactory.com</owners>
-    <licenseUrl>http://dreamfactory.com</licenseUrl>
+    <licenseUrl>https://github.com/dreamfactorysoftware/dsp-core/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/dreamfactorysoftware/.net-sdk</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET SDK for the DreamFactory REST API</description>
