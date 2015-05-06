@@ -2,11 +2,16 @@
 
 # .NET SDK for the DreamFactory REST API
 
-> NOTE: The SDK is in active development phase. The API, structure and files can be changed at any time without a notification.
-
 ## Distribution
 
 DreamFactory REST API .NET SDK can be either downloaded from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or being built from the source code. The SDK has the only dependency on [unirest-net](http://unirest.io/net.html) library.
+
+The SDK has been tested on the following platforms:
+
+* Windows 7 with Visual Studio 2012 and 2013
+* Windows 8.1 with Visual Studio 2013
+* Windows 10 with Visual Studio 2015 CTP
+* Mac OS X (Yosemite) with Xamarin 
 
 ### NuGet Package
 

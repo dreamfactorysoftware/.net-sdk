@@ -2,10 +2,10 @@
 <package >
   <metadata>
     <id>DreamFactoryNet</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>DreamFactory</authors>
     <owners>DreamFactory.com</owners>
-    <iconUrl>https://github.com/dreamfactorysoftware/.net-sdk/blob/master/favicon_32x32.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/dreamfactorysoftware/.net-sdk/master/favicon_32x32.png</iconUrl>
     <licenseUrl>https://github.com/dreamfactorysoftware/dsp-core/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/dreamfactorysoftware/.net-sdk</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

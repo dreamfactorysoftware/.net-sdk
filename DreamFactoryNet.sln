@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFA53618-8501-42F3-B8A9-CF7A84044FC8}"
 	ProjectSection(SolutionItems) = preProject
 		DreamFactoryNet.nuspec = DreamFactoryNet.nuspec
+		favicon_32x32.png = favicon_32x32.png
 		README.md = README.md
 	EndProjectSection
 EndProject
