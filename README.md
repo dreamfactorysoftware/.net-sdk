@@ -2,40 +2,61 @@
 
 # .NET SDK for the DreamFactory REST API
 
+The .NET SDK provides classes and interfaces to access the DreamFactory REST API.
+
 ## Distribution
 
-DreamFactory REST API .NET SDK can be either downloaded from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or being built from the source code. The SDK has the only dependency on [unirest-net](http://unirest.io/net.html) library.
+The package can be either installed from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or simply built from the source code with Visual Studio.
 
-The SDK has been tested on the following platforms:
+```powershell
+install-package DreamFactoryNet
+```
+
+Alternatively, check this article on how to manage NuGet packages in Visual Studio:
+[https://docs.nuget.org/consume/installing-nuget](https://docs.nuget.org/consume/installing-nuget)
+
+### Dependencies
+
+The API has been built with [unirest-net](http://unirest.io/net.html) library. Although the underlying HTTP layer can be substituted (see further), it's recommended to use the default implementation.
+
+unirest-net, in turn, has the following dependencies:
+
+- `Microsoft.Bcl (≥ 1.1.9)`
+- `Microsoft.Bcl.Build (≥ 1.0.21)`
+- `Newtonsoft.Json (≥ 6.0.6)`
+- `Microsoft.Net.Http (≥ 2.1.10)`
+
+### Tests and Demo
+
+The .NET SDK has been tested on the following platforms:
 
 * Windows 7 with Visual Studio 2012 and 2013
 * Windows 8.1 with Visual Studio 2013
 * Windows 10 with Visual Studio 2015 CTP
 * Mac OS X (Yosemite) with Xamarin 
 
-### NuGet Package
+To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
+The demo requires a test user to login: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have a role assigned that allows any HTTP verbs on any services/resources. 
 
-```powershell
-install-package DreamFactoryNet
-```
-
-Note that the package is built against .NET 4.5 and if you need a different target version, then build the API from the source code.
-
-### Building From Source Code
+### Building from Source Code
 
 Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
-You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with 4.0 with no issues.
-When changing the target framework version, pay attention to dependent packages versions (just reinstall them).
+You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
+When changing the target framework version, pay attention to the dependent package versions (just reinstall them).
 
-## Solution Structure
+## Solution structure
 
-The Visual Studio solution has three projects:
+The Visual Studio solution has these projects:
 
-* DreamFactory       : the API library itself
-* DreamFactory.Demo  : console program demonstrating API usage
+* DreamFactory       : the API library
+* DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
 * DreamFactory.Tests : Unit Tests (MSTest)
 
-The solution folder also contains ReSharper settings file (team-shared), as well as NuGet package specification file and this README file.
+The solution folder also contains:
+
+* ReSharper settings file (team-shared),
+* NuGet package specification file,
+* this README file.
 
 ## API
 
@@ -44,35 +65,38 @@ The solution folder also contains ReSharper settings file (team-shared), as well
 The API provides the following functions:
 
 1. Simple HTTP API, for making arbitrary HTTP requests;
-2. Model-driven API matching the Swagger definitions,
-   e.g. `Session session = await LoginAsync("admin", "john@mail.com", "god");`
-3. Model extensions and builders to ease working with object instances.
+2. DreamFactory API (closely matching the Swagger definition),
+3. Various extensions and builders to simplify managing DreamFactory models.
 
-All network-related API calls are made to be asynchronous. They can be `await`'ed and used well together with Task Parallel Library (TPL).
+All network-related API calls are asynchronous, they all have `Async` suffix.
+The IO-bound calls (HTTP request and stream IO) have `ConfigureAwait(false)`.
 
 ### Errors handling
 
-- On wrong arguments (preconditions), expect `Argument*Exception` to be thrown,
+- On wrong arguments (preconditions), expect `Argument*Exception` to be thrown.
 - On Bad HTTP status codes, expect `DreamFactoryException` to be thrown.
+> `DreamFactoryException` is normally supplied with a reasonable message provided by DreamFactory server, unless it fails with an HTML page returned with the response.
 
-`DreamFactoryException` is normally supplied with a reasonable message provided by DreamFactory server.
+- On content serialization errors (JSON by default), expect Json.NET exceptions to be thrown.
+> Serialization may fail if returned objects do not match the strongly-typed entities defined with the API.
+> This may happen in particular when DreamFactory services change their contract in a breaking way.   
 
 ### HTTP API overview
 
-Regular SDK users should not be dealing with this API unless they have outstanding needs to perform advanced queries.
+Regular users would not deal with this API subset unless they have outstanding needs to perform advanced queries.
 However, it is very likely that these users will step down this API while debugging, therefore it is recommended to know the basics.
 
 HTTP layer is defined with the following interfaces:
 
 - `IHttpFacade` with the single method `SendAsync()`,
-- `IHttpRequest` representing HTTP request,
-- `IHttpResponse` representing HTTP response,
+- `IHttpRequest` representing an HTTP request,
+- `IHttpResponse` representing an HTTP response,
 
-The SDK comes with unirest implementation of `IHttpFacade` - the `UnirestHttpFacade` class. Users can define their own implementations to use them in model-driven APIs.
+The SDK comes with unirest-net implementation of `IHttpFacade` - the `UnirestHttpFacade` class. A user can define its own implementation to use it with DreamFactory API. Providing a custom `IHttpFacade` instance could be useful for mocking purposes and IoC. 
 
 `IHttpRequest` supports HTTP tunneling, by providing `SetTunneling(HttpMethod)` function. This function modifies the request instance in according with the tunneling feature supported by DreamFactory.
 
-Consider the following [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/HttpDemo.cs):
+Here is an [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/HttpDemo.cs):
 
 ```csharp
     string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
@@ -82,9 +106,11 @@ Consider the following [example](https://github.com/dreamfactorysoftware/.net-sd
     Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
 ```
 
-### Model driven API overview
+### DreamFactory API overview
 
-All APIs are defined per service and can be obtained via `IRestContext.Factory` methods:
+Each DreamFactory's service has a corresponding interface that exposes all functions you could find in Swagger definition. Some functions, however, were split and some were reduced to remain reasonable and consistent to .NET users.
+
+The service instances are created with `IRestContext.Factory` methods:
 
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
@@ -100,18 +126,18 @@ Specify service name for creating an interface to a named service:
     await filesApi.CreateFileAsync(...);
 ```
 
-HTTP API supports pluggable serialization. SDK comes with `JsonContentSerializer` that is using Json.NET (Newtonsoft).
-To use a custom serializer, use the other `RestContext` constructor accepting an `IContentSerializer` instance.
+The API supports pluggable serialization. This SDK comes with the default `JsonContentSerializer` which is using [Json.NET](http://www.newtonsoft.com/json).
+To use your custom serializer, consider using the other `RestContext` constructor accepting a user-defined `IContentSerializer` instance.
 
 #### REST API versioning
 
 Supported API versions defined by `RestApiVersion` enumeration. `V1` is used by default.
-SDK uses the version for building the complete URL, e.g. /rest for V1 and /api/v2 for V2.
-Building the URL is done transparently to the users.
+The SDK uses version for building the complete URL, e.g. /rest for V1 and /api/v2 for V2.
+Note that building the URL is done transparently to the users.
 
 #### IRestContext interface
 
-Besides the `IRestContext.Factory` object, the interface offers services and resources discovery functions:
+Besides the `IRestContext.Factory` object which is designed to construct service instances, the interface offers few discovery functions:
 
 - `GetServicesAsync()`
 - `GetResourcesAsync()`
@@ -130,7 +156,7 @@ All API calls require Application-Name header to be set and many others require 
 * Session-ID header gets removed upon `IUserApi.LogoutAsync()` completion,
 * Session-ID header gets updated if another login is made during `passwordChange()` call.
 
-To use/set another Application-Name, simply perform another `LoginAsync` call with a new `applicationName` parameter.
+To use/set another Application-Name, simply call `LoginAsync` again with a new `applicationName` parameter.
 
 #### CustomSettings API
 
