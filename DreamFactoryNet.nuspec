@@ -5,6 +5,7 @@
     <version>1.0.0</version>
     <authors>DreamFactory</authors>
     <owners>DreamFactory.com</owners>
+    <iconUrl>https://github.com/dreamfactorysoftware/.net-sdk/blob/master/favicon_32x32.png</iconUrl>
     <licenseUrl>https://github.com/dreamfactorysoftware/dsp-core/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/dreamfactorysoftware/.net-sdk</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
