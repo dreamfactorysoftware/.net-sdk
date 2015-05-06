@@ -26,8 +26,6 @@ unirest-net, in turn, has the following dependencies:
 - `Newtonsoft.Json (≥ 6.0.6)`
 - `Microsoft.Net.Http (≥ 2.1.10)`
 
-### Tests and Demo
-
 The .NET SDK has been tested on the following platforms:
 
 * Windows 7 with Visual Studio 2012 and 2013
@@ -35,8 +33,22 @@ The .NET SDK has been tested on the following platforms:
 * Windows 10 with Visual Studio 2015 CTP
 * Mac OS X (Yosemite) with Xamarin 
 
+### Running the Demo
+
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires a test user to login: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have a role assigned that allows any HTTP verbs on any services/resources. 
+The demo requires the test user to be created: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have aby role assigned which allows any HTTP verbs on any services/resources.
+
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click and select *Set as StartUp project";
+* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
+* A console window will appear that will show demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed at the very end. 
+
+### Running Unit Tests
+
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* In Visual Studio main menu, select *TEST -> Run -> All Tests*;
+* When testing is done, you will see *Test Explorer* window with testing status. 
 
 ### Building from Source Code
 
