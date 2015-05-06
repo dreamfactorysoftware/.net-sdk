@@ -36,7 +36,7 @@ The .NET SDK has been tested on the following platforms:
 ### Running the Demo
 
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires the test user to be created: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have aby role assigned which allows any HTTP verbs on any services/resources.
+The demo requires the test user to be created: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have any role assigned which allows any HTTP verbs on any services/resources.
 
 * Open DreamFactoryNet solution in Visual Studio 2012 or newer;
 * In *Solution Explorer* window find *DreamFactory.Demo* project, right-click and select *Set as StartUp project";
