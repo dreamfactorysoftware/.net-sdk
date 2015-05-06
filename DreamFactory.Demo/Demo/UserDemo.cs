@@ -22,11 +22,12 @@
             Console.WriteLine("Email from your profile: {0}", profile.email);
 
             // changePassword()
-            bool ok = await userApi.ChangePasswordAsync("dream", "dream1");
+            const string newPassword = Program.Password + "new";
+            bool ok = await userApi.ChangePasswordAsync(Program.Password, newPassword);
             if (ok)
             {
                 // Changing password back
-                if (await userApi.ChangePasswordAsync("dream1", "dream"))
+                if (await userApi.ChangePasswordAsync(newPassword, Program.Password))
                 {
                     Console.WriteLine("Password was changed and reverted");
                 }

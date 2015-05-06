@@ -36,9 +36,18 @@ The .NET SDK has been tested on the following platforms:
 ### Running the Demo
 
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires the test user to be created: `{ "email": "admin@mail.com", "password": "dream" }`. This user must have any role assigned which allows any HTTP verbs on any services/resources.
+The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+```csharp
+        internal const string BaseAddress = "http://localhost";
+        internal const string DefaultApp = "todoangular";
+        internal const string Email = "admin@mail.com";
+        internal const string Password = "dream";
+```
+
+ > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
 
 * Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* Open Program.cs and modify the settings;
 * In *Solution Explorer* window find *DreamFactory.Demo* project, right-click and select *Set as StartUp project";
 * In Visual Studio main menu, select *DEBUG -> Run without debugging*;
 * A console window will appear that will show demo output;

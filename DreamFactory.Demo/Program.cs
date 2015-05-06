@@ -14,10 +14,10 @@
          *  Change these settings to match your local DF installation.
          */
 
-        private const string BaseAddress = "http://localhost";
-        private const string DefaultApp = "todoangular";
-        private const string Email = "admin@mail.com";
-        private const string Password = "dream";
+        internal const string BaseAddress = "http://localhost";
+        internal const string DefaultApp = "todoangular";
+        internal const string Email = "admin@mail.com";
+        internal const string Password = "dream";
 
         delegate Task TestRunner(IRestContext context);
 
