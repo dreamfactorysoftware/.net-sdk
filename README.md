@@ -147,8 +147,16 @@ Specify service name for creating an interface to a named service:
     await filesApi.CreateFileAsync(...);
 ```
 
+#### Serialization
+
 The API supports pluggable serialization. This SDK comes with the default `JsonContentSerializer` which is using [Json.NET](http://www.newtonsoft.com/json).
 To use your custom serializer, consider using the other `RestContext` constructor accepting a user-defined `IContentSerializer` instance.
+
+#### SQL query parameters
+
+Most DreamFactory resources persist in the system database, e.g. Users, Apps, Services. When calling CRUD API methods accessing these resources be prepared to deal with related SQL query parameters. All such APIs accept a `SqlQuery` class instance. You can populate any fields of this class, but do check swagger contract for the service you about to use. The API implementation will set any non-null fields as query parameters.
+
+Default `SqlQuery` constructor populates the single property: *fields=**. This results in all fields to be read.
 
 #### REST API versioning
 
