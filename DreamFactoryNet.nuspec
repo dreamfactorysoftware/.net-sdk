@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DreamFactoryNet</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>DreamFactory</authors>
     <owners>DreamFactory.com</owners>
     <iconUrl>https://raw.githubusercontent.com/dreamfactorysoftware/.net-sdk/master/favicon_32x32.png</iconUrl>

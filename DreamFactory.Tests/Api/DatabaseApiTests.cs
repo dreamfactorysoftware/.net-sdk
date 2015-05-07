@@ -119,9 +119,10 @@
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
             IEnumerable<StaffRecord> records = CreateStaffRecords();
+            SqlQuery query = new SqlQuery { fields = "*" };
 
             // Act
-            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records).Result.ToList();
+            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.ToList();
 
             // Assert
             created.Count.ShouldBe(3);
@@ -145,9 +146,10 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
+            SqlQuery query = new SqlQuery { fields = "*" };
 
             // Act
-            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff").Result.ToList();
+            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.ToList();
 
             // Assert
             records.Count.ShouldBe(3);

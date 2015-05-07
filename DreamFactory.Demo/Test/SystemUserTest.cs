@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Demo.IntegrationTest
+﻿namespace DreamFactory.Demo.Test
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
 
@@ -18,7 +19,7 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync();
+            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
             Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.display_name).ToStringList());
 
             UserResponse user = users.SingleOrDefault(x => x.email == NewEmail);
@@ -37,13 +38,13 @@
                 is_active = true
             };
 
-            users = await systemApi.CreateUsersAsync(newUser);
+            users = await systemApi.CreateUsersAsync(new SqlQuery(), newUser);
             user = users.Single(x => x.email == NewEmail);
             Console.WriteLine("CreateUsersAsync(): {0}", context.ContentSerializer.Serialize(user));
 
             newUser.id = user.id;
             newUser.display_name = "Andrei Smirnov";
-            user = (await systemApi.UpdateUsersAsync(newUser)).Single(x => x.email == NewEmail);
+            user = (await systemApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.email == NewEmail);
             Console.WriteLine("UpdateUsersAsync(): new display_name={0}", user.display_name);
 
             await DeleteUser(user, systemApi);

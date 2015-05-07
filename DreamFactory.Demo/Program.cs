@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Demo.Demo;
-    using DreamFactory.Demo.IntegrationTest;
+    using DreamFactory.Demo.Test;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
 

@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Demo.IntegrationTest
+﻿namespace DreamFactory.Demo.Test
 {
     using System;
     using System.Collections.Generic;

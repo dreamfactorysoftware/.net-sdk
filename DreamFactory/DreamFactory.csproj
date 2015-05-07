@@ -75,6 +75,7 @@
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
     <Compile Include="Api\Implementation\CustomSettingsApi.cs" />
+    <Compile Include="Api\Implementation\HttpAddressExtensions.cs" />
     <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Script.cs" />
     <Compile Include="Api\Implementation\SystemApi.Delete.cs" />

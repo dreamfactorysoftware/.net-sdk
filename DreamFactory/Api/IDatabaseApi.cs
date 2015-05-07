@@ -64,9 +64,10 @@
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="records">Records to add.</param>
+        /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         /// <returns>Sequence of created records.</returns>
-        Task<IEnumerable<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
+        Task<IEnumerable<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// Update records in the specified table.
@@ -75,21 +76,6 @@
         /// <param name="records">Records to update.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         Task UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
-
-        /// <summary>
-        /// Get all table records.
-        /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        /// <returns>Sequence of retrieved records.</returns>
-        Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName);
-
-        /// <summary>
-        /// Get table records by ids.
-        /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        /// <param name="keys">Sequence of keys (ids).</param>
-        /// <returns>Sequence of retrieved records.</returns>
-        Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord, TKeyField>(string tableName, params TKeyField[] keys);
 
         /// <summary>
         /// Get table records by filter.

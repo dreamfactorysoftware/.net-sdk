@@ -20,12 +20,13 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // List apps
-            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(new SqlQuery("is_active=true"));
+            SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*" };
+            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(query);
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
             Console.WriteLine();
 
             // List users with roles
-            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync();
+            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
             Console.WriteLine("Users: {0}", users.Select(x => x.display_name).ToStringList());
             Console.WriteLine();
 

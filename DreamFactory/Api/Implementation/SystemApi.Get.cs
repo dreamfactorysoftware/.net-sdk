@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
@@ -25,22 +26,22 @@
             return await QueryRecordsAsync<AppGroupResponse>("app_group", query);
         }
 
-        public async Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query = null)
+        public async Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query)
         {
             return await QueryRecordsAsync<RoleResponse>("role", query);
         }
 
-        public async Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query = null)
+        public async Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query)
         {
             return await QueryRecordsAsync<UserResponse>("user", query);
         }
 
-        public async Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query = null)
+        public async Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query)
         {
             return await QueryRecordsAsync<ServiceResponse>("service", query);
         }
 
-        public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null)
+        public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query)
         {
             return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
         }
@@ -88,30 +89,20 @@
 
         private async Task<IEnumerable<TRecord>> QueryRecordsAsync<TRecord>(string resource, SqlQuery query)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
-
-            if (query != null)
+            if (resource == null)
             {
-                address = address.WithParameter("filter", query.filter);
-
-                if (query.limit.HasValue)
-                {
-                    address = address.WithParameter("limit", query.limit.Value);
-                }
-
-                if (query.offset.HasValue)
-                {
-                    address = address.WithParameter("offset", query.offset.Value);
-                }
-
-                if (!string.IsNullOrEmpty(query.order))
-                {
-                    address = address.WithParameter("order", query.order);
-                }
+                throw new ArgumentNullException("resource");
             }
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
 
+            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
+            address = address.WithSqlQuery(query);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 

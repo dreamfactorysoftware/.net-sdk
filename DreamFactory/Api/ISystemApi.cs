@@ -23,121 +23,140 @@
         /// <summary>
         /// Retrieve one or more applications.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of applications.</returns>
-        Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query = null);
+        Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query);
 
         /// <summary>
         /// Retrieve one or more application groups.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of application groups.</returns>
-        Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query = null);
+        Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query);
 
         /// <summary>
         /// Retrieve one or more roles.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of roles.</returns>
-        Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query = null);
+        Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query);
 
         /// <summary>
         /// Retrieve one or more users.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of users.</returns>
-        Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query = null);
+        Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query);
 
         /// <summary>
         /// Retrieve one or more services.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of services.</returns>
-        Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query = null);
+        Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query);
 
         /// <summary>
         /// Retrieve one or more email templates.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query = null);
+        Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query);
 
         /// <summary>
         /// Create one or more applications.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="apps">Applications to create.</param>
         /// <returns>List of created applications.</returns>
-        Task<IEnumerable<AppResponse>> CreateAppsAsync(params AppRequest[] apps);
+        Task<IEnumerable<AppResponse>> CreateAppsAsync(SqlQuery query, params AppRequest[] apps);
+
+        /// <summary>
+        /// Create one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="appGroups">Application groups to create.</param>
+        /// <returns>List of created application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> CreateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
 
         /// <summary>
         /// Create one or more users.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="users">Users to create.</param>
         /// <returns>List of created users.</returns>
-        Task<IEnumerable<UserResponse>> CreateUsersAsync(params UserRequest[] users);
+        Task<IEnumerable<UserResponse>> CreateUsersAsync(SqlQuery query, params UserRequest[] users);
 
         /// <summary>
         /// Create one or more roles.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="roles">Roles to create.</param>
         /// <returns>List of created roles.</returns>
-        Task<IEnumerable<RoleResponse>> CreateRolesAsync(params RoleRequest[] roles);
+        Task<IEnumerable<RoleResponse>> CreateRolesAsync(SqlQuery query, params RoleRequest[] roles);
 
         /// <summary>
         /// Create one or more services.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="services">Services to create.</param>
         /// <returns>List of created services.</returns>
-        Task<IEnumerable<ServiceResponse>> CreateServicesAsync(params ServiceRequest[] services);
+        Task<IEnumerable<ServiceResponse>> CreateServicesAsync(SqlQuery query, params ServiceRequest[] services);
 
         /// <summary>
         /// Create one or more email templates.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="templates">Email templates to create.</param>
         /// <returns>List of created email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
+        Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Update one or more applications.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="apps">Applications to update.</param>
         /// <returns>List of updated applications.</returns>
-        Task<IEnumerable<AppResponse>> UpdateAppsAsync(params AppRequest[] apps);
+        Task<IEnumerable<AppResponse>> UpdateAppsAsync(SqlQuery query, params AppRequest[] apps);
 
         /// <summary>
         /// Update one or more application groups.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="appGroups">Application groups to update.</param>
         /// <returns>List of updated application groups.</returns>
-        Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(params AppGroupRequest[] appGroups);
+        Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
 
         /// <summary>
         /// Update one or more roles.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="roles">Roles to update.</param>
         /// <returns>List of updated roles.</returns>
-        Task<IEnumerable<RoleResponse>> UpdateRolesAsync(params RoleRequest[] roles);
+        Task<IEnumerable<RoleResponse>> UpdateRolesAsync(SqlQuery query, params RoleRequest[] roles);
 
         /// <summary>
         /// Update one or more users.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="users">Users to update.</param>
         /// <returns>List of updated users.</returns>
-        Task<IEnumerable<UserResponse>> UpdateUsersAsync(params UserRequest[] users);
+        Task<IEnumerable<UserResponse>> UpdateUsersAsync(SqlQuery query, params UserRequest[] users);
 
         /// <summary>
         /// Update one or more services.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="services">Services to update.</param>
         /// <returns>List of updated services.</returns>
-        Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(params ServiceRequest[] services);
+        Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(SqlQuery query, params ServiceRequest[] services);
 
         /// <summary>
         /// Update one or more email templates.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="templates">Email templates to update.</param>
         /// <returns>List of updated email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(params EmailTemplateRequest[] templates);
+        Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Delete one or more applications.
@@ -296,9 +315,9 @@
         /// <summary>
         /// Retrieve one or more devices.
         /// </summary>
-        /// <param name="query">Query parameters. Pass null to get all records.</param>
+        /// <param name="query">Query parameters.</param>
         /// <returns>List of devices.</returns>
-        Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query = null);
+        Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query);
 
         /// <summary>
         /// Delete one or more devices.

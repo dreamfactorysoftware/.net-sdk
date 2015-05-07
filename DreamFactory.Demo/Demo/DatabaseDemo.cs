@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
@@ -43,18 +44,19 @@
             // Create new record
             Console.WriteLine("Creating {0} records...", TableName);
             List<StaffRecord> records = CreateStaffRecords().ToList();
-            records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records));
+            records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery()));
 
-            SqlQuery query = new SqlQuery("age > 30", "age");
+            SqlQuery query = new SqlQuery { filter = "age > 30", order = "age", fields = "*" };
             var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
-            Console.WriteLine("Get records with SqlQuery: ages={0}", selection.Select(x => x.age.ToString()).ToStringList());
+            var ages = selection.Select(x => x.age.ToString(CultureInfo.InvariantCulture)).ToStringList();
+            Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
 
             // Deleting one record
             Console.WriteLine("Deleting second record...");
             await databaseApi.DeleteRecordsAsync(TableName, records.Skip(1).Take(1));
 
             // Get table records
-            records = new List<StaffRecord>(await databaseApi.GetRecordsAsync<StaffRecord>(TableName));
+            records = new List<StaffRecord>(await databaseApi.GetRecordsAsync<StaffRecord>(TableName, new SqlQuery()));
             Console.WriteLine("Retrieved {0} records:", TableName);
             foreach (StaffRecord item in records)
             {

@@ -5,6 +5,7 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Config;
@@ -31,7 +32,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<AppResponse> apps = systemApi.GetAppsAsync().Result.ToList();
+            List<AppResponse> apps = systemApi.GetAppsAsync(new SqlQuery()).Result.ToList();
 
             // Assert
             apps.Count.ShouldBe(4);
@@ -45,7 +46,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<UserResponse> users = systemApi.GetUsersAsync().Result.ToList();
+            List<UserResponse> users = systemApi.GetUsersAsync(new SqlQuery()).Result.ToList();
 
             // Assert
             users.Count.ShouldBe(2);
@@ -59,7 +60,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<RoleResponse> roles = systemApi.GetRolesAsync().Result.ToList();
+            List<RoleResponse> roles = systemApi.GetRolesAsync(new SqlQuery()).Result.ToList();
 
             // Assert
             roles.Count.ShouldBe(1);
@@ -73,7 +74,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<ServiceResponse> services = systemApi.GetServicesAsync().Result.ToList();
+            List<ServiceResponse> services = systemApi.GetServicesAsync(new SqlQuery()).Result.ToList();
 
             // Assert
             services.Count.ShouldBe(4);
@@ -87,7 +88,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<AppGroupResponse> appGroups = systemApi.GetAppGroupsAsync().Result.ToList();
+            List<AppGroupResponse> appGroups = systemApi.GetAppGroupsAsync(new SqlQuery()).Result.ToList();
 
             // Assert
             appGroups.Count.ShouldBe(1);
@@ -132,7 +133,7 @@
             AppRequest app = CreateApp();
 
             // Act
-            AppResponse created = systemApi.CreateAppsAsync(app).Result.First();
+            AppResponse created = systemApi.CreateAppsAsync(new SqlQuery(), app).Result.First();
 
             // Assert
             created.name.ShouldBe("Todo List jQuery");
@@ -146,7 +147,7 @@
             AppRequest app = CreateApp();
 
             // Act & Assert
-            systemApi.UpdateAppsAsync(app).Wait();
+            systemApi.UpdateAppsAsync(new SqlQuery(), app).Wait();
         }
 
         [TestMethod]

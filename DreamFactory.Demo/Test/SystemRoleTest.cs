@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.Demo.IntegrationTest
+﻿namespace DreamFactory.Demo.Test
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Rest;
 
@@ -18,7 +19,7 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<RoleResponse> roles = await systemApi.GetRolesAsync();
+            IEnumerable<RoleResponse> roles = await systemApi.GetRolesAsync(new SqlQuery());
             Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.name).ToStringList());
 
             RoleResponse role = roles.SingleOrDefault(x => x.name == NewRole);
@@ -34,13 +35,13 @@
                 is_active = true
             };
                 
-            roles = await systemApi.CreateRolesAsync(newRole);
+            roles = await systemApi.CreateRolesAsync(new SqlQuery(), newRole);
             role = roles.Single(x => x.name == NewRole);
             Console.WriteLine("CreateRolesAsync(): {0}", context.ContentSerializer.Serialize(role));
 
             newRole.id = role.id;
             newRole.description = "new description";
-            role = (await systemApi.UpdateRolesAsync(newRole)).Single(x => x.name == NewRole);
+            role = (await systemApi.UpdateRolesAsync(new SqlQuery(), newRole)).Single(x => x.name == NewRole);
             Console.WriteLine("UpdateUsersAsync(): new description={0}", role.description);
 
             await DeleteRole(role, systemApi);
