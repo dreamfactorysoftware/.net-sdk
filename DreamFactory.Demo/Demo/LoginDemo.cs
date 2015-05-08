@@ -11,8 +11,24 @@
         public async Task RunAsync(IRestContext context)
         {
             IUserApi userApi = context.Factory.CreateUserApi();
-            Session session = await userApi.LoginAsync(Program.DefaultApp, Program.Email, Program.Password);
-            Console.WriteLine("Logged in as {0}", session.display_name);
+
+            try
+            {
+                Session session = await userApi.LoginAsync(Program.DefaultApp, Program.Email, Program.Password);
+                Console.WriteLine("Logged in as {0}", session.display_name);
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Unfortunately, something went wrong.");
+                Console.WriteLine("Please check the following:");
+                Console.WriteLine("\t- your DSP is listening: {0}", Program.BaseAddress);
+                Console.WriteLine("\t- you have created user '{0}' with password '{1}'", Program.Email, Program.Password);
+                Console.WriteLine();
+                Console.ResetColor();
+
+                throw;
+            }
         }
     }
 }

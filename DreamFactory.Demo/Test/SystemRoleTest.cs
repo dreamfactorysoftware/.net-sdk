@@ -19,7 +19,8 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<RoleResponse> roles = await systemApi.GetRolesAsync(new SqlQuery());
+            SqlQuery query = new SqlQuery { fields = "*", related = "apps,users,services" };
+            IEnumerable<RoleResponse> roles = await systemApi.GetRolesAsync(query);
             Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.name).ToStringList());
 
             RoleResponse role = roles.SingleOrDefault(x => x.name == NewRole);

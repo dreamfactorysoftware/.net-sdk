@@ -2,7 +2,6 @@
 namespace DreamFactory.Model.System.Role
 {
     using global::System;
-    using global::System.Collections.Generic;
 
     /// <summary>
     /// RelatedRole.
@@ -53,16 +52,5 @@ namespace DreamFactory.Model.System.Role
         /// User Id of who last modified this role.
         /// </summary>
         public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedRoles.
-    /// </summary>
-    public class RelatedRoles
-    {
-        /// <summary>
-        /// Array of system user records.
-        /// </summary>
-        public List<RelatedRole> record { get; set; }
     }
 }

@@ -9,20 +9,30 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
 
     public class SystemDemo : IRunnable
     {
+// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             // IUserApi provides all functions for user management
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // List apps
-            SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*" };
+            SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*", related = "services,roles", };
             IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(query);
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
+
+            // Check todoangular app
+            AppResponse todoAngular = apps.Single(x => x.api_name == "todoangular");
+            RelatedRole role = todoAngular.roles.First();
+            Console.WriteLine("todoangular app has first role: {0}", role.name);
+            RelatedService service = todoAngular.services.First();
+            Console.WriteLine("todoangular app has first service: {0}", service.name);
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());

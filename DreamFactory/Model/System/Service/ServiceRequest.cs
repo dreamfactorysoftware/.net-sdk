@@ -83,11 +83,11 @@ namespace DreamFactory.Model.System.Service
         /// <summary>
         /// Related apps by app to service assignment.
         /// </summary>
-        public RelatedApps apps { get; set; }
+        public List<RelatedApp> apps { get; set; }
 
         /// <summary>
         /// Related roles by service to role assignment.
         /// </summary>
-        public RelatedRoles roles { get; set; }
+        public List<RelatedRole> roles { get; set; }
     }
 }

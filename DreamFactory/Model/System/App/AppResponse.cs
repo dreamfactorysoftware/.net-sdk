@@ -86,27 +86,27 @@ namespace DreamFactory.Model.System.App
         /// <summary>
         /// Related roles by Role.default_app_id.
         /// </summary>
-        public List<RelatedRoles> roles_default_app { get; set; }
+        public List<RelatedRole> roles_default_app { get; set; }
 
         /// <summary>
         /// Related users by User.default_app_id.
         /// </summary>
-        public List<RelatedUsers> users_default_app { get; set; }
+        public List<RelatedUser> users_default_app { get; set; }
 
         /// <summary>
         /// Related groups by app to group assignment.
         /// </summary>
-        public List<RelatedAppGroups> app_groups { get; set; }
+        public List<RelatedAppGroup> app_groups { get; set; }
 
         /// <summary>
         /// Related roles by app to role assignment.
         /// </summary>
-        public List<RelatedRoles> roles { get; set; }
+        public List<RelatedRole> roles { get; set; }
 
         /// <summary>
         /// Related services by app to service assignment.
         /// </summary>
-        public List<RelatedServices> services { get; set; }
+        public List<RelatedService> services { get; set; }
         
         /// <summary>
         /// Date this application was created.

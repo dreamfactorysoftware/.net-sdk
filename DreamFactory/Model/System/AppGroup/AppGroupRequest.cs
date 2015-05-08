@@ -2,6 +2,7 @@
 namespace DreamFactory.Model.System.AppGroup
 {
     using DreamFactory.Model.System.App;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// AppGroupResponse.
@@ -26,6 +27,6 @@ namespace DreamFactory.Model.System.AppGroup
         /// <summary>
         /// Related apps by app to group assignment.
         /// </summary>
-        public RelatedApps apps { get; set; }
+        public List<RelatedApp> apps { get; set; }
     }
 }

@@ -5,6 +5,7 @@ namespace DreamFactory.Model.System.Role
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
     using global::System;
+    using global::System.Collections.Generic;
 
     /// <summary>
     /// RoleResponse.
@@ -44,17 +45,17 @@ namespace DreamFactory.Model.System.Role
         /// <summary>
         /// Related users by User.role_id.
         /// </summary>
-        public RelatedUsers users { get; set; }
+        public List<RelatedUser> users { get; set; }
 
         /// <summary>
         /// Related apps by role assignment.
         /// </summary>
-        public RelatedApps apps { get; set; }
+        public List<RelatedApp> apps { get; set; }
 
         /// <summary>
         /// Related services by role assignment.
         /// </summary>
-        public RelatedServices services { get; set; }
+        public List<RelatedService> services { get; set; }
 
         /// <summary>
         /// Date this role was created.

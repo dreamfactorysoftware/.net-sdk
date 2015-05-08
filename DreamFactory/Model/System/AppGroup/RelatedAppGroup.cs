@@ -2,7 +2,6 @@
 namespace DreamFactory.Model.System.AppGroup
 {
     using global::System;
-    using global::System.Collections.Generic;
 
     /// <summary>
     /// RelatedAppGroup.
@@ -43,16 +42,5 @@ namespace DreamFactory.Model.System.AppGroup
         /// User Id of who last modified this group.
         /// </summary>
         public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedAppGroups.
-    /// </summary>
-    public class RelatedAppGroups
-    {
-        /// <summary>
-        /// Array of system user records.
-        /// </summary>
-        public List<RelatedAppGroup> record { get; set; }
     }
 }

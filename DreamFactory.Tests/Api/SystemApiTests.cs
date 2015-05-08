@@ -35,7 +35,7 @@
             List<AppResponse> apps = systemApi.GetAppsAsync(new SqlQuery()).Result.ToList();
 
             // Assert
-            apps.Count.ShouldBe(4);
+            apps.Count.ShouldBe(5);
             apps.First().api_name.ShouldBe("todojquery");
         }
 

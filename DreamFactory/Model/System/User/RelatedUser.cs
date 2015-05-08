@@ -2,7 +2,6 @@
 namespace DreamFactory.Model.System.User
 {
     using global::System;
-    using global::System.Collections.Generic;
 
     /// <summary>
     /// RelatedUser.
@@ -83,16 +82,5 @@ namespace DreamFactory.Model.System.User
         /// User Id of who last modified this user.
         /// </summary>
         public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedUsers.
-    /// </summary>
-    public class RelatedUsers
-    {
-        /// <summary>
-        /// Array of system user records.
-        /// </summary>
-        public List<RelatedUser> record { get; set; }
     }
 }

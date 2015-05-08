@@ -57,7 +57,7 @@ namespace DreamFactory.Model.System.Service
         /// <summary>
         /// Any credentials data required by the service.
         /// </summary>
-        public string credentials { get; set; }
+        public Dictionary<string, string> credentials { get; set; }
 
         /// <summary>
         /// The format of the returned data of the service.
@@ -72,12 +72,12 @@ namespace DreamFactory.Model.System.Service
         /// <summary>
         /// Additional URL parameters required by the service.
         /// </summary>
-        public string parameters { get; set; }
+        public List<KeyValuePair<string, string>> parameters { get; set; }
 
         /// <summary>
         /// Additional headers required by the service.
         /// </summary>
-        public string headers { get; set; }
+        public List<string> headers { get; set; }
 
         /// <summary>
         /// Date this service was created.
@@ -98,16 +98,5 @@ namespace DreamFactory.Model.System.Service
         /// User Id of who last modified this service. 
         /// </summary>
         public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedServices.
-    /// </summary>
-    public class RelatedServices
-    {
-        /// <summary>
-        /// Array of system user records.
-        /// </summary>
-        public List<RelatedService> record { get; set; }
     }
 }

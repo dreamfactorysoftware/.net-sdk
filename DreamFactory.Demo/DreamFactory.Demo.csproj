@@ -72,6 +72,7 @@
     <Compile Include="Demo\FilesDemo.cs" />
     <Compile Include="Demo\HttpDemo.cs" />
     <Compile Include="IRunnable.cs" />
+    <Compile Include="Test\SystemAppTest.cs" />
     <Compile Include="Test\SystemDeviceTest.cs" />
     <Compile Include="Test\SystemEventTest.cs" />
     <Compile Include="Test\SystemRoleTest.cs" />

@@ -2,7 +2,6 @@
 namespace DreamFactory.Model.System.App
 {
     using global::System;
-    using global::System.Collections.Generic;
 
     /// <summary>
     /// RelatedApp.
@@ -98,16 +97,5 @@ namespace DreamFactory.Model.System.App
         /// User Id of who last modified this application.
         /// </summary>
         public int? last_modified_by_id { get; set; }
-    }
-
-    /// <summary>
-    /// RelatedApps.
-    /// </summary>
-    public class RelatedApps
-    {
-        /// <summary>
-        /// Array of records.
-        /// </summary>
-        public List<RelatedApp> record { get; set; }
     }
 }
