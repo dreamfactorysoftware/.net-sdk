@@ -16,15 +16,13 @@
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly IHttpHeaders baseHeaders;
-        private readonly string serviceName;
 
         public FilesApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
         {
-            this.baseAddress = baseAddress;
+            this.baseAddress = baseAddress.WithResource(serviceName);
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
-            this.serviceName = serviceName;
         }
 
         public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
@@ -44,7 +42,7 @@
                 throw new ArgumentNullException("content");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath).WithParameter("check_exist", checkExists);
+            IHttpAddress address = baseAddress.WithResource( container, filepath).WithParameter("check_exist", checkExists);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -81,7 +79,7 @@
                 throw new ArgumentNullException("contents");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResource( container, filepath);
             IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -100,7 +98,7 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResource( container, filepath);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -121,7 +119,7 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResource( container, filepath);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders.Include(HttpHeaders.AcceptHeader, OctetStream));
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -142,7 +140,7 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, filepath);
+            IHttpAddress address = baseAddress.WithResource( container, filepath);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 

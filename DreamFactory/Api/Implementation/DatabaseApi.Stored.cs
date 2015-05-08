@@ -93,7 +93,7 @@
 
         private async Task<IEnumerable<string>> GetNamesOnlyAsync(string resource, bool refresh)
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName, resource).WithParameter("names_only", true);
+            IHttpAddress address = baseAddress.WithResource( resource).WithParameter("names_only", true);
 
             if (refresh)
             {
@@ -111,7 +111,7 @@
 
         private async Task<IHttpResponse> CallStoredProc(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName, resource, procedureName);
+            IHttpAddress address = baseAddress.WithResource( resource, procedureName);
 
             if (!string.IsNullOrEmpty(wrapper))
             {

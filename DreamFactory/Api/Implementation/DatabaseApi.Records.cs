@@ -26,7 +26,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
+            IHttpAddress address = baseAddress.WithResource( tableName);
             address = address.WithSqlQuery(query);
 
             var recordsRequest = new { record = records.ToList() };
@@ -51,7 +51,7 @@
                 throw new ArgumentNullException("records");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
+            IHttpAddress address = baseAddress.WithResource( tableName);
 
             var recordsRequest = new { record = records.ToList() };
             string data = contentSerializer.Serialize(recordsRequest);
@@ -73,7 +73,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
+            IHttpAddress address = baseAddress.WithResource( tableName);
             address = address.WithSqlQuery(query);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
@@ -96,7 +96,7 @@
                 throw new ArgumentNullException("records");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, tableName);
+            IHttpAddress address = baseAddress.WithResource( tableName);
 
             var recordsRequest = new { record = records.ToList() };
             string data = contentSerializer.Serialize(recordsRequest);

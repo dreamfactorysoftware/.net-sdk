@@ -10,7 +10,7 @@
     {
         public async Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "event").WithParameter("as_cached", false);
+            IHttpAddress address = baseAddress.WithResource("event").WithParameter("as_cached", false);
             if (allEvents)
             {
                 address = address.WithParameter("all_events", true);
@@ -31,7 +31,7 @@
                 throw new ArgumentException("At least one parameter must be specificed", "requests");
             }
 
-            IHttpAddress address = baseAddress.WithResources(SystemService, "event");
+            IHttpAddress address = baseAddress.WithResource("event");
             var records = new { record = new List<EventRequest>(requests) };
             string body = contentSerializer.Serialize(records);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
@@ -47,7 +47,7 @@
                 throw new ArgumentException("At least one parameter must be specificed", "requests");
             }
 
-            IHttpAddress address = baseAddress.WithResources(SystemService, "event");
+            IHttpAddress address = baseAddress.WithResource("event");
             var records = new { record = new List<EventRequest>(requests) };
             string body = contentSerializer.Serialize(records);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);

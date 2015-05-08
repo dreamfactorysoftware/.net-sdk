@@ -15,7 +15,7 @@
 
         public EmailApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
         {
-            this.baseAddress = baseAddress.WithResources(serviceName);
+            this.baseAddress = baseAddress.WithResource(serviceName);
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;

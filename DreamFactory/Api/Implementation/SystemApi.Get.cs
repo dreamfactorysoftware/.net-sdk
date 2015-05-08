@@ -48,7 +48,7 @@
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "environment");
+            IHttpAddress address = baseAddress.WithResource("environment");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -64,7 +64,7 @@
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "constant");
+            IHttpAddress address = baseAddress.WithResource("constant");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -76,7 +76,7 @@
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "constant", constant);
+            IHttpAddress address = baseAddress.WithResource("constant", constant);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -99,7 +99,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
+            IHttpAddress address = baseAddress.WithResource(resource);
             address = address.WithSqlQuery(query);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);

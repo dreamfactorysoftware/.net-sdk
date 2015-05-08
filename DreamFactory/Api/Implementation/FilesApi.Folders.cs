@@ -19,7 +19,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty);
+            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty);
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -41,7 +41,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty)
+            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty)
                                               .WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -63,7 +63,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty);
+            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty);
             if (checkExists)
             {
                 address = address.WithParameter("check_exist", true);
@@ -90,7 +90,7 @@
             HttpUtils.CheckUrlString(url);
 
             IHttpAddress address = baseAddress
-                .WithResources(serviceName, container, path, string.Empty)
+                .WithResource( container, path, string.Empty)
                 .WithParameter("extract", true)
                 .WithParameter("clean", clean)
                 .WithParameter("url", url);
@@ -113,7 +113,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, path, string.Empty)
+            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty)
                                               .WithParameter("force", force);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);

@@ -8,8 +8,6 @@
 
     internal partial class SystemApi : ISystemApi
     {
-        private const string SystemService = "system";
-
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
@@ -17,7 +15,7 @@
 
         public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders)
         {
-            this.baseAddress = baseAddress;
+            this.baseAddress = baseAddress.WithResource("system");
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
@@ -25,8 +23,8 @@
 
         public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "app",
-                applicationId.ToString(CultureInfo.InvariantCulture))
+            IHttpAddress address = baseAddress
+                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
                 .WithParameter("pkg", true)
                 .WithParameter("include_files", includeFiles)
                 .WithParameter("include_services", includeServices)
@@ -42,8 +40,8 @@
 
         public async Task<byte[]> DownloadApplicationSdkAsync(int applicationId)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "app",
-                applicationId.ToString(CultureInfo.InvariantCulture))
+            IHttpAddress address = baseAddress
+                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
                 .WithParameter("sdk", true);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
@@ -56,7 +54,7 @@
 
         public async Task<ConfigResponse> GetConfigAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "config");
+            IHttpAddress address = baseAddress.WithResource("config");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -67,7 +65,7 @@
 
         public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            IHttpAddress address = baseAddress.WithResources(SystemService, "config");
+            IHttpAddress address = baseAddress.WithResource("config");
             string body = contentSerializer.Serialize(config);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders, body);
 

@@ -14,7 +14,6 @@
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly IHttpHeaders baseHeaders;
-        private readonly string serviceName;
 
         public CustomSettingsApi(
             IHttpAddress baseAddress,
@@ -23,16 +22,15 @@
             IHttpHeaders baseHeaders,
             string serviceName)
         {
-            this.baseAddress = baseAddress;
+            this.baseAddress = baseAddress.WithResource(serviceName);
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
-            this.serviceName = serviceName;
         }
 
         public async Task<IEnumerable<string>> GetCustomSettingsAsync()
         {
-            var address = baseAddress.WithResources(serviceName, CustomResource);
+            var address = baseAddress.WithResource( CustomResource);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -55,7 +53,7 @@
                 throw new ArgumentNullException("entity");
             }
 
-            var address = baseAddress.WithResources(serviceName, CustomResource);
+            var address = baseAddress.WithResource( CustomResource);
 
             Dictionary<string, TEntity> setting = new Dictionary<string, TEntity> { { settingName, entity } };
             string content = contentSerializer.Serialize(setting);
@@ -76,7 +74,7 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            var address = baseAddress.WithResources(serviceName, CustomResource, settingName);
+            var address = baseAddress.WithResource( CustomResource, settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -93,7 +91,7 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            var address = baseAddress.WithResources(serviceName, CustomResource, settingName);
+            var address = baseAddress.WithResource( CustomResource, settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);

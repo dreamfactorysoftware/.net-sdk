@@ -82,7 +82,7 @@
                 throw new ArgumentException("At least one parameter must be specificed", "records");
             }
 
-            IHttpAddress address = baseAddress.WithResources(SystemService, resource);
+            IHttpAddress address = baseAddress.WithResource(resource);
             address = address.WithSqlQuery(query);
 
             var requests = new { record = new List<TRecord>(records) };

@@ -10,8 +10,6 @@
 
     internal partial class UserApi : IUserApi
     {
-        private const string UserService = "user";
-
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
@@ -19,7 +17,7 @@
 
         public UserApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
         {
-            this.baseAddress = baseAddress;
+            this.baseAddress = baseAddress.WithResource("user");
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
@@ -32,7 +30,7 @@
                 throw new ArgumentNullException("register");
             }
 
-            var address = baseAddress.WithResources(UserService, "register");
+            var address = baseAddress.WithResource("register");
             if (login)
             {
                 address = address.WithParameter("login", true);
@@ -66,7 +64,7 @@
                 throw new ArgumentNullException("profileRequest");
             }
 
-            var address = baseAddress.WithResources(UserService, "profile");
+            var address = baseAddress.WithResource("profile");
             string content = contentSerializer.Serialize(profileRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
@@ -79,7 +77,7 @@
 
         public async Task<ProfileResponse> GetProfileAsync()
         {
-            var address = baseAddress.WithResources(UserService, "profile");
+            var address = baseAddress.WithResource("profile");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -90,7 +88,7 @@
 
         public async Task<IEnumerable<DeviceResponse>> GetDevicesAsync()
         {
-            var address = baseAddress.WithResources(UserService, "device");
+            var address = baseAddress.WithResource("device");
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -113,7 +111,7 @@
                 throw new ArgumentNullException("deviceRequest");
             }
 
-            var address = baseAddress.WithResources(UserService, "device");
+            var address = baseAddress.WithResource("device");
             string content = contentSerializer.Serialize(deviceRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 

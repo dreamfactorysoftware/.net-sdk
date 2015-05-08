@@ -93,7 +93,7 @@
         /// <inheritdoc />
         public async Task<IEnumerable<Resource>> GetResourcesAsync(string serviceName)
         {
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.WithResources(serviceName).Build(), BaseHeaders);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.WithResource(serviceName).Build(), BaseHeaders);
 
             IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);

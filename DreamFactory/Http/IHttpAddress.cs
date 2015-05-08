@@ -22,14 +22,14 @@ namespace DreamFactory.Http
         IHttpAddress WithVersion(RestApiVersion value);
 
         /// <summary>
-        /// Sets resources (e.g. "rest, user, session").
+        /// Add resources (e.g. "rest, user, session").
         /// </summary>
-        /// <param name="values">Resources to set.</param>
+        /// <param name="values">Resource names to add.</param>
         /// <returns>New instance of the builder.</returns>
-        IHttpAddress WithResources(params string[] values);
+        IHttpAddress WithResource(params string[] values);
 
         /// <summary>
-        /// Sets a query parameter.
+        /// Adds a query parameter.
         /// </summary>
         /// <param name="name">Query parameter name.</param>
         /// <param name="value">Query parameter value.</param>

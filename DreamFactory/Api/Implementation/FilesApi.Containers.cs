@@ -13,7 +13,7 @@
 
         public async Task<IEnumerable<ContainerInfo>> GetAccessComponentsAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("include_properties", true);
+            IHttpAddress address = baseAddress.WithParameter("include_properties", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
             
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -41,7 +41,7 @@
                 throw new ArgumentException("At least one container name must be provided", "containers");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("check_exist", checkExists);
+            IHttpAddress address = baseAddress.WithParameter("check_exist", checkExists);
 
             var data = new { container = containers.Select(x => new ContainerInfo { name = x, path = x }) };
             string body = contentSerializer.Serialize(data);
@@ -63,11 +63,9 @@
                 throw new ArgumentException("At least one container name must be provided", "containers");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName);
-
             var data = new { container = containers.Select(x => new { name = x, path = x }) };
             string body = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, baseAddress.Build(), baseHeaders, body);
             request.SetTunnelingWith(HttpMethod.Post);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -85,7 +83,7 @@
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty);
+            IHttpAddress address = baseAddress.WithResource( container, string.Empty);
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -102,7 +100,7 @@
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
+            IHttpAddress address = baseAddress.WithResource( container, string.Empty)
                                               .WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -127,7 +125,7 @@
             HttpUtils.CheckUrlString(url);
 
             IHttpAddress address = baseAddress
-                .WithResources(serviceName, container, string.Empty)
+                .WithResource( container, string.Empty)
                 .WithParameter("extract", true)
                 .WithParameter("clean", clean)
                 .WithParameter("url", url);
@@ -145,7 +143,7 @@
                 throw new ArgumentNullException("container");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, container, string.Empty)
+            IHttpAddress address = baseAddress.WithResource( container, string.Empty)
                                               .WithParameter("force", force);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);

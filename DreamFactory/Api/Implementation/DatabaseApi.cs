@@ -13,21 +13,18 @@
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
         private readonly IHttpHeaders baseHeaders;
-        private readonly string serviceName;
 
         public DatabaseApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
         {
-            this.baseAddress = baseAddress;
+            this.baseAddress = baseAddress.WithResource(serviceName);
             this.httpFacade = httpFacade;
             this.contentSerializer = contentSerializer;
             this.baseHeaders = baseHeaders;
-            this.serviceName = serviceName;
         }
 
         public async Task<IEnumerable<TableInfo>> GetAccessComponentsAsync()
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, baseAddress.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
@@ -38,7 +35,7 @@
 
         public async Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
-            IHttpAddress address = baseAddress.WithResources(serviceName).WithParameter("names_only", true);
+            IHttpAddress address = baseAddress.WithParameter("names_only", true);
             
             if (includeSchemas)
             {
@@ -76,7 +73,7 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
+            IHttpAddress address = baseAddress.WithResource( "_schema", tableName);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
@@ -95,7 +92,7 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName);
+            IHttpAddress address = baseAddress.WithResource( "_schema", tableName);
 
             if (refresh)
             {
@@ -122,7 +119,7 @@
                 throw new ArgumentNullException("fieldName");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema", tableName, fieldName);
+            IHttpAddress address = baseAddress.WithResource( "_schema", tableName, fieldName);
 
             if (refresh)
             {
@@ -144,7 +141,7 @@
                 throw new ArgumentNullException("tableSchema");
             }
 
-            IHttpAddress address = baseAddress.WithResources(serviceName, "_schema");
+            IHttpAddress address = baseAddress.WithResource( "_schema");
 
             var tableSchemas = new { table = new List<TableSchema> { tableSchema } };
             string body = contentSerializer.Serialize(tableSchemas);

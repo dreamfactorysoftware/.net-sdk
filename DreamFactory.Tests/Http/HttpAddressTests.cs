@@ -43,16 +43,16 @@
         }
 
         [TestMethod]
-        public void ShouldChangeResources()
+        public void ShouldAddResources()
         {
             // Arrange
             IHttpAddress address = CreateTestHttpAddress();
 
             // Act
-            address = address.WithResources("system", "config");
+            address = address.WithResource("add");
 
             // Assert
-            address.Build().ShouldBe("http://localhost/rest/system/config?one=1&two=true");
+            address.Build().ShouldBe("http://localhost/rest/user/session/add?one=1&two=true");
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@
 
             // Act
             address
-                .WithVersion(RestApiVersion.V2).WithResources("system", "config")
+                .WithVersion(RestApiVersion.V2).WithResource("system", "config")
                 .WithBaseAddress("https://pinebit.ddns.net")
                 .WithParameter("new", "value");
 

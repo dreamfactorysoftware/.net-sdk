@@ -41,15 +41,16 @@
             return new HttpAddress(baseAddress, value, resources, parameters);
         }
 
-        public IHttpAddress WithResources(params string[] values)
+        public IHttpAddress WithResource(params string[] values)
         {
-            return new HttpAddress(baseAddress, version, values.ToList(), parameters);
+            List<string> temp = new List<string>(resources);
+            temp.AddRange(values);
+            return new HttpAddress(baseAddress, version, temp, parameters);
         }
 
         public IHttpAddress WithParameter(string name, object value)
         {
             Dictionary<string, object> temp = new Dictionary<string, object>(parameters) { { name, value } };
-
             return new HttpAddress(baseAddress, version, resources, temp);
         }
 
