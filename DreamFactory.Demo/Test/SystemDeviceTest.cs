@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Remoting.Messaging;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
@@ -11,10 +10,10 @@
     using DreamFactory.Rest;
     using DeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
 
-    public static class SystemDeviceTest
+    public class SystemDeviceTest : IRunnable
     {
 // ReSharper disable PossibleMultipleEnumeration
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
             
@@ -34,7 +33,7 @@
             Console.WriteLine("SetDeviceAsync(): success={0}", ok);
 
             SqlQuery query = new SqlQuery { filter = "platform=\"windows\"", fields = "*" };
-            devices = await systemApi.GetDevicesAsync(new SqlQuery());
+            devices = await systemApi.GetDevicesAsync(query);
             Console.WriteLine("GetDevicesAsync(): {0}", context.ContentSerializer.Serialize(devices.Single()));
 
             await DeleteAnyDevices(devices, systemApi);

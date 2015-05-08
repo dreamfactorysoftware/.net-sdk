@@ -6,9 +6,9 @@
     using DreamFactory.Api;
     using DreamFactory.Rest;
 
-    public static class CustomSettingsDemo
+    public class CustomSettingsDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             ICustomSettingsApi settingsApi = context.Factory.CreateUserCustomSettingsApi();
 

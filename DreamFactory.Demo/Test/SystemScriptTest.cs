@@ -8,12 +8,12 @@
     using DreamFactory.Model.System.Script;
     using DreamFactory.Rest;
 
-    public class SystemScriptTest
+    public class SystemScriptTest : IRunnable
     {
         private const string ScriptId = "dummybear";
 
         // ReSharper disable PossibleMultipleEnumeration
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 

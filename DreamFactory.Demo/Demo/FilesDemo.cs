@@ -8,19 +8,17 @@
     using DreamFactory.Model.File;
     using DreamFactory.Rest;
 
-    public static class FilesDemo
+    public class FilesDemo : IRunnable
     {
         private const string TestContainer = "test";
 
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             IFilesApi filesApi = context.Factory.CreateFilesApi("files");
 
             // Display existing containers
-            Console.WriteLine("GetContainerNamesAsync():");
             IEnumerable<string> names = await filesApi.GetContainerNamesAsync();
-            Console.WriteLine("{0}", names.ToStringList());
-            Console.WriteLine();
+            Console.WriteLine("GetContainerNamesAsync(): {0}", names.ToStringList());
 
             // Creating a test container - tank
             await filesApi.CreateContainersAsync(false, TestContainer);

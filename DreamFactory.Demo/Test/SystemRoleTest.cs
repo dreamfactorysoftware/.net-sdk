@@ -10,12 +10,12 @@
     using DreamFactory.Model.System.Role;
     using DreamFactory.Rest;
 
-    public static class SystemRoleTest
+    public class SystemRoleTest : IRunnable
     {
         private const string NewRole = "NewRole";
 
 // ReSharper disable PossibleMultipleEnumeration
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 

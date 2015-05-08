@@ -12,9 +12,9 @@
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
 
-    public static class SystemDemo
+    public class SystemDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             // IUserApi provides all functions for user management
             ISystemApi systemApi = context.Factory.CreateSystemApi();
@@ -23,12 +23,10 @@
             SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*" };
             IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(query);
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
-            Console.WriteLine();
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
             Console.WriteLine("Users: {0}", users.Select(x => x.display_name).ToStringList());
-            Console.WriteLine();
 
             // Download app package & SDK
             Console.WriteLine("Downloading app package and SDK...");
@@ -36,7 +34,6 @@
             byte[] sdk = await systemApi.DownloadApplicationSdkAsync(1);
             File.WriteAllBytes("todojquery-package.zip", package);
             File.WriteAllBytes("todojquery-sdk.zip", sdk);
-            Console.WriteLine();
 
             // Get environment info - does not work for WAMP, uncomment when using linux hosted DSP.
             // EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();

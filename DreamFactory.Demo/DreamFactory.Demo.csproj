@@ -66,9 +66,12 @@
   <ItemGroup>
     <Compile Include="Demo\DatabaseDemo.cs" />
     <Compile Include="Demo\EmailDemo.cs" />
+    <Compile Include="Demo\LoginDemo.cs" />
+    <Compile Include="Demo\LogoutDemo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Demo\FilesDemo.cs" />
     <Compile Include="Demo\HttpDemo.cs" />
+    <Compile Include="IRunnable.cs" />
     <Compile Include="Test\SystemDeviceTest.cs" />
     <Compile Include="Test\SystemEventTest.cs" />
     <Compile Include="Test\SystemRoleTest.cs" />

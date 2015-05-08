@@ -10,11 +10,11 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Rest;
 
-    public class DatabaseDemo
+    public class DatabaseDemo : IRunnable
     {
         private const string TableName = "staff";
 
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             // Getting database interface
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");

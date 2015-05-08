@@ -6,13 +6,12 @@
     using DreamFactory.Model;
     using DreamFactory.Rest;
 
-    public static class DiscoveryDemo
+    public class DiscoveryDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             // List available services
             IEnumerable<Service> services = context.GetServicesAsync().Result;
-            Console.WriteLine();
             Console.WriteLine("Available services:");
             foreach (Service service in services)
             {

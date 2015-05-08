@@ -10,12 +10,12 @@
     using DreamFactory.Model.System.User;
     using DreamFactory.Rest;
 
-    public static class SystemUserTest
+    public class SystemUserTest : IRunnable
     {
         private const string NewEmail = "user@mail.com";
 
 // ReSharper disable PossibleMultipleEnumeration
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 

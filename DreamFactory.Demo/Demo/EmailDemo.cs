@@ -7,9 +7,9 @@
     using DreamFactory.Model.Email;
     using DreamFactory.Rest;
 
-    public class EmailDemo
+    public class EmailDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             // Send an email
             Console.WriteLine("Sending email...");

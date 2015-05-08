@@ -6,9 +6,9 @@
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
 
-    public static class UserDemo
+    public class UserDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             // IUserApi provides all functions for user management
             IUserApi userApi = context.Factory.CreateUserApi();

@@ -5,9 +5,9 @@
     using DreamFactory.Http;
     using DreamFactory.Rest;
 
-    public static class HttpDemo
+    public class HttpDemo : IRunnable
     {
-        public static async Task Run(IRestContext context)
+        public async Task RunAsync(IRestContext context)
         {
             /*
              * Get random bytes as hex string from random.org
