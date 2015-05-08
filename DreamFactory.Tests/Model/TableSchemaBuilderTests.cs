@@ -72,6 +72,8 @@
             schema.field.Single(x => x.name == "active").type.ShouldBe("boolean");
         }
 
+        // ReSharper disable InconsistentNaming
+        // ReSharper disable UnusedMember.Local
         private class Record
         {
             public int id { get; set; }

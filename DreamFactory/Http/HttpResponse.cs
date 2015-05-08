@@ -59,9 +59,8 @@
         private void ReadBody()
         {
             using (MemoryStream memory = new MemoryStream(RawBody))
-            using (StreamReader reader = new StreamReader(memory))
             {
-                bodyString = reader.ReadToEnd();
+                bodyString = new StreamReader(memory).ReadToEnd();
             }
         }
     }

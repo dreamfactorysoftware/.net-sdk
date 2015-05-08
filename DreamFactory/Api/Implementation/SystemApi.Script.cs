@@ -95,6 +95,7 @@
 
             if (parameters != null)
             {
+                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (KeyValuePair<string, object> pair in parameters)
                 {
                     address = address.WithParameter(pair.Key, pair.Value.ToString().ToLowerInvariant());

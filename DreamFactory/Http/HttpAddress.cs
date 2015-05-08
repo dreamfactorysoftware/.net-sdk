@@ -19,8 +19,9 @@
         {
             this.baseAddress = baseAddress;
             this.version = version;
-            this.resources = new List<string>();
-            this.parameters = new Dictionary<string, object>();
+            
+            resources = new List<string>();
+            parameters = new Dictionary<string, object>();
         }
 
         public HttpAddress(string baseAddress, RestApiVersion version, List<string> resources, Dictionary<string, object> parameters)

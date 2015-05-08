@@ -4,7 +4,6 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.Email;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
