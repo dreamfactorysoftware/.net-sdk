@@ -38,20 +38,20 @@ The .NET SDK has been tested on the following platforms:
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
 The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
 ```csharp
-        internal const string BaseAddress = "http://localhost";
-        internal const string DefaultApp = "todoangular";
-        internal const string Email = "admin@mail.com";
-        internal const string Password = "dream";
+	internal const string BaseAddress = "http://localhost";
+	internal const string DefaultApp = "todoangular";
+	internal const string Email = "admin@mail.com";
+	internal const string Password = "dream";
 ```
 
  > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
 
 * Open DreamFactoryNet solution in Visual Studio 2012 or newer;
 * Open Program.cs and modify the settings;
-* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click and select *Set as StartUp project";
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
 * In Visual Studio main menu, select *DEBUG -> Run without debugging*;
-* A console window will appear that will show demo output;
-* If the demo has been completed successfully, you will see the total number of tests executed at the very end. 
+* A console window will appear with demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed. 
 
 ### Running Unit Tests
 
@@ -63,7 +63,11 @@ The demo requires a test user to be specified in Program.cs file. Open the file 
 
 Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
 You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
-When changing the target framework version, pay attention to the dependent package versions (just reinstall them).
+When changing the target framework version, pay attention to the dependent package versions - you will need to reinstall them:
+
+```powershell
+	update-package -reinstall -ignoreDependencies
+```
 
 ## Solution structure
 
@@ -218,18 +222,18 @@ Reading/Writing of metadata associated with file entities (container, folder, fi
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
 ```csharp
-        // Your custom POCO
-        class StaffRecord
-        {
-            public int uid { get; set; }
-            public string first_name { get; set; }
-            public string last_name { get; set; }
-            public int age { get; set; }
-		}
+    // Your custom POCO
+    class StaffRecord
+    {
+        public int uid { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public int age { get; set; }
+	}
 
-		// Create tabe schema from StaffRecord type
-		ITableSchemaBuilder builder = new TableSchemaBuilder();
-        builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+	// Create tabe schema from StaffRecord type
+	ITableSchemaBuilder builder = new TableSchemaBuilder();
+    builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
