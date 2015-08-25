@@ -66,7 +66,7 @@
                     break;
 
                 case RestApiVersion.V2:
-                    address += "api/v2.0/";
+                    address += "api/v2/";
                     break;
 
                 default:
