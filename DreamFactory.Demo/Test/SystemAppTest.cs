@@ -22,14 +22,14 @@
             Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
 
             // Cloning
-            AppResponse todoApp = apps.Single(x => x.ApiName == "todoangular");
+            AppResponse todoApp = apps.Single(x => x.ApiName == "admin");
             AppRequest todoAppRequest = todoApp.Convert<AppResponse, AppRequest>();
             todoAppRequest.Name = todoApp.Name + "clone";
             todoAppRequest.ApiName = todoApp.ApiName + "clone";
 
             // Creating a clone
             apps = await systemApi.CreateAppsAsync(new SqlQuery(), todoAppRequest);
-            AppResponse todoAppClone = apps.Single(x => x.ApiName == "todoangularclone");
+            AppResponse todoAppClone = apps.Single(x => x.ApiName == "admin-clone");
             Console.WriteLine("Created a clone app={0}", todoAppClone.ApiName);
 
             // Deleting the clone

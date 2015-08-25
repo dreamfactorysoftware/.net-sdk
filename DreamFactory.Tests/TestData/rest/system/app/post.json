@@ -15,7 +15,7 @@
       "import_url": "https://raw.github.com/dreamfactorysoftware/app-todo-jquery/master/todojquery.dfpkg",
       "storage_service_id": 2,
       "storage_container": "applications",
-      "launch_url": "http://localhost/files/applications/todojquery/index.html",
+      "launch_url": "http://localhost:8765/files/applications/todojquery/index.html",
       "requires_fullscreen": false,
       "allow_fullscreen_toggle": true,
       "toggle_location": "top",

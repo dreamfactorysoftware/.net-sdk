@@ -13,7 +13,7 @@
     [TestClass]
     public class RestContextTests
     {
-        private const string BaseAddress = "http://localhost";
+        private const string BaseAddress = "http://localhost:8765";
 
         [TestMethod]
         public void ShouldCreateHttpFacade()

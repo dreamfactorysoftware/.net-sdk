@@ -14,7 +14,7 @@
     [TestClass]
     public class UserApiTests
     {
-        private const string BaseAddress = "http://localhost";
+        private const string BaseAddress = "http://localhost:8765";
 
         #region --- Session ---
 

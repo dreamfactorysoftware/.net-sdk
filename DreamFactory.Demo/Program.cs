@@ -11,10 +11,10 @@
          *  Change these settings to match your local DF installation.
          */
 
-        internal const string BaseAddress = "http://localhost";
-        internal const string DefaultApp = "todoangular";
-        internal const string Email = "admin@mail.com";
-        internal const string Password = "dream";
+        internal const string BaseAddress = "http://localhost:8765";
+        internal const string DefaultApp = "admin";
+        internal const string Email = "demo@factory.com";
+        internal const string Password = "dreamfactory";
 
         /// <summary>
         /// This program runs both integration tests and demos.

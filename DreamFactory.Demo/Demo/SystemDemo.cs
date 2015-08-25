@@ -26,12 +26,12 @@
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
 
-            // Check todoangular app
-            AppResponse todoAngular = apps.Single(x => x.ApiName == "todoangular");
+            // Check admin app
+            AppResponse todoAngular = apps.Single(x => x.ApiName == "admin");
             RelatedRole role = todoAngular.Roles.First();
-            Console.WriteLine("todoangular app has first role: {0}", role.Name);
+            Console.WriteLine("admin app has first role: {0}", role.Name);
             RelatedService service = todoAngular.Services.First();
-            Console.WriteLine("todoangular app has first service: {0}", service.Name);
+            Console.WriteLine("admin app has first service: {0}", service.Name);
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
@@ -41,8 +41,8 @@
             Console.WriteLine("Downloading app package and SDK...");
             byte[] package = await systemApi.DownloadApplicationPackageAsync(1);
             byte[] sdk = await systemApi.DownloadApplicationSdkAsync(1);
-            File.WriteAllBytes("todojquery-package.zip", package);
-            File.WriteAllBytes("todojquery-sdk.zip", sdk);
+            File.WriteAllBytes("admin-package.zip", package);
+            File.WriteAllBytes("admin-sdk.zip", sdk);
 
             // Get environment info - does not work for WAMP, uncomment when using linux hosted DSP.
             // EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();

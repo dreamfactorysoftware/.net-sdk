@@ -15,7 +15,7 @@
     [TestClass]
     public class DatabaseApiTests
     {
-        private const string BaseAddress = "http://localhost";
+        private const string BaseAddress = "http://localhost:8765";
 
         #region --- Schema ---
 

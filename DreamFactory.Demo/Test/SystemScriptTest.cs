@@ -10,7 +10,7 @@
 
     public class SystemScriptTest : IRunnable
     {
-        private const string ScriptId = "dummybear";
+        private const string ScriptId = "dummy-script";
 
         public async Task RunAsync(IRestContext context)
         {
