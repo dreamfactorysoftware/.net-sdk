@@ -19,7 +19,7 @@
             TableSchema schema = builder.WithName("name").Build();
 
             // Assert
-            schema.name.ShouldBe("name");
+            schema.Name.ShouldBe("name");
         }
 
         [TestMethod]
@@ -32,10 +32,10 @@
             TableSchema schema = builder.WithKeyField("index").Build();
 
             // Assert
-            FieldSchema field = schema.field.First();
-            field.is_primary_key.ShouldBe(true);
-            field.type.ShouldBe("id");
-            field.name.ShouldBe("index");
+            FieldSchema field = schema.Field.First();
+            field.IsPrimaryKey.ShouldBe(true);
+            field.Type.ShouldBe("id");
+            field.Name.ShouldBe("index");
         }
 
         [TestMethod]
@@ -48,11 +48,11 @@
             TableSchema schema = builder.WithField("name", true, 123).Build();
 
             // Assert
-            FieldSchema field = schema.field.First();
-            field.is_primary_key.ShouldBe(null);
-            field.required.ShouldBe(true);
-            field.name.ShouldBe("name");
-            field.default_value.ShouldBe("123");
+            FieldSchema field = schema.Field.First();
+            field.IsPrimaryKey.ShouldBe(null);
+            field.Required.ShouldBe(true);
+            field.Name.ShouldBe("name");
+            field.DefaultValue.ShouldBe("123");
         }
 
         [TestMethod]
@@ -65,19 +65,19 @@
             TableSchema schema = builder.WithFieldsFrom<Record>().Build();
 
             // Assert
-            schema.field.Count.ShouldBe(4);
-            schema.field.Single(x => x.name == "id").type.ShouldBe("id");
-            schema.field.Single(x => x.name == "name").type.ShouldBe("string");
-            schema.field.Single(x => x.name == "age").type.ShouldBe("integer");
-            schema.field.Single(x => x.name == "active").type.ShouldBe("boolean");
+            schema.Field.Count.ShouldBe(4);
+            schema.Field.Single(x => x.Name == "id").Type.ShouldBe("id");
+            schema.Field.Single(x => x.Name == "name").Type.ShouldBe("string");
+            schema.Field.Single(x => x.Name == "age").Type.ShouldBe("integer");
+            schema.Field.Single(x => x.Name == "active").Type.ShouldBe("boolean");
         }
 
         private class Record
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public int age { get; set; }
-            public bool active { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public bool Active { get; set; }
         }
     }
 }

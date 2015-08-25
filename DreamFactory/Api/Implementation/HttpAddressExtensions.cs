@@ -13,49 +13,49 @@
                 throw new ArgumentNullException("query");
             }
 
-            if (query.ids != null)
+            if (query.Ids != null)
             {
-                httpAddress = httpAddress.WithParameter("ids", query.ids);
+                httpAddress = httpAddress.WithParameter("ids", query.Ids);
             }
 
-            if (query.filter != null)
+            if (query.Filter != null)
             {
-                httpAddress = httpAddress.WithParameter("filter", query.filter);
+                httpAddress = httpAddress.WithParameter("filter", query.Filter);
             }
 
-            if (query.order != null)
+            if (query.Order != null)
             {
-                httpAddress = httpAddress.WithParameter("order", query.order);
+                httpAddress = httpAddress.WithParameter("order", query.Order);
             }
 
-            if (query.offset.HasValue)
+            if (query.Offset.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("offset", query.offset.Value);
+                httpAddress = httpAddress.WithParameter("offset", query.Offset.Value);
             }
 
-            if (query.limit.HasValue)
+            if (query.Limit.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("limit", query.limit.Value);
+                httpAddress = httpAddress.WithParameter("limit", query.Limit.Value);
             }
 
-            if (query.fields != null)
+            if (query.Fields != null)
             {
-                httpAddress = httpAddress.WithParameter("fields", query.fields);
+                httpAddress = httpAddress.WithParameter("fields", query.Fields);
             }
 
-            if (query.related != null)
+            if (query.Related != null)
             {
-                httpAddress = httpAddress.WithParameter("related", query.related);
+                httpAddress = httpAddress.WithParameter("related", query.Related);
             }
 
-            if (query.@continue.HasValue)
+            if (query.Continue.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("continue", query.@continue);
+                httpAddress = httpAddress.WithParameter("continue", query.Continue);
             }
 
-            if (query.rollback.HasValue)
+            if (query.Rollback.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("rollback", query.rollback);
+                httpAddress = httpAddress.WithParameter("rollback", query.Rollback);
             }
 
             return httpAddress;

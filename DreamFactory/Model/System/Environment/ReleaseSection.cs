@@ -8,21 +8,21 @@
         /// <summary>
         /// id.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// release.
         /// </summary>
-        public string release { get; set; }
+        public string Release { get; set; }
 
         /// <summary>
         /// codename.
         /// </summary>
-        public string codename { get; set; }
+        public string Codename { get; set; }
 
         /// <summary>
         /// description.
         /// </summary>
-        public string description { get; set; }
+        public string Description { get; set; }
     }
 }

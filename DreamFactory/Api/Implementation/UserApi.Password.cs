@@ -20,14 +20,14 @@
             }
 
             var address = baseAddress.WithResource("password");
-            PasswordRequest data = new PasswordRequest { old_password = oldPassword, new_password = newPassword };
+            PasswordRequest data = new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
+            return contentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
         }
 
         public async Task<PasswordResponse> RequestPasswordResetAsync(string email)
@@ -38,7 +38,7 @@
             }
 
             var address = baseAddress.WithResource("password").WithParameter("reset", true);
-            PasswordRequest data = new PasswordRequest { email = email };
+            PasswordRequest data = new PasswordRequest { Email = email };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
@@ -66,18 +66,18 @@
             }
 
             var address = baseAddress.WithResource("password").WithParameter("login", true);
-            PasswordRequest data = new PasswordRequest { email = email, new_password = newPassword, code = code, security_answer = answer };
+            PasswordRequest data = new PasswordRequest { Email = email, NewPassword = newPassword, Code = code, SecurityAnswer = answer };
             string content = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
+            bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
             if (success)
             {
                 Session session = await GetSessionAsync();
-                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
             }
 
             return success;

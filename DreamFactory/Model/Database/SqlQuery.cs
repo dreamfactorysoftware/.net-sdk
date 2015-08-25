@@ -13,54 +13,54 @@
         /// </remarks>
         public SqlQuery()
         {
-            fields = "*";
+            Fields = "*";
         }
 
         /// <summary>
         /// Comma-delimited list of the identifiers of the records to retrieve.
         /// </summary>
-        public string ids { get; set; }
+        public string Ids { get; set; }
 
         /// <summary>
         /// SQL WHERE clause filter to limit the records retrieved.
         /// </summary>
-        public string filter { get; set; }
+        public string Filter { get; set; }
 
         /// <summary>
         /// Maximum number of records to return.
         /// </summary>
-        public int? limit { get; set; }
+        public int? Limit { get; set; }
 
         /// <summary>
         /// Offset the filter results to a particular record index (may require order> parameter in some scenarios).
         /// </summary>
-        public int? offset { get; set; }
+        public int? Offset { get; set; }
 
         /// <summary>
         /// SQL ORDER_BY clause containing field and direction for filter results.
         /// </summary>
-        public string order { get; set; }
+        public string Order { get; set; }
 
         /// <summary>
         /// Comma-delimited list of field names to retrieve for each record, '*' to return all fields.
         /// </summary>
-        public string fields { get; set; }
+        public string Fields { get; set; }
 
         /// <summary>
         /// Comma-delimited list of relationship names to retrieve for each record, or '*' to retrieve all.
         /// </summary>
-        public string related { get; set; }
+        public string Related { get; set; }
 
         /// <summary>
         /// In batch scenarios, where supported, continue processing even after one record fails.
         /// Default behavior is to halt and return results up to the first point of failure.
         /// </summary>
-        public bool? @continue { get; set; }
+        public bool? Continue { get; set; }
 
         /// <summary>
         /// In batch scenarios, where supported, rollback all changes if any record of the batch fails.
         /// Default behavior is to halt and return results up to the first point of failure, leaving any changes.
         /// </summary>
-        public bool? rollback { get; set; }
+        public bool? Rollback { get; set; }
     }
 }

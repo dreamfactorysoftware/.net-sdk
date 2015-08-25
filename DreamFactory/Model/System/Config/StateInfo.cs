@@ -16,7 +16,7 @@
         /// 3	Maintenance Mode
         /// 4	Banned and not available
         /// </summary>
-        public int? operation_state { get; set; }
+        public int? OperationState { get; set; }
 
         /// <summary>
         /// The current state of platform provisioning. Valid states are:
@@ -29,7 +29,7 @@
         /// 12	Provisioning Error
         /// 14	Deprovisioning Error
         /// </summary>
-        public int? provision_state { get; set; }
+        public int? ProvisionState { get; set; }
 
         /// <summary>
         /// The current ready state of the DSP. Valid states are:
@@ -42,16 +42,16 @@
         /// 6	Welcome Page Required
         /// 7	Platform Database Ready
         /// </summary>
-        public int? ready_state { get; set; }
+        public int? ReadyState { get; set; }
 
         /// <summary>
         /// Get operation_state description.
         /// </summary>
-        /// <param name="operation_state">operation_state value.</param>
+        /// <param name="operationState">operation_state value.</param>
         /// <returns>State description.</returns>
-        public static string GetOperationStateDescription(int operation_state)
+        public static string GetOperationStateDescription(int operationState)
         {
-            switch (operation_state)
+            switch (operationState)
             {
                 case -1:
                     return "Unpublished, non-hosted, private or unknown";
@@ -72,18 +72,18 @@
                     return "Banned and not available";
 
                 default:
-                    throw new ArgumentOutOfRangeException("operation_state");
+                    throw new ArgumentOutOfRangeException("operationState");
             }
         }
 
         /// <summary>
         /// Get provision_state description.
         /// </summary>
-        /// <param name="provision_state">provision_state value.</param>
+        /// <param name="provisionState">provision_state value.</param>
         /// <returns>State description.</returns>
-        public static string GetProvisionStateDescription(int provision_state)
+        public static string GetProvisionStateDescription(int provisionState)
         {
-            switch (provision_state)
+            switch (provisionState)
             {
                 case 0:
                     return "Request queued";
@@ -110,18 +110,18 @@
                     return "Deprovisioning Error";
 
                 default:
-                    throw new ArgumentOutOfRangeException("provision_state");
+                    throw new ArgumentOutOfRangeException("provisionState");
             }
         }
 
         /// <summary>
         /// Get ready_state description.
         /// </summary>
-        /// <param name="ready_state">ready_state value.</param>
+        /// <param name="readyState">ready_state value.</param>
         /// <returns>State description.</returns>
-        public static string GetReadyStateDescription(int ready_state)
+        public static string GetReadyStateDescription(int readyState)
         {
-            switch (ready_state)
+            switch (readyState)
             {
                 case 0:
                     return "Platform Administrator Missing";
@@ -148,7 +148,7 @@
                     return "Platform Database Ready";
 
                 default:
-                    throw new ArgumentOutOfRangeException("ready_state");
+                    throw new ArgumentOutOfRangeException("readyState");
             }
         }
     }

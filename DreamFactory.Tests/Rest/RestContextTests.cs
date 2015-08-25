@@ -88,8 +88,8 @@
 
             // Assert
             services.ShouldNotBeEmpty();
-            services.ShouldContain(x => x.api_name == "files");
-            services.ShouldContain(x => x.api_name == "email");
+            services.ShouldContain(x => x.ApiName == "files");
+            services.ShouldContain(x => x.ApiName == "email");
         }
 
         [TestMethod]
@@ -103,9 +103,9 @@
 
             // Assert
             resources.ShouldNotBeEmpty();
-            resources.ShouldContain(x => x.name == "password");
-            resources.ShouldContain(x => x.name == "profile");
-            resources.ShouldContain(x => x.name == "session");
+            resources.ShouldContain(x => x.Name == "password");
+            resources.ShouldContain(x => x.Name == "profile");
+            resources.ShouldContain(x => x.Name == "session");
         }
 
         [TestMethod]

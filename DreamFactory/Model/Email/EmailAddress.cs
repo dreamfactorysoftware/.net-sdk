@@ -8,11 +8,11 @@
         /// <summary>
         /// Optional name displayed along with the email address.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Required email address.
         /// </summary>
-        public string email { get; set; }
+        public string Email { get; set; }
     }
 }

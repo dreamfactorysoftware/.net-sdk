@@ -73,9 +73,9 @@
 
             // Assert
             result.ShouldNotBe(null);
-            result.name.ShouldBe("applications");
-            result.folder.Count.ShouldBe(11);
-            result.file.Count.ShouldBe(32);
+            result.Name.ShouldBe("applications");
+            result.Folder.Count.ShouldBe(11);
+            result.File.Count.ShouldBe(32);
         }
 
         [TestMethod]
@@ -106,9 +106,9 @@
 
             // Assert
             folder.ShouldNotBe(null);
-            folder.name.ShouldBe("calendar");
-            folder.folder.Count.ShouldBe(2);
-            folder.file.Count.ShouldBe(6);
+            folder.Name.ShouldBe("calendar");
+            folder.Folder.Count.ShouldBe(2);
+            folder.File.Count.ShouldBe(6);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@
             FileResponse fileResponse = filesApi.CreateFileAsync("applications", "calendar/test.txt", "Hello").Result;
 
             // Assert
-            fileResponse.path.ShouldBe("applications/calendar/test.txt");
+            fileResponse.Path.ShouldBe("applications/calendar/test.txt");
         }
 
         [TestMethod]
@@ -173,7 +173,7 @@
             FileResponse fileResponse = filesApi.CreateFileAsync("applications", "calendar/test.bin", data).Result;
 
             // Assert
-            fileResponse.path.ShouldBe("applications/calendar/test.bin");
+            fileResponse.Path.ShouldBe("applications/calendar/test.bin");
         }
 
         [TestMethod]
@@ -235,7 +235,7 @@
             FileResponse fileResponse = filesApi.DeleteFileAsync("applications", "calendar/test.txt").Result;
 
             // Assert
-            fileResponse.path.ShouldBe("applications/calendar/test.txt");
+            fileResponse.Path.ShouldBe("applications/calendar/test.txt");
         }
 
         #endregion

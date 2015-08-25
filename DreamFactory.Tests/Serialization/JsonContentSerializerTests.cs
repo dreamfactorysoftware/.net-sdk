@@ -54,8 +54,8 @@
 
         private static IEnumerable<Resource> CreateTestObject()
         {
-            yield return new Resource { name = "foo" };
-            yield return new Resource { name = "bar" };
+            yield return new Resource { Name = "foo" };
+            yield return new Resource { Name = "bar" };
         }
     }
 }

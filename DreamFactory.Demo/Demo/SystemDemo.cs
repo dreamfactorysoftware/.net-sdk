@@ -22,20 +22,20 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // List apps
-            SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*", related = "services,roles", };
+            SqlQuery query = new SqlQuery { Filter = "is_active=true", Fields = "*", Related = "services,roles", };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
-            Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
+            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
 
             // Check todoangular app
-            AppResponse todoAngular = apps.Single(x => x.api_name == "todoangular");
-            RelatedRole role = todoAngular.roles.First();
-            Console.WriteLine("todoangular app has first role: {0}", role.name);
-            RelatedService service = todoAngular.services.First();
-            Console.WriteLine("todoangular app has first service: {0}", service.name);
+            AppResponse todoAngular = apps.Single(x => x.ApiName == "todoangular");
+            RelatedRole role = todoAngular.Roles.First();
+            Console.WriteLine("todoangular app has first role: {0}", role.Name);
+            RelatedService service = todoAngular.Services.First();
+            Console.WriteLine("todoangular app has first service: {0}", service.Name);
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
-            Console.WriteLine("Users: {0}", users.Select(x => x.display_name).ToStringList());
+            Console.WriteLine("Users: {0}", users.Select(x => x.DisplayName).ToStringList());
 
             // Download app package & SDK
             Console.WriteLine("Downloading app package and SDK...");
@@ -50,7 +50,7 @@
 
             // Get config
             ConfigResponse config = await systemApi.GetConfigAsync();
-            Console.WriteLine("config.install_name = {0}", config.install_name);
+            Console.WriteLine("config.install_name = {0}", config.InstallName);
 
             // Get constant
             Dictionary<string, string> contentTypes = await systemApi.GetConstantAsync("content_types");

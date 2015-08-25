@@ -15,11 +15,11 @@
 
             // getSession()
             Session session = await userApi.GetSessionAsync();
-            Console.WriteLine("Session ID: {0}", session.session_id);
+            Console.WriteLine("Session ID: {0}", session.SessionId);
 
             // getProfile()
             ProfileResponse profile = await userApi.GetProfileAsync();
-            Console.WriteLine("Email from your profile: {0}", profile.email);
+            Console.WriteLine("Email from your profile: {0}", profile.Email);
 
             // changePassword()
             const string newPassword = Program.Password + "new";

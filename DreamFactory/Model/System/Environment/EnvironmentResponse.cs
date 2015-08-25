@@ -8,21 +8,21 @@
         /// <summary>
         /// server.
         /// </summary>
-        public ServerSection server { get; set; }
+        public ServerSection Server { get; set; }
 
         /// <summary>
         /// release.
         /// </summary>
-        public ReleaseSection release { get; set; }
+        public ReleaseSection Release { get; set; }
 
         /// <summary>
         /// platform.
         /// </summary>
-        public PlatformSection platform { get; set; }
+        public PlatformSection Platform { get; set; }
 
         /// <summary>
         /// php_info.
         /// </summary>
-        public PhpInfoSection php_info { get; set; }
+        public PhpInfoSection PhpInfo { get; set; }
     }
 }

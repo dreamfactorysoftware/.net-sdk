@@ -10,11 +10,11 @@
         /// <summary>
         /// The owner API of this event.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// An array of paths which trigger this event.
         /// </summary>
-        public List<EventPaths> paths { get; set; }
+        public List<EventPaths> Paths { get; set; }
     }
 }

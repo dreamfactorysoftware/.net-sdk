@@ -39,8 +39,8 @@
 
         private static EmailRequest CreateEmailRequest()
         {
-            EmailAddress address = new EmailAddress { email = "motodrug@gmail.com" };
-            return new EmailRequest { to = new List<EmailAddress> { address }, subject = "Hello from the demo!", body_text = "Hello, moto!" };
+            EmailAddress address = new EmailAddress { Email = "motodrug@gmail.com" };
+            return new EmailRequest { To = new List<EmailAddress> { address }, Subject = "Hello from the demo!", BodyText = "Hello, moto!" };
         }
     }
 }

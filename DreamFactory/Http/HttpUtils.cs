@@ -130,7 +130,7 @@
                 error = serializer.Deserialize(response.Body, error);
                 if (error != null && error.error != null)
                 {
-                    message = error.error.First().message;
+                    message = error.error.First().Message;
                 }
 
                 return string.Format("{0} - {1}", response.Code, message);

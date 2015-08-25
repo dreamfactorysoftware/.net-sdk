@@ -18,11 +18,11 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            SqlQuery query = new SqlQuery { fields = "*", related = "apps,users,services" };
+            SqlQuery query = new SqlQuery { Fields = "*", Related = "apps,users,services" };
             IEnumerable<RoleResponse> roles = (await systemApi.GetRolesAsync(query)).ToList();
-            Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.name).ToStringList());
+            Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.Name).ToStringList());
 
-            RoleResponse role = roles.SingleOrDefault(x => x.name == NewRole);
+            RoleResponse role = roles.SingleOrDefault(x => x.Name == NewRole);
             if (role != null)
             {
                 await DeleteRole(role, systemApi);
@@ -30,28 +30,28 @@
 
             RoleRequest newRole = new RoleRequest
             {
-                name = NewRole,
-                description = "new role",
-                is_active = true
+                Name = NewRole,
+                Description = "new role",
+                IsActive = true
             };
                 
             roles = await systemApi.CreateRolesAsync(new SqlQuery(), newRole);
-            role = roles.Single(x => x.name == NewRole);
+            role = roles.Single(x => x.Name == NewRole);
             Console.WriteLine("CreateRolesAsync(): {0}", context.ContentSerializer.Serialize(role));
 
-            newRole.id = role.id;
-            newRole.description = "new description";
-            role = (await systemApi.UpdateRolesAsync(new SqlQuery(), newRole)).Single(x => x.name == NewRole);
-            Console.WriteLine("UpdateUsersAsync(): new description={0}", role.description);
+            newRole.Id = role.Id;
+            newRole.Description = "new description";
+            role = (await systemApi.UpdateRolesAsync(new SqlQuery(), newRole)).Single(x => x.Name == NewRole);
+            Console.WriteLine("UpdateUsersAsync(): new description={0}", role.Description);
 
             await DeleteRole(role, systemApi);
         }
 
         private static async Task DeleteRole(RoleResponse role, ISystemApi systemApi)
         {
-            Debug.Assert(role.id.HasValue, "Role ID must be set");
-            await systemApi.DeleteRolesAsync(role.id.Value);
-            Console.WriteLine("DeleteRolesAsync():: id={0}", role.id);
+            Debug.Assert(role.Id.HasValue, "Role ID must be set");
+            await systemApi.DeleteRolesAsync(role.Id.Value);
+            Console.WriteLine("DeleteRolesAsync():: id={0}", role.Id);
         }
     }
 }

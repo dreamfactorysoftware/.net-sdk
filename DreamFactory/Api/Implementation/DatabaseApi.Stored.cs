@@ -124,8 +124,8 @@
             {
                 StoredProcRequest storedProc = new StoredProcRequest
                 {
-                    @params = parameters.ToList(),
-                    wrapper = wrapper
+                    Params = parameters.ToList(),
+                    Wrapper = wrapper
                 };
                 string body = contentSerializer.Serialize(storedProc);
                 request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);

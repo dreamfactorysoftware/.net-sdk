@@ -32,7 +32,7 @@
             var address = baseAddress.WithResource("session");
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
 
-            Login login = new Login { email = email, password = password, duration = duration };
+            Login login = new Login { Email = email, Password = password, Duration = duration };
             string loginContent = contentSerializer.Serialize(login);
             IHttpRequest request = new HttpRequest(HttpMethod.Post,
                                                    address.Build(),
@@ -43,7 +43,7 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }

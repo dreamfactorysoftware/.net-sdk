@@ -15,9 +15,9 @@
             // Setting some preferences
             UserPreferences preferences = new UserPreferences
             {
-                flag = true,
-                array = new[] { "a", "b", "c" },
-                entity = new UserPreferences.Entity { rank = 4, role = "user" }
+                Flag = true,
+                Array = new[] { "a", "b", "c" },
+                Entity = new Entity { Rank = 4, Role = "user" }
             };
 
             if (await settingsApi.SetCustomSettingAsync("preferences", preferences))
@@ -33,20 +33,21 @@
             // Retrieving preferences back
             UserPreferences instance = await settingsApi.GetCustomSettingAsync<UserPreferences>("preferences");
             Console.WriteLine("Retrieved preferences back:");
-            Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.flag, instance.entity.rank);
+            Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.Flag, instance.Entity.Rank);
         }
 
         internal class UserPreferences
         {
-            public bool flag { get; set; }
-            public string[] array { get; set; }
-            public Entity entity { get; set; }
+            public bool Flag { get; set; }
+            public string[] Array { get; set; }
+            public Entity Entity { get; set; }
+        }
 
-            internal class Entity
-            {
-                public int rank { get; set; }
-                public string role { get; set; }
-            }
+
+        internal class Entity
+        {
+            public int Rank { get; set; }
+            public string Role { get; set; }
         }
     }
 }

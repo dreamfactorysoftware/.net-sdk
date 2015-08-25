@@ -15,7 +15,7 @@
             try
             {
                 Session session = await userApi.LoginAsync(Program.DefaultApp, Program.Email, Program.Password);
-                Console.WriteLine("Logged in as {0}", session.display_name);
+                Console.WriteLine("Logged in as {0}", session.DisplayName);
             }
             catch (Exception)
             {

@@ -10,6 +10,6 @@
         /// <summary>
         /// name.
         /// </summary>
-        public Dictionary<string, object> info { get; set; }
+        public Dictionary<string, object> Info { get; set; }
     }
 }

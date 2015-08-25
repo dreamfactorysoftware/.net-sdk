@@ -22,16 +22,16 @@
             IUserApi userApi = context.Factory.CreateUserApi();
             DeviceRequest device = new DeviceRequest
             {
-                uuid = "1",
-                model = "model",
-                platform = "windows",
-                version = "1.0"
+                Uuid = "1",
+                Model = "model",
+                Platform = "windows",
+                Version = "1.0"
             };
 
             bool ok = await userApi.SetDeviceAsync(device);
             Console.WriteLine("SetDeviceAsync(): success={0}", ok);
 
-            SqlQuery query = new SqlQuery { filter = "platform=\"windows\"", fields = "*" };
+            SqlQuery query = new SqlQuery { Filter = "platform=\"windows\"", Fields = "*" };
             devices = (await systemApi.GetDevicesAsync(query)).ToList();
             Console.WriteLine("GetDevicesAsync(): {0}", context.ContentSerializer.Serialize(devices.Single()));
 
@@ -42,7 +42,7 @@
         {
             if (devices.Any())
             {
-                int[] ids = devices.Select(x => x.id ?? 0).ToArray();
+                int[] ids = devices.Select(x => x.Id ?? 0).ToArray();
                 await systemApi.DeleteDevicesAsync(ids);
                 Console.WriteLine("DeleteDevicesAsync()");
             }

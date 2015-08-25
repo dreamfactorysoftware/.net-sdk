@@ -8,16 +8,16 @@
         /// <summary>
         /// Gets Identifier/Name for the file, localized to requested resource.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Full path of the file, from the service including container.
         /// </summary>
-        public string path { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// The media type of the content of the file.
         /// </summary>
-        public string content_type { get; set; }
+        public string ContentType { get; set; }
     }
 }

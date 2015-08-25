@@ -22,9 +22,9 @@
             EmailRequest request = builder.Build();
 
             // Assert
-            request.subject.ShouldBe("Hello");
-            request.body_text.ShouldBe("Hello, World!");
-            request.to.Single().email.ShouldBe("user@mail.com");
+            request.Subject.ShouldBe("Hello");
+            request.BodyText.ShouldBe("Hello, World!");
+            request.To.Single().Email.ShouldBe("user@mail.com");
         }
 
     }

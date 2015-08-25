@@ -10,21 +10,21 @@
         /// <summary>
         /// Gets Identifier/Name for the container, localized to requested resource.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Same as name for the container, for consistency.
         /// </summary>
-        public string path { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// An array of folders to create.
         /// </summary>
-        public List<FolderRequest> folder { get; set; }
+        public List<FolderRequest> Folder { get; set; }
 
         /// <summary>
         /// An array of files to create.
         /// </summary>
-        public List<FileRequest> file { get; set; }
+        public List<FileRequest> File { get; set; }
     }
 }

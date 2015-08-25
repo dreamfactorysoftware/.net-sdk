@@ -16,11 +16,11 @@
 
             IEnumerable<EventCacheResponse> events = await systemApi.GetEventsAsync(true);
             Console.WriteLine("User events:");
-            var paths = events.Single(x => x.name == "user").paths;
+            var paths = events.Single(x => x.Name == "user").Paths;
             IEnumerable<string> userEvents = from p in paths
-                                             from v in p.verbs
+                                             from v in p.Verbs
                                              from fv in FlattenVerbs(v)
-                                             select p.path + " " + fv;
+                                             select p.Path + " " + fv;
             foreach (string userEvent in userEvents)
             {
                 Console.WriteLine("\t{0}", userEvent);
@@ -29,7 +29,7 @@
 
         private static IEnumerable<string> FlattenVerbs(EventVerbs verbs)
         {
-            return verbs.@event.Select(@event => verbs.type.ToUpperInvariant() + " " + @event);
+            return verbs.Event.Select(@event => verbs.Type.ToUpperInvariant() + " " + @event);
         }
     }
 }

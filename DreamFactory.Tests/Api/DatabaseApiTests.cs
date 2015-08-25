@@ -30,7 +30,7 @@
 
             // Assert
             result.Count.ShouldBe(3);
-            result.Any(x => x.name == "todo").ShouldBe(true);
+            result.Any(x => x.Name == "todo").ShouldBe(true);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@
             TableSchema schema = databaseApi.DescribeTableAsync("staff").Result;
 
             // Assert
-            schema.name.ShouldBe("staff");
+            schema.Name.ShouldBe("staff");
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@
             FieldSchema schema = databaseApi.DescribeFieldAsync("staff", "field").Result;
 
             // Assert
-            schema.name.ShouldBe("field");
+            schema.Name.ShouldBe("field");
         }
 
         #endregion
@@ -119,15 +119,15 @@
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
             IEnumerable<StaffRecord> records = CreateStaffRecords();
-            SqlQuery query = new SqlQuery { fields = "*" };
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
             List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.ToList();
 
             // Assert
             created.Count.ShouldBe(3);
-            created.First().uid.ShouldBe(1);
-            created.Last().uid.ShouldBe(3);
+            created.First().Uid.ShouldBe(1);
+            created.Last().Uid.ShouldBe(3);
         }
 
         [TestMethod]
@@ -146,15 +146,15 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
-            SqlQuery query = new SqlQuery { fields = "*" };
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
             List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.ToList();
 
             // Assert
             records.Count.ShouldBe(3);
-            records.First().uid.ShouldBe(1);
-            records.Last().uid.ShouldBe(3);
+            records.First().Uid.ShouldBe(1);
+            records.Last().Uid.ShouldBe(3);
         }
 
         [TestMethod]
@@ -215,10 +215,10 @@
             ProcResponse result = databaseApi.CallStoredProcAsync<ProcResponse>("foo", "dataset", parameters).Result;
 
             // Assert
-            result.foo.ShouldBe(123);
-            result.bar.ShouldBe("test");
-            result.dataset.Count.ShouldBe(2);
-            result.dataset.Any(x => x.first_name == "Selena").ShouldBe(true);
+            result.Foo.ShouldBe(123);
+            result.Bar.ShouldBe("test");
+            result.Dataset.Count.ShouldBe(2);
+            result.Dataset.Any(x => x.FirstName == "Selena").ShouldBe(true);
         }
 
         [TestMethod]
@@ -236,10 +236,10 @@
             ProcResponse result = databaseApi.CallStoredFuncAsync<ProcResponse>("foo", "dataset", parameters).Result;
 
             // Assert
-            result.foo.ShouldBe(123);
-            result.bar.ShouldBe("test");
-            result.dataset.Count.ShouldBe(2);
-            result.dataset.Any(x => x.first_name == "Selena").ShouldBe(true);
+            result.Foo.ShouldBe(123);
+            result.Bar.ShouldBe("test");
+            result.Dataset.Count.ShouldBe(2);
+            result.Dataset.Any(x => x.FirstName == "Selena").ShouldBe(true);
         }
 
         #endregion
@@ -260,25 +260,25 @@
 
         private static IEnumerable<StaffRecord> CreateStaffRecords()
         {
-            yield return new StaffRecord { first_name = "Andrei", last_name = "Smirnov", age = 35, active = true };
-            yield return new StaffRecord { first_name = "Mike", last_name = "Meyers", age = 33, active = false };
-            yield return new StaffRecord { first_name = "Selena", last_name = "Gomez", age = 24, active = false };
+            yield return new StaffRecord { FirstName = "Andrei", LastName = "Smirnov", Age = 35, Active = true };
+            yield return new StaffRecord { FirstName = "Mike", LastName = "Meyers", Age = 33, Active = false };
+            yield return new StaffRecord { FirstName = "Selena", LastName = "Gomez", Age = 24, Active = false };
         }
 
         internal class StaffRecord
         {
-            public int uid { get; set; }
-            public string first_name { get; set; }
-            public string last_name { get; set; }
-            public int age { get; set; }
-            public bool active { get; set; }
+            public int Uid { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int Age { get; set; }
+            public bool Active { get; set; }
         }
 
         internal class ProcResponse
         {
-            public List<StaffRecord> dataset { get; set; }
-            public int foo { get; set; }
-            public string bar { get; set; }
+            public List<StaffRecord> Dataset { get; set; }
+            public int Foo { get; set; }
+            public string Bar { get; set; }
         }
     }
 }

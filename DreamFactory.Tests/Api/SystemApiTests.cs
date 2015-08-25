@@ -36,7 +36,7 @@
 
             // Assert
             apps.Count.ShouldBe(5);
-            apps.First().api_name.ShouldBe("todojquery");
+            apps.First().ApiName.ShouldBe("todojquery");
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@
 
             // Assert
             users.Count.ShouldBe(2);
-            users.First().display_name.ShouldBe("Andrei Smirnov");
+            users.First().DisplayName.ShouldBe("Andrei Smirnov");
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@
 
             // Assert
             roles.Count.ShouldBe(1);
-            roles.First().name.ShouldBe("TestRole");
+            roles.First().Name.ShouldBe("TestRole");
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@
 
             // Assert
             services.Count.ShouldBe(4);
-            services.First().name.ShouldBe("Database");
+            services.First().Name.ShouldBe("Database");
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@
 
             // Assert
             appGroups.Count.ShouldBe(1);
-            appGroups.First().name.ShouldBe("NewGroup");
+            appGroups.First().Name.ShouldBe("NewGroup");
         }
 
         [TestMethod]
@@ -106,8 +106,8 @@
 
             // Assert
             scripts.Count.ShouldBe(1);
-            scripts.First().language.ShouldBe("js");
-            scripts.First().event_name.ShouldBe("sample-scripts");
+            scripts.First().Language.ShouldBe("js");
+            scripts.First().EventName.ShouldBe("sample-scripts");
         }
 
         [TestMethod]
@@ -121,8 +121,8 @@
 
             // Assert
             responses.Count.ShouldBe(5);
-            responses.First().name.ShouldBe("user");
-            responses.First().paths.Count.ShouldBe(8);
+            responses.First().Name.ShouldBe("user");
+            responses.First().Paths.Count.ShouldBe(8);
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@
             AppResponse created = systemApi.CreateAppsAsync(new SqlQuery(), app).Result.First();
 
             // Assert
-            created.name.ShouldBe("Todo List jQuery");
+            created.Name.ShouldBe("Todo List jQuery");
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@
             EnvironmentResponse environment = systemApi.GetEnvironmentAsync().Result;
 
             // Assert
-            environment.server.server_os.ShouldBe("linux");
+            environment.Server.ServerOs.ShouldBe("linux");
         }
 
         [TestMethod]
@@ -209,10 +209,10 @@
             ConfigResponse config = systemApi.GetConfigAsync().Result;
 
             // Assert
-            config.db_version.ShouldBe("1.9.0");
-            config.install_name.ShouldBe("Bitnami Package");
-            config.paths.Count.ShouldBe(6);
-            config.states.operation_state.ShouldBe(-1);
+            config.DbVersion.ShouldBe("1.9.0");
+            config.InstallName.ShouldBe("Bitnami Package");
+            config.Paths.Count.ShouldBe(6);
+            config.States.OperationState.ShouldBe(-1);
         }
 
         [TestMethod]
@@ -261,20 +261,20 @@
         {
             return new AppRequest
             {
-                id = 1,
-                name = "Todo List jQuery",
-                api_name = "todojquery",
-                description = "A simple jQuery application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
-                is_active = true,
-                url = "/index.html",
-                is_url_external = false,
-                import_url = "https://raw.github.com/dreamfactorysoftware/app-todo-jquery/master/todojquery.dfpkg",
-                storage_service_id = "2",
-                storage_container = "applications",
-                requires_fullscreen = false,
-                allow_fullscreen_toggle = true,
-                toggle_location = "top",
-                requires_plugin = false
+                Id = 1,
+                Name = "Todo List jQuery",
+                ApiName = "todojquery",
+                Description = "A simple jQuery application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
+                IsActive = true,
+                Url = "/index.html",
+                IsUrlExternal = false,
+                ImportUrl = "https://raw.github.com/dreamfactorysoftware/app-todo-jquery/master/todojquery.dfpkg",
+                StorageServiceId = "2",
+                StorageContainer = "applications",
+                RequiresFullscreen = false,
+                AllowFullscreenToggle = true,
+                ToggleLocation = "top",
+                RequiresPlugin = false
             };
         }
     }

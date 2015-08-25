@@ -17,7 +17,8 @@
         {
             settings = new JsonSerializerSettings
                        {
-                           NullValueHandling = NullValueHandling.Ignore
+                           NullValueHandling = NullValueHandling.Ignore,
+                           ContractResolver = new SnakeCaseContractResolver()
                        };
         }
 

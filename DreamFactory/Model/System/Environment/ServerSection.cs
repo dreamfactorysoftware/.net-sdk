@@ -8,11 +8,11 @@
         /// <summary>
         /// server_os.
         /// </summary>
-        public string server_os { get; set; }
+        public string ServerOs { get; set; }
 
         /// <summary>
         /// uname.
         /// </summary>
-        public string uname { get; set; }
+        public string Uname { get; set; }
     }
 }

@@ -10,16 +10,16 @@
         /// <summary>
         /// URL, server name, or * to define the CORS host.
         /// </summary>
-        public string host { get; set; }
+        public string Host { get; set; }
 
         /// <summary>
         /// Allow this host's configuration to be used by CORS.
         /// </summary>
-        public bool? is_enabled { get; set; }
+        public bool? IsEnabled { get; set; }
 
         /// <summary>
         /// Allowed HTTP verbs for this host.
         /// </summary>
-        public List<string> verbs { get; set; }
+        public List<string> Verbs { get; set; }
     }
 }

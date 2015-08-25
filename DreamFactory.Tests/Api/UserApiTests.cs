@@ -28,8 +28,8 @@
             Session session = userApi.LoginAsync("admin", "user@mail.com", "userdream").Result;
 
             // Assert
-            session.display_name.ShouldBe("Andrei Smirnov");
-            session.session_id.ShouldNotBeEmpty();
+            session.DisplayName.ShouldBe("Andrei Smirnov");
+            session.SessionId.ShouldNotBeEmpty();
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@
             Session session = userApi.GetSessionAsync().Result;
 
             // Assert
-            session.session_id.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeEmpty();
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@
             ProfileResponse profile = userApi.GetProfileAsync().Result;
 
             // Assert
-            profile.display_name.ShouldBe("pinebit");
+            profile.DisplayName.ShouldBe("pinebit");
         }
 
         [TestMethod]
@@ -115,14 +115,14 @@
             IUserApi userApi = CreateUserApi();
             ProfileRequest profileRequest = new ProfileRequest
                                             {
-                                                first_name = "Alex",
-                                                last_name = "Smith",
-                                                display_name = "Alex Smith",
-                                                default_app_id = 1,
-                                                email = "alex@user.com",
-                                                phone = null,
-                                                security_question = "to be or not to be?",
-                                                security_answer = "maybe",
+                                                FirstName = "Alex",
+                                                LastName = "Smith",
+                                                DisplayName = "Alex Smith",
+                                                DefaultAppId = 1,
+                                                Email = "alex@user.com",
+                                                Phone = null,
+                                                SecurityQuestion = "to be or not to be?",
+                                                SecurityAnswer = "maybe",
                                             };
 
             // Act
@@ -147,7 +147,7 @@
 
             // Assert
             devices.ShouldNotBeEmpty();
-            devices.First().platform.ShouldBe("windows");
+            devices.First().Platform.ShouldBe("windows");
         }
 
         [TestMethod]
@@ -157,11 +157,11 @@
             IUserApi userApi = CreateUserApi();
             DeviceRequest request = new DeviceRequest
                                     {
-                                        id = 1,
-                                        uuid = "1",
-                                        platform = "windows",
-                                        model = "new",
-                                        version = "1"
+                                        Id = 1,
+                                        Uuid = "1",
+                                        Platform = "windows",
+                                        Model = "new",
+                                        Version = "1"
                                     };
 
             // Act
@@ -182,11 +182,11 @@
             IUserApi userApi = CreateUserApi();
             Register register = new Register
             {
-                email = "test@mail.com",
-                first_name = "first",
-                last_name = "last",
-                display_name = "display",
-                new_password = "qwerty"
+                Email = "test@mail.com",
+                FirstName = "first",
+                LastName = "last",
+                DisplayName = "display",
+                NewPassword = "qwerty"
             };
 
             // Act
@@ -224,7 +224,7 @@
             PasswordResponse response = userApi.RequestPasswordResetAsync("user@mail.com").Result;
 
             // Assert
-            response.security_question.ShouldBe("to be or not to be?");
+            response.SecurityQuestion.ShouldBe("to be or not to be?");
         }
 
         [TestMethod]

@@ -10,11 +10,11 @@
         /// <summary>
         /// Optional array of input and output parameters.
         /// </summary>
-        public List<StoredProcParam> @params { get; set; }
+        public List<StoredProcParam> Params { get; set; }
 
         /// <summary>
         /// Add this wrapper around the expected data set before returning, same as URL parameter.
         /// </summary>
-        public string wrapper { get; set; }
+        public string Wrapper { get; set; }
     }
 }

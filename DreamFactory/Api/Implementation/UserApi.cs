@@ -51,7 +51,7 @@
             if (success.success && login)
             {
                 Session session = await GetSessionAsync();
-                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
             }
 
             return success.success;

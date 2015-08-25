@@ -10,11 +10,11 @@
         /// <summary>
         /// The name of this event.
         /// </summary>
-        public string event_name { get; set; }
+        public string EventName { get; set; }
 
         /// <summary>
         /// An array of listeners attached to this event.
         /// </summary>
-        public List<string> listeners { get; set; }
+        public List<string> Listeners { get; set; }
     }
 }

@@ -10,36 +10,36 @@
         /// <summary>
         /// Identifier/Name for the table.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Displayable singular name for the table.
         /// </summary>
-        public string label { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Displayable plural name for the table.
         /// </summary>
-        public string plural { get; set; }
+        public string Plural { get; set; }
 
         /// <summary>
         /// Field(s), if any, that represent the primary key of each record.
         /// </summary>
-        public string primary_key { get; set; }
+        public string PrimaryKey { get; set; }
 
         /// <summary>
         /// Field(s), if any, that represent the name of each record.
         /// </summary>
-        public string name_field { get; set; }
+        public string NameField { get; set; }
 
         /// <summary>
         /// An array of available fields in each record.
         /// </summary>
-        public List<FieldSchema> field { get; set; }
+        public List<FieldSchema> Field { get; set; }
 
         /// <summary>
         /// An array of available relationships to other tables.
         /// </summary>
-        public List<RelatedSchema> related { get; set; }
+        public List<RelatedSchema> Related { get; set; }
     }
 }

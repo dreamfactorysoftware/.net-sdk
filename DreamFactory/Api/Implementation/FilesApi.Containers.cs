@@ -26,7 +26,7 @@
         public async Task<IEnumerable<string>> GetContainerNamesAsync()
         {
             var containers = await GetAccessComponentsAsync();
-            return containers.Select(x => x.name);
+            return containers.Select(x => x.Name);
         }
 
         public async Task CreateContainersAsync(bool checkExists, params string[] containers)
@@ -43,7 +43,7 @@
 
             IHttpAddress address = baseAddress.WithParameter("check_exist", checkExists);
 
-            var data = new { container = containers.Select(x => new ContainerInfo { name = x, path = x }) };
+            var data = new { container = containers.Select(x => new ContainerInfo { Name = x, Path = x }) };
             string body = contentSerializer.Serialize(data);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
 

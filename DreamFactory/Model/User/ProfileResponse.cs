@@ -8,36 +8,36 @@
         /// <summary>
         /// Email address of the current user.
         /// </summary>
-        public string email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// First name of the current user.
         /// </summary>
-        public string first_name { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name of the current user.
         /// </summary>
-        public string last_name { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Full display name of the current user.
         /// </summary>
-        public string display_name { get; set; }
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// Phone number.
         /// </summary>
-        public string phone { get; set; }
+        public string Phone { get; set; }
 
         /// <summary>
         /// Question to be answered to initiate password reset.
         /// </summary>
-        public string security_question { get; set; }
+        public string SecurityQuestion { get; set; }
 
         /// <summary>
         /// Id of the application to be launched at login.
         /// </summary>
-        public int? default_app_id { get; set; }
+        public int? DefaultAppId { get; set; }
     }
 }

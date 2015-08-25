@@ -39,16 +39,16 @@
 
             // Describe table
             staffTableSchema = await databaseApi.DescribeTableAsync(TableName);
-            Console.WriteLine("Got {0} table schema, table's label is {1}", TableName, staffTableSchema.label);
+            Console.WriteLine("Got {0} table schema, table's label is {1}", TableName, staffTableSchema.Label);
 
             // Create new record
             Console.WriteLine("Creating {0} records...", TableName);
             List<StaffRecord> records = CreateStaffRecords().ToList();
             records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery()));
 
-            SqlQuery query = new SqlQuery { filter = "age > 30", order = "age", fields = "*" };
+            SqlQuery query = new SqlQuery { Filter = "age > 30", Order = "age", Fields = "*" };
             var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
-            var ages = selection.Select(x => x.age.ToString(CultureInfo.InvariantCulture)).ToStringList();
+            var ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
             Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
 
             // Deleting one record
@@ -66,9 +66,9 @@
 
         private static IEnumerable<StaffRecord> CreateStaffRecords()
         {
-            yield return new StaffRecord { first_name = "Andrei", last_name = "Smirnov", age = 35, active = true };
-            yield return new StaffRecord { first_name = "Mike", last_name = "Meyers", age = 33, active = false };
-            yield return new StaffRecord { first_name = "Selena", last_name = "Gomez", age = 24, active = false };
+            yield return new StaffRecord { FirstName = "Andrei", LastName = "Smirnov", Age = 35, Active = true };
+            yield return new StaffRecord { FirstName = "Mike", LastName = "Meyers", Age = 33, Active = false };
+            yield return new StaffRecord { FirstName = "Selena", LastName = "Gomez", Age = 24, Active = false };
         }
 
         private static TableSchema CreateTestTableSchema()
@@ -79,15 +79,15 @@
 
         internal class StaffRecord
         {
-            public int uid { get; set; }
-            public string first_name { get; set; }
-            public string last_name { get; set; }
-            public int age { get; set; }
-            public bool active { get; set; }
+            public int Uid { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int Age { get; set; }
+            public bool Active { get; set; }
 
             public override string ToString()
             {
-                return string.Format("{0}: name = {1} {2}, age = {3}, active = {4}", uid, first_name, last_name, age, active);
+                return string.Format("{0}: name = {1} {2}, age = {3}, active = {4}", Uid, FirstName, LastName, Age, Active);
             }
         }
     }

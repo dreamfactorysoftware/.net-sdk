@@ -11,21 +11,21 @@
         /// <summary>
         /// Identifier/Name for the container.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Same as name for the container, for consistency.
         /// </summary>
-        public string path { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// Date and time of last modification.
         /// </summary>
-        public DateTime? last_modified { get; set; }
+        public DateTime? LastModified { get; set; }
 
         /// <summary>
         /// List of allowed HTTP verbs.
         /// </summary>
-        public List<string> access { get; set; } 
+        public List<string> Access { get; set; } 
     }
 }

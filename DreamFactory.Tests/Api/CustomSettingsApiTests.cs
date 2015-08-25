@@ -52,10 +52,10 @@
             UserPreferences setting = settingsApi.GetCustomSettingAsync<UserPreferences>("preferences").Result;
 
             // Assert
-            setting.flag.ShouldBe(true);
-            setting.array.Length.ShouldBe(3);
-            setting.entity.rank.ShouldBe(4);
-            setting.entity.role.ShouldBe("user");
+            setting.Flag.ShouldBe(true);
+            setting.Array.Length.ShouldBe(3);
+            setting.entity.Rank.ShouldBe(4);
+            setting.entity.Role.ShouldBe("user");
         }
 
         [TestMethod]
@@ -82,22 +82,22 @@
         {
             return new UserPreferences
             {
-                flag = true,
-                array = new[] { "a", "b", "c" },
-                entity = new UserPreferences.Entity { rank = 4, role = "user" }
+                Flag = true,
+                Array = new[] { "a", "b", "c" },
+                entity = new UserPreferences.Entity { Rank = 4, Role = "user" }
             };
         }
 
         internal class UserPreferences
         {
-            public bool flag { get; set; }
-            public string[] array { get; set; }
+            public bool Flag { get; set; }
+            public string[] Array { get; set; }
             public Entity entity { get; set; }
 
             internal class Entity
             {
-                public int rank { get; set; }
-                public string role { get; set; }
+                public int Rank { get; set; }
+                public string Role { get; set; }
             }
         }
     }

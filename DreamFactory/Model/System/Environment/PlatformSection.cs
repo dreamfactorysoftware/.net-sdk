@@ -8,26 +8,26 @@
         /// <summary>
         /// is_hosted.
         /// </summary>
-        public bool? is_hosted { get; set; }
+        public bool? IsHosted { get; set; }
 
         /// <summary>
         /// is_private.
         /// </summary>
-        public bool? is_private { get; set; }
+        public bool? IsPrivate { get; set; }
 
         /// <summary>
         /// dsp_version_current.
         /// </summary>
-        public string dsp_version_current { get; set; }
+        public string DspVersionCurrent { get; set; }
 
         /// <summary>
         /// dsp_version_latest.
         /// </summary>
-        public string dsp_version_latest { get; set; }
+        public string DspVersionLatest { get; set; }
 
         /// <summary>
         /// upgrade_available.
         /// </summary>
-        public bool? upgrade_available { get; set; }
+        public bool? UpgradeAvailable { get; set; }
     }
 }

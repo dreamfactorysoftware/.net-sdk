@@ -25,7 +25,7 @@
 
             // Creating a file
             FileResponse response = await filesApi.CreateFileAsync(TestContainer, "test.txt", "test", false);
-            Console.WriteLine("Created file: {0}", response.path);
+            Console.WriteLine("Created file: {0}", response.Path);
 
             // Reading the file
             string content = await filesApi.GetTextFileAsync(TestContainer, "test.txt");
@@ -33,7 +33,7 @@
 
             // Deleting the file
             response = await filesApi.DeleteFileAsync(TestContainer, "test.txt");
-            Console.WriteLine("Deleted file: {0}", response.path);
+            Console.WriteLine("Deleted file: {0}", response.Path);
 
             // Deleting the container
             await filesApi.DeleteContainersAsync(TestContainer);

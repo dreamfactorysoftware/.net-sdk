@@ -17,24 +17,24 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // Read
-            SqlQuery query = new SqlQuery { fields = "*", related = "services,roles", };
+            SqlQuery query = new SqlQuery { Fields = "*", Related = "services,roles", };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
-            Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
+            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
 
             // Cloning
-            AppResponse todoApp = apps.Single(x => x.api_name == "todoangular");
+            AppResponse todoApp = apps.Single(x => x.ApiName == "todoangular");
             AppRequest todoAppRequest = todoApp.Convert<AppResponse, AppRequest>();
-            todoAppRequest.name = todoApp.name + "clone";
-            todoAppRequest.api_name = todoApp.api_name + "clone";
+            todoAppRequest.Name = todoApp.Name + "clone";
+            todoAppRequest.ApiName = todoApp.ApiName + "clone";
 
             // Creating a clone
             apps = await systemApi.CreateAppsAsync(new SqlQuery(), todoAppRequest);
-            AppResponse todoAppClone = apps.Single(x => x.api_name == "todoangularclone");
-            Console.WriteLine("Created a clone app={0}", todoAppClone.api_name);
+            AppResponse todoAppClone = apps.Single(x => x.ApiName == "todoangularclone");
+            Console.WriteLine("Created a clone app={0}", todoAppClone.ApiName);
 
             // Deleting the clone
-            Debug.Assert(todoAppClone.id.HasValue);
-            await systemApi.DeleteAppsAsync(true, todoAppClone.id.Value);
+            Debug.Assert(todoAppClone.Id.HasValue);
+            await systemApi.DeleteAppsAsync(true, todoAppClone.Id.Value);
             Console.WriteLine("Created clone has been deleted");
         }
     }

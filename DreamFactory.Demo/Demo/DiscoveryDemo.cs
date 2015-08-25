@@ -15,7 +15,7 @@
             Console.WriteLine("Available services:");
             foreach (Service service in services)
             {
-                Console.WriteLine("{0}:\t{1}", service.api_name, service.name);
+                Console.WriteLine("{0}:\t{1}", service.ApiName, service.Name);
             }
 
             // List resources
@@ -24,7 +24,7 @@
             Console.WriteLine("/user resources:");
             foreach (Resource resource in resources)
             {
-                Console.WriteLine("\t/{0}", resource.name);
+                Console.WriteLine("\t/{0}", resource.Name);
             }
 
             resources = await context.GetResourcesAsync("files");
@@ -32,7 +32,7 @@
             Console.WriteLine("/files resources:");
             foreach (Resource resource in resources)
             {
-                Console.WriteLine("\t/{0}", resource.name);
+                Console.WriteLine("\t/{0}", resource.Name);
             }
         }
     }

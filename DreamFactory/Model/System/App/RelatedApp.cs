@@ -10,91 +10,91 @@
         /// <summary>
         /// Identifier of this application.
         /// </summary>
-        public int? id { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// Displayable name of this application.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Name of the application to use in API transactions.
         /// </summary>
-        public string api_name { get; set; }
+        public string ApiName { get; set; }
 
         /// <summary>
         /// Description of this application.
         /// </summary>
-        public string description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Is this system application active for use.
         /// </summary>
-        public bool? is_active { get; set; }
+        public bool? IsActive { get; set; }
 
         /// <summary>
         /// URL for accessing this application.
         /// </summary>
-        public string url { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// True when this application is hosted elsewhere, but available in Launchpad.
         /// </summary>
-        public bool? is_url_external { get; set; }
+        public bool? IsUrlExternal { get; set; }
 
         /// <summary>
         /// If hosted and imported, the url of zip or package file where the code originated.
         /// </summary>
-        public string import_url { get; set; }
+        public string ImportUrl { get; set; }
 
         /// <summary>
         /// If hosted, the storage service identifier.
         /// </summary>
-        public string storage_service_id { get; set; }
+        public string StorageServiceId { get; set; }
 
         /// <summary>
         /// If hosted, the container of the storage service.
         /// </summary>
-        public string storage_container { get; set; }
+        public string StorageContainer { get; set; }
 
         /// <summary>
         /// True when this app needs to hide launchpad.
         /// </summary>
-        public bool? requires_fullscreen { get; set; }
+        public bool? RequiresFullscreen { get; set; }
 
         /// <summary>
         /// True to allow launchpad access via toggle.
         /// </summary>
-        public bool? allow_fullscreen_toggle { get; set; }
+        public bool? AllowFullscreenToggle { get; set; }
 
         /// <summary>
         /// Screen location for toggle placement.
         /// </summary>
-        public string toggle_location { get; set; }
+        public string ToggleLocation { get; set; }
 
         /// <summary>
         /// True when the app relies on a browser plugin.
         /// </summary>
-        public bool? requires_plugin { get; set; }
+        public bool? RequiresPlugin { get; set; }
 
         /// <summary>
         /// Date this application was created.
         /// </summary>
-        public DateTime? created_date { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// User Id of who created this application.
         /// </summary>
-        public int? created_by_id { get; set; }
+        public int? CreatedById { get; set; }
 
         /// <summary>
         /// Date this application was last modified.
         /// </summary>
-        public DateTime? last_modified_date { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
 
         /// <summary>
         /// User Id of who last modified this application.
         /// </summary>
-        public int? last_modified_by_id { get; set; }
+        public int? LastModifiedById { get; set; }
     }
 }
