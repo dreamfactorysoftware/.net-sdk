@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Device
+﻿namespace DreamFactory.Model.System.Device
 {
     using DreamFactory.Model.System.User;
 

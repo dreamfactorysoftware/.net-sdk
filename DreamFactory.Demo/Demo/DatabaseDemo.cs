@@ -77,7 +77,6 @@
             return builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
         }
 
-        // ReSharper disable InconsistentNaming
         internal class StaffRecord
         {
             public int uid { get; set; }

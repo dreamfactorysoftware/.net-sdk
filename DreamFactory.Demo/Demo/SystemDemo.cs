@@ -16,7 +16,6 @@
 
     public class SystemDemo : IRunnable
     {
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             // IUserApi provides all functions for user management
@@ -24,7 +23,7 @@
 
             // List apps
             SqlQuery query = new SqlQuery { filter = "is_active=true", fields = "*", related = "services,roles", };
-            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(query);
+            IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
 
             // Check todoangular app

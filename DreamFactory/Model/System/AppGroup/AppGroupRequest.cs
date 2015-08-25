@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.AppGroup
+﻿namespace DreamFactory.Model.System.AppGroup
 {
     using DreamFactory.Model.System.App;
     using global::System.Collections.Generic;

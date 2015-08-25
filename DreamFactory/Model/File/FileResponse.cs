@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.File
+﻿namespace DreamFactory.Model.File
 {
     using global::System;
 

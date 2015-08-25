@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+﻿namespace DreamFactory.Model
 {
     /// <summary>
     /// Error data.

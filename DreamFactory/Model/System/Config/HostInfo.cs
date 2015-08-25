@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Config
+﻿namespace DreamFactory.Model.System.Config
 {
     using global::System.Collections.Generic;
 

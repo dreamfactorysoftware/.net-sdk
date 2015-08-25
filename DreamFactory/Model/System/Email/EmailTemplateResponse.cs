@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Email
+﻿namespace DreamFactory.Model.System.Email
 {
     using DreamFactory.Model.Email;
     using global::System;

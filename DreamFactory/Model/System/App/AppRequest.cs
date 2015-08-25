@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.App
+﻿namespace DreamFactory.Model.System.App
 {
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Role;

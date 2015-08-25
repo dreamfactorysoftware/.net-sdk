@@ -36,7 +36,6 @@
             Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.flag, instance.entity.rank);
         }
 
-// ReSharper disable InconsistentNaming
         internal class UserPreferences
         {
             public bool flag { get; set; }
@@ -49,6 +48,5 @@
                 public string role { get; set; }
             }
         }
-// ReSharper restore InconsistentNaming
     }
 }

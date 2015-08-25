@@ -265,7 +265,6 @@
             yield return new StaffRecord { first_name = "Selena", last_name = "Gomez", age = 24, active = false };
         }
 
-        // ReSharper disable InconsistentNaming
         internal class StaffRecord
         {
             public int uid { get; set; }

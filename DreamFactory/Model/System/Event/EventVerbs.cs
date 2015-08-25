@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Event
+﻿namespace DreamFactory.Model.System.Event
 {
     using global::System.Collections.Generic;
 

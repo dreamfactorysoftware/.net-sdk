@@ -14,12 +14,11 @@
     {
         private const string NewEmail = "user@mail.com";
 
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
+            IEnumerable<UserResponse> users = (await systemApi.GetUsersAsync(new SqlQuery())).ToList();
             Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.display_name).ToStringList());
 
             UserResponse user = users.SingleOrDefault(x => x.email == NewEmail);

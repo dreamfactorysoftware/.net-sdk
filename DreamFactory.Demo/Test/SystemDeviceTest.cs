@@ -12,12 +12,11 @@
 
     public class SystemDeviceTest : IRunnable
     {
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
             
-            IEnumerable<DeviceResponse> devices = await systemApi.GetDevicesAsync(new SqlQuery());
+            IList<DeviceResponse> devices = (await systemApi.GetDevicesAsync(new SqlQuery())).ToList();
             await DeleteAnyDevices(devices, systemApi);
 
             IUserApi userApi = context.Factory.CreateUserApi();
@@ -33,13 +32,13 @@
             Console.WriteLine("SetDeviceAsync(): success={0}", ok);
 
             SqlQuery query = new SqlQuery { filter = "platform=\"windows\"", fields = "*" };
-            devices = await systemApi.GetDevicesAsync(query);
+            devices = (await systemApi.GetDevicesAsync(query)).ToList();
             Console.WriteLine("GetDevicesAsync(): {0}", context.ContentSerializer.Serialize(devices.Single()));
 
             await DeleteAnyDevices(devices, systemApi);
         }
 
-        private static async Task DeleteAnyDevices(IEnumerable<DeviceResponse> devices, ISystemApi systemApi)
+        private static async Task DeleteAnyDevices(IList<DeviceResponse> devices, ISystemApi systemApi)
         {
             if (devices.Any())
             {

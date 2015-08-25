@@ -10,7 +10,6 @@
 
     public class SystemEventTest : IRunnable
     {
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();

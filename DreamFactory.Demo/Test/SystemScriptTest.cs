@@ -12,12 +12,11 @@
     {
         private const string ScriptId = "dummybear";
 
-        // ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<ScriptResponse> scripts = await systemApi.GetScriptsAsync(true);
+            IEnumerable<ScriptResponse> scripts = (await systemApi.GetScriptsAsync(true)).ToList();
             Console.WriteLine("GetScriptsAsync(): {0}", scripts.Select(x => x.script_id).ToStringList());
 
             if (scripts.Any(x => x.script_id == ScriptId))

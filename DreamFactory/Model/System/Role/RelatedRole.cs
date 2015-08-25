@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Role
+﻿namespace DreamFactory.Model.System.Role
 {
     using global::System;
 

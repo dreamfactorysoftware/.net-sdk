@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.User
+﻿namespace DreamFactory.Model.System.User
 {
     using global::System;
 

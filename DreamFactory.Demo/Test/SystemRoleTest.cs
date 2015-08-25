@@ -14,13 +14,12 @@
     {
         private const string NewRole = "NewRole";
 
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             SqlQuery query = new SqlQuery { fields = "*", related = "apps,users,services" };
-            IEnumerable<RoleResponse> roles = await systemApi.GetRolesAsync(query);
+            IEnumerable<RoleResponse> roles = (await systemApi.GetRolesAsync(query)).ToList();
             Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.name).ToStringList());
 
             RoleResponse role = roles.SingleOrDefault(x => x.name == NewRole);

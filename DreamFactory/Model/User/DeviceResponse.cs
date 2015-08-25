@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.User
+﻿namespace DreamFactory.Model.User
 {
     /// <summary>
     /// DeviceResponse.

@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.Email
+﻿namespace DreamFactory.Model.Email
 {
     /// <summary>
     /// Email address.

@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Service
+﻿namespace DreamFactory.Model.System.Service
 {
     using global::System;
     using global::System.Collections.Generic;

@@ -12,14 +12,13 @@
 
     public class SystemAppTest : IRunnable
     {
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // Read
             SqlQuery query = new SqlQuery { fields = "*", related = "services,roles", };
-            IEnumerable<AppResponse> apps = await systemApi.GetAppsAsync(query);
+            IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.api_name).ToStringList());
 
             // Cloning

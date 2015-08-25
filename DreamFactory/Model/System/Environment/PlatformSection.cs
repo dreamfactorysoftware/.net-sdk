@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Environment
+﻿namespace DreamFactory.Model.System.Environment
 {
     /// <summary>
     /// PlatformSection.
