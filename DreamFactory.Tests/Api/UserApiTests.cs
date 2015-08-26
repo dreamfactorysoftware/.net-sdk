@@ -30,7 +30,7 @@
             Session session = userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream").Result;
 
             // Assert
-            session.Name.ShouldBe("Andrei Smirnov");
+            session.Name.ShouldBe("demo");
             session.SessionId.ShouldNotBeEmpty();
         }
 

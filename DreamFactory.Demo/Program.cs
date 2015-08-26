@@ -29,7 +29,7 @@
             IRunnable[] tests =
             {
                 new LoginDemo(),
-                //new DiscoveryDemo(), 
+                new DiscoveryDemo(), 
                 //new UserDemo(),
                 //new EmailDemo(), 
                 //new DatabaseDemo(), 

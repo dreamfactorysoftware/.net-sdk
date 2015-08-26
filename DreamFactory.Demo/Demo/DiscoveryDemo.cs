@@ -11,11 +11,11 @@
         public async Task RunAsync(IRestContext context)
         {
             // List available services
-            IEnumerable<Service> services = context.GetServicesAsync().Result;
+            IEnumerable<string> services = context.GetServicesAsync().Result;
             Console.WriteLine("Available services:");
-            foreach (Service service in services)
+            foreach (string service in services)
             {
-                Console.WriteLine("{0}:\t{1}", service.ApiName, service.Name);
+                Console.WriteLine("\t/{0}", service);
             }
 
             // List resources

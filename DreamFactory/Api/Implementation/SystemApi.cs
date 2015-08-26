@@ -11,9 +11,9 @@
         private readonly IHttpAddress baseAddress;
         private readonly IHttpFacade httpFacade;
         private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
+        private readonly HttpHeaders baseHeaders;
 
-        public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders)
+        public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
         {
             this.baseAddress = baseAddress.WithResource("system");
             this.httpFacade = httpFacade;

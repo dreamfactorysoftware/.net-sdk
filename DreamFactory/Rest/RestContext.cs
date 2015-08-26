@@ -79,15 +79,15 @@
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Service>> GetServicesAsync()
+        public async Task<IEnumerable<string>> GetServicesAsync()
         {
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
 
             IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
-            var services = new { service = new List<Service>() };
-            return ContentSerializer.Deserialize(response.Body, services).service;
+            var services = new { resource = new List<string>() };
+            return ContentSerializer.Deserialize(response.Body, services).resource;
         }
 
         /// <inheritdoc />

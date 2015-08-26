@@ -35,8 +35,8 @@
             }
 
             var address = baseAddress.WithResource("admin").WithResource("session");
-            baseHeaders.Include(HttpHeaders.FolderNameHeader, applicationName);
-            baseHeaders.Include(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
+            baseHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
+            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
 
             Login login = new Login { Email = email, Password = password, Duration = duration };
             string loginContent = contentSerializer.Serialize(login);
@@ -49,7 +49,7 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
             Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.Include(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }

@@ -84,12 +84,12 @@
             IRestContext context = CreateRestContext();
 
             // Act
-            List<Service> services = context.GetServicesAsync().Result.ToList();
+            List<string> services = context.GetServicesAsync().Result.ToList();
 
             // Assert
             services.ShouldNotBeEmpty();
-            services.ShouldContain(x => x.ApiName == "files");
-            services.ShouldContain(x => x.ApiName == "email");
+            services.ShouldContain(x => x == "files");
+            services.ShouldContain(x => x == "email");
         }
 
         [TestMethod]
