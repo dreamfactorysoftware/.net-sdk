@@ -15,6 +15,8 @@
     public class UserApiTests
     {
         private const string BaseAddress = "http://localhost:8765";
+        private const string AppName = "admin";
+        private const string AppApiKey = "api_key";
 
         #region --- Session ---
 
@@ -25,10 +27,10 @@
             IUserApi userApi = CreateUserApi();
 
             // Act
-            Session session = userApi.LoginAsync("admin", "user@mail.com", "userdream").Result;
+            Session session = userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream").Result;
 
             // Assert
-            session.DisplayName.ShouldBe("Andrei Smirnov");
+            session.Name.ShouldBe("Andrei Smirnov");
             session.SessionId.ShouldNotBeEmpty();
         }
 
@@ -37,7 +39,7 @@
         {
             // Arrange
             IUserApi userApi = CreateUserApi();
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream").Wait();
 
             // Act
             Session session = userApi.GetSessionAsync().Result;
@@ -54,13 +56,13 @@
             IUserApi userApi = CreateUserApi(out headers);
 
             // Act
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream").Wait();
 
             // Assert
             Dictionary<string, object> dictionary = headers.Build();
-            dictionary.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
+            dictionary.ContainsKey(HttpHeaders.FolderNameHeader).ShouldBe(true);
             dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            dictionary[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
+            dictionary[HttpHeaders.FolderNameHeader].ShouldBe("admin");
         }
 
         [TestMethod]
@@ -82,7 +84,7 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream").Wait();
 
             // Act
             userApi.LogoutAsync().Wait();

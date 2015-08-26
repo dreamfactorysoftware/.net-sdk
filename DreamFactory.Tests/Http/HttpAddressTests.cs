@@ -26,7 +26,7 @@
 
             // Assert
             addressV1.Build().ShouldBe("http://localhost:8765/rest/user/session?one=1&two=true");
-            addressV2.Build().ShouldBe("http://localhost:8765/api/v2.0/user/session?one=1&two=true");
+            addressV2.Build().ShouldBe("http://localhost:8765/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@
             address = address.WithVersion(RestApiVersion.V2);
 
             // Assert
-            address.Build().ShouldBe("http://localhost:8765/api/v2.0/user/session?one=1&two=true");
+            address.Build().ShouldBe("http://localhost:8765/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]

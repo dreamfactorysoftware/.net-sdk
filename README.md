@@ -41,7 +41,7 @@ The demo requires a test user to be specified in Program.cs file. Open the file 
 ```csharp
 	internal const string BaseAddress = "http://localhost:8765";
 	internal const string DefaultApp = "demo";
-	internal const string Email = "dream@factroy.com";
+	internal const string Email = "dream@factory.com";
 	internal const string Password = "dreamfactory";
 ```
 
@@ -141,7 +141,7 @@ The service instances are created with `IRestContext.Factory` methods:
 ```csharp
     IRestContext context = new RestContext(BaseAddress);
     IUserApi userApi = context.Factory.CreateUserApi();
-    Session session = await userApi.LoginAsync("admin", "user@mail.com", "qwerty");
+    Session session = await userApi.LoginAsync("demo", "api_key", "user@mail.com", "qwerty");
     Console.WriteLine("Logged in as {0}", session.display_name);
 ```
 

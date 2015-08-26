@@ -10,12 +10,12 @@
     {
         public async Task RunAsync(IRestContext context)
         {
-            IUserApi userApi = context.Factory.CreateUserApi();
+            ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             try
             {
-                Session session = await userApi.LoginAsync(Program.DefaultApp, Program.Email, Program.Password);
-                Console.WriteLine("Logged in as {0}", session.DisplayName);
+                Session session = await systemApi.LoginAdminAsync(Program.AppName, Program.AppApiKey, Program.Email, Program.Password);
+                Console.WriteLine("Logged in as {0}", session.Name);
             }
             catch (Exception ex)
             {

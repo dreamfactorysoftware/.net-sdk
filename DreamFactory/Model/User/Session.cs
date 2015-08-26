@@ -18,6 +18,11 @@
         public string Email { get; set; }
 
         /// <summary>
+        /// Name of the current user.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// First name of the current user.
         /// </summary>
         public string FirstName { get; set; }
@@ -26,11 +31,6 @@
         /// Last name of the current user.
         /// </summary>
         public string LastName { get; set; }
-
-        /// <summary>
-        /// Full display name of the current user.
-        /// </summary>
-        public string DisplayName { get; set; }
 
         /// <summary>
         /// Is the current user a system administrator.
@@ -63,6 +63,11 @@
         public string SessionId { get; set; }
 
         /// <summary>
+        /// Token for the current session, used in X-DreamFactory-Session-Token header for API requests.
+        /// </summary>
+        public string SessionToken { get; set; }
+
+        /// <summary>
         /// Timed ticket that can be used to start a separate session.
         /// </summary>
         public string Ticket { get; set; }
@@ -71,5 +76,10 @@
         /// Expiration time for the given ticket.
         /// </summary>
         public string TicketExpiry { get; set; }
+
+        /// <summary>
+        /// Name of the host.
+        /// </summary>
+        public string Host { get; set; }
     }
 }

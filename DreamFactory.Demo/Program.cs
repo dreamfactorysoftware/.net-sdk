@@ -12,8 +12,9 @@
          */
 
         internal const string BaseAddress = "http://localhost:8765";
-        internal const string DefaultApp = "admin";
-        internal const string Email = "demo@factory.com";
+        internal const string AppName = "demo";
+        internal const string AppApiKey = "eea04e3e9b2b2a452cb1b49bbae52fa9a4336b874a5267608586378246ee4ebb";
+        internal const string Email = "dream@factory.com";
         internal const string Password = "dreamfactory";
 
         /// <summary>
@@ -28,21 +29,21 @@
             IRunnable[] tests =
             {
                 new LoginDemo(),
-                new DiscoveryDemo(), 
-                new UserDemo(),
-                new EmailDemo(), 
-                new DatabaseDemo(), 
-                new FilesDemo(), 
-                new SystemDemo(),
-                new CustomSettingsDemo(),
-                new SystemAppTest(),
-                new SystemUserTest(),
-                new SystemRoleTest(),
-                new SystemDeviceTest(),
-                new SystemScriptTest(),
-                new SystemEventTest(),
-                new LogoutDemo(),
-                new HttpDemo()
+                //new DiscoveryDemo(), 
+                //new UserDemo(),
+                //new EmailDemo(), 
+                //new DatabaseDemo(), 
+                //new FilesDemo(), 
+                //new SystemDemo(),
+                //new CustomSettingsDemo(),
+                //new SystemAppTest(),
+                //new SystemUserTest(),
+                //new SystemRoleTest(),
+                //new SystemDeviceTest(),
+                //new SystemScriptTest(),
+                //new SystemEventTest(),
+                //new LogoutDemo(),
+                //new HttpDemo()
             };
 
             IRestContext context = new RestContext(BaseAddress, RestApiVersion.V2);
@@ -57,6 +58,7 @@
             Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine("Total tests: {0}.", tests.Length);
+            Console.ReadLine();
         }
     }
 }

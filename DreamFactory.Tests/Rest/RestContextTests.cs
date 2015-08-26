@@ -119,7 +119,7 @@
 
             // Assert
             Dictionary<string, object> headers = context.BaseHeaders.Build();
-            headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("foo");
+            headers[HttpHeaders.FolderNameHeader].ShouldBe("foo");
         }
 
         private static IRestContext CreateRestContext()

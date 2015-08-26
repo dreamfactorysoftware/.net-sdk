@@ -75,7 +75,7 @@
                 throw new ArgumentNullException("applicationName");
             }
 
-            httpHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
+            httpHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
         }
 
         /// <inheritdoc />
@@ -105,7 +105,7 @@
         private void SetBaseHeaders()
         {
             httpHeaders = new HttpHeaders();
-            httpHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, "admin");
+            httpHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, "admin");
             httpHeaders.AddOrUpdate(HttpHeaders.ContentTypeHeader, ContentSerializer.ContentType);
             httpHeaders.AddOrUpdate(HttpHeaders.AcceptHeader, ContentSerializer.ContentType);
         }

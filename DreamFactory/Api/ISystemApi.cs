@@ -6,7 +6,6 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Config;
-    using DreamFactory.Model.System.Device;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
@@ -14,6 +13,8 @@
     using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
+    using DreamFactory.Model.User;
+    using DeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
 
     /// <summary>
     /// Represents /system API.
@@ -324,5 +325,20 @@
         /// </summary>
         /// <param name="ids">Device IDs to delete.</param>
         Task DeleteDevicesAsync(params int[] ids);
+
+        /// <summary>
+        /// Login and create a new admin session.
+        /// </summary>
+        /// <remarks>
+        /// Successful login operation will set ApplicationName and SessionToken headers.
+        /// This call works only with v2 of the api.
+        /// </remarks>
+        /// <param name="applicationName">Application name.</param>
+        /// <param name="applicationApiKey">Application api key.</param>
+        /// <param name="email">Email.</param>
+        /// <param name="password">Password.</param>
+        /// <param name="duration">Session duration.</param>
+        /// <returns>Session object instance.</returns>
+        Task<Session> LoginAdminAsync(string applicationName, string applicationApiKey, string email, string password, int duration = 0);
     }
 }
