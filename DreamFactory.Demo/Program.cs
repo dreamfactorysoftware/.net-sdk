@@ -30,7 +30,7 @@
             {
                 new LoginDemo(),
                 new DiscoveryDemo(), 
-                //new UserDemo(),
+                new UserDemo(),
                 //new EmailDemo(), 
                 //new DatabaseDemo(), 
                 //new FilesDemo(), 

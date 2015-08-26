@@ -21,16 +21,26 @@
             ProfileResponse profile = await userApi.GetProfileAsync();
             Console.WriteLine("Email from your profile: {0}", profile.Email);
 
-            // changePassword()
-            const string newPassword = Program.Password + "new";
-            bool ok = await userApi.ChangePasswordAsync(Program.Password, newPassword);
+            // register()
+            string guid = Guid.NewGuid().ToString();
+            Register register = new Register
+            {
+                FirstName = guid.Substring(0, 6),
+                LastName = guid.Substring(0, 6),
+                Email = guid.Substring(0, 6) + "@factory.com",
+                Name = guid.Substring(0, 6),
+                NewPassword = guid.Substring(0, 6)
+            };
+            bool ok = await userApi.RegisterAsync(register, true);
+
             if (ok)
             {
-                // Changing password back
-                if (await userApi.ChangePasswordAsync(newPassword, Program.Password))
-                {
-                    Console.WriteLine("Password was changed and reverted");
-                }
+                Console.WriteLine("Successfully registered user: {0}", guid.Substring(0,8));
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Unfortunately, something went wrong.");
             }
         }
     }

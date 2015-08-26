@@ -23,7 +23,7 @@
         /// <summary>
         /// Full display name of the new user.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Password for the new user.

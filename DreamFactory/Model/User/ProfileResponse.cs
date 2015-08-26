@@ -23,7 +23,7 @@
         /// <summary>
         /// Full display name of the current user.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Phone number.

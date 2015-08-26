@@ -107,7 +107,7 @@
             ProfileResponse profile = userApi.GetProfileAsync().Result;
 
             // Assert
-            profile.DisplayName.ShouldBe("pinebit");
+            profile.Name.ShouldBe("pinebit");
         }
 
         [TestMethod]
@@ -187,7 +187,7 @@
                 Email = "test@mail.com",
                 FirstName = "first",
                 LastName = "last",
-                DisplayName = "display",
+                Name = "display",
                 NewPassword = "qwerty"
             };
 
