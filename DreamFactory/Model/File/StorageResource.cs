@@ -4,17 +4,17 @@
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// A storage container information.
+    /// A storage resource information.
     /// </summary>
-    public class ContainerInfo
+    public class StorageResource
     {
         /// <summary>
-        /// Identifier/Name for the container.
+        /// Identifier/Name for the resource.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Same as name for the container, for consistency.
+        /// Path for the resource.
         /// </summary>
         public string Path { get; set; }
 
@@ -24,8 +24,18 @@
         public DateTime? LastModified { get; set; }
 
         /// <summary>
-        /// List of allowed HTTP verbs.
+        /// Resource content length.
         /// </summary>
-        public List<string> Access { get; set; } 
+        public int ContentLength { get; set; }
+
+        /// <summary>
+        /// Resource type.
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Resource content type.
+        /// </summary>
+        public string ContentType { get; set; }
     }
 }

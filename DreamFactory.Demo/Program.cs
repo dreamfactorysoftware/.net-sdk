@@ -33,7 +33,7 @@
                 new UserDemo(),
                 new EmailDemo(), 
                 new DatabaseDemo(), 
-                //new FilesDemo(), 
+                new FilesDemo(), 
                 //new SystemDemo(),
                 //new CustomSettingsDemo(),
                 //new SystemAppTest(),

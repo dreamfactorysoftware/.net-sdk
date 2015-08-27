@@ -7,19 +7,14 @@
 
     internal partial class FilesApi
     {
-        public async Task<FolderResponse> GetFolderAsync(string container, string path, ListingFlags flags)
+        public async Task<FolderResponse> GetFolderAsync(string path, ListingFlags flags)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty);
+            IHttpAddress address = baseAddress.WithResource(path, string.Empty);
             address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -29,19 +24,14 @@
             return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
-        public async Task<byte[]> DownloadFolderAsync(string container, string path)
+        public async Task<byte[]> DownloadFolderAsync(string path)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty)
+            IHttpAddress address = baseAddress.WithResource(path, string.Empty)
                                               .WithParameter("zip", true);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
@@ -51,19 +41,14 @@
             return response.RawBody;
         }
 
-        public async Task CreateFolderAsync(string container, string path, bool checkExists = true)
+        public async Task CreateFolderAsync(string path, bool checkExists = true)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty);
+            IHttpAddress address = baseAddress.WithResource(path, string.Empty);
             if (checkExists)
             {
                 address = address.WithParameter("check_exist", true);
@@ -75,13 +60,8 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task UploadFolderAsync(string container, string path, string url, bool clean)
+        public async Task UploadFolderAsync(string path, string url, bool clean)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
             if (url == null)
             {
                 throw new ArgumentNullException("url");
@@ -90,7 +70,7 @@
             HttpUtils.CheckUrlString(url);
 
             IHttpAddress address = baseAddress
-                .WithResource( container, path, string.Empty)
+                .WithResource(path, string.Empty)
                 .WithParameter("extract", true)
                 .WithParameter("clean", clean)
                 .WithParameter("url", url);
@@ -101,19 +81,14 @@
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
         }
 
-        public async Task DeleteFolderAsync(string container, string path, bool force = false)
+        public async Task DeleteFolderAsync(string path, bool force = false)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource( container, path, string.Empty)
+            IHttpAddress address = baseAddress.WithResource(path, string.Empty)
                                               .WithParameter("force", force);
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);

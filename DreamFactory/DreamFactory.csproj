@@ -70,8 +70,8 @@
     <Compile Include="Api\Implementation\EmailApi.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.cs" />
     <Compile Include="Api\Implementation\FilesApi.Folders.cs" />
-    <Compile Include="Api\Implementation\FilesApi.Containers.cs" />
     <Compile Include="Api\Implementation\FilesApi.cs" />
+    <Compile Include="Api\Implementation\FilesApi.Files.cs" />
     <Compile Include="Api\IDatabaseApi.cs" />
     <Compile Include="Api\IEmailApi.cs" />
     <Compile Include="Api\Implementation\CustomSettingsApi.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Model\Database\StoredProcRequest.cs" />
     <Compile Include="Model\Database\TableInfo.cs" />
     <Compile Include="Model\Database\TypeMap.cs" />
-    <Compile Include="Model\File\ContainerInfo.cs" />
+    <Compile Include="Model\File\StorageResource.cs" />
     <Compile Include="Model\File\ContainerRequest.cs" />
     <Compile Include="Model\File\ContainerResponse.cs" />
     <Compile Include="Model\File\FileRequest.cs" />

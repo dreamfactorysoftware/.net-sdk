@@ -25,164 +25,23 @@
             this.baseHeaders = baseHeaders;
         }
 
-        public async Task<FileResponse> CreateFileAsync(string container, string filepath, string content, bool checkExists = true)
+        public async Task<IEnumerable<StorageResource>> GetResourcesAsync(ListingFlags flags)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            if (content == null)
-            {
-                throw new ArgumentNullException("content");
-            }
-
-            IHttpAddress address = baseAddress.WithResource( container, filepath).WithParameter("check_exist", checkExists);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var data = new { file = new List<FileResponse>() };
-            return contentSerializer.Deserialize(response.Body, data).file.First();
-        }
-
-        public async Task<FileResponse> CreateFileAsync(string container, string filepath, byte[] contents, bool checkExists = true)
-        {
-            return await CreateFileAsync(container, filepath, GetString(contents), checkExists);
-        }
-
-        public Task ReplaceFileContentsAsync(string container, string filepath, byte[] contents)
-        {
-            return ReplaceFileContentsAsync(container, filepath, GetString(contents));
-        }
-
-        public async Task ReplaceFileContentsAsync(string container, string filepath, string contents)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            if (contents == null)
-            {
-                throw new ArgumentNullException("contents");
-            }
-
-            IHttpAddress address = baseAddress.WithResource( container, filepath);
-            IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-        }
-
-        public async Task<string> GetTextFileAsync(string container, string filepath)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            IHttpAddress address = baseAddress.WithResource( container, filepath);
+            IHttpAddress address = baseAddress.WithResource(string.Empty);
+            address = AddListingParameters(address, flags);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return response.Body;
+            var resources = new { resource = new List<StorageResource>() };
+            return contentSerializer.Deserialize(response.Body, resources).resource;
         }
 
-        public async Task<byte[]> GetBinaryFileAsync(string container, string filepath)
+        public async Task<IEnumerable<string>> GetResourceNamesAsync()
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            IHttpAddress address = baseAddress.WithResource( container, filepath);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders.Include(HttpHeaders.AcceptHeader, OctetStream));
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response.RawBody;
-        }
-
-        public async Task<FileResponse> DeleteFileAsync(string container, string filepath)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
-
-            if (filepath == null)
-            {
-                throw new ArgumentNullException("filepath");
-            }
-
-            IHttpAddress address = baseAddress.WithResource( container, filepath);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var data = new { file = new List<FileResponse>() };
-            return contentSerializer.Deserialize(response.Body, data).file.First();
-        }
-
-        private static IHttpAddress AddListingParameters(IHttpAddress source, ListingFlags mode)
-        {
-            int modeInt = (int)mode;
-
-            if ((modeInt & (int)ListingFlags.IncludeFiles) != 0)
-            {
-                source = source.WithParameter("include_files", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeFolders) != 0)
-            {
-                source = source.WithParameter("include_folders", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeProperties) != 0)
-            {
-                source = source.WithParameter("include_properties", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeSubFolders) != 0)
-            {
-                source = source.WithParameter("full_tree", true);
-            }
-
-            return source;
-        }
-
-        static string GetString(byte[] bytes)
-        {
-            char[] chars = new char[bytes.Length / sizeof(char)];
-            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
-            return new string(chars);
+            var containers = await GetResourcesAsync(ListingFlags.IncludeFiles | ListingFlags.IncludeFolders);
+            return containers.Select(x => x.Name);
         }
     }
 }
