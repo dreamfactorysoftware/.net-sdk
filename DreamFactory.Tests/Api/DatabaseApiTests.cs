@@ -29,23 +29,22 @@
             List<TableInfo> result = databaseApi.GetAccessComponentsAsync().Result.ToList();
 
             // Assert
-            result.Count.ShouldBe(3);
-            result.Any(x => x.Name == "todo").ShouldBe(true);
+            result.Count.ShouldBe(4);
+            result.Any(x => x.Name == "_table").ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldGetTableNamesAsync()
         {
             // Arrange
-            IDatabaseApi databaseApi = CreateDatabaseApi("alt");
+            IDatabaseApi databaseApi = CreateDatabaseApi();
 
             // Act
-            List<string> names = databaseApi.GetTableNamesAsync(true).Result.ToList();
+            List<string> names = databaseApi.GetTableNamesAsync(true).Result.Select(x => x.Name).ToList();
 
             // Assert
-            names.Count.ShouldBe(7);
+            names.Count.ShouldBe(3);
             names.ShouldContain("todo");
-            names.ShouldContain("_schema/todo");
         }
 
         [TestMethod]

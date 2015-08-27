@@ -21,7 +21,7 @@
         /// <param name="includeSchemas">Also return the names of the tables where the schema is retrievable.</param>
         /// <param name="refresh">Refresh any cached copy of the resource list.</param>
         /// <returns>Table names.</returns>
-        Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas = false, bool refresh = false);
+        Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas = false, bool refresh = false);
 
         /// <summary>
         /// Creates a new table schema.
