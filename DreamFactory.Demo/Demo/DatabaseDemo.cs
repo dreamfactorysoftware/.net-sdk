@@ -13,18 +13,19 @@
     public class DatabaseDemo : IRunnable
     {
         private const string TableName = "staff";
+        private const string ServiceName = "mysql";
 
         public async Task RunAsync(IRestContext context)
         {
             // Getting database interface
-            IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi("db");
+            IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi(ServiceName);
 
             // List available tables
-            List<string> tables = new List<string>(await databaseApi.GetTableNamesAsync());
-            Console.WriteLine("Existing tables: {0}", tables.ToStringList());
+            List<TableInfo> tables = new List<TableInfo>(await databaseApi.GetTableNamesAsync());
+            Console.WriteLine("Existing tables: {0}", tables.Select(x => x.Name).ToStringList());
 
             // Delete staff table if it exists
-            if (tables.Contains(TableName))
+            if (tables.Any(x => x.Name == TableName))
             {
                 Console.WriteLine("Deleting table {0}...", TableName);
                 if (await databaseApi.DeleteTableAsync(TableName))

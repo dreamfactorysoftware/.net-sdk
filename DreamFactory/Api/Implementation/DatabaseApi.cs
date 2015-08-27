@@ -33,15 +33,10 @@
             return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
-        public async Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
+        public async Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
-            IHttpAddress address = baseAddress.WithParameter("names_only", true);
-            
-            if (includeSchemas)
-            {
-                address = address.WithParameter("include_schemas", true);
-            }
-
+            IHttpAddress address = baseAddress.WithResource("_table");
+                
             if (refresh)
             {
                 address = address.WithParameter("refresh", true);
@@ -52,7 +47,7 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var resource = new { resource = new List<string>() };
+            var resource = new { resource = new List<TableInfo>() };
             return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
@@ -141,9 +136,9 @@
                 throw new ArgumentNullException("tableSchema");
             }
 
-            IHttpAddress address = baseAddress.WithResource( "_schema");
+            IHttpAddress address = baseAddress.WithResource("_schema");
 
-            var tableSchemas = new { table = new List<TableSchema> { tableSchema } };
+            var tableSchemas = new { resource = new List<TableSchema> { tableSchema } };
             string body = contentSerializer.Serialize(tableSchemas);
             IHttpRequest request = new HttpRequest(httpMethod, address.Build(), baseHeaders, body);
 
