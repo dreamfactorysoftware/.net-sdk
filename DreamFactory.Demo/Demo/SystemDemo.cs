@@ -22,16 +22,16 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // List apps
-            SqlQuery query = new SqlQuery { Filter = "is_active=true", Fields = "*", Related = "services,roles", };
+            SqlQuery query = new SqlQuery { Filter = "is_active=true", Fields = "*", Related = "service_by_storage_service_id,role_by_user_to_app_to_role", };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
-            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
+            Console.WriteLine("Apps: {0}", apps.Select(x => x.Name).ToStringList());
 
             // Check admin app
-            AppResponse todoAngular = apps.Single(x => x.ApiName == "admin");
-            RelatedRole role = todoAngular.Roles.First();
+            AppResponse adminApp = apps.Single(x => x.Name == "admin");
+            RelatedRole role = adminApp.RoleByUserToAppToRole.First();
             Console.WriteLine("admin app has first role: {0}", role.Name);
-            RelatedService service = todoAngular.Services.First();
-            Console.WriteLine("admin app has first service: {0}", service.Name);
+            RelatedService service = adminApp.ServiceByStorageServiceId;
+            Console.WriteLine("admin app has {0} {1}", service != null ? "service" : "no service", service != null ? service.Name : "");
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
@@ -47,14 +47,10 @@
             // Get environment info - does not work for WAMP, uncomment when using linux hosted DSP.
             // EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();
             // Console.WriteLine("DreamFactory Server is running on {0}", environment.server.server_os);
-
-            // Get config
-            ConfigResponse config = await systemApi.GetConfigAsync();
-            Console.WriteLine("config.install_name = {0}", config.InstallName);
-
-            // Get constant
-            Dictionary<string, string> contentTypes = await systemApi.GetConstantAsync("content_types");
-            Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
+            
+            // Get constant //TODO: see about constants
+            //var contentTypes = await systemApi.GetConstantAsync("content_types");
+            //Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
         }
     }
 }

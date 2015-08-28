@@ -1,9 +1,12 @@
 ﻿namespace DreamFactory.Model.System.App
 {
+    using DreamFactory.Model.System.AppAppGroup;
     using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.AppLookup;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
+    using DreamFactory.Model.System.UserAppRole;
     using global::System;
     using global::System.Collections.Generic;
 
@@ -23,9 +26,9 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Name of the application to use in API transactions.
+        /// ApiKey used for this application.
         /// </summary>
-        public string ApiName { get; set; }
+        public string ApiKey { get; set; }
 
         /// <summary>
         /// Description of this application.
@@ -38,19 +41,19 @@
         public bool? IsActive { get; set; }
 
         /// <summary>
+        /// Is this system application active for use.
+        /// </summary>
+        public int? Type{ get; set; }
+
+        /// <summary>
+        /// Path for this application.
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
         /// URL for accessing this application.
         /// </summary>
         public string Url { get; set; }
-
-        /// <summary>
-        /// True when this application is hosted elsewhere, but available in Launchpad.
-        /// </summary>
-        public bool? IsUrlExternal { get; set; }
-
-        /// <summary>
-        /// If hosted and imported, the url of zip or package file where the code originated.
-        /// </summary>
-        public string ImportUrl { get; set; }
 
         /// <summary>
         /// If hosted, the storage service identifier.
@@ -78,34 +81,64 @@
         public string ToggleLocation { get; set; }
 
         /// <summary>
-        /// True when the app relies on a browser plugin.
+        /// RoleId of the default role assigned to this application.
         /// </summary>
-        public bool? RequiresPlugin { get; set; }
+        public int? RoleId { get; set; }
 
         /// <summary>
-        /// Related roles by Role.default_app_id.
+        /// A single User record that this record potentially belongs to.
         /// </summary>
-        public List<RelatedRole> RolesDefaultApp { get; set; }
+        public RelatedUser UserByCreatedById { get; set; }
 
         /// <summary>
-        /// Related users by User.default_app_id.
+        /// A single User record that this record potentially belongs to.
         /// </summary>
-        public List<RelatedUser> UsersDefaultApp { get; set; }
+        public RelatedUser UserByLastModifiedById { get; set; }
 
         /// <summary>
-        /// Related groups by app to group assignment.
+        /// A single Role record that this record potentially belongs to.
         /// </summary>
-        public List<RelatedAppGroup> AppGroups { get; set; }
+        public RelatedRole RoleByRoleId { get; set; }
 
         /// <summary>
-        /// Related roles by app to role assignment.
+        /// A single Service record that this record potentially belongs to.
         /// </summary>
-        public List<RelatedRole> Roles { get; set; }
+        public RelatedService ServiceByStorageServiceId { get; set; }
 
         /// <summary>
-        /// Related services by app to service assignment.
+        ///  Zero or more AppLookup records that are potentially linked to this record directly.
         /// </summary>
-        public List<RelatedService> Services { get; set; }
+        public List<RelatedAppLookup> AppLookupByAppId { get; set; }
+
+        /// <summary>
+        /// Zero or more User records that are potentially linked to this record via the AppLookup table.
+        /// </summary>
+        public List<RelatedUser> UserByAppLookup { get; set; }
+
+        /// <summary>
+        /// Zero or more AppToAppGroup records that are potentially linked to this record directly.
+        /// </summary>
+        public List<RelatedAppToAppGroup> AppToAppGroupByAppId { get; set; }
+
+        /// <summary>
+        /// Zero or more AppGroup records that are potentially linked to this record via the AppToAppGroup table.
+        /// </summary>
+        public List<RelatedAppGroup> AppGroupByAppToAppGroup { get; set; }
+
+        /// <summary>
+        /// Zero or more UserAppRole records that are potentially linked to this record directly.
+        /// </summary>
+        public List<RelatedUserAppRole> UserToAppToRoleByAppId { get; set; }
+
+        /// <summary>
+        /// Zero or more Role records that are potentially linked to this record via the UserAppRole table.
+        /// </summary>
+        public List<RelatedRole> RoleByUserToAppToRole { get; set; }
+
+        /// <summary>
+        /// Zero or more User records that are potentially linked to this record via the UserAppRole table.
+        /// </summary>
+        public List<RelatedUser> UserByUserToAppToRole { get; set; }
         
         /// <summary>
         /// Date this application was created.

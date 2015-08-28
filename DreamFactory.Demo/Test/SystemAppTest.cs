@@ -19,18 +19,18 @@
             // Read
             SqlQuery query = new SqlQuery { Fields = "*", Related = "services,roles", };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
-            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiName).ToStringList());
+            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiKey).ToStringList());
 
             // Cloning
-            AppResponse todoApp = apps.Single(x => x.ApiName == "admin");
+            AppResponse todoApp = apps.Single(x => x.ApiKey == "admin");
             AppRequest todoAppRequest = todoApp.Convert<AppResponse, AppRequest>();
             todoAppRequest.Name = todoApp.Name + "clone";
-            todoAppRequest.ApiName = todoApp.ApiName + "clone";
+            todoAppRequest.ApiName = todoApp.ApiKey + "clone";
 
             // Creating a clone
             apps = await systemApi.CreateAppsAsync(new SqlQuery(), todoAppRequest);
-            AppResponse todoAppClone = apps.Single(x => x.ApiName == "admin-clone");
-            Console.WriteLine("Created a clone app={0}", todoAppClone.ApiName);
+            AppResponse todoAppClone = apps.Single(x => x.ApiKey == "admin-clone");
+            Console.WriteLine("Created a clone app={0}", todoAppClone.ApiKey);
 
             // Deleting the clone
             Debug.Assert(todoAppClone.Id.HasValue);

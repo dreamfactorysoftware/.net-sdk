@@ -29,12 +29,12 @@
             IRunnable[] tests =
             {
                 new LoginDemo(),
-                new DiscoveryDemo(), 
-                new UserDemo(),
-                new EmailDemo(), 
-                new DatabaseDemo(), 
-                new FilesDemo(), 
-                //new SystemDemo(),
+                //new DiscoveryDemo(), 
+                //new UserDemo(),
+                //new EmailDemo(), 
+                //new DatabaseDemo(), 
+                //new FilesDemo(), 
+                new SystemDemo(),
                 //new CustomSettingsDemo(),
                 //new SystemAppTest(),
                 //new SystemUserTest(),

@@ -106,8 +106,8 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var apps = new { record = new List<TRecord>() };
-            return contentSerializer.Deserialize(response.Body, apps).record;
+            var apps = new { resource = new List<TRecord>() };
+            return contentSerializer.Deserialize(response.Body, apps).resource;
         }
 
         #endregion

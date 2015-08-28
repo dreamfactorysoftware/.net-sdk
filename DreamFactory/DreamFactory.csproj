@@ -104,8 +104,10 @@
     <Compile Include="Model\File\ListingFlags.cs" />
     <Compile Include="Model\Builder\EmailRequestBuilder.cs" />
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
+    <Compile Include="Model\System\AppAppGroup\RelatedAppToAppGroup.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupRequest.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupResponse.cs" />
+    <Compile Include="Model\System\AppLookup\RelatedAppLookup.cs" />
     <Compile Include="Model\System\App\AppRequest.cs" />
     <Compile Include="Model\System\Config\ConfigRequest.cs" />
     <Compile Include="Model\System\Config\ConfigResponse.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Model\System\Script\ScriptResponse.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />
+    <Compile Include="Model\System\UserAppRole\RelatedUserAppRole.cs" />
     <Compile Include="Model\System\User\UserRequest.cs" />
     <Compile Include="Model\System\User\UserResponse.cs" />
     <Compile Include="Model\System\Role\RoleResponse.cs" />
@@ -190,6 +193,7 @@
   <ItemGroup>
     <Compile Include="Serialization\IPropertyNameResolver.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

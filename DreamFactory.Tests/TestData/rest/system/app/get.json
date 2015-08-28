@@ -1,183 +1,196 @@
 ﻿{
-  "record": [
+  "resource": [
     {
       "id": 1,
-      "created_date": "2015-04-07 00:57:52",
-      "created_by_id": 1,
-      "last_modified_date": "2015-04-07 00:57:52",
-      "last_modified_by_id": 1,
-      "name": "Todo List jQuery",
-      "api_name": "todojquery",
-      "description": "A simple jQuery application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
+      "name": "admin",
+      "api_key": "6498a8ad1beb9d84d63035c5d1120c007fad6de706734db9689f8996707e0f7d",
+      "description": "An application for administering this instance.",
       "is_active": true,
-      "url": "/index.html",
-      "is_url_external": false,
-      "import_url": "https://raw.github.com/dreamfactorysoftware/app-todo-jquery/master/todojquery.dfpkg",
-      "storage_service_id": 2,
-      "storage_container": "applications",
-      "launch_url": "http://localhost:8765/files/applications/todojquery/index.html",
+      "type": 3,
+      "path": "dreamfactory/dist/index.html",
+      "url": null,
+      "storage_service_id": null,
+      "storage_container": null,
       "requires_fullscreen": false,
       "allow_fullscreen_toggle": true,
       "toggle_location": "top",
-      "requires_plugin": false,
-      "services": [],
-      "roles": []
+      "role_id": 2,
+      "created_date": "2015-08-24 22:27:09",
+      "last_modified_date": "2015-08-25 21:36:23",
+      "created_by_id": null,
+      "last_modified_by_id": 1,
+      "launch_url": "http://127.0.0.1:8765/dreamfactory/dist/index.html",
+      "service_by_storage_service_id": null,
+      "role_by_user_to_app_to_role": [
+        {
+          "id": 1,
+          "name": "AddressBookUser",
+          "description": "This role can access address book.",
+          "is_active": true,
+          "created_date": "2015-08-24 22:29:52",
+          "last_modified_date": "2015-08-24 22:54:19",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 1,
+            "role_id": 1
+          }
+        },
+        {
+          "id": 2,
+          "name": "DemoUser",
+          "description": "This role can access demo app.",
+          "is_active": true,
+          "created_date": "2015-08-24 22:30:16",
+          "last_modified_date": "2015-08-27 05:24:24",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 1,
+            "role_id": 2
+          }
+        }
+      ]
     },
     {
       "id": 2,
-      "created_date": "2015-04-07 00:57:57",
-      "created_by_id": 1,
-      "last_modified_date": "2015-05-03 11:31:07",
-      "last_modified_by_id": 1,
-      "name": "Todo List AngularJS",
-      "api_name": "todoangular",
-      "description": "A simple AngularJS application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
+      "name": "swagger",
+      "api_key": "36fda24fe5588fa4285ac6c6c2fdfbdb6b6bc9834699774c9bf777f706d05a88",
+      "description": "A Swagger-base application allowing viewing and testing API documentation.",
       "is_active": true,
-      "url": "/index.html",
-      "is_url_external": false,
-      "import_url": "https://raw.github.com/dreamfactorysoftware/app-todo-angular/master/todoangular.dfpkg",
-      "storage_service_id": 2,
-      "storage_container": "applications",
-      "launch_url": "http://localhost:8765/files/applications/todoangular/index.html",
+      "type": 3,
+      "path": "swagger/index.html",
+      "url": null,
+      "storage_service_id": null,
+      "storage_container": null,
       "requires_fullscreen": false,
       "allow_fullscreen_toggle": true,
       "toggle_location": "top",
-      "requires_plugin": false,
-      "services": [
-        {
-          "id": 3,
-          "created_date": "2015-04-07 00:57:47",
-          "created_by_id": 1,
-          "last_modified_date": "2015-04-07 00:57:47",
-          "last_modified_by_id": 1,
-          "name": "Email Service",
-          "api_name": "email",
-          "description": "Email utility access",
-          "is_active": true,
-          "type": "Email Service",
-          "type_id": 1,
-          "is_system": false,
-          "storage_type": null,
-          "storage_type_id": null,
-          "credentials": {
-            "transport_type": null
-          },
-          "native_format": null,
-          "native_format_id": null,
-          "base_url": null,
-          "parameters": [
-            {
-              "name": "from_name",
-              "value": ""
-            },
-            {
-              "name": "from_email",
-              "value": ""
-            },
-            {
-              "name": "reply_to_name",
-              "value": ""
-            },
-            {
-              "name": "reply_to_email",
-              "value": ""
-            }
-          ],
-          "headers": []
-        }
-      ],
-      "roles": [
+      "role_id": null,
+      "created_date": "2015-08-24 22:27:09",
+      "last_modified_date": "2015-08-24 22:27:09",
+      "created_by_id": null,
+      "last_modified_by_id": null,
+      "launch_url": "http://127.0.0.1:8765/swagger/index.html",
+      "service_by_storage_service_id": null,
+      "role_by_user_to_app_to_role": [
         {
           "id": 1,
-          "created_date": "2015-04-07 00:58:38",
-          "created_by_id": 1,
-          "last_modified_date": "2015-04-07 04:32:54",
-          "last_modified_by_id": 1,
-          "name": "TestRole",
-          "description": "",
+          "name": "AddressBookUser",
+          "description": "This role can access address book.",
           "is_active": true,
-          "default_app_id": null
+          "created_date": "2015-08-24 22:29:52",
+          "last_modified_date": "2015-08-24 22:54:19",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 2,
+            "role_id": 1
+          }
+        },
+        {
+          "id": 2,
+          "name": "DemoUser",
+          "description": "This role can access demo app.",
+          "is_active": true,
+          "created_date": "2015-08-24 22:30:16",
+          "last_modified_date": "2015-08-27 05:24:24",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 2,
+            "role_id": 2
+          }
         }
       ]
     },
     {
       "id": 3,
-      "created_date": "2015-04-07 00:58:02",
-      "created_by_id": 1,
-      "last_modified_date": "2015-04-07 00:58:02",
-      "last_modified_by_id": 1,
-      "name": "Todo List Sencha",
-      "api_name": "todosencha",
-      "description": "A simple Sencha application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
+      "name": "filemanager",
+      "api_key": "b5cb82af7b5d4130f36149f90aa2746782e59a872ac70454ac188743cb55b0ba",
+      "description": "An application for managing file services.",
       "is_active": true,
-      "url": "/index.html",
-      "is_url_external": false,
-      "import_url": "https://raw.github.com/dreamfactorysoftware/app-todo-sencha/master/todosencha.dfpkg",
-      "storage_service_id": 2,
-      "storage_container": "applications",
-      "launch_url": "http://localhost:8765/files/applications/todosencha/index.html",
+      "type": 3,
+      "path": "filemanager/index.html",
+      "url": null,
+      "storage_service_id": null,
+      "storage_container": null,
       "requires_fullscreen": false,
       "allow_fullscreen_toggle": true,
       "toggle_location": "top",
-      "requires_plugin": false,
-      "services": [],
-      "roles": []
+      "role_id": null,
+      "created_date": "2015-08-24 22:27:10",
+      "last_modified_date": "2015-08-24 22:27:10",
+      "created_by_id": null,
+      "last_modified_by_id": null,
+      "launch_url": "http://127.0.0.1:8765/filemanager/index.html",
+      "service_by_storage_service_id": null,
+      "role_by_user_to_app_to_role": [
+        {
+          "id": 1,
+          "name": "AddressBookUser",
+          "description": "This role can access address book.",
+          "is_active": true,
+          "created_date": "2015-08-24 22:29:52",
+          "last_modified_date": "2015-08-24 22:54:19",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 3,
+            "role_id": 1
+          }
+        },
+        {
+          "id": 2,
+          "name": "DemoUser",
+          "description": "This role can access demo app.",
+          "is_active": true,
+          "created_date": "2015-08-24 22:30:16",
+          "last_modified_date": "2015-08-27 05:24:24",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 3,
+            "role_id": 2
+          }
+        }
+      ]
     },
     {
       "id": 4,
-      "created_date": "2015-04-07 00:58:07",
-      "created_by_id": 1,
-      "last_modified_date": "2015-04-07 00:58:07",
-      "last_modified_by_id": 1,
-      "name": "Calendar",
-      "api_name": "calendar",
-      "description": "A sample application showing how to perform CRUD operations on your DreamFactory Services Platform (DSP).",
+      "name": "demo",
+      "api_key": "eea04e3e9b2b2a452cb1b49bbae52fa9a4336b874a5267608586378246ee4ebb",
+      "description": "Demo console app",
       "is_active": true,
-      "url": "/index.html",
-      "is_url_external": false,
-      "import_url": "https://raw.github.com/dreamfactorysoftware/app-calendar/master/calendar.dfpkg",
-      "storage_service_id": 2,
-      "storage_container": "applications",
-      "launch_url": "http://localhost:8765/files/applications/calendar/index.html",
-      "requires_fullscreen": false,
-      "allow_fullscreen_toggle": true,
-      "toggle_location": "top",
-      "requires_plugin": false,
-      "services": [],
-      "roles": []
-    },
-    {
-      "id": 5,
-      "created_date": "2015-05-03 11:32:02",
-      "created_by_id": 1,
-      "last_modified_date": "2015-05-03 11:32:47",
-      "last_modified_by_id": 1,
-      "name": "mobileapp",
-      "api_name": "mobileapp",
-      "description": "",
-      "is_active": true,
+      "type": 0,
+      "path": null,
       "url": null,
-      "is_url_external": false,
-      "import_url": null,
       "storage_service_id": null,
       "storage_container": null,
-      "launch_url": "",
       "requires_fullscreen": false,
       "allow_fullscreen_toggle": true,
       "toggle_location": "top",
-      "requires_plugin": false,
-      "services": [],
-      "roles": [
+      "role_id": 2,
+      "created_date": "2015-08-25 22:56:34",
+      "last_modified_date": "2015-08-25 22:56:34",
+      "created_by_id": 1,
+      "last_modified_by_id": null,
+      "launch_url": "",
+      "service_by_storage_service_id": null,
+      "role_by_user_to_app_to_role": [
         {
-          "id": 1,
-          "created_date": "2015-04-07 00:58:38",
-          "created_by_id": 1,
-          "last_modified_date": "2015-04-07 04:32:54",
-          "last_modified_by_id": 1,
-          "name": "TestRole",
-          "description": "",
+          "id": 2,
+          "name": "DemoUser",
+          "description": "This role can access demo app.",
           "is_active": true,
-          "default_app_id": null
+          "created_date": "2015-08-24 22:30:16",
+          "last_modified_date": "2015-08-27 05:24:24",
+          "created_by_id": 1,
+          "last_modified_by_id": 1,
+          "pivot": {
+            "app_id": 4,
+            "role_id": 2
+          }
         }
       ]
     }
