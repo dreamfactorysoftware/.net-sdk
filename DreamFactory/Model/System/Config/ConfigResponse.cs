@@ -98,7 +98,7 @@
         public Dictionary<string, string> Paths { get; set; }
 
         /// <summary>
-        /// An array of HTTP verbs that must be tunnelled on this server.
+        /// An array of HTTP verbs that must be tunneled on this server.
         /// </summary>
         public List<string> RestrictedVerbs { get; set; }
 

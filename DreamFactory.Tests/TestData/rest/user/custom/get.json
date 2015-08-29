@@ -1,10 +1,28 @@
 ﻿{
-    "preferences": {
-        "flag": true,
-        "array": [ "a", "b", "c" ],
-        "entity": {
-            "rank": 4,
-            "role": "user"
-        }
+  "resource": [
+    {
+      "name": "preferences",
+      "value": "text",
+      "created_date": "2015-08-28 22:53:42",
+      "last_modified_date": "2015-08-28 22:53:42",
+      "created_by_id": 1,
+      "last_modified_by_id": null
+    },
+    {
+      "name": "Language",
+      "value": "en-us",
+      "created_date": "2015-08-28 22:56:03",
+      "last_modified_date": "2015-08-28 22:56:03",
+      "created_by_id": 1,
+      "last_modified_by_id": null
+    },
+    {
+      "name": "TimeZone",
+      "value": "ET",
+      "created_date": "2015-08-28 23:07:57",
+      "last_modified_date": "2015-08-28 23:07:57",
+      "created_by_id": 1,
+      "last_modified_by_id": null
     }
+  ]
 }

@@ -1,1 +1,7 @@
-﻿{"success": true}
+﻿{
+  "resource": [
+    {
+      "name": "abc"
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Model;
+    using DreamFactory.Model.System.Custom;
 
     /// <summary>
     /// Custom Settings API.
@@ -12,30 +14,27 @@
         /// Retrieve all custom user|system settings.
         /// </summary>
         /// <returns>Sequence of settings (names).</returns>
-        Task<IEnumerable<string>> GetCustomSettingsAsync();
+        Task<IEnumerable<CustomResponse>> GetCustomSettingsAsync();
 
         /// <summary>
         /// Set or update one custom user|system setting.
         /// </summary>
-        /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <param name="entity">Instance of the TEntity type.</param>
-        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
-        /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity) where TEntity : class, new();
+        /// <param name="custom">Instance of the CustomRequest type.</param>
+        /// <returns cref="CustomResponse">Names of resources created.</returns>
+        Task<IEnumerable<CustomResponse>> SetCustomSettingAsync(List<CustomRequest> custom);
 
         /// <summary>
         /// Retrieve one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
-        /// <returns>CustomSetting data.</returns>
-        Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName) where TEntity : class, new();
+        /// <returns>CustomSetting value.</returns>
+        Task<string> GetCustomSettingAsync(string settingName);
 
         /// <summary>
         /// Delete one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to delete.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> DeleteCustomSettingAsync(string settingName); 
+        Task<CustomResponse> DeleteCustomSettingAsync(string settingName); 
     }
 }

@@ -219,7 +219,7 @@
         Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles = true, bool includeServices = true, bool includeSchema = true);
 
         /// <summary>
-        /// Download the DreamFactory Javascript SDK amended for the app.
+        /// Download the DreamFactory javascript SDK amended for the app.
         /// </summary>
         /// <param name="applicationId">Application ID.</param>
         /// <returns>SDK contents.</returns>

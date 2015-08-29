@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
+    using DreamFactory.Model.System.Custom;
     using DreamFactory.Serialization;
 
     internal class CustomSettingsApi : ICustomSettingsApi
@@ -28,77 +31,63 @@
             this.baseHeaders = baseHeaders;
         }
 
-        public async Task<IEnumerable<string>> GetCustomSettingsAsync()
+        public async Task<IEnumerable<CustomResponse>> GetCustomSettingsAsync()
         {
-            var address = baseAddress.WithResource( CustomResource);
+            var address = baseAddress.WithResource(CustomResource);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            Dictionary<string, object> settings = new Dictionary<string, object>();
-            return contentSerializer.Deserialize(response.Body, settings).Keys;
+            var settings = new { resource = new List<CustomResponse>() };
+            return contentSerializer.Deserialize(response.Body, settings).resource;
         }
 
-        public async Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity)
-            where TEntity : class, new()
+        public async Task<IEnumerable<CustomResponse>> SetCustomSettingAsync(List<CustomRequest> customSettings)
         {
-            if (settingName == null)
-            {
-                throw new ArgumentNullException("settingName");
-            }
+            var address = baseAddress.WithResource(CustomResource);
 
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
-
-            var address = baseAddress.WithResource( CustomResource);
-
-            Dictionary<string, TEntity> setting = new Dictionary<string, TEntity> { { settingName, entity } };
-            string content = contentSerializer.Serialize(setting);
+            var body = new { resource = customSettings, ids = customSettings.Select((item, index) => index) };
+            string content = contentSerializer.Serialize(body);
             IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var success = new { success = false };
-            return contentSerializer.Deserialize(response.Body, success).success;
+            var resources = new { resource = new List<CustomResponse>() };
+            return contentSerializer.Deserialize(response.Body, resources).resource;
         }
 
-        public async Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName)
-            where TEntity : class, new()
+        public async Task<string> GetCustomSettingAsync(string settingName)
         {
             if (settingName == null)
             {
                 throw new ArgumentNullException("settingName");
             }
 
-            var address = baseAddress.WithResource( CustomResource, settingName);
+            var address = baseAddress.WithResource(CustomResource, settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            Dictionary<string, TEntity> settings = new Dictionary<string, TEntity>();
-            return contentSerializer.Deserialize(response.Body, settings)[settingName];
+            return contentSerializer.Deserialize<string>(response.Body);
         }
 
-        public async Task<bool> DeleteCustomSettingAsync(string settingName)
+        public async Task<CustomResponse> DeleteCustomSettingAsync(string settingName)
         {
             if (settingName == null)
             {
                 throw new ArgumentNullException("settingName");
             }
 
-            var address = baseAddress.WithResource( CustomResource, settingName);
+            var address = baseAddress.WithResource(CustomResource, settingName);
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var success = new { success = false };
-            return contentSerializer.Deserialize(response.Body, success).success;
+            return contentSerializer.Deserialize<CustomResponse>(response.Body);
         }
     }
 }

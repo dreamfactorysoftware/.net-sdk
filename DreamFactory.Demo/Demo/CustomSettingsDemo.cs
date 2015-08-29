@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.System.Custom;
     using DreamFactory.Rest;
 
     public class CustomSettingsDemo : IRunnable
@@ -13,41 +15,34 @@
             ICustomSettingsApi settingsApi = context.Factory.CreateUserCustomSettingsApi();
 
             // Setting some preferences
-            UserPreferences preferences = new UserPreferences
+            List<CustomRequest> customSettings = new List<CustomRequest>
             {
-                Flag = true,
-                Array = new[] { "a", "b", "c" },
-                Entity = new Entity { Rank = 4, Role = "user" }
+                new CustomRequest
+                {
+                    Name = "Language",
+                    Value = "en-us"
+                },
+                new CustomRequest
+                {
+                    Name = "TimeZone",
+                    Value = "ET"
+                }
             };
 
-            if (await settingsApi.SetCustomSettingAsync("preferences", preferences))
+            if ((await settingsApi.SetCustomSettingAsync(customSettings)).Any())
             {
                 Console.WriteLine("Created custom settings: preferences");
             }
 
             // Retrieving custom settings names
-            IEnumerable<string> names = await settingsApi.GetCustomSettingsAsync();
+            IEnumerable<string> names = (await settingsApi.GetCustomSettingsAsync()).Select(x => x.Name);
             string flatList = string.Join(", ", names);
             Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 
             // Retrieving preferences back
-            UserPreferences instance = await settingsApi.GetCustomSettingAsync<UserPreferences>("preferences");
+            string value = await settingsApi.GetCustomSettingAsync("Language");
             Console.WriteLine("Retrieved preferences back:");
-            Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.Flag, instance.Entity.Rank);
-        }
-
-        internal class UserPreferences
-        {
-            public bool Flag { get; set; }
-            public string[] Array { get; set; }
-            public Entity Entity { get; set; }
-        }
-
-
-        internal class Entity
-        {
-            public int Rank { get; set; }
-            public string Role { get; set; }
+            Console.WriteLine("\tName={0}, Value={1}", "Language", value);
         }
     }
 }

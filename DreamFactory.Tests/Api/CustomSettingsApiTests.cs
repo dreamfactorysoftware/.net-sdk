@@ -5,6 +5,7 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model.System.Custom;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,10 +23,10 @@
             ICustomSettingsApi settingsApi = CreateSettingsApi();
 
             // Act
-            IEnumerable<string> names = settingsApi.GetCustomSettingsAsync().Result;
+            IEnumerable<string> names = settingsApi.GetCustomSettingsAsync().Result.Select(x => x.Name);
 
             // Assert
-            names.Single().ShouldBe("preferences");
+            names.ShouldContain("preferences");
         }
 
         [TestMethod]
@@ -33,10 +34,10 @@
         {
             // Arrange
             ICustomSettingsApi settingsApi = CreateSettingsApi();
-            UserPreferences preferences = CreateUserPreferences();
+            List<CustomRequest> userSettings = CreateUserSettings();
 
             // Act
-            bool ok = settingsApi.SetCustomSettingAsync("preferences", preferences).Result;
+            bool ok = settingsApi.SetCustomSettingAsync(userSettings).Result.Any();
 
             // Assert
             ok.ShouldBe(true);
@@ -49,13 +50,10 @@
             ICustomSettingsApi settingsApi = CreateSettingsApi();
 
             // Act
-            UserPreferences setting = settingsApi.GetCustomSettingAsync<UserPreferences>("preferences").Result;
+            string setting = settingsApi.GetCustomSettingAsync("Language").Result;
 
             // Assert
-            setting.Flag.ShouldBe(true);
-            setting.Array.Length.ShouldBe(3);
-            setting.entity.Rank.ShouldBe(4);
-            setting.entity.Role.ShouldBe("user");
+            setting.ShouldBe("en-us");
         }
 
         [TestMethod]
@@ -65,10 +63,10 @@
             ICustomSettingsApi settingsApi = CreateSettingsApi();
 
             // Act
-            bool ok = settingsApi.DeleteCustomSettingAsync("preferences").Result;
+            CustomResponse settings = settingsApi.DeleteCustomSettingAsync("Language").Result;
 
             // Assert
-            ok.ShouldBe(true);
+            settings.Name.ShouldBe("Language");
         }
 
         private static ICustomSettingsApi CreateSettingsApi()
@@ -78,27 +76,22 @@
             return new CustomSettingsApi(address, httpFacade, new JsonContentSerializer(), new HttpHeaders(), "user");
         }
 
-        private static UserPreferences CreateUserPreferences()
+        private static List<CustomRequest> CreateUserSettings()
         {
-            return new UserPreferences
+            return new List<CustomRequest>
             {
-                Flag = true,
-                Array = new[] { "a", "b", "c" },
-                entity = new UserPreferences.Entity { Rank = 4, Role = "user" }
+                new CustomRequest
+                {
+                    Name = "Language",
+                    Value = "en-us"
+                },
+                new CustomRequest
+                {
+                    Name = "TimeZone",
+                    Value = "ET"
+                }
             };
-        }
 
-        internal class UserPreferences
-        {
-            public bool Flag { get; set; }
-            public string[] Array { get; set; }
-            public Entity entity { get; set; }
-
-            internal class Entity
-            {
-                public int Rank { get; set; }
-                public string Role { get; set; }
-            }
         }
     }
 }
