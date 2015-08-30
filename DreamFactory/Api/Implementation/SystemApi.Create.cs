@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
@@ -14,63 +16,41 @@
 
     internal partial class SystemApi
     {
-        public async Task<IEnumerable<AppResponse>> CreateAppsAsync(SqlQuery query, params AppRequest[] apps)
+        public Task<IEnumerable<AppResponse>> CreateAppsAsync(SqlQuery query, params AppRequest[] apps)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "app", query, apps);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<AppResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<AppRequest, AppResponse>(HttpMethod.Post, "app", query, apps);
         }
 
-        public async Task<IEnumerable<AppGroupResponse>> CreateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups)
+        public Task<IEnumerable<AppGroupResponse>> CreateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "app_group", query, appGroups);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<AppGroupResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<AppGroupRequest, AppGroupResponse>(HttpMethod.Post, "app_group", query, appGroups);
         }
 
-        public async Task<IEnumerable<UserResponse>> CreateUsersAsync(SqlQuery query, params UserRequest[] users)
+        public Task<IEnumerable<UserResponse>> CreateUsersAsync(SqlQuery query, params UserRequest[] users)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "user", query, users);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<UserResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<UserRequest, UserResponse>(HttpMethod.Post, "user", query, users);
         }
 
-        public async Task<IEnumerable<RoleResponse>> CreateRolesAsync(SqlQuery query, params RoleRequest[] roles)
+        public Task<IEnumerable<RoleResponse>> CreateRolesAsync(SqlQuery query, params RoleRequest[] roles)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "role", query, roles);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<RoleResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<RoleRequest, RoleResponse>(HttpMethod.Post, "role", query, roles);
         }
 
-        public async Task<IEnumerable<ServiceResponse>> CreateServicesAsync(SqlQuery query, params ServiceRequest[] services)
+        public Task<IEnumerable<ServiceResponse>> CreateServicesAsync(SqlQuery query, params ServiceRequest[] services)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "service", query, services);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<ServiceResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<ServiceRequest, ServiceResponse>(HttpMethod.Post, "service", query, services);
         }
 
-        public async Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates)
+        public Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates)
         {
-            IHttpResponse response = await CreateOrUpdateRecordsAsync(HttpMethod.Post, "email_template", query, templates);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var responses = new { record = new List<EmailTemplateResponse>() };
-            return contentSerializer.Deserialize(response.Body, responses).record;
+            return CreateOrUpdateRecordsAsync<EmailTemplateRequest, EmailTemplateResponse>(HttpMethod.Post, "email_template", query, templates);
         }
 
         #region --- Helpers ---
 
-        private async Task<IHttpResponse> CreateOrUpdateRecordsAsync<TRecord>(HttpMethod method, string resource, SqlQuery query, params TRecord[] records)
+        private async Task<IEnumerable<TResponseRecord>> CreateOrUpdateRecordsAsync<TRequestRecord, TResponseRecord>(HttpMethod method, string resource, SqlQuery query, params TRequestRecord[] records)
+            where TRequestRecord : IRecord
+            where TResponseRecord : class, new()
         {
             if (query == null)
             {
@@ -79,20 +59,20 @@
 
             if (records == null || records.Length < 1)
             {
-                throw new ArgumentException("At least one parameter must be specificed", "records");
+                throw new ArgumentException("At least one parameter must be specified", "records");
             }
 
             IHttpAddress address = baseAddress.WithResource(resource);
             address = address.WithSqlQuery(query);
 
-            var requests = new { record = new List<TRecord>(records) };
-            string body = contentSerializer.Serialize(requests);
+            string body = contentSerializer.Serialize(new { resource = new List<TRequestRecord>(records), ids = records.Select(x => x.Id) });
             IHttpRequest request = new HttpRequest(method, address.Build(), baseHeaders, body);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return response;
+            var responses = new { resource = new List<TResponseRecord>() };
+            return contentSerializer.Deserialize(response.Body, responses).resource;
         }
 
         #endregion

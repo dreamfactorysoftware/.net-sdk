@@ -8,7 +8,7 @@
     /// <summary>
     /// RoleResponse.
     /// </summary>
-    public class RoleRequest
+    public class RoleRequest : IRecord
     {
         /// <summary>
         /// Identifier of this role.

@@ -131,12 +131,13 @@
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
             AppRequest app = CreateApp();
+            app.Id = null;
 
             // Act
             AppResponse created = systemApi.CreateAppsAsync(new SqlQuery(), app).Result.First();
 
             // Assert
-            created.Name.ShouldBe("Todo List jQuery");
+            created.Id.ShouldBe(1);
         }
 
         [TestMethod]
@@ -157,7 +158,7 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act & Assert
-            systemApi.DeleteAppsAsync(true, 1, 2, 3);
+            systemApi.DeleteAppsAsync(new SqlQuery(), 1, 2, 3);
         }
 
         [TestMethod]
@@ -262,19 +263,13 @@
             return new AppRequest
             {
                 Id = 1,
-                Name = "Todo List jQuery",
-                ApiName = "todojquery",
-                Description = "A simple jQuery application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
+                Name = "admin",
+                Description = "An application for administering this instance.",
                 IsActive = true,
-                Url = "/index.html",
-                IsUrlExternal = false,
-                ImportUrl = "https://raw.github.com/dreamfactorysoftware/app-todo-jquery/master/todojquery.dfpkg",
-                StorageServiceId = "2",
-                StorageContainer = "applications",
                 RequiresFullscreen = false,
                 AllowFullscreenToggle = true,
                 ToggleLocation = "top",
-                RequiresPlugin = false
+                RoleId = 2
             };
         }
     }

@@ -7,7 +7,7 @@
     /// <summary>
     /// ServiceResponse.
     /// </summary>
-    public class ServiceRequest
+    public class ServiceRequest : IRecord
     {
         /// <summary>
         /// Identifier of this service.

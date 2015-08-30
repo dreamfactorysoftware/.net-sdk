@@ -9,6 +9,7 @@
     using DreamFactory.Model.System.UserAppRole;
     using global::System;
     using global::System.Collections.Generic;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// AppResponse.
@@ -88,58 +89,69 @@
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        public RelatedUser UserByCreatedById { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UserCreated)]
+        public RelatedUser UserCreated { get; set; }
 
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        public RelatedUser UserByLastModifiedById { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UserModified)]
+        public RelatedUser UserModified { get; set; }
 
         /// <summary>
         /// A single Role record that this record potentially belongs to.
         /// </summary>
-        public RelatedRole RoleByRoleId { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.DefaultRole)]
+        public RelatedRole DefaultRole { get; set; }
 
         /// <summary>
         /// A single Service record that this record potentially belongs to.
         /// </summary>
-        public RelatedService ServiceByStorageServiceId { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.StorageService)]
+        public RelatedService StorageService { get; set; }
 
         /// <summary>
         ///  Zero or more AppLookup records that are potentially linked to this record directly.
         /// </summary>
-        public List<RelatedAppLookup> AppLookupByAppId { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.AppLookups)]
+        public List<RelatedAppLookup> AppLookups { get; set; }
 
         /// <summary>
         /// Zero or more User records that are potentially linked to this record via the AppLookup table.
         /// </summary>
-        public List<RelatedUser> UserByAppLookup { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UsersInAppLookup)]
+        public List<RelatedUser> UsersInAppLookup { get; set; }
 
         /// <summary>
         /// Zero or more AppToAppGroup records that are potentially linked to this record directly.
         /// </summary>
-        public List<RelatedAppToAppGroup> AppToAppGroupByAppId { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.Apps)]
+        public List<RelatedAppToAppGroup> Apps { get; set; }
 
         /// <summary>
         /// Zero or more AppGroup records that are potentially linked to this record via the AppToAppGroup table.
         /// </summary>
-        public List<RelatedAppGroup> AppGroupByAppToAppGroup { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.AppGroups)]
+        public List<RelatedAppGroup> AppGroups { get; set; }
 
         /// <summary>
         /// Zero or more UserAppRole records that are potentially linked to this record directly.
         /// </summary>
-        public List<RelatedUserAppRole> UserToAppToRoleByAppId { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UserRoles)]
+        public List<RelatedUserAppRole> UserRoles { get; set; }
 
         /// <summary>
         /// Zero or more Role records that are potentially linked to this record via the UserAppRole table.
         /// </summary>
-        public List<RelatedRole> RoleByUserToAppToRole { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.Roles)]
+        public List<RelatedRole> Roles { get; set; }
 
         /// <summary>
         /// Zero or more User records that are potentially linked to this record via the UserAppRole table.
         /// </summary>
-        public List<RelatedUser> UserByUserToAppToRole { get; set; }
-        
+        [JsonProperty(PropertyName = RelatedResources.Users)]
+        public List<RelatedUser> Users { get; set; }
+
         /// <summary>
         /// Date this application was created.
         /// </summary>

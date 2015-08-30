@@ -136,45 +136,6 @@
 
         #endregion
 
-        #region --- Device ---
-
-        [TestMethod]
-        public void ShouldGetDevicesAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-
-            // Act
-            List<DeviceResponse> devices = userApi.GetDevicesAsync().Result.ToList();
-
-            // Assert
-            devices.ShouldNotBeEmpty();
-            devices.First().Platform.ShouldBe("windows");
-        }
-
-        [TestMethod]
-        public void ShouldSetDeviceAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-            DeviceRequest request = new DeviceRequest
-                                    {
-                                        Id = 1,
-                                        Uuid = "1",
-                                        Platform = "windows",
-                                        Model = "new",
-                                        Version = "1"
-                                    };
-
-            // Act
-            bool ok = userApi.SetDeviceAsync(request).Result;
-
-            // Assert
-            ok.ShouldBe(true);
-        }
-
-        #endregion
-
         #region --- Register ---
 
         [TestMethod]

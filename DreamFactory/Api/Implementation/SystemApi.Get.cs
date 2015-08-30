@@ -7,7 +7,6 @@
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
-    using DreamFactory.Model.System.Device;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Role;
@@ -57,11 +56,6 @@
             return contentSerializer.Deserialize<EnvironmentResponse>(response.Body);
         }
 
-        public async Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query)
-        {
-            return await QueryRecordsAsync<DeviceResponse>("device", query);
-        }
-
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
             IHttpAddress address = baseAddress.WithResource("constant");
@@ -87,7 +81,7 @@
 
         #region --- Helpers ---
 
-        private async Task<IEnumerable<TRecord>> QueryRecordsAsync<TRecord>(string resource, SqlQuery query)
+        private async Task<IEnumerable<TResponseRecord>> QueryRecordsAsync<TResponseRecord>(string resource, SqlQuery query)
         {
             if (resource == null)
             {
@@ -106,7 +100,7 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var apps = new { resource = new List<TRecord>() };
+            var apps = new { resource = new List<TResponseRecord>() };
             return contentSerializer.Deserialize(response.Body, apps).resource;
         }
 

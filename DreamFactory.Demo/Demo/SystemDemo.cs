@@ -28,9 +28,9 @@
 
             // Check admin app
             AppResponse adminApp = apps.Single(x => x.Name == "admin");
-            RelatedRole role = adminApp.RoleByUserToAppToRole.First();
+            RelatedRole role = adminApp.Roles.First();
             Console.WriteLine("admin app has first role: {0}", role.Name);
-            RelatedService service = adminApp.ServiceByStorageServiceId;
+            RelatedService service = adminApp.StorageService;
             Console.WriteLine("admin app has {0} {1}", service != null ? "service" : "no service", service != null ? service.Name : "");
 
             // List users with roles

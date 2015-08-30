@@ -104,6 +104,8 @@
     <Compile Include="Model\File\ListingFlags.cs" />
     <Compile Include="Model\Builder\EmailRequestBuilder.cs" />
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
+    <Compile Include="Model\IRecord.cs" />
+    <Compile Include="Model\RelatedResources.cs" />
     <Compile Include="Model\System\AppAppGroup\RelatedAppToAppGroup.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupRequest.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupResponse.cs" />
@@ -115,7 +117,6 @@
     <Compile Include="Model\System\Config\StateInfo.cs" />
     <Compile Include="Model\System\Custom\CustomRequest.cs" />
     <Compile Include="Model\System\Custom\CustomResponse.cs" />
-    <Compile Include="Model\System\Device\DeviceResponse.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />
     <Compile Include="Model\System\Email\EmailTemplateResponse.cs" />
     <Compile Include="Model\System\Environment\EnvironmentResponse.cs" />

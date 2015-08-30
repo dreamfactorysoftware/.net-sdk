@@ -50,7 +50,7 @@
         private static async Task DeleteRole(RoleResponse role, ISystemApi systemApi)
         {
             Debug.Assert(role.Id.HasValue, "Role ID must be set");
-            await systemApi.DeleteRolesAsync(role.Id.Value);
+            await systemApi.DeleteRolesAsync(new SqlQuery(), role.Id.Value);
             Console.WriteLine("DeleteRolesAsync():: id={0}", role.Id);
         }
     }

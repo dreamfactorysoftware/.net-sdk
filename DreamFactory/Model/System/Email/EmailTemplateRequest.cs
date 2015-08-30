@@ -6,7 +6,7 @@
     /// <summary>
     /// EmailTemplateRequest.
     /// </summary>
-    public class EmailTemplateRequest
+    public class EmailTemplateRequest : IRecord
     {
         /// <summary>
         /// Identifier of this email template.

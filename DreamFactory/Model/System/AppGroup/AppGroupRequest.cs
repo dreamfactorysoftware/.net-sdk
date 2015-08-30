@@ -6,7 +6,7 @@
     /// <summary>
     /// AppGroupResponse.
     /// </summary>
-    public class AppGroupRequest
+    public class AppGroupRequest : IRecord
     {
         /// <summary>
         /// Identifier of this application group.

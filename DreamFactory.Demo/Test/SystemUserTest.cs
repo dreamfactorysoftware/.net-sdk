@@ -52,7 +52,7 @@
         private static async Task DeleteUser(UserResponse user, ISystemApi systemApi)
         {
             Debug.Assert(user.Id.HasValue, "User ID must be set");
-            await systemApi.DeleteUsersAsync(user.Id.Value);
+            await systemApi.DeleteUsersAsync(new SqlQuery(), user.Id.Value);
             Console.WriteLine("DeleteUsersAsync():: id={0}", user.Id);
         }
     }

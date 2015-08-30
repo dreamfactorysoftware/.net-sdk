@@ -1,76 +1,119 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
+    using DreamFactory.Model.System.App;
+    using DreamFactory.Model.System.AppGroup;
+    using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Service;
+    using DreamFactory.Model.System.User;
 
     internal partial class SystemApi
     {
-        public Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids)
+        public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync("app", deleteStorage, ids);
+            return DeleteRecordsAsync<AppResponse>("app", query, false, ids);
         }
 
-        public Task DeleteAppGroupsAsync(params int[] ids)
+        public Task<IEnumerable<AppResponse>> DeleteAllAppsAsync(SqlQuery query = null)
         {
-            return DeleteRecordsAsync("app_group", false, ids);
+            return DeleteRecordsAsync<AppResponse>("app", query ?? new SqlQuery(), true);
         }
 
-        public Task DeleteRolesAsync(params int[] ids)
+        public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync("role", false, ids);
+            return DeleteRecordsAsync<AppGroupResponse>("app_group", query, false, ids);
         }
 
-        public Task DeleteUsersAsync(params int[] ids)
+        public Task<IEnumerable<AppGroupResponse>> DeleteAllAppGroupsAsync(SqlQuery query = null)
         {
-            return DeleteRecordsAsync("user", false, ids);
+            return DeleteRecordsAsync<AppGroupResponse>("app_group", query ?? new SqlQuery(), true);
         }
 
-        public Task DeleteServicesAsync(params int[] ids)
+        public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync("service", false, ids);
+            return DeleteRecordsAsync<RoleResponse>("user", query, false, ids);
         }
 
-        public Task DeleteEmailTemplatesAsync(params int[] ids)
+        public Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null)
         {
-            return DeleteRecordsAsync("email_template", false, ids);
+            return DeleteRecordsAsync<RoleResponse>("user", query ?? new SqlQuery(), true);
         }
 
-        public Task DeleteProvidersAsync(params int[] ids)
+        public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync("provider", false, ids);
+            return DeleteRecordsAsync<UserResponse>("user", query, false, ids);
         }
 
-        public Task DeleteProviderUsersAsync(params int[] ids)
+        public Task<IEnumerable<UserResponse>> DeleteAllUsersAsync(SqlQuery query = null)
         {
-            return DeleteRecordsAsync("provider_user", false, ids);
+            return DeleteRecordsAsync<UserResponse>("user", query ?? new SqlQuery(), true);
         }
 
-        public Task DeleteDevicesAsync(params int[] ids)
+        public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync("device", false, ids);
+            return DeleteRecordsAsync<ServiceResponse>("service", query, false, ids);
+        }
+
+        public Task<IEnumerable<ServiceResponse>> DeleteAllServicesAsync(SqlQuery query = null)
+        {
+            return DeleteRecordsAsync<ServiceResponse>("service", query ?? new SqlQuery(), true);
+        }
+
+        public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
+        {
+            return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query, false, ids);
+        }
+
+        public Task<IEnumerable<EmailTemplateResponse>> DeleteAllEmailTemplatesAsync(SqlQuery query = null)
+        {
+            return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query ?? new SqlQuery(), true);
         }
 
         #region --- Helpers ---
 
-        private async Task DeleteRecordsAsync(string resource, bool setDeleteStorage, params int[] ids)
+        private async Task<IEnumerable<TResponseRecord>> DeleteRecordsAsync<TResponseRecord>(string resource, SqlQuery query, bool force, params int[] ids)
+            where TResponseRecord : class, new()
         {
-            if (ids == null || ids.Length < 1)
+            if (resource == null)
             {
-                throw new ArgumentException("At least one application ID must be specificed", "ids");
+                throw new ArgumentNullException("resource");
             }
 
-            string list = string.Join(",", ids);
-            IHttpAddress address = baseAddress.WithResource(resource).WithParameter("ids", list);
-            if (setDeleteStorage)
+            if (query == null)
             {
-                address = address.WithParameter("delete_storage", true);
+                throw new ArgumentNullException("query");
+            }
+
+            if (ids == null || ids.Length < 1)
+            {
+                throw new ArgumentException("At least one application ID must be specified", "ids");
+            }
+
+
+            IHttpAddress address = baseAddress.WithResource(resource);
+            address = address.WithSqlQuery(query);
+
+            if (force)
+            {
+                address = address.WithParameter("force", true);
+            }
+            else
+            {
+                address = address.WithParameter("ids", string.Join(",", ids));
             }
 
             IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var responses = new { resource = new List<TResponseRecord>() };
+            return contentSerializer.Deserialize(response.Body, responses).resource;
         }
 
         #endregion

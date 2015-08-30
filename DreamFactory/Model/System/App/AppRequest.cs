@@ -7,9 +7,9 @@
     using global::System.Collections.Generic;
 
     /// <summary>
-    /// AppResponse.
+    /// AppRequest.
     /// </summary>
-    public class AppRequest
+    public class AppRequest : IRecord
     {
         /// <summary>
         /// Identifier of this application.
@@ -20,11 +20,6 @@
         /// Displayable name of this application.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Name of the application to use in API transactions.
-        /// </summary>
-        public string ApiName { get; set; }
 
         /// <summary>
         /// Description of this application.
@@ -40,17 +35,7 @@
         /// URL for accessing this application.
         /// </summary>
         public string Url { get; set; }
-
-        /// <summary>
-        /// True when this application is hosted elsewhere, but available in Launchpad.
-        /// </summary>
-        public bool? IsUrlExternal { get; set; }
-
-        /// <summary>
-        /// If hosted and imported, the url of zip or package file where the code originated.
-        /// </summary>
-        public string ImportUrl { get; set; }
-
+        
         /// <summary>
         /// If hosted, the storage service identifier.
         /// </summary>
@@ -77,33 +62,8 @@
         public string ToggleLocation { get; set; }
 
         /// <summary>
-        /// True when the app relies on a browser plugin.
+        /// RoleId of the default role assigned to this application.
         /// </summary>
-        public bool? RequiresPlugin { get; set; }
-
-        /// <summary>
-        /// Related roles by Role.default_app_id.
-        /// </summary>
-        public List<RelatedRole> RolesDefaultApp { get; set; }
-
-        /// <summary>
-        /// Related users by User.default_app_id.
-        /// </summary>
-        public List<RelatedUser> UsersDefaultApp { get; set; }
-
-        /// <summary>
-        /// Related groups by app to group assignment.
-        /// </summary>
-        public List<RelatedAppGroup> AppGroups { get; set; }
-
-        /// <summary>
-        /// Related roles by app to role assignment.
-        /// </summary>
-        public List<RelatedRole> Roles { get; set; }
-
-        /// <summary>
-        /// Related services by app to service assignment.
-        /// </summary>
-        public List<RelatedService> Services { get; set; }
+        public int? RoleId { get; set; }
     }
 }

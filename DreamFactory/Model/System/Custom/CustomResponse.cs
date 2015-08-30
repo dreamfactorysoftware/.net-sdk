@@ -2,6 +2,7 @@
 {
     using DreamFactory.Model.System.User;
     using global::System;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// CustomResponse.
@@ -39,15 +40,15 @@
         public int? LastModifiedById { get; set; }
 
         /// <summary>
-        /// User that created the resource.
+        /// A single User record that this record potentially belongs to.
         /// </summary>
-        /// <returns cref="UserResponse"></returns>
-        public UserResponse UserByCreatedById { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UserCreated)]
+        public RelatedUser UserCreated { get; set; }
 
         /// <summary>
-        /// User that modified the resource.
+        /// A single User record that this record potentially belongs to.
         /// </summary>
-        /// <returns cref="UserResponse"></returns>
-        public UserResponse UserByLastModifiedById { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.UserModified)]
+        public RelatedUser UserModified { get; set; }
     }
 }

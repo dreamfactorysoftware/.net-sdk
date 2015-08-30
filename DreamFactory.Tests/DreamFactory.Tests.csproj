@@ -304,15 +304,6 @@
     <None Include="TestData\rest\user\custom\Language\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\rest\user\device\post.request.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestData\rest\user\device\post.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestData\rest\user\device\get.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="TestData\rest\user\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Rest;
@@ -17,24 +18,27 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             // Read
-            SqlQuery query = new SqlQuery { Fields = "*", Related = "services,roles", };
+            SqlQuery query = new SqlQuery {
+                Fields = "*",
+                Related = String.Format("{0},{1}", RelatedResources.StorageService, RelatedResources.Roles)
+            };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiKey).ToStringList());
 
             // Cloning
-            AppResponse todoApp = apps.Single(x => x.ApiKey == "admin");
-            AppRequest todoAppRequest = todoApp.Convert<AppResponse, AppRequest>();
-            todoAppRequest.Name = todoApp.Name + "clone";
-            todoAppRequest.ApiName = todoApp.ApiKey + "clone";
+            AppResponse adminApp = apps.Single(x => x.Name == "admin");
+            AppRequest adminAppRequest = adminApp.Convert<AppResponse, AppRequest>();
+            adminAppRequest.Id = null;
+            adminAppRequest.Name = adminApp.Name + "clone";
 
             // Creating a clone
-            apps = await systemApi.CreateAppsAsync(new SqlQuery(), todoAppRequest);
-            AppResponse todoAppClone = apps.Single(x => x.ApiKey == "admin-clone");
-            Console.WriteLine("Created a clone app={0}", todoAppClone.ApiKey);
+            apps = await systemApi.CreateAppsAsync(new SqlQuery(), adminAppRequest);
+            AppResponse adminAppClone = apps.Single(x => x.Name == "adminclone");
+            Console.WriteLine("Created a clone app={0}", adminAppClone.ApiKey);
 
             // Deleting the clone
-            Debug.Assert(todoAppClone.Id.HasValue);
-            await systemApi.DeleteAppsAsync(true, todoAppClone.Id.Value);
+            Debug.Assert(adminAppClone.Id.HasValue);
+            await systemApi.DeleteAppsAsync(new SqlQuery(), adminAppClone.Id.Value);
             Console.WriteLine("Created clone has been deleted");
         }
     }

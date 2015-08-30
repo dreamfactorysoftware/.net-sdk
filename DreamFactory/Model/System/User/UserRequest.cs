@@ -6,7 +6,7 @@
     /// <summary>
     /// UserRequest.
     /// </summary>
-    public class UserRequest
+    public class UserRequest : IRecord
     {
         /// <summary>
         /// Identifier of this user.

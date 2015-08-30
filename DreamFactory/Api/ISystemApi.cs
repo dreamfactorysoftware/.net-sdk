@@ -14,7 +14,6 @@
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
     using DreamFactory.Model.User;
-    using DeviceResponse = DreamFactory.Model.System.Device.DeviceResponse;
 
     /// <summary>
     /// Represents /system API.
@@ -162,51 +161,92 @@
         /// <summary>
         /// Delete one or more applications.
         /// </summary>
-        /// <param name="deleteStorage">If the app is hosted in a storage service, the storage will be deleted as well.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">Application IDs to delete.</param>
-        Task DeleteAppsAsync(bool deleteStorage = false, params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<AppResponse>> DeleteAppsAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all applications.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<AppResponse>> DeleteAllAppsAsync(SqlQuery query = null);
 
         /// <summary>
         /// Delete one or more application groups.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">Application Group IDs to delete.</param>
-        Task DeleteAppGroupsAsync(params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all application groups.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<AppGroupResponse>> DeleteAllAppGroupsAsync(SqlQuery query = null);
 
         /// <summary>
         /// Delete one or more roles.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">Role IDs to delete.</param>
-        Task DeleteRolesAsync(params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all roles.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null);
 
         /// <summary>
         /// Delete one or more users.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">User IDs to delete.</param>
-        Task DeleteUsersAsync(params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<UserResponse>> DeleteAllUsersAsync(SqlQuery query = null);
 
         /// <summary>
         /// Delete one or more services.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">Service IDs to delete.</param>
-        Task DeleteServicesAsync(params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all services.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<ServiceResponse>> DeleteAllServicesAsync(SqlQuery query = null);
 
         /// <summary>
         /// Delete one or more email templates.
         /// </summary>
+        /// <param name="query">Query parameters.</param>
         /// <param name="ids">Email template IDs to delete.</param>
-        Task DeleteEmailTemplatesAsync(params int[] ids);
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids);
 
         /// <summary>
-        /// Delete one or more providers.
+        /// Delete all email templates.
         /// </summary>
-        /// <param name="ids">Provider IDs to delete.</param>
-        Task DeleteProvidersAsync(params int[] ids);
-
-        /// <summary>
-        /// Delete one or more provider users.
-        /// </summary>
-        /// <param name="ids">Provider user IDs to delete.</param>
-        Task DeleteProviderUsersAsync(params int[] ids);
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> DeleteAllEmailTemplatesAsync(SqlQuery query = null);
 
         /// <summary>
         /// Download the application as a DreamFactory package file.
@@ -312,20 +352,7 @@
         /// <param name="constant">Identifier of the enumeration type to retrieve.</param>
         /// <returns>Key-value pairs.</returns>
         Task<Dictionary<string, string>> GetConstantAsync(string constant);
-
-        /// <summary>
-        /// Retrieve one or more devices.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of devices.</returns>
-        Task<IEnumerable<DeviceResponse>> GetDevicesAsync(SqlQuery query);
-
-        /// <summary>
-        /// Delete one or more devices.
-        /// </summary>
-        /// <param name="ids">Device IDs to delete.</param>
-        Task DeleteDevicesAsync(params int[] ids);
-
+        
         /// <summary>
         /// Login and create a new admin session.
         /// </summary>
