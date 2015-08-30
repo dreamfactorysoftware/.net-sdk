@@ -36,12 +36,12 @@
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<RoleResponse>("user", query, false, ids);
+            return DeleteRecordsAsync<RoleResponse>("role", query, false, ids);
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null)
         {
-            return DeleteRecordsAsync<RoleResponse>("user", query ?? new SqlQuery(), true);
+            return DeleteRecordsAsync<RoleResponse>("role", query ?? new SqlQuery(), true);
         }
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)

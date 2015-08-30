@@ -349,7 +349,98 @@
             /// <summary>
             /// Related resource name for roles in user app role records linked to user.
             /// </summary>
-            public const string RolesInUserAppRoles = "role_by_user_to_app_to_role ";
+            public const string RolesInUserAppRoles = "role_by_user_to_app_to_role";
+        }
+
+        /// <summary>
+        /// Related resource names for role record.
+        /// </summary>
+        public struct Role
+        {
+            /// <summary>
+            /// Related resource name for the app records linked to role.
+            /// </summary>
+            public const string Apps = "app_by_role_id";
+
+            /// <summary>
+            /// Related resource name for the user in app records linked to role.
+            /// </summary>
+            public const string UsersInApps = "user_by_app";
+
+            /// <summary>
+            /// Related resource name for the service in app records linked to role.
+            /// </summary>
+            public const string ServicesInApps = "service_by_app";
+
+            /// <summary>
+            /// Related resource name for the LDAP config for default role.
+            /// </summary>
+            public const string LdapConfig = "ldap_config_by_default_role";
+
+            /// <summary>
+            /// Related resource name for the services in LDAP config record linked to role.
+            /// </summary>
+            public const string ServicesInLdapConfig = "service_by_ldap_config";
+
+            /// <summary>
+            /// Related resource name for the OAuth config linked to role.
+            /// </summary>
+            public const string OAuthConfig = "oauth_config_by_default_role";
+
+            /// <summary>
+            /// Related resource name for the services in OAuth config record linked to role.
+            /// </summary>
+            public const string ServicesInOAuthConfig = "service_by_oauth_config";
+
+            /// <summary>
+            /// Related resource name for the user that created a role.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for the user that last modified a role.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+
+            /// <summary>
+            /// Related resource name for the role lookups linked to role.
+            /// </summary>
+            public const string RoleLookups = "role_lookup_by_role_id";
+
+            /// <summary>
+            /// Related resource name for the users in role lookup records linked to role.
+            /// </summary>
+            public const string UsersInRoleLookups = "user_by_role_lookup";
+
+            /// <summary>
+            /// Related resource name for the role service accesses linked to role.
+            /// </summary>
+            public const string RoleServiceAccesses = "role_service_access_by_role_id";
+
+            /// <summary>
+            /// Related resource name for the users in role service access records linked to role.
+            /// </summary>
+            public const string UsersInRoleServiceAccesses = "user_by_role_service_access";
+
+            /// <summary>
+            /// Related resource name for the services in role service access records linked to role.
+            /// </summary>
+            public const string ServicesInRoleServiceAccesses = "service_by_role_service_access";
+
+            /// <summary>
+            /// Related resource name for the user app role records linked to role.
+            /// </summary>
+            public const string UserAppRoles = "user_to_app_to_role_by_role_id";
+
+            /// <summary>
+            /// Related resource name for the apps in user app role records linked to role.
+            /// </summary>
+            public const string AppsInUserAppRoles = "app_by_user_to_app_to_role";
+
+            /// <summary>
+            /// Related resource name for the users in user app role records linked to role.
+            /// </summary>
+            public const string UsersInUserAppRoles = "user_by_user_to_app_to_role";
         }
     }
 }

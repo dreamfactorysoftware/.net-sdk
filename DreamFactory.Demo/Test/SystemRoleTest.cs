@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Rest;
@@ -18,7 +19,11 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            SqlQuery query = new SqlQuery { Fields = "*", Related = "apps,users,services" };
+            SqlQuery query = new SqlQuery
+            {
+                Fields = "*",
+                Related = string.Join(",", RelatedResources.Role.Apps, RelatedResources.Role.UsersInApps, RelatedResources.Role.ServicesInApps)
+            };
             IEnumerable<RoleResponse> roles = (await systemApi.GetRolesAsync(query)).ToList();
             Console.WriteLine("GetRolesAsync(): {0}", roles.Select(x => x.Name).ToStringList());
 

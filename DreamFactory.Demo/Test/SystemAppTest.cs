@@ -20,7 +20,7 @@
             // Read
             SqlQuery query = new SqlQuery {
                 Fields = "*",
-                Related = String.Format("{0},{1}", RelatedResources.App.StorageService, RelatedResources.App.Roles)
+                Related = String.Join(",", RelatedResources.App.StorageService, RelatedResources.App.Roles)
             };
             IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiKey).ToStringList());
