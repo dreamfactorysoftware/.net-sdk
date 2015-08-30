@@ -2,7 +2,7 @@
 {
     using DreamFactory.Model.System.AppAppGroup;
     using DreamFactory.Model.System.AppGroup;
-    using DreamFactory.Model.System.AppLookup;
+    using DreamFactory.Model.System.Lookup;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -89,67 +89,67 @@
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UserCreated)]
+        [JsonProperty(PropertyName = RelatedResources.App.UserCreated)]
         public RelatedUser UserCreated { get; set; }
 
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UserModified)]
+        [JsonProperty(PropertyName = RelatedResources.App.UserModified)]
         public RelatedUser UserModified { get; set; }
 
         /// <summary>
         /// A single Role record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.DefaultRole)]
+        [JsonProperty(PropertyName = RelatedResources.App.DefaultRole)]
         public RelatedRole DefaultRole { get; set; }
 
         /// <summary>
         /// A single Service record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.StorageService)]
+        [JsonProperty(PropertyName = RelatedResources.App.StorageService)]
         public RelatedService StorageService { get; set; }
 
         /// <summary>
         ///  Zero or more AppLookup records that are potentially linked to this record directly.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.AppLookups)]
-        public List<RelatedAppLookup> AppLookups { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.App.AppLookups)]
+        public List<RelatedLookup> AppLookups { get; set; }
 
         /// <summary>
         /// Zero or more User records that are potentially linked to this record via the AppLookup table.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UsersInAppLookup)]
+        [JsonProperty(PropertyName = RelatedResources.App.UsersInAppLookup)]
         public List<RelatedUser> UsersInAppLookup { get; set; }
 
         /// <summary>
         /// Zero or more AppToAppGroup records that are potentially linked to this record directly.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.Apps)]
+        [JsonProperty(PropertyName = RelatedResources.App.Apps)]
         public List<RelatedAppToAppGroup> Apps { get; set; }
 
         /// <summary>
         /// Zero or more AppGroup records that are potentially linked to this record via the AppToAppGroup table.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.AppGroups)]
+        [JsonProperty(PropertyName = RelatedResources.App.AppGroups)]
         public List<RelatedAppGroup> AppGroups { get; set; }
 
         /// <summary>
         /// Zero or more UserAppRole records that are potentially linked to this record directly.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UserRoles)]
+        [JsonProperty(PropertyName = RelatedResources.App.UserRoles)]
         public List<RelatedUserAppRole> UserRoles { get; set; }
 
         /// <summary>
         /// Zero or more Role records that are potentially linked to this record via the UserAppRole table.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.Roles)]
+        [JsonProperty(PropertyName = RelatedResources.App.Roles)]
         public List<RelatedRole> Roles { get; set; }
 
         /// <summary>
         /// Zero or more User records that are potentially linked to this record via the UserAppRole table.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.Users)]
+        [JsonProperty(PropertyName = RelatedResources.App.Users)]
         public List<RelatedUser> Users { get; set; }
 
         /// <summary>

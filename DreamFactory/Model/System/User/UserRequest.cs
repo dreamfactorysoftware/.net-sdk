@@ -2,6 +2,7 @@
 {
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.Role;
+    using global::System;
 
     /// <summary>
     /// UserRequest.
@@ -14,14 +15,9 @@
         public int? Id { get; set; }
 
         /// <summary>
-        /// The email address required for this user.
+        /// Displayable name of this user.
         /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// The set-able, but never readable, password.
-        /// </summary>
-        public string Password { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The first name for this user.
@@ -34,14 +30,14 @@
         public string LastName { get; set; }
 
         /// <summary>
-        /// Displayable name of this user.
+        /// The last login date for this user.
         /// </summary>
-        public string DisplayName { get; set; }
+        public DateTime? LastLoginDate { get; set; }
 
         /// <summary>
-        /// Phone number for this user.
+        /// The email address required for this user.
         /// </summary>
-        public string Phone { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// True if this user is active for use.
@@ -49,28 +45,33 @@
         public bool? IsActive { get; set; }
 
         /// <summary>
-        /// True if this user is a system admin.
+        /// Phone number for this user.
         /// </summary>
-        public bool? IsSysAdmin { get; set; }
+        public string Phone { get; set; }
+
+        /// <summary>
+        /// The security question for this user.
+        /// </summary>
+        public string SecurityQuestion { get; set; }
+
+        /// <summary>
+        /// The security answer for this user.
+        /// </summary>
+        public string SecurityAnswer { get; set; }
 
         /// <summary>
         /// The default launched app for this user.
         /// </summary>
-        public string DefaultAppId { get; set; }
+        public int? DefaultAppId { get; set; }
 
         /// <summary>
-        /// The role to which this user is assigned.
+        /// The adLDAP for this user.
         /// </summary>
-        public string RoleId { get; set; }
+        public string Adldap { get; set; }
 
         /// <summary>
-        /// Related app by default_app_id.
+        /// The OAuth provider for this user.
         /// </summary>
-        public RelatedApp DefaultApp { get; set; }
-
-        /// <summary>
-        /// Related role by role_id.
-        /// </summary>
-        public RelatedRole Role { get; set; }
+        public string OauthProvider { get; set; }
     }
 }

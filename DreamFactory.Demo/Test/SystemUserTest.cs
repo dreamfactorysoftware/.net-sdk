@@ -19,7 +19,7 @@
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             IEnumerable<UserResponse> users = (await systemApi.GetUsersAsync(new SqlQuery())).ToList();
-            Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.DisplayName).ToStringList());
+            Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.Name).ToStringList());
 
             UserResponse user = users.SingleOrDefault(x => x.Email == NewEmail);
             if (user != null)
@@ -31,9 +31,8 @@
             {
                 FirstName = "Andrei",
                 LastName = "Smirnov",
-                DisplayName = "pinebit",
+                Name = "pinebit",
                 Email = NewEmail,
-                Password = "dream",
                 IsActive = true
             };
 
@@ -42,9 +41,9 @@
             Console.WriteLine("CreateUsersAsync(): {0}", context.ContentSerializer.Serialize(user));
 
             newUser.Id = user.Id;
-            newUser.DisplayName = "Andrei Smirnov";
+            newUser.Name = "Andrei Smirnov";
             user = (await systemApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.Email == NewEmail);
-            Console.WriteLine("UpdateUsersAsync(): new display_name={0}", user.DisplayName);
+            Console.WriteLine("UpdateUsersAsync(): new name={0}", user.Name);
 
             await DeleteUser(user, systemApi);
         }

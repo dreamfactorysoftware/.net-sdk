@@ -42,13 +42,13 @@
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UserCreated)]
+        [JsonProperty(PropertyName = RelatedResources.App.UserCreated)]
         public RelatedUser UserCreated { get; set; }
 
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.UserModified)]
+        [JsonProperty(PropertyName = RelatedResources.App.UserModified)]
         public RelatedUser UserModified { get; set; }
     }
 }

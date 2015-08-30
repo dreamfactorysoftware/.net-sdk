@@ -50,7 +50,7 @@
 
             // Assert
             users.Count.ShouldBe(2);
-            users.First().DisplayName.ShouldBe("Andrei Smirnov");
+            users.First().Name.ShouldBe("demo");
         }
 
         [TestMethod]

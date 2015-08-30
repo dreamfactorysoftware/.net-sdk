@@ -35,7 +35,7 @@
 
             // List users with roles
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
-            Console.WriteLine("Users: {0}", users.Select(x => x.DisplayName).ToStringList());
+            Console.WriteLine("Users: {0}", users.Select(x => x.Name).ToStringList());
 
             // Download app package & SDK
             Console.WriteLine("Downloading app package and SDK...");

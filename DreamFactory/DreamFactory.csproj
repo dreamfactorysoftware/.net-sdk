@@ -109,7 +109,6 @@
     <Compile Include="Model\System\AppAppGroup\RelatedAppToAppGroup.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupRequest.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupResponse.cs" />
-    <Compile Include="Model\System\AppLookup\RelatedAppLookup.cs" />
     <Compile Include="Model\System\App\AppRequest.cs" />
     <Compile Include="Model\System\Config\ConfigRequest.cs" />
     <Compile Include="Model\System\Config\ConfigResponse.cs" />
@@ -119,6 +118,7 @@
     <Compile Include="Model\System\Custom\CustomResponse.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />
     <Compile Include="Model\System\Email\EmailTemplateResponse.cs" />
+    <Compile Include="Model\System\Email\RelatedEmailTemplate.cs" />
     <Compile Include="Model\System\Environment\EnvironmentResponse.cs" />
     <Compile Include="Model\System\Environment\PhpInfoSection.cs" />
     <Compile Include="Model\System\Environment\PlatformSection.cs" />
@@ -132,10 +132,17 @@
     <Compile Include="Model\System\Event\EventResponse.cs" />
     <Compile Include="Model\System\Event\EventRequest.cs" />
     <Compile Include="Model\System\Event\EventVerbs.cs" />
+    <Compile Include="Model\System\Event\RelatedEventSubscriber.cs" />
+    <Compile Include="Model\System\Lookup\RelatedLookup.cs" />
+    <Compile Include="Model\System\RoleServiceAccess\RelatedRoleServiceAccess.cs" />
     <Compile Include="Model\System\Role\RoleRequest.cs" />
+    <Compile Include="Model\System\Script\RelatedScriptType.cs" />
+    <Compile Include="Model\System\Event\RelatedEventScript.cs" />
     <Compile Include="Model\System\Script\ScriptResponse.cs" />
+    <Compile Include="Model\System\Service\RelatedServiceType.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />
+    <Compile Include="Model\System\Setting\RelatedSystemSetting.cs" />
     <Compile Include="Model\System\UserAppRole\RelatedUserAppRole.cs" />
     <Compile Include="Model\System\User\UserRequest.cs" />
     <Compile Include="Model\System\User\UserResponse.cs" />
