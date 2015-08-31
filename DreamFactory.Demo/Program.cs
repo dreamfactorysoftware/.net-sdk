@@ -29,19 +29,19 @@
             IRunnable[] tests =
             {
                 new LoginDemo(),
-                //new DiscoveryDemo(), 
-                //new UserDemo(),
-                //new EmailDemo(), 
-                //new DatabaseDemo(), 
-                //new FilesDemo(), 
-                //new SystemDemo(),
-                //new CustomSettingsDemo(),
-                //new SystemAppTest(),
-                //new SystemUserTest(),
-                //new SystemRoleTest(),
-                //new SystemEventTest(),
+                new DiscoveryDemo(), 
+                new UserDemo(),
+                new EmailDemo(), 
+                new DatabaseDemo(), 
+                new FilesDemo(), 
+                new SystemDemo(),
+                new CustomSettingsDemo(),
+                new SystemAppTest(),
+                new SystemUserTest(),
+                new SystemRoleTest(),
+                new SystemEventTest(),
                 new LogoutDemo(),
-                //new HttpDemo()
+                new HttpDemo()
             };
 
             IRestContext context = new RestContext(BaseAddress, RestApiVersion.V2);

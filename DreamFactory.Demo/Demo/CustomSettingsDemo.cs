@@ -43,6 +43,12 @@
             string value = await settingsApi.GetCustomSettingAsync("Language");
             Console.WriteLine("Retrieved preferences back:");
             Console.WriteLine("\tName={0}, Value={1}", "Language", value);
+
+            // Deleting preferences
+            await settingsApi.DeleteCustomSettingAsync("Language");
+            Console.WriteLine("Deleted Language preferences:");
+            await settingsApi.DeleteCustomSettingAsync("TimeZone");
+            Console.WriteLine("Deleted TimeZone preferences:");
         }
     }
 }

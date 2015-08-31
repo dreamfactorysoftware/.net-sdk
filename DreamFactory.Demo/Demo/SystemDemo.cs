@@ -42,7 +42,7 @@
             // Console.WriteLine("DreamFactory Server is running on {0}", environment.server.server_os);
             
             // Get constant //TODO: see about constants
-            var contentTypes = await systemApi.GetConstantAsync("content_types");
+            //var contentTypes = await systemApi.GetConstantAsync("content_types");
             //Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
         }
     }
