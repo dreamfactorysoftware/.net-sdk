@@ -85,41 +85,5 @@
 
             return contentSerializer.Deserialize<ProfileResponse>(response.Body);
         }
-
-        public async Task<IEnumerable<DeviceResponse>> GetDevicesAsync()
-        {
-            var address = baseAddress.WithResource("device");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var data = new { record = new List<DeviceResponse>() };
-            data = contentSerializer.Deserialize(response.Body, data);
-            if (data == null || data.record == null)
-            {
-                return Enumerable.Empty<DeviceResponse>();
-            }
-
-            return data.record;
-        }
-
-        public async Task<bool> SetDeviceAsync(DeviceRequest deviceRequest)
-        {
-            if (deviceRequest == null)
-            {
-                throw new ArgumentNullException("deviceRequest");
-            }
-
-            var address = baseAddress.WithResource("device");
-            string content = contentSerializer.Serialize(deviceRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var success = new { success = false };
-            return contentSerializer.Deserialize(response.Body, success).success;
-        }
     }
 }

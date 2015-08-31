@@ -41,7 +41,7 @@
             return response.RawBody;
         }
 
-        public async Task CreateFolderAsync(string path, bool checkExists = true)
+        public async Task<FolderResponse> CreateFolderAsync(string path, bool checkExists = true)
         {
             if (path == null)
             {
@@ -58,9 +58,11 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
-        public async Task UploadFolderAsync(string path, string url, bool clean)
+        public async Task<FolderResponse> UploadFolderAsync(string path, string url, bool clean)
         {
             if (url == null)
             {
@@ -79,9 +81,11 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
 
-        public async Task DeleteFolderAsync(string path, bool force = false)
+        public async Task<FolderResponse> DeleteFolderAsync(string path, bool force = false)
         {
             if (path == null)
             {
@@ -95,6 +99,8 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FolderResponse>(response.Body);
         }
     }
 }

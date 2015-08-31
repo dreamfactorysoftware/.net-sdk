@@ -82,18 +82,5 @@
         /// <param name="answer">Answer to user's security question.</param>
         /// <returns>True when API call was successful, false or error otherwise.</returns>
         Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code = null, string answer = null);
-
-        /// <summary>
-        /// Retrieve the current user's device information.
-        /// </summary>
-        /// <returns>Sequence of DeviceResponse data.</returns>
-        Task<IEnumerable<DeviceResponse>> GetDevicesAsync();
-
-        /// <summary>
-        /// Create a record of the current user's device information.
-        /// </summary>
-        /// <param name="deviceRequest">DeviceRequest data.</param>
-        /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> SetDeviceAsync(DeviceRequest deviceRequest);
     }
 }

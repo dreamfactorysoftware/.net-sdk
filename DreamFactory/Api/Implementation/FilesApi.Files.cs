@@ -35,12 +35,12 @@
             return await CreateFileAsync(filepath, GetString(contents), checkExists);
         }
 
-        public Task ReplaceFileContentsAsync(string filepath, byte[] contents)
+        public Task<FileResponse> ReplaceFileContentsAsync(string filepath, byte[] contents)
         {
             return ReplaceFileContentsAsync(filepath, GetString(contents));
         }
 
-        public async Task ReplaceFileContentsAsync(string filepath, string contents)
+        public async Task<FileResponse> ReplaceFileContentsAsync(string filepath, string contents)
         {
             if (filepath == null)
             {
@@ -57,6 +57,8 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<FileResponse>(response.Body);
         }
 
         public async Task<string> GetTextFileAsync(string filepath)
