@@ -15,6 +15,7 @@
     using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
+    using DreamFactory.Model.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,6 +25,86 @@
     public class SystemApiTests
     {
         private const string BaseAddress = "http://localhost:8765";
+        private const string AppName = "admin";
+        private const string AppApiKey = "api_key";
+
+        #region --- Session ---
+
+        [TestMethod]
+        public void ShouldLoginAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            Session session = systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Result;
+
+            // Assert
+            session.Name.ShouldBe("SuperAdmin");
+            session.SessionId.ShouldNotBeEmpty();
+        }
+
+        [TestMethod]
+        public void ShouldGetSessionAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+
+            // Act
+            Session session = systemApi.GetAdminSessionAsync().Result;
+
+            // Assert
+            session.SessionId.ShouldNotBeEmpty();
+        }
+
+        [TestMethod]
+        public void LoginShouldChangeBaseHeaders()
+        {
+            // Arrange
+            HttpHeaders headers;
+            ISystemApi systemApi = CreateSystemApi(out headers);
+
+            // Act
+            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+
+            // Assert
+            Dictionary<string, object> dictionary = headers.Build();
+            dictionary.ContainsKey(HttpHeaders.FolderNameHeader).ShouldBe(true);
+            dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
+            dictionary[HttpHeaders.FolderNameHeader].ShouldBe("admin");
+        }
+
+        [TestMethod]
+        public void ShouldLogoutAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            bool logout = systemApi.LogoutAdminAsync().Result;
+
+            // Assert
+            logout.ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void LogoutShouldRemoveSessionToken()
+        {
+            // Arrange
+            HttpHeaders headers;
+            ISystemApi systemApi = CreateSystemApi(out headers);
+            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+
+            // Act
+            systemApi.LogoutAdminAsync().Wait();
+
+            // Assert
+            headers.Build().ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(false);
+        }
+
+        #endregion
+
 
         [TestMethod]
         public void ShouldGetAppsAsync()
@@ -96,33 +177,31 @@
         }
 
         [TestMethod]
-        public void ShouldGetScriptsAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-
-            // Act
-            List<ScriptResponse> scripts = systemApi.GetScriptsAsync(true).Result.ToList();
-
-            // Assert
-            scripts.Count.ShouldBe(1);
-            scripts.First().Language.ShouldBe("js");
-            scripts.First().EventName.ShouldBe("sample-scripts");
-        }
-
-        [TestMethod]
         public void ShouldGetEventsAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<EventCacheResponse> responses = systemApi.GetEventsAsync(true).Result.ToList();
+            EventScriptResponse response = systemApi.GetEventScriptAsync("system.get.pre_process", new SqlQuery()).Result;
 
             // Assert
-            responses.Count.ShouldBe(5);
-            responses.First().Name.ShouldBe("user");
-            responses.First().Paths.Count.ShouldBe(8);
+            response.Name.ShouldBe("my_custom_script");
+            response.Type.ShouldBe("v8js");
+        }
+
+        [TestMethod]
+        public void ShouldGetEventScriptsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<string> events = systemApi.GetEventsAsync().Result.ToList();
+
+            // Assert
+            events.Count.ShouldBe(5);
+            events.First().ShouldBe("system.get.pre_process");
         }
 
         [TestMethod]
@@ -159,32 +238,6 @@
 
             // Act & Assert
             systemApi.DeleteAppsAsync(new SqlQuery(), 1, 2, 3);
-        }
-
-        [TestMethod]
-        public void ShouldDownloadApplicationPackageAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-
-            // Act
-            byte[] data = systemApi.DownloadApplicationPackageAsync(1).Result;
-
-            // Assert
-            data.Length.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void ShouldDownloadApplicationSdkAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-
-            // Act
-            byte[] data = systemApi.DownloadApplicationSdkAsync(1).Result;
-
-            // Assert
-            data.Length.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]

@@ -10,6 +10,7 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -73,6 +74,42 @@
 
             var responses = new { resource = new List<TResponseRecord>() };
             return contentSerializer.Deserialize(response.Body, responses).resource;
+        }
+
+        private async Task<TResponseRecord> CreateOrUpdateRecordAsync<TRequestRecord, TResponseRecord>(string resource, string identifier, TRequestRecord record, HttpMethod method, SqlQuery query)
+            where TRequestRecord : class, new()
+            where TResponseRecord : class, new()
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (identifier == null)
+            {
+                throw new ArgumentNullException("identifier");
+            }
+
+            if (record == null)
+            {
+                throw new ArgumentNullException("record");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            IHttpAddress address = baseAddress.WithResource(resource, identifier);
+            address = address.WithSqlQuery(query);
+
+            string body = contentSerializer.Serialize(record);
+            IHttpRequest request = new HttpRequest(method, address.Build(), baseHeaders, body);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<TResponseRecord>(response.Body);
         }
 
         #endregion

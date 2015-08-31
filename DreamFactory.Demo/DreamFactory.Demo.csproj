@@ -77,7 +77,6 @@
     <Compile Include="Test\SystemAppTest.cs" />
     <Compile Include="Test\SystemEventTest.cs" />
     <Compile Include="Test\SystemRoleTest.cs" />
-    <Compile Include="Test\SystemScriptTest.cs" />
     <Compile Include="Test\SystemUserTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

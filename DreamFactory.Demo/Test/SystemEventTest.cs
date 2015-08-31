@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Event;
     using DreamFactory.Rest;
 
@@ -14,22 +15,32 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<EventCacheResponse> events = await systemApi.GetEventsAsync(true);
-            Console.WriteLine("User events:");
-            var paths = events.Single(x => x.Name == "user").Paths;
-            IEnumerable<string> userEvents = from p in paths
-                                             from v in p.Verbs
-                                             from fv in FlattenVerbs(v)
-                                             select p.Path + " " + fv;
-            foreach (string userEvent in userEvents)
-            {
-                Console.WriteLine("\t{0}", userEvent);
-            }
+            IEnumerable<string> events = (await systemApi.GetEventsAsync()).ToList();
+            Console.WriteLine("GetEventsAsync(): Found {0} events", events.Count());
+
+            string eventName = events.First();
+
+            // create
+            EventScriptRequest createRequest = CreateEventScript();
+            EventScriptResponse createResponse = await systemApi.CreateEventScriptAsync(eventName, createRequest, new SqlQuery());
+            Console.WriteLine("CreateEventScriptAsync(): Created script {0}", createResponse.Name);
+            
+            // delete
+            EventScriptResponse deleteResponse = await systemApi.DeleteEventScriptAsync(eventName, new SqlQuery());
+            Console.WriteLine("DeleteEventScriptAsync(): Deleted script {0}", deleteResponse.Name);
         }
 
-        private static IEnumerable<string> FlattenVerbs(EventVerbs verbs)
+        private EventScriptRequest CreateEventScript()
         {
-            return verbs.Event.Select(@event => verbs.Type.ToUpperInvariant() + " " + @event);
+            return new EventScriptRequest
+            {
+                Name = "my_event_script",
+                Type = "v8js",
+                IsActive = true,
+                AffectsProcess = true,
+                Content = "text",
+                Config = "text"
+            };
         }
     }
 }

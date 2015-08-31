@@ -37,19 +37,12 @@
             IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
             Console.WriteLine("Users: {0}", users.Select(x => x.Name).ToStringList());
 
-            // Download app package & SDK
-            Console.WriteLine("Downloading app package and SDK...");
-            byte[] package = await systemApi.DownloadApplicationPackageAsync(1);
-            byte[] sdk = await systemApi.DownloadApplicationSdkAsync(1);
-            File.WriteAllBytes("admin-package.zip", package);
-            File.WriteAllBytes("admin-sdk.zip", sdk);
-
             // Get environment info - does not work for WAMP, uncomment when using linux hosted DSP.
             // EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();
             // Console.WriteLine("DreamFactory Server is running on {0}", environment.server.server_os);
             
             // Get constant //TODO: see about constants
-            //var contentTypes = await systemApi.GetConstantAsync("content_types");
+            var contentTypes = await systemApi.GetConstantAsync("content_types");
             //Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
         }
     }

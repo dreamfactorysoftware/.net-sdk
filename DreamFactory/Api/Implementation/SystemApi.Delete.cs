@@ -116,6 +116,35 @@
             return contentSerializer.Deserialize(response.Body, responses).resource;
         }
 
+        private async Task<TResponseRecord> DeleteRecordAsync<TResponseRecord>(string resource, string identifier, SqlQuery query)
+            where TResponseRecord : class, new()
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (identifier == null)
+            {
+                throw new ArgumentNullException("identifier");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            IHttpAddress address = baseAddress.WithResource(resource, identifier);
+            address = address.WithSqlQuery(query);
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<TResponseRecord>(response.Body);
+        }
+
         #endregion
     }
 }

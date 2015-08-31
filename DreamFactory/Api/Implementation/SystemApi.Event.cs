@@ -4,56 +4,34 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Event;
 
     internal partial class SystemApi
     {
-        public async Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents)
+        public Task<IEnumerable<string>> GetEventsAsync()
         {
-            IHttpAddress address = baseAddress.WithResource("event").WithParameter("as_cached", false);
-            if (allEvents)
-            {
-                address = address.WithParameter("all_events", true);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var records = new { record = new List<EventCacheResponse>() };
-            return contentSerializer.Deserialize(response.Body, records).record;
+            return QueryRecordsAsync<string>("event", new SqlQuery());
         }
 
-        public async Task RegisterEventsAsync(params EventRequest[] requests)
+        public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            if (requests == null || requests.Length < 1)
-            {
-                throw new ArgumentException("At least one parameter must be specificed", "requests");
-            }
-
-            IHttpAddress address = baseAddress.WithResource("event");
-            var records = new { record = new List<EventRequest>(requests) };
-            string body = contentSerializer.Serialize(records);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            return QueryRecordAsync<EventScriptResponse>("event", eventName, query);
         }
 
-        public async Task UnregisterEventsAsync(params EventRequest[] requests)
+        public Task<EventScriptResponse> CreateEventScriptAsync(string eventName, EventScriptRequest eventScript, SqlQuery query)
         {
-            if (requests == null || requests.Length < 1)
-            {
-                throw new ArgumentException("At least one parameter must be specificed", "requests");
-            }
+            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, eventScript, HttpMethod.Post, query);
+        }
 
-            IHttpAddress address = baseAddress.WithResource("event");
-            var records = new { record = new List<EventRequest>(requests) };
-            string body = contentSerializer.Serialize(records);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
+        public Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, EventScriptRequest eventScript, SqlQuery query)
+        {
+            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, eventScript, HttpMethod.Put, query);
+        }
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
+        {
+            return DeleteRecordAsync<EventScriptResponse>("event", eventName, query);
         }
     }
 }

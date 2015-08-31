@@ -38,10 +38,9 @@
                 //new CustomSettingsDemo(),
                 //new SystemAppTest(),
                 //new SystemUserTest(),
-                new SystemRoleTest(),
-                //new SystemScriptTest(),
+                //new SystemRoleTest(),
                 //new SystemEventTest(),
-                //new LogoutDemo(),
+                new LogoutDemo(),
                 //new HttpDemo()
             };
 

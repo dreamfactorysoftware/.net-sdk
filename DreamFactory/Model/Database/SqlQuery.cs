@@ -52,15 +52,13 @@
         public string Related { get; set; }
 
         /// <summary>
-        /// In batch scenarios, where supported, continue processing even after one record fails.
-        /// Default behavior is to halt and return results up to the first point of failure.
+        /// Include the total number of filter results in returned metadata.
         /// </summary>
-        public bool? Continue { get; set; }
+        public bool? IncludeCount { get; set; }
 
         /// <summary>
-        /// In batch scenarios, where supported, rollback all changes if any record of the batch fails.
-        /// Default behavior is to halt and return results up to the first point of failure, leaving any changes.
+        /// Include the schema of the table queried in returned metadata.
         /// </summary>
-        public bool? Rollback { get; set; }
+        public bool? IncludeSchema { get; set; }
     }
 }

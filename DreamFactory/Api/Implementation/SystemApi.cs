@@ -21,37 +21,6 @@
             this.baseHeaders = baseHeaders;
         }
 
-        public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
-        {
-            IHttpAddress address = baseAddress
-                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
-                .WithParameter("pkg", true)
-                .WithParameter("include_files", includeFiles)
-                .WithParameter("include_services", includeServices)
-                .WithParameter("include_schema", includeSchema);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response.RawBody;
-        }
-
-        public async Task<byte[]> DownloadApplicationSdkAsync(int applicationId)
-        {
-            IHttpAddress address = baseAddress
-                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
-                .WithParameter("sdk", true);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response.RawBody;
-        }
-
         public async Task<ConfigResponse> GetConfigAsync()
         {
             IHttpAddress address = baseAddress.WithResource("config");

@@ -442,5 +442,52 @@
             /// </summary>
             public const string UsersInUserAppRoles = "user_by_user_to_app_to_role";
         }
+
+        /// <summary>
+        /// Related resource names for script type record.
+        /// </summary>
+        public struct ScriptType
+        {
+            /// <summary>
+            /// Related resource name for the event script records linked to script type.
+            /// </summary>
+            public const string EventScripts = "event_script_by_type";
+
+            /// <summary>
+            /// Related resource name for the users in event script records linked to script type.
+            /// </summary>
+            public const string UsersInEventScripts = "user_by_event_script";
+
+            /// <summary>
+            /// Related resource name for script config record linked to script type.
+            /// </summary>
+            public const string ScriptConfig = "script_config_by_type";
+
+            /// <summary>
+            /// Related resource name for the services in script config record linked to script type.
+            /// </summary>
+            public const string ServicesInScriptConfig = "service_by_script_config";
+        }
+
+        /// <summary>
+        /// Related resource names for event script record.
+        /// </summary>
+        public struct EventScript
+        {
+            /// <summary>
+            /// Related resource name for user record linked to event script.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for user record linked to event script.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+
+            /// <summary>
+            /// Related resource name for script type record linked to event script.
+            /// </summary>
+            public const string ScriptType = "script_type_by_type";
+        }
     }
 }

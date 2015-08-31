@@ -10,6 +10,7 @@
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Role;
+    using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
 
@@ -43,6 +44,11 @@
         public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query)
         {
             return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
+        }
+
+        public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)
+        {
+            return await QueryRecordsAsync<ScriptTypeResponse>("script_type", query);
         }
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()
@@ -100,8 +106,8 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var apps = new { resource = new List<TResponseRecord>() };
-            return contentSerializer.Deserialize(response.Body, apps).resource;
+            var result = new { resource = new List<TResponseRecord>() };
+            return contentSerializer.Deserialize(response.Body, result).resource;
         }
 
         #endregion

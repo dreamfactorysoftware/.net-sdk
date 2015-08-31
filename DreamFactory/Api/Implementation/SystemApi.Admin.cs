@@ -34,7 +34,7 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            var address = baseAddress.WithResource("admin").WithResource("session");
+            IHttpAddress address = baseAddress.WithResource("admin", "session");
             baseHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
 
@@ -52,6 +52,29 @@
             baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
+        }
+        public async Task<Session> GetAdminSessionAsync()
+        {
+            var address = baseAddress.WithResource("admin", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<Session>(response.Body);
+        }
+
+        public async Task<bool> LogoutAdminAsync()
+        {
+            IHttpAddress address = baseAddress.WithResource("admin", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+
+            var logout = new { success = false };
+            return contentSerializer.Deserialize(response.Body, logout).success;
         }
     }
 }

@@ -48,14 +48,14 @@
                 httpAddress = httpAddress.WithParameter("related", query.Related);
             }
 
-            if (query.Continue.HasValue)
+            if (query.IncludeCount.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("continue", query.Continue);
+                httpAddress = httpAddress.WithParameter("include_count", query.IncludeCount);
             }
 
-            if (query.Rollback.HasValue)
+            if (query.IncludeSchema.HasValue)
             {
-                httpAddress = httpAddress.WithParameter("rollback", query.Rollback);
+                httpAddress = httpAddress.WithParameter("include_schema", query.IncludeSchema);
             }
 
             return httpAddress;

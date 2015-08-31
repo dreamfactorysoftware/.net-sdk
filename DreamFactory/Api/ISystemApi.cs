@@ -20,47 +20,48 @@
     /// </summary>
     public interface ISystemApi
     {
+
+        #region admin
+
+        /// <summary>
+        /// Login and create a new admin session.
+        /// </summary>
+        /// <remarks>
+        /// Successful login operation will set ApplicationName and SessionToken headers.
+        /// This call works only with v2 of the api.
+        /// </remarks>
+        /// <param name="applicationName">Application name.</param>
+        /// <param name="applicationApiKey">Application api key.</param>
+        /// <param name="email">Email.</param>
+        /// <param name="password">Password.</param>
+        /// <param name="duration">Session duration.</param>
+        /// <returns>Session object instance.</returns>
+        Task<Session> LoginAdminAsync(string applicationName, string applicationApiKey, string email, string password, int duration = 0);
+
+        /// <summary>
+        /// Logout and destroy the current admin session.
+        /// </summary>
+        /// <returns>
+        /// True if the operation was successful and false if it wasn't.
+        /// </returns>
+        Task<bool> LogoutAdminAsync();
+
+        /// <summary>
+        /// Retrieve the current admin session information.
+        /// </summary>
+        /// <returns>Session object instance.</returns>
+        Task<Session> GetAdminSessionAsync();
+
+        #endregion
+
+        #region app
+
         /// <summary>
         /// Retrieve one or more applications.
         /// </summary>
         /// <param name="query">Query parameters.</param>
         /// <returns>List of applications.</returns>
         Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query);
-
-        /// <summary>
-        /// Retrieve one or more application groups.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of application groups.</returns>
-        Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query);
-
-        /// <summary>
-        /// Retrieve one or more roles.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of roles.</returns>
-        Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query);
-
-        /// <summary>
-        /// Retrieve one or more users.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of users.</returns>
-        Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query);
-
-        /// <summary>
-        /// Retrieve one or more services.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of services.</returns>
-        Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query);
-
-        /// <summary>
-        /// Retrieve one or more email templates.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>List of email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query);
 
         /// <summary>
         /// Create one or more applications.
@@ -71,92 +72,12 @@
         Task<IEnumerable<AppResponse>> CreateAppsAsync(SqlQuery query, params AppRequest[] apps);
 
         /// <summary>
-        /// Create one or more application groups.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="appGroups">Application groups to create.</param>
-        /// <returns>List of created application groups.</returns>
-        Task<IEnumerable<AppGroupResponse>> CreateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
-
-        /// <summary>
-        /// Create one or more users.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="users">Users to create.</param>
-        /// <returns>List of created users.</returns>
-        Task<IEnumerable<UserResponse>> CreateUsersAsync(SqlQuery query, params UserRequest[] users);
-
-        /// <summary>
-        /// Create one or more roles.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="roles">Roles to create.</param>
-        /// <returns>List of created roles.</returns>
-        Task<IEnumerable<RoleResponse>> CreateRolesAsync(SqlQuery query, params RoleRequest[] roles);
-
-        /// <summary>
-        /// Create one or more services.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="services">Services to create.</param>
-        /// <returns>List of created services.</returns>
-        Task<IEnumerable<ServiceResponse>> CreateServicesAsync(SqlQuery query, params ServiceRequest[] services);
-
-        /// <summary>
-        /// Create one or more email templates.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="templates">Email templates to create.</param>
-        /// <returns>List of created email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
-
-        /// <summary>
         /// Update one or more applications.
         /// </summary>
         /// <param name="query">Query parameters.</param>
         /// <param name="apps">Applications to update.</param>
         /// <returns>List of updated applications.</returns>
         Task<IEnumerable<AppResponse>> UpdateAppsAsync(SqlQuery query, params AppRequest[] apps);
-
-        /// <summary>
-        /// Update one or more application groups.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="appGroups">Application groups to update.</param>
-        /// <returns>List of updated application groups.</returns>
-        Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
-
-        /// <summary>
-        /// Update one or more roles.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="roles">Roles to update.</param>
-        /// <returns>List of updated roles.</returns>
-        Task<IEnumerable<RoleResponse>> UpdateRolesAsync(SqlQuery query, params RoleRequest[] roles);
-
-        /// <summary>
-        /// Update one or more users.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="users">Users to update.</param>
-        /// <returns>List of updated users.</returns>
-        Task<IEnumerable<UserResponse>> UpdateUsersAsync(SqlQuery query, params UserRequest[] users);
-
-        /// <summary>
-        /// Update one or more services.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="services">Services to update.</param>
-        /// <returns>List of updated services.</returns>
-        Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(SqlQuery query, params ServiceRequest[] services);
-
-        /// <summary>
-        /// Update one or more email templates.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="templates">Email templates to update.</param>
-        /// <returns>List of updated email templates.</returns>
-        Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Delete one or more applications.
@@ -173,6 +94,33 @@
         /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
         Task<IEnumerable<AppResponse>> DeleteAllAppsAsync(SqlQuery query = null);
 
+        #endregion
+
+        #region app group
+
+        /// <summary>
+        /// Retrieve one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query);
+
+        /// <summary>
+        /// Create one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="appGroups">Application groups to create.</param>
+        /// <returns>List of created application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> CreateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
+
+        /// <summary>
+        /// Update one or more application groups.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="appGroups">Application groups to update.</param>
+        /// <returns>List of updated application groups.</returns>
+        Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups);
+
         /// <summary>
         /// Delete one or more application groups.
         /// </summary>
@@ -188,50 +136,66 @@
         /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
         Task<IEnumerable<AppGroupResponse>> DeleteAllAppGroupsAsync(SqlQuery query = null);
 
-        /// <summary>
-        /// Delete one or more roles.
-        /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="ids">Role IDs to delete.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids);
+        #endregion
+
+        #region config
 
         /// <summary>
-        /// Delete all roles.
+        /// Retrieve system configuration properties.
         /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null);
+        /// <returns>See <see cref="ConfigResponse"/>.</returns>
+        Task<ConfigResponse> GetConfigAsync();
 
         /// <summary>
-        /// Delete one or more users.
+        /// Update one or more system configuration properties.
         /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="ids">User IDs to delete.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids);
+        /// <param name="config">New configuration properties.</param>
+        /// <returns>See <see cref="ConfigResponse"/>.</returns>
+        Task<ConfigResponse> SetConfigAsync(ConfigRequest config);
+
+        #endregion
+
+        #region constant
 
         /// <summary>
-        /// Delete all users.
+        /// Get all enumerated types.
         /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<UserResponse>> DeleteAllUsersAsync(SqlQuery query = null);
+        /// <returns>List of enumeration types.</returns>
+        Task<IEnumerable<string>> GetConstantsAsync();
 
         /// <summary>
-        /// Delete one or more services.
+        /// Get enumerated type constant values.
         /// </summary>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="ids">Service IDs to delete.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids);
+        /// <param name="constant">Identifier of the enumeration type to retrieve.</param>
+        /// <returns>Key-value pairs.</returns>
+        Task<Dictionary<string, string>> GetConstantAsync(string constant);
+
+        #endregion
+
+        #region email template
 
         /// <summary>
-        /// Delete all services.
+        /// Retrieve one or more email templates.
         /// </summary>
         /// <param name="query">Query parameters.</param>
-        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
-        Task<IEnumerable<ServiceResponse>> DeleteAllServicesAsync(SqlQuery query = null);
+        /// <returns>List of email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query);
+
+        /// <summary>
+        /// Create one or more email templates.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="templates">Email templates to create.</param>
+        /// <returns>List of created email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> CreateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
+
+        /// <summary>
+        /// Update one or more email templates.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="templates">Email templates to update.</param>
+        /// <returns>List of updated email templates.</returns>
+        Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates);
 
         /// <summary>
         /// Delete one or more email templates.
@@ -248,22 +212,9 @@
         /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
         Task<IEnumerable<EmailTemplateResponse>> DeleteAllEmailTemplatesAsync(SqlQuery query = null);
 
-        /// <summary>
-        /// Download the application as a DreamFactory package file.
-        /// </summary>
-        /// <param name="applicationId">Application ID.</param>
-        /// <param name="includeFiles">Include hosted files in the package.</param>
-        /// <param name="includeServices">Include associated services configuration in the package.</param>
-        /// <param name="includeSchema">Include associated database schema in the package.</param>
-        /// <returns>DreamFactory package contents.</returns>
-        Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles = true, bool includeServices = true, bool includeSchema = true);
+        #endregion
 
-        /// <summary>
-        /// Download the DreamFactory javascript SDK amended for the app.
-        /// </summary>
-        /// <param name="applicationId">Application ID.</param>
-        /// <returns>SDK contents.</returns>
-        Task<byte[]> DownloadApplicationSdkAsync(int applicationId);
+        #region environment
 
         /// <summary>
         /// Retrieve environment information.
@@ -271,101 +222,188 @@
         /// <returns>See <see cref="EnvironmentResponse"/>.</returns>
         Task<EnvironmentResponse> GetEnvironmentAsync();
 
-        /// <summary>
-        /// List all scripts.
-        /// </summary>
-        /// <param name="includeUserScripts">If true, user scripts will be returned along with the event scripts.</param>
-        /// <returns>List of scripts.</returns>
-        Task<IEnumerable<ScriptResponse>> GetScriptsAsync(bool includeUserScripts);
+        #endregion
+
+        #region event
 
         /// <summary>
-        /// Write the specified script to the file system.
+        /// Gets all system events.
         /// </summary>
-        /// <param name="scriptId">Script ID.</param>
-        /// <param name="body">The body of the script to write.</param>
-        Task<ScriptResponse> WriteScriptAsync(string scriptId, string body);
+        /// <returns>List of all event names.</returns>
+        Task<IEnumerable<string>> GetEventsAsync();
 
         /// <summary>
-        /// Run the specified script.
+        /// Gets event script by name.
         /// </summary>
-        /// <param name="scriptId">Script ID.</param>
-        /// <param name="parameters">Script parameters passed in with query.</param>
-        /// <param name="logOutput">If true (the default), script output (not the returned result) will be sent to the log as "info".</param>
-        /// <returns>Script's result.</returns>
-        Task<string> RunScriptAsync(string scriptId, Dictionary<string, object> parameters, bool logOutput = false);
+        /// <param name="eventName">Event script identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Event script with queried fields and relationships.</returns>
+        Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query);
 
         /// <summary>
-        /// Run the specified script.
+        /// Create event script.
         /// </summary>
-        /// <param name="scriptId">Script ID.</param>
-        /// <param name="logOutput">If true (the default), script output (not the returned result) will be sent to the log as "info".</param>
-        /// <returns>Script's result.</returns>
-        Task<string> RunScriptAsync(string scriptId, bool logOutput = false);
+        /// <param name="eventName">Event script identifier.</param>
+        /// <param name="eventScript">Event script to create.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Event script with queried fields and relationships.</returns>
+        Task<EventScriptResponse> CreateEventScriptAsync(string eventName, EventScriptRequest eventScript, SqlQuery query);
 
         /// <summary>
-        /// Delete script with ID provided.
+        /// Update event script.
         /// </summary>
-        /// <param name="scriptId">Script ID.</param>
-        Task DeleteScriptAsync(string scriptId);
+        /// <param name="eventName">Event script identifier.</param>
+        /// <param name="eventScript">Event script to update.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Event script with queried fields and relationships.</returns>
+        Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, EventScriptRequest eventScript, SqlQuery query);
 
         /// <summary>
-        /// Retrieve events and registered listeners.
+        /// Delete event script.
         /// </summary>
-        /// <param name="allEvents">If set to true, all events that are available are returned. Otherwise only events that are have registered listeners are returned.</param>
-        /// <returns>List of <see cref="EventCacheResponse"/>.</returns>
-        Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents);
+        /// <param name="eventName">Event script identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Event script with queried fields and relationships.</returns>
+        Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query);
+
+        #endregion
+
+        #region role
 
         /// <summary>
-        /// Register one or more event listeners.
+        /// Retrieve one or more roles.
         /// </summary>
-        /// <param name="requests">Event registration records.</param>
-        Task RegisterEventsAsync(params EventRequest[] requests);
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of roles.</returns>
+        Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query);
 
         /// <summary>
-        /// Delete one or more event listeners.
+        /// Create one or more roles.
         /// </summary>
-        /// <param name="requests">Event registration records.</param>
-        Task UnregisterEventsAsync(params EventRequest[] requests);
+        /// <param name="query">Query parameters.</param>
+        /// <param name="roles">Roles to create.</param>
+        /// <returns>List of created roles.</returns>
+        Task<IEnumerable<RoleResponse>> CreateRolesAsync(SqlQuery query, params RoleRequest[] roles);
 
         /// <summary>
-        /// Retrieve system configuration properties.
+        /// Update one or more roles.
         /// </summary>
-        /// <returns>See <see cref="ConfigResponse"/>.</returns>
-        Task<ConfigResponse> GetConfigAsync();
+        /// <param name="query">Query parameters.</param>
+        /// <param name="roles">Roles to update.</param>
+        /// <returns>List of updated roles.</returns>
+        Task<IEnumerable<RoleResponse>> UpdateRolesAsync(SqlQuery query, params RoleRequest[] roles);
 
         /// <summary>
-        /// Update one or more system configuration properties.
+        /// Delete one or more roles.
         /// </summary>
-        /// <param name="config">New configuration properties.</param>
-        /// <returns>See <see cref="ConfigResponse"/>.</returns>
-        Task<ConfigResponse> SetConfigAsync(ConfigRequest config);
+        /// <param name="query">Query parameters.</param>
+        /// <param name="ids">Role IDs to delete.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids);
 
         /// <summary>
-        /// Get all enumerated types.
+        /// Delete all roles.
         /// </summary>
-        /// <returns>List of enumeration types.</returns>
-        Task<IEnumerable<string>> GetConstantsAsync();
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null);
+
+        #endregion
+
+        #region script type
 
         /// <summary>
-        /// Get enumerated type constant values.
+        /// Retrieve one or more script types.
         /// </summary>
-        /// <param name="constant">Identifier of the enumeration type to retrieve.</param>
-        /// <returns>Key-value pairs.</returns>
-        Task<Dictionary<string, string>> GetConstantAsync(string constant);
-        
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of script types.</returns>
+        Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query);
+
+        #endregion
+
+        #region service
+
         /// <summary>
-        /// Login and create a new admin session.
+        /// Retrieve one or more services.
         /// </summary>
-        /// <remarks>
-        /// Successful login operation will set ApplicationName and SessionToken headers.
-        /// This call works only with v2 of the api.
-        /// </remarks>
-        /// <param name="applicationName">Application name.</param>
-        /// <param name="applicationApiKey">Application api key.</param>
-        /// <param name="email">Email.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="duration">Session duration.</param>
-        /// <returns>Session object instance.</returns>
-        Task<Session> LoginAdminAsync(string applicationName, string applicationApiKey, string email, string password, int duration = 0);
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of services.</returns>
+        Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query);
+
+        /// <summary>
+        /// Create one or more services.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="services">Services to create.</param>
+        /// <returns>List of created services.</returns>
+        Task<IEnumerable<ServiceResponse>> CreateServicesAsync(SqlQuery query, params ServiceRequest[] services);
+
+        /// <summary>
+        /// Update one or more services.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="services">Services to update.</param>
+        /// <returns>List of updated services.</returns>
+        Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(SqlQuery query, params ServiceRequest[] services);
+
+        /// <summary>
+        /// Delete one or more services.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="ids">Service IDs to delete.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all services.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<ServiceResponse>> DeleteAllServicesAsync(SqlQuery query = null);
+
+        #endregion
+
+        #region user
+
+        /// <summary>
+        /// Retrieve one or more users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>List of users.</returns>
+        Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query);
+
+        /// <summary>
+        /// Create one or more users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="users">Users to create.</param>
+        /// <returns>List of created users.</returns>
+        Task<IEnumerable<UserResponse>> CreateUsersAsync(SqlQuery query, params UserRequest[] users);
+
+        /// <summary>
+        /// Update one or more users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="users">Users to update.</param>
+        /// <returns>List of updated users.</returns>
+        Task<IEnumerable<UserResponse>> UpdateUsersAsync(SqlQuery query, params UserRequest[] users);
+
+        /// <summary>
+        /// Delete one or more users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="ids">User IDs to delete.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids);
+
+        /// <summary>
+        /// Delete all users.
+        /// </summary>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>By default, only the id property of the record deleted is returned on success. Use 'fields' and 'related' to return more properties of the deleted records.</returns>
+        Task<IEnumerable<UserResponse>> DeleteAllUsersAsync(SqlQuery query = null);
+
+        #endregion
+
     }
 }
