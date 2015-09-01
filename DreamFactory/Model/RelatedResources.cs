@@ -43,7 +43,7 @@
             /// <summary>
             /// Related resource name for the user modified record.
             /// </summary>
-            public const string UserModified = "user_by_last_modified_by_id";
+            public const string UserLastModified = "user_by_last_modified_by_id";
 
             /// <summary>
             /// Related resource name for the user role records.
@@ -488,6 +488,27 @@
             /// Related resource name for script type record linked to event script.
             /// </summary>
             public const string ScriptType = "script_type_by_type";
+        }
+
+        /// <summary>
+        /// Related resource names for event script record.
+        /// </summary>
+        public struct Custom
+        {
+            /// <summary>
+            /// Related resource name for user record linked to custom setting.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for user record linked to custom setting.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+
+            /// <summary>
+            /// Related resource name for user record in custom setting.
+            /// </summary>
+            public const string User = "user_by_user_id";
         }
     }
 }

@@ -10,45 +10,62 @@
     public class CustomResponse
     {
         /// <summary>
-        /// Name of the created resource.
+        /// Id of the custom setting.
+        /// </summary>
+        public int? Id { get; set; }
+
+        /// <summary>
+        /// Id of the user linked to this custom setting.
+        /// </summary>
+        /// 
+        public int? UserId { get; set; }
+
+        /// <summary>
+        /// Name of the custom setting.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Value of the created resource.
+        /// Value of the custom setting.
         /// </summary>
         public string Value { get; set; }
 
         /// <summary>
-        /// Date when the resource was created.
+        /// Date when the custom setting was created.
         /// </summary>
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
-        /// Date when the resource was modified.
+        /// Date when the custom setting was modified.
         /// </summary>
         public DateTime? LastModifiedDate { get; set; }
 
         /// <summary>
-        /// UserId that created the resource.
+        /// UserId that created the custom setting.
         /// </summary>
         public int? CreatedById { get; set; }
 
         /// <summary>
-        /// UserId that modified the resource.
+        /// UserId that modified the custom setting.
         /// </summary>
         public int? LastModifiedById { get; set; }
 
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.App.UserCreated)]
+        [JsonProperty(PropertyName = RelatedResources.Custom.UserCreated)]
         public RelatedUser UserCreated { get; set; }
 
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.App.UserModified)]
-        public RelatedUser UserModified { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.Custom.UserLastModified)]
+        public RelatedUser UserLastModified { get; set; }
+
+        /// <summary>
+        /// A single User record that this record potentially belongs to.
+        /// </summary>
+        [JsonProperty(PropertyName = RelatedResources.Custom.User)]
+        public RelatedUser User { get; set; }
     }
 }

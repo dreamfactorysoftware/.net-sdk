@@ -6,6 +6,11 @@
     public class CustomRequest
     {
         /// <summary>
+        /// Id of the user linked to custom setting.
+        /// </summary>
+        public int? UserId { get; set; }
+
+        /// <summary>
         /// Name of the resource.
         /// </summary>
         public string Name { get; set; }

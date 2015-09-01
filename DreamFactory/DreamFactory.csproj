@@ -147,8 +147,6 @@
     <Compile Include="Model\System\Role\RelatedRole.cs" />
     <Compile Include="Model\System\Service\RelatedService.cs" />
     <Compile Include="Model\System\User\RelatedUser.cs" />
-    <Compile Include="Model\User\DeviceRequest.cs" />
-    <Compile Include="Model\User\DeviceResponse.cs" />
     <Compile Include="Model\Email\EmailAddress.cs" />
     <Compile Include="Model\Email\EmailRequest.cs" />
     <Compile Include="Model\Database\FieldSchema.cs" />

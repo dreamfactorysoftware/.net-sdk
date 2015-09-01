@@ -95,8 +95,8 @@
         /// <summary>
         /// A single User record that this record potentially belongs to.
         /// </summary>
-        [JsonProperty(PropertyName = RelatedResources.App.UserModified)]
-        public RelatedUser UserModified { get; set; }
+        [JsonProperty(PropertyName = RelatedResources.App.UserLastModified)]
+        public RelatedUser UserLastModified { get; set; }
 
         /// <summary>
         /// A single Role record that this record potentially belongs to.
