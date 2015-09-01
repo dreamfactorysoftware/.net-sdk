@@ -37,7 +37,7 @@
             List<CustomRequest> userSettings = CreateUserSettings();
 
             // Act
-            bool ok = settingsApi.SetCustomSettingAsync(userSettings).Result.Any();
+            bool ok = settingsApi.SetCustomSettingsAsync(userSettings).Result.Any();
 
             // Assert
             ok.ShouldBe(true);
@@ -50,10 +50,10 @@
             ICustomSettingsApi settingsApi = CreateSettingsApi();
 
             // Act
-            string setting = settingsApi.GetCustomSettingAsync("Language").Result;
+            CustomResponse setting = settingsApi.GetCustomSettingAsync("Language").Result;
 
             // Assert
-            setting.ShouldBe("en-us");
+            setting.Value.ShouldBe("en-us");
         }
 
         [TestMethod]

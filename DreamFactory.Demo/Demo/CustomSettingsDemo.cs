@@ -29,7 +29,7 @@
                 }
             };
 
-            if ((await settingsApi.SetCustomSettingAsync(customSettings)).Any())
+            if ((await settingsApi.SetCustomSettingsAsync(customSettings)).Any())
             {
                 Console.WriteLine("Created custom settings: preferences");
             }
@@ -40,9 +40,9 @@
             Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 
             // Retrieving preferences back
-            string value = await settingsApi.GetCustomSettingAsync("Language");
+            CustomResponse custom = await settingsApi.GetCustomSettingAsync("Language");
             Console.WriteLine("Retrieved preferences back:");
-            Console.WriteLine("\tName={0}, Value={1}", "Language", value);
+            Console.WriteLine("\tName={0}, Value={1}", "Language", custom.Value);
 
             // Deleting preferences
             await settingsApi.DeleteCustomSettingAsync("Language");
