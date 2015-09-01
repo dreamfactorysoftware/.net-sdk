@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
@@ -27,6 +28,16 @@
 
             // Assert
             count.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptions()
+        {
+            // Arrange
+            IEmailApi emailApi = CreateEmailApi();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => emailApi.SendEmailAsync(null));
         }
 
         private static IEmailApi CreateEmailApi()

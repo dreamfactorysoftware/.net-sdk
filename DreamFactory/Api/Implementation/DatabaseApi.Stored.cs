@@ -93,7 +93,7 @@
 
         private async Task<IEnumerable<string>> GetNamesOnlyAsync(string resource, bool refresh)
         {
-            IHttpAddress address = baseAddress.WithResource( resource).WithParameter("names_only", true);
+            IHttpAddress address = baseAddress.WithResource(resource).WithParameter("names_only", true);
 
             if (refresh)
             {

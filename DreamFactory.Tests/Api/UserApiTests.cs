@@ -1,10 +1,12 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model.File;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -32,6 +34,12 @@
             // Assert
             session.Name.ShouldBe("demo");
             session.SessionId.ShouldNotBeEmpty();
+
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(null, AppApiKey, "user@mail.com", "userdream"));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, null, "user@mail.com", "userdream"));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, AppApiKey, null, "userdream"));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", null));
+            Should.Throw<ArgumentOutOfRangeException>(() => userApi.LoginAsync(AppName, AppApiKey, "user@mail.com", "userdream", -9999));
         }
 
         [TestMethod]
@@ -132,6 +140,8 @@
 
             // Assert
             success.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.UpdateProfileAsync(null));
         }
 
         #endregion
@@ -157,6 +167,8 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.RegisterAsync(null));
         }
 
         #endregion
@@ -175,6 +187,9 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.ChangePasswordAsync("abc", null));
+            Should.Throw<ArgumentNullException>(() => userApi.ChangePasswordAsync(null, "cba"));
         }
 
         [TestMethod]
@@ -188,6 +203,8 @@
 
             // Assert
             response.SecurityQuestion.ShouldBe("to be or not to be?");
+
+            Should.Throw<ArgumentNullException>(() => userApi.RequestPasswordResetAsync(null));
         }
 
         [TestMethod]
@@ -201,6 +218,10 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.CompletePasswordResetAsync(null, "qwerty", answer: "maybe"));
+            Should.Throw<ArgumentNullException>(() => userApi.CompletePasswordResetAsync("user@mail.com", null, answer: "maybe"));
+            Should.Throw<ArgumentException>(() => userApi.CompletePasswordResetAsync("user@mail.com", "qwerty", answer: "maybe", code: "not"));
         }
 
         #endregion

@@ -63,13 +63,8 @@
         public string SessionId { get; set; }
 
         /// <summary>
-        /// Timed ticket that can be used to start a separate session.
+        /// Token for the current session, used in X-DreamFactory-Session-Token header for API requests.
         /// </summary>
-        public string Ticket { get; set; }
-
-        /// <summary>
-        /// Expiration time for the given ticket.
-        /// </summary>
-        public string TicketExpiry { get; set; }
+        public string SessionToken { get; set; }
     }
 }

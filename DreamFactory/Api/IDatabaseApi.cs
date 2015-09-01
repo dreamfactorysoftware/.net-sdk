@@ -27,13 +27,13 @@
         /// Creates a new table schema.
         /// </summary>
         /// <param name="tableSchema">Table schema.</param>
-        Task CreateTableAsync(TableSchema tableSchema);
+        Task<bool> CreateTableAsync(TableSchema tableSchema);
 
         /// <summary>
         /// Updates the existing table schema.
         /// </summary>
         /// <param name="tableSchema">Table schema.</param>
-        Task UpdateTableAsync(TableSchema tableSchema);
+        Task<bool> UpdateTableAsync(TableSchema tableSchema);
 
         /// <summary>
         /// Deletes the specified table (aka drop).

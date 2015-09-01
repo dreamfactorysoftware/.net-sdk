@@ -1,10 +1,12 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Custom;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -41,6 +43,8 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => settingsApi.SetCustomSettingsAsync(null));
         }
 
         [TestMethod]
@@ -54,6 +58,8 @@
 
             // Assert
             setting.Value.ShouldBe("en-us");
+
+            Should.Throw<ArgumentNullException>(() => settingsApi.GetCustomSettingAsync(null));
         }
 
         [TestMethod]
@@ -67,6 +73,56 @@
 
             // Assert
             settings.Name.ShouldBe("Language");
+
+            Should.Throw<ArgumentNullException>(() => settingsApi.DeleteCustomSettingAsync(null));
+        }
+
+        [TestMethod]
+        public void ShouldDeleteAllCustomSettingAsync()
+        {
+            // Arrange
+            ICustomSettingsApi settingsApi = CreateSettingsApi();
+
+            // Act
+            IEnumerable<CustomResponse> settings = settingsApi.DeleteAllCustomSettingsAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            settings.Count().ShouldBe(2);
+            settings.First().Name.ShouldBe("Language");
+        }
+
+        [TestMethod]
+        public void ShouldUpdateCustomSettingAsync()
+        {
+            // Arrange
+            ICustomSettingsApi settingsApi = CreateSettingsApi();
+            CustomRequest userSetting = CreateUserSettings().First();
+
+            // Act
+            CustomResponse setting = settingsApi.UpdateCustomSettingAsync("Language", userSetting).Result;
+
+            // Assert
+            setting.Name.ShouldBe("Language");
+
+            Should.Throw<ArgumentNullException>(() => settingsApi.UpdateCustomSettingAsync(null, userSetting));
+            Should.Throw<ArgumentNullException>(() => settingsApi.UpdateCustomSettingAsync("Language", null));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateCustomSettingsAsync()
+        {
+            // Arrange
+            ICustomSettingsApi settingsApi = CreateSettingsApi();
+            List<CustomRequest> userSettings = CreateUserSettings();
+
+            // Act
+            IEnumerable<CustomResponse> settings = settingsApi.UpdateCustomSettingsAsync(userSettings).Result.ToList();
+
+            // Assert
+            settings.Count().ShouldBe(2);
+            settings.First().Name.ShouldBe("Language");
+
+            Should.Throw<ArgumentNullException>(() => settingsApi.UpdateCustomSettingsAsync(null));
         }
 
         private static ICustomSettingsApi CreateSettingsApi()

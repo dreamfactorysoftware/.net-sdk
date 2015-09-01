@@ -51,12 +51,12 @@
             return contentSerializer.Deserialize(response.Body, resource).resource;
         }
 
-        public Task CreateTableAsync(TableSchema tableSchema)
+        public Task<bool> CreateTableAsync(TableSchema tableSchema)
         {
             return CreateOrUpdateTableAsync(HttpMethod.Post, tableSchema);
         }
 
-        public Task UpdateTableAsync(TableSchema tableSchema)
+        public Task<bool> UpdateTableAsync(TableSchema tableSchema)
         {
             return CreateOrUpdateTableAsync(HttpMethod.Put, tableSchema);
         }
@@ -74,10 +74,10 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var success = new { success = false };
-            success = contentSerializer.Deserialize(response.Body, success);
+            var result = new { success = false };
+            result = contentSerializer.Deserialize(response.Body, result);
 
-            return success.success;
+            return result.success;
         }
 
         public async Task<TableSchema> DescribeTableAsync(string tableName, bool refresh)
@@ -129,7 +129,7 @@
             return contentSerializer.Deserialize<FieldSchema>(response.Body);
         }
 
-        private async Task CreateOrUpdateTableAsync(HttpMethod httpMethod, TableSchema tableSchema)
+        private async Task<bool> CreateOrUpdateTableAsync(HttpMethod httpMethod, TableSchema tableSchema)
         {
             if (tableSchema == null)
             {
@@ -144,6 +144,11 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var result = new { success = false };
+            result = contentSerializer.Deserialize(response.Body, result);
+
+            return result.success;
         }
     }
 }

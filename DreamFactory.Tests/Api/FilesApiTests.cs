@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
@@ -64,6 +65,8 @@
             folder.Name.ShouldBe("calendar");
             folder.Folder.Count.ShouldBe(2);
             folder.File.Count.ShouldBe(6);
+
+            Should.Throw<ArgumentNullException>(() => filesApi.GetFolderAsync(null, ListingFlags.IncludeEverything));
         }
 
         [TestMethod]
@@ -74,6 +77,8 @@
 
             // Act & Assert
             filesApi.CreateFolderAsync("calendar").Wait();
+
+            Should.Throw<ArgumentNullException>(() => filesApi.CreateFolderAsync(null));
         }
 
         [TestMethod]
@@ -87,6 +92,8 @@
 
             // Assert
             data.Length.ShouldBeGreaterThan(0);
+
+            Should.Throw<ArgumentNullException>(() => filesApi.DownloadFolderAsync(null));
         }
 
         [TestMethod]
@@ -97,6 +104,8 @@
 
             // Act & Assert
             filesApi.DeleteFolderAsync("calendar").Wait();
+
+            Should.Throw<ArgumentNullException>(() => filesApi.DeleteFolderAsync(null));
         }
 
 
@@ -115,6 +124,9 @@
 
             // Assert
             fileResponse.Path.ShouldBe("calendar/test.txt");
+
+            Should.Throw<ArgumentNullException>(() => filesApi.CreateFileAsync(null, "Hello"));
+            Should.Throw<ArgumentNullException>(() => filesApi.CreateFileAsync("calendar/test.txt", (string)null));
         }
 
         [TestMethod]
@@ -142,6 +154,8 @@
 
             // Assert
             content.ShouldBe("Hello");
+
+            Should.Throw<ArgumentNullException>(() => filesApi.GetTextFileAsync(null));
         }
 
         [TestMethod]
@@ -157,6 +171,8 @@
             // Assert
             content.Length.ShouldBe(8);
             content.ShouldBe(expected);
+
+            Should.Throw<ArgumentNullException>(() => filesApi.GetBinaryFileAsync(null));
         }
 
         [TestMethod]
@@ -167,6 +183,9 @@
 
             // Act & Assert
             filesApi.ReplaceFileContentsAsync("calendar/test.txt", "Bye").Wait();
+
+            Should.Throw<ArgumentNullException>(() => filesApi.ReplaceFileContentsAsync("calendar/test.txt", (string)null));
+            Should.Throw<ArgumentNullException>(() => filesApi.ReplaceFileContentsAsync(null, "Bye"));
         }
 
         [TestMethod]
@@ -191,6 +210,8 @@
 
             // Assert
             fileResponse.Path.ShouldBe("calendar/test.txt");
+
+            Should.Throw<ArgumentNullException>(() => filesApi.DeleteFileAsync(null));
         }
 
         #endregion
