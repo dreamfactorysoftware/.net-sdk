@@ -26,7 +26,7 @@
 
         public Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, EventScriptRequest eventScript, SqlQuery query)
         {
-            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, eventScript, HttpMethod.Put, query);
+            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, eventScript, HttpMethod.Patch, query);
         }
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)

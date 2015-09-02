@@ -25,11 +25,6 @@
         public string Description { get; set; }
 
         /// <summary>
-        /// Related apps by app to group assignment.
-        /// </summary>
-        public List<RelatedApp> Apps { get; set; }
-
-        /// <summary>
         /// Date this group was created.
         /// </summary>
         public DateTime? CreatedDate { get; set; }

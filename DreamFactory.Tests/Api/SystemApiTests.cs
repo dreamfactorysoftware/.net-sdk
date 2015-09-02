@@ -6,10 +6,12 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
@@ -28,6 +30,20 @@
         private const string BaseAddress = "http://localhost:8765";
         private const string AppName = "admin";
         private const string AppApiKey = "api_key";
+
+        private static ISystemApi CreateSystemApi(string suffix = null)
+        {
+            HttpHeaders headers;
+            return CreateSystemApi(out headers, suffix);
+        }
+
+        private static ISystemApi CreateSystemApi(out HttpHeaders headers, string suffix = null)
+        {
+            IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
+            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            headers = new HttpHeaders();
+            return new SystemApi(address, httpFacade, new JsonContentSerializer(), headers);
+        }
 
         #region --- Session ---
 
@@ -112,94 +128,104 @@
 
         #endregion
 
+        #region --- EmailTemplate ---
+
         [TestMethod]
-        public void ShouldGetAppsAsync()
+        public void ShouldGetEmailTemplatesAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            List<AppResponse> apps = systemApi.GetAppsAsync(new SqlQuery()).Result.ToList();
+            List<EmailTemplateResponse> emailTemplates = systemApi.GetEmailTemplatesAsync(new SqlQuery()).Result.ToList();
 
             // Assert
-            apps.Count.ShouldBe(4);
-            apps.First().Name.ShouldBe("admin");
+            emailTemplates.Count.ShouldBe(3);
+            emailTemplates.First().Name.ShouldBe("User Invite Default");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.GetAppsAsync(null));
+            Should.Throw<ArgumentNullException>(() => systemApi.GetEmailTemplatesAsync(null));
         }
 
         [TestMethod]
-        public void ShouldGetUsersAsync()
+        public void ShouldCreateEmailTemplatesAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
+            EmailTemplateRequest[] templates = CreateEmailTemplates();
 
             // Act
-            List<UserResponse> users = systemApi.GetUsersAsync(new SqlQuery()).Result.ToList();
+            List<EmailTemplateResponse> emailTemplates = systemApi.CreateEmailTemplatesAsync(new SqlQuery(), templates).Result.ToList();
 
             // Assert
-            users.Count.ShouldBe(2);
-            users.First().Name.ShouldBe("demo");
+            emailTemplates.Count.ShouldBe(3);
+            emailTemplates.First().Name.ShouldBe("User Invite Default");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEmailTemplatesAsync(null, templates));
+            Should.Throw<ArgumentException>(() => systemApi.CreateEmailTemplatesAsync(new SqlQuery(), null));
         }
 
         [TestMethod]
-        public void ShouldGetRolesAsync()
+        public void ShouldUpdateEmailTemplatesAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
+            EmailTemplateRequest[] templates = CreateEmailTemplates();
 
             // Act
-            List<RoleResponse> roles = systemApi.GetRolesAsync(new SqlQuery()).Result.ToList();
+            List<EmailTemplateResponse> emailTemplates = systemApi.UpdateEmailTemplatesAsync(new SqlQuery(), templates).Result.ToList();
 
             // Assert
-            roles.Count.ShouldBe(1);
-            roles.First().Name.ShouldBe("TestRole");
+            emailTemplates.Count.ShouldBe(3);
+            emailTemplates.First().Name.ShouldBe("User Invite Default");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.UpdateEmailTemplatesAsync(null, templates));
+            Should.Throw<ArgumentException>(() => systemApi.UpdateEmailTemplatesAsync(new SqlQuery(), null));
         }
 
         [TestMethod]
-        public void ShouldGetServicesAsync()
+        public void ShouldDeleteEmailTemplatesAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
+            EmailTemplateRequest[] templates = CreateEmailTemplates();
+            int[] ids = new [] {1,2,3};
 
             // Act
-            List<ServiceResponse> services = systemApi.GetServicesAsync(new SqlQuery()).Result.ToList();
+            List<EmailTemplateResponse> emailTemplates = systemApi.DeleteEmailTemplatesAsync(new SqlQuery(), ids).Result.ToList();
 
             // Assert
-            services.Count.ShouldBe(4);
-            services.First().Name.ShouldBe("Database");
+            emailTemplates.Count.ShouldBe(3);
+            emailTemplates.First().Name.ShouldBe("User Invite Default");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteEmailTemplatesAsync(null, ids));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteEmailTemplatesAsync(new SqlQuery(), null));
         }
 
-        [TestMethod]
-        public void ShouldGetAppGroupAsync()
+        private EmailTemplateRequest[] CreateEmailTemplates()
         {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-
-            // Act
-            List<AppGroupResponse> appGroups = systemApi.GetAppGroupsAsync(new SqlQuery()).Result.ToList();
-
-            // Assert
-            appGroups.Count.ShouldBe(1);
-            appGroups.First().Name.ShouldBe("NewGroup");
+            return new []
+            {
+                new EmailTemplateRequest
+                {
+                    Id = 1,
+                    Name = "User Invite Default",
+                },
+                new EmailTemplateRequest
+                {
+                    Id = 2,
+                    Name = "User Registration Default"
+                },
+                new EmailTemplateRequest
+                {
+                    Id = 3,
+                    Name = "Password reset Default"
+                }
+            };
         }
 
-        [TestMethod]
-        public void ShouldGetEventsAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
+        #endregion
 
-            // Act
-            EventScriptResponse response = systemApi.GetEventScriptAsync("system.get.pre_process", new SqlQuery()).Result;
-
-            // Assert
-            response.Name.ShouldBe("my_custom_script");
-            response.Type.ShouldBe("v8js");
-
-            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync(null, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync("system.get.pre_process", null));
-        }
+        #region --- EventScript ---
 
         [TestMethod]
         public void ShouldGetEventScriptsAsync()
@@ -249,6 +275,25 @@
         }
 
         [TestMethod]
+        public void ShouldUpdateEventScriptAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            EventScriptRequest eventScript = CreateEventScript();
+
+            // Act
+            EventScriptResponse response = systemApi.UpdateEventScriptAsync("system.get.pre_process", eventScript, new SqlQuery()).Result;
+
+            // Assert
+            response.Name.ShouldBe("my_custom_script");
+            response.Type.ShouldBe("v8js");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, eventScript, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, null));
+        }
+
+        [TestMethod]
         public void ShouldDeleteEventScriptAsync()
         {
             // Arrange
@@ -263,6 +308,56 @@
 
             Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync(null, new SqlQuery()));
             Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync("system.get.pre_process", null));
+        }
+
+        [TestMethod]
+        public void ShouldGetEventsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            EventScriptResponse response = systemApi.GetEventScriptAsync("system.get.pre_process", new SqlQuery()).Result;
+
+            // Assert
+            response.Name.ShouldBe("my_custom_script");
+            response.Type.ShouldBe("v8js");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync(null, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync("system.get.pre_process", null));
+        }
+
+        private static EventScriptRequest CreateEventScript()
+        {
+            return new EventScriptRequest
+            {
+                Name = "my_custom_script",
+                Type = "v8js",
+                IsActive = true,
+                AffectsProcess = true,
+                Content = "text",
+                Config = "text"
+            };
+        }
+
+        #endregion
+
+        #region --- App ---
+
+        [TestMethod]
+        public void ShouldGetAppsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<AppResponse> apps = systemApi.GetAppsAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            apps.Count.ShouldBe(4);
+            apps.First().Name.ShouldBe("admin");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.GetAppsAsync(null));
         }
 
         [TestMethod]
@@ -307,6 +402,25 @@
             Should.Throw<ArgumentException>(() => systemApi.DeleteAppsAsync(new SqlQuery()));
         }
 
+        private static AppRequest CreateApp()
+        {
+            return new AppRequest
+            {
+                Id = 1,
+                Name = "admin",
+                Description = "An application for administering this instance.",
+                IsActive = true,
+                RequiresFullscreen = false,
+                AllowFullscreenToggle = true,
+                ToggleLocation = "top",
+                RoleId = 2
+            };
+        }
+
+        #endregion
+
+        #region --- Environment ---
+
         [TestMethod]
         public void ShouldGetEnvironmentAsync()
         {
@@ -319,6 +433,10 @@
             // Assert
             environment.Server.ServerOs.ShouldBe("linux");
         }
+
+        #endregion
+
+        #region --- Config ---
 
         [TestMethod]
         public void ShouldGetConfigAsync()
@@ -348,6 +466,19 @@
 
             Should.Throw<ArgumentNullException>(() => systemApi.SetConfigAsync(null));
         }
+        private ConfigRequest CreateConfig()
+        {
+            return new ConfigRequest
+            {
+                EditableProfileFields = "name",
+                RestrictedVerbs = new List<string> { "patch" },
+                TimestampFormat = ""
+            };
+        }
+
+        #endregion
+
+        #region --- Constant ---
 
         [TestMethod]
         public void ShouldGetConstantsAsync()
@@ -377,56 +508,294 @@
             constant.Keys.ShouldContain("HTML");
         }
 
-        private ConfigRequest CreateConfig()
+        #endregion
+
+        #region --- AppGroup ---
+
+        [TestMethod]
+        public void ShouldGetAppGroupAsync()
         {
-            return new ConfigRequest
-            {
-                EditableProfileFields = "name",
-                RestrictedVerbs = new List<string>{"patch"},
-                TimestampFormat = ""
-            };
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<AppGroupResponse> appGroups = systemApi.GetAppGroupsAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            appGroups.Count.ShouldBe(1);
+            appGroups.First().Name.ShouldBe("my_app_group");
         }
 
-        private static ISystemApi CreateSystemApi(string suffix = null)
+        [TestMethod]
+        public void ShouldCreateAppGroupAsync()
         {
-            HttpHeaders headers;
-            return CreateSystemApi(out headers, suffix);
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            AppGroupRequest appGroup = CreateAppGroup();
+            appGroup.Id = null;
+
+            // Act
+            AppGroupResponse created = systemApi.CreateAppGroupsAsync(new SqlQuery(), appGroup).Result.First();
+
+            // Assert
+            created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateAppGroupsAsync(null, appGroup));
+            Should.Throw<ArgumentException>(() => systemApi.CreateAppGroupsAsync(new SqlQuery()));
         }
 
-        private static ISystemApi CreateSystemApi(out HttpHeaders headers, string suffix = null)
+        [TestMethod]
+        public void ShouldUpdateAppGroupAsync()
         {
-            IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
-            headers = new HttpHeaders();
-            return new SystemApi(address, httpFacade, new JsonContentSerializer(), headers);
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            AppGroupRequest appGroup = CreateAppGroup();
+
+            // Act & Assert
+            systemApi.UpdateAppGroupsAsync(new SqlQuery(), appGroup).Wait();
         }
 
-        private static AppRequest CreateApp()
+        [TestMethod]
+        public void ShouldDeleteAppGroupsAsync()
         {
-            return new AppRequest
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act & Assert
+            systemApi.DeleteAppGroupsAsync(new SqlQuery(), 1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteAppGroupsAsync(null, 1));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteAppGroupsAsync(new SqlQuery()));
+        }
+
+        private static AppGroupRequest CreateAppGroup()
+        {
+            return new AppGroupRequest
             {
                 Id = 1,
-                Name = "admin",
-                Description = "An application for administering this instance.",
-                IsActive = true,
-                RequiresFullscreen = false,
-                AllowFullscreenToggle = true,
-                ToggleLocation = "top",
-                RoleId = 2
+                Name = "my_app_group",
+                Description = "Contains my groups."
             };
         }
 
-        private static EventScriptRequest CreateEventScript()
+        #endregion
+
+        #region --- Service ---
+
+        [TestMethod]
+        public void ShouldGetServicesAsync()
         {
-            return new EventScriptRequest
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<ServiceResponse> services = systemApi.GetServicesAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            services.Count.ShouldBe(3);
+            services.First().Name.ShouldBe("system");
+        }
+
+        [TestMethod]
+        public void ShouldCreateServiceAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            ServiceRequest service = CreateService();
+            service.Id = null;
+
+            // Act
+            ServiceResponse created = systemApi.CreateServicesAsync(new SqlQuery(), service).Result.First();
+
+            // Assert
+            created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateServicesAsync(null, service));
+            Should.Throw<ArgumentException>(() => systemApi.CreateServicesAsync(new SqlQuery()));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateServiceAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            ServiceRequest service = CreateService();
+
+            // Act & Assert
+            systemApi.UpdateServicesAsync(new SqlQuery(), service).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteServicesAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act & Assert
+            systemApi.DeleteServicesAsync(new SqlQuery(), 1, 2, 3);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteServicesAsync(null, 1, 2, 3));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteServicesAsync(new SqlQuery()));
+        }
+
+        private static ServiceRequest CreateService()
+        {
+            return new ServiceRequest
             {
-                Name = "my_custom_script",
-                Type = "v8js",
+                Id = 1,
+                Name = "system",
+                Label = "System Management",
+                Description = "Service for managing system resources.",
                 IsActive = true,
-                AffectsProcess = true,
-                Content = "text",
-                Config = "text"
+                Type= "system"
             };
         }
+
+        #endregion
+
+        #region --- Role ---
+
+        [TestMethod]
+        public void ShouldGetRolesAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<RoleResponse> roles = systemApi.GetRolesAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            roles.Count.ShouldBe(2);
+            roles.First().Name.ShouldBe("AddressBookUser");
+        }
+
+        [TestMethod]
+        public void ShouldCreateRoleAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            RoleRequest role = CreateRole();
+            role.Id = null;
+
+            // Act
+            RoleResponse created = systemApi.CreateRolesAsync(new SqlQuery(), role).Result.First();
+
+            // Assert
+            created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateRolesAsync(null, role));
+            Should.Throw<ArgumentException>(() => systemApi.CreateRolesAsync(new SqlQuery()));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateRoleAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            RoleRequest role = CreateRole();
+
+            // Act & Assert
+            systemApi.UpdateRolesAsync(new SqlQuery(), role).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteRolesAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act & Assert
+            systemApi.DeleteRolesAsync(new SqlQuery(), 1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteRolesAsync(null, 1));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteRolesAsync(new SqlQuery()));
+        }
+
+        private static RoleRequest CreateRole()
+        {
+            return new RoleRequest
+            {
+                Id = 1,
+                Name = "AddressBookUser",
+                Description = "This role can access address book.",
+                IsActive = true,
+            };
+        }
+
+        #endregion
+
+        #region --- User ---
+
+        [TestMethod]
+        public void ShouldGetUsersAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<UserResponse> users = systemApi.GetUsersAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            users.Count.ShouldBe(2);
+            users.First().Name.ShouldBe("demo");
+        }
+
+        [TestMethod]
+        public void ShouldCreateUserAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            UserRequest user = CreateUser();
+            user.Id = null;
+
+            // Act
+            UserResponse created = systemApi.CreateUsersAsync(new SqlQuery(), user).Result.First();
+
+            // Assert
+            created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateUsersAsync(null, user));
+            Should.Throw<ArgumentException>(() => systemApi.CreateUsersAsync(new SqlQuery()));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateUserAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            UserRequest user = CreateUser();
+
+            // Act & Assert
+            systemApi.UpdateUsersAsync(new SqlQuery(), user).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteUsersAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act & Assert
+            systemApi.DeleteUsersAsync(new SqlQuery(), 1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteUsersAsync(null, 1));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteUsersAsync(new SqlQuery()));
+        }
+
+        private static UserRequest CreateUser()
+        {
+            return new UserRequest
+            {
+                Id = 1,
+                Name = "dreamUser",
+                FirstName = "Dream",
+                LastName = "Factory",
+                Email = "system@factory.com",
+                IsActive = true,
+            };
+        }
+
+        #endregion
+
     }
 }

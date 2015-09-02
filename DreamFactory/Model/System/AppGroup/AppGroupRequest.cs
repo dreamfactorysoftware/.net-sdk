@@ -22,10 +22,5 @@
         /// Description of this application group.
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Related apps by app to group assignment.
-        /// </summary>
-        public List<RelatedApp> Apps { get; set; }
     }
 }
