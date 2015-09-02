@@ -126,7 +126,11 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize<CustomResponse>(response.Body);
+            return new CustomResponse
+            {
+                Name = settingName,
+                Value = response.Body
+            };
         }
 
         public async Task<CustomResponse> UpdateCustomSettingAsync(string settingName, CustomRequest custom, SqlQuery query = null)

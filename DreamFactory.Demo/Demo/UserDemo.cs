@@ -28,7 +28,7 @@
                 FirstName = guid.Substring(0, 6),
                 LastName = guid.Substring(0, 6),
                 Email = guid.Substring(0, 6) + "@factory.com",
-                DisplayName = guid.Substring(0, 6),
+                Name = guid.Substring(0, 6),
                 NewPassword = guid.Substring(0, 6)
             };
             bool ok = await userApi.RegisterAsync(register, true);

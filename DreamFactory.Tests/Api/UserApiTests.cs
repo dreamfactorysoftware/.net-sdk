@@ -158,7 +158,7 @@
                 Email = "test@mail.com",
                 FirstName = "first",
                 LastName = "last",
-                DisplayName = "display",
+                Name = "display",
                 NewPassword = "qwerty"
             };
 
