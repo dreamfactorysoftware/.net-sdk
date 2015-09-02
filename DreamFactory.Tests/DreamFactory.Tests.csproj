@@ -274,6 +274,12 @@
     <None Include="TestData\rest\system\app_group\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\config\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\config\post.request.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\system\config\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -289,6 +295,12 @@
     <None Include="TestData\rest\system\event\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\event\system.get.pre_process\delete.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\event\system.get.pre_process\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\system\event\system.get.pre_process\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -296,6 +308,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="TestData\rest\system\script\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\script_type\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="TestData\rest\system\service\get.json">

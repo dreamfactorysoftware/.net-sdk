@@ -14,7 +14,7 @@
                 throw new ArgumentNullException("applicationName");
             }
 
-            if (applicationName == null)
+            if (applicationApiKey == null)
             {
                 throw new ArgumentNullException("applicationApiKey");
             }

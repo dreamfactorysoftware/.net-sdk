@@ -112,8 +112,6 @@
     <Compile Include="Model\System\App\AppRequest.cs" />
     <Compile Include="Model\System\Config\ConfigRequest.cs" />
     <Compile Include="Model\System\Config\ConfigResponse.cs" />
-    <Compile Include="Model\System\Config\HostInfo.cs" />
-    <Compile Include="Model\System\Config\StateInfo.cs" />
     <Compile Include="Model\System\Custom\CustomRequest.cs" />
     <Compile Include="Model\System\Custom\CustomResponse.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />

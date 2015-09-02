@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
@@ -31,7 +32,7 @@
         #region --- Session ---
 
         [TestMethod]
-        public void ShouldLoginAsync()
+        public void ShouldLoginAdminAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
@@ -42,10 +43,16 @@
             // Assert
             session.Name.ShouldBe("SuperAdmin");
             session.SessionId.ShouldNotBeEmpty();
+
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(null, AppApiKey, "dream@factory.com", "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, null, "dream@factory.com", "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, null, "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", null));
+            Should.Throw<ArgumentOutOfRangeException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory", -9999));
         }
 
         [TestMethod]
-        public void ShouldGetSessionAsync()
+        public void ShouldGetAdminSessionAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
@@ -59,7 +66,7 @@
         }
 
         [TestMethod]
-        public void LoginShouldChangeBaseHeaders()
+        public void LoginAdminShouldChangeBaseHeaders()
         {
             // Arrange
             HttpHeaders headers;
@@ -76,7 +83,7 @@
         }
 
         [TestMethod]
-        public void ShouldLogoutAsync()
+        public void ShouldLogoutAdminAsync()
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
@@ -89,7 +96,7 @@
         }
 
         [TestMethod]
-        public void LogoutShouldRemoveSessionToken()
+        public void LogoutAdminShouldRemoveSessionToken()
         {
             // Arrange
             HttpHeaders headers;
@@ -105,7 +112,6 @@
 
         #endregion
 
-
         [TestMethod]
         public void ShouldGetAppsAsync()
         {
@@ -118,6 +124,8 @@
             // Assert
             apps.Count.ShouldBe(4);
             apps.First().Name.ShouldBe("admin");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.GetAppsAsync(null));
         }
 
         [TestMethod]
@@ -188,6 +196,9 @@
             // Assert
             response.Name.ShouldBe("my_custom_script");
             response.Type.ShouldBe("v8js");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync(null, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync("system.get.pre_process", null));
         }
 
         [TestMethod]
@@ -205,6 +216,56 @@
         }
 
         [TestMethod]
+        public void ShouldGetScriptTypes()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<ScriptTypeResponse> scriptTypes = systemApi.GetScriptTypesAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            scriptTypes.Count.ShouldBe(1);
+            scriptTypes.Select(x => x.Name).First().ShouldBe("v8js");
+        }
+
+        [TestMethod]
+        public void ShouldCreateEventScriptAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            EventScriptRequest eventScript = CreateEventScript();
+
+            // Act
+            EventScriptResponse response = systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, new SqlQuery()).Result;
+
+            // Assert
+            response.Name.ShouldBe("my_custom_script");
+            response.Type.ShouldBe("v8js");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, eventScript, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, null));
+        }
+
+        [TestMethod]
+        public void ShouldDeleteEventScriptAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            EventScriptResponse response = systemApi.DeleteEventScriptAsync("system.get.pre_process", new SqlQuery()).Result;
+
+            // Assert
+            response.Name.ShouldBe("my_custom_script");
+            response.Type.ShouldBe("v8js");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync(null, new SqlQuery()));
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync("system.get.pre_process", null));
+        }
+
+        [TestMethod]
         public void ShouldCreateAppAsync()
         {
             // Arrange
@@ -217,6 +278,9 @@
 
             // Assert
             created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateAppsAsync(null, app));
+            Should.Throw<ArgumentException>(() => systemApi.CreateAppsAsync(new SqlQuery()));
         }
 
         [TestMethod]
@@ -238,6 +302,9 @@
 
             // Act & Assert
             systemApi.DeleteAppsAsync(new SqlQuery(), 1, 2, 3);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.DeleteAppsAsync(null, 1, 2, 3));
+            Should.Throw<ArgumentException>(() => systemApi.DeleteAppsAsync(new SqlQuery()));
         }
 
         [TestMethod]
@@ -263,10 +330,23 @@
             ConfigResponse config = systemApi.GetConfigAsync().Result;
 
             // Assert
-            config.DbVersion.ShouldBe("1.9.0");
-            config.InstallName.ShouldBe("Bitnami Package");
-            config.Paths.Count.ShouldBe(6);
-            config.States.OperationState.ShouldBe(-1);
+            config.EditableProfileFields.ShouldBe("name");
+        }
+
+        [TestMethod]
+        public void ShouldSetConfigAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            ConfigRequest config = CreateConfig();
+
+            // Act
+            ConfigResponse response = systemApi.SetConfigAsync(config).Result;
+
+            // Assert
+            response.EditableProfileFields.ShouldBe("name");
+
+            Should.Throw<ArgumentNullException>(() => systemApi.SetConfigAsync(null));
         }
 
         [TestMethod]
@@ -297,6 +377,16 @@
             constant.Keys.ShouldContain("HTML");
         }
 
+        private ConfigRequest CreateConfig()
+        {
+            return new ConfigRequest
+            {
+                EditableProfileFields = "name",
+                RestrictedVerbs = new List<string>{"patch"},
+                TimestampFormat = ""
+            };
+        }
+
         private static ISystemApi CreateSystemApi(string suffix = null)
         {
             HttpHeaders headers;
@@ -323,6 +413,19 @@
                 AllowFullscreenToggle = true,
                 ToggleLocation = "top",
                 RoleId = 2
+            };
+        }
+
+        private static EventScriptRequest CreateEventScript()
+        {
+            return new EventScriptRequest
+            {
+                Name = "my_custom_script",
+                Type = "v8js",
+                IsActive = true,
+                AffectsProcess = true,
+                Content = "text",
+                Config = "text"
             };
         }
     }

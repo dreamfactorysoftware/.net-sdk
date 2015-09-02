@@ -19,19 +19,9 @@
             return DeleteRecordsAsync<AppResponse>("app", query, false, ids);
         }
 
-        public Task<IEnumerable<AppResponse>> DeleteAllAppsAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<AppResponse>("app", query ?? new SqlQuery(), true);
-        }
-
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
             return DeleteRecordsAsync<AppGroupResponse>("app_group", query, false, ids);
-        }
-
-        public Task<IEnumerable<AppGroupResponse>> DeleteAllAppGroupsAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<AppGroupResponse>("app_group", query ?? new SqlQuery(), true);
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
@@ -39,19 +29,9 @@
             return DeleteRecordsAsync<RoleResponse>("role", query, false, ids);
         }
 
-        public Task<IEnumerable<RoleResponse>> DeleteAllRolesAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<RoleResponse>("role", query ?? new SqlQuery(), true);
-        }
-
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
             return DeleteRecordsAsync<UserResponse>("user", query, false, ids);
-        }
-
-        public Task<IEnumerable<UserResponse>> DeleteAllUsersAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<UserResponse>("user", query ?? new SqlQuery(), true);
         }
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
@@ -59,19 +39,9 @@
             return DeleteRecordsAsync<ServiceResponse>("service", query, false, ids);
         }
 
-        public Task<IEnumerable<ServiceResponse>> DeleteAllServicesAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<ServiceResponse>("service", query ?? new SqlQuery(), true);
-        }
-
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
             return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query, false, ids);
-        }
-
-        public Task<IEnumerable<EmailTemplateResponse>> DeleteAllEmailTemplatesAsync(SqlQuery query = null)
-        {
-            return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query ?? new SqlQuery(), true);
         }
 
         #region --- Helpers ---
