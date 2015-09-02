@@ -134,6 +134,7 @@
     <Compile Include="Model\System\Script\RelatedScriptType.cs" />
     <Compile Include="Model\System\Event\RelatedEventScript.cs" />
     <Compile Include="Model\System\Script\ScriptTypeResponse.cs" />
+    <Compile Include="Model\System\Service\RelatedServiceDoc.cs" />
     <Compile Include="Model\System\Service\RelatedServiceType.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />

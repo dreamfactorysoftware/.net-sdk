@@ -510,5 +510,217 @@
             /// </summary>
             public const string User = "user_by_user_id";
         }
+
+        /// <summary>
+        /// Related resource names for app group record.
+        /// </summary>
+        public struct AppGroup
+        {
+            /// <summary>
+            /// Related resource name for user record linked to app group.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for user record linked to app group.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+
+            /// <summary>
+            /// Related resource name for app to app group records linked to app group.
+            /// </summary>
+            public const string AppToAppGroups = "app_to_app_group_by_group_id";
+
+            /// <summary>
+            /// Related resource name for the apps in app to app group records linked to app group.
+            /// </summary>
+            public const string AppsInAppToAppGroups = "app_by_app_to_app_group";
+        }
+
+        /// <summary>
+        /// Related resource names for service record.
+        /// </summary>
+        public struct Service
+        {
+            /// <summary>
+            /// Related resource name for the app records using this service.
+            /// </summary>
+            public const string Apps = "app_by_storage_service_id";
+
+            /// <summary>
+            /// Related resource name for the roles in app records linked to this service.
+            /// </summary>
+            public const string UsersInApps = "user_by_app";
+
+            /// <summary>
+            /// Related resource name for the roles in app records linked to this service.
+            /// </summary>
+            public const string RolesInApps = "role_by_app";
+
+            /// <summary>
+            /// Related resource name for the aws config record linked to this service.
+            /// </summary>
+            public const string AwsConfig = "aws_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the azure config record linked to this service.
+            /// </summary>
+            public const string AzureConfig = "azure_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the cloud email config record linked to this service.
+            /// </summary>
+            public const string CloudEmailConfig = "cloud_email_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the couch db config record linked to this service.
+            /// </summary>
+            public const string CouchDbConfig = "couchdb_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the db field extra records linked to this service.
+            /// </summary>
+            public const string DbFieldExtras = "db_field_extras_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the users in db field extra records linked to this service.
+            /// </summary>
+            public const string UsersInDbFieldExtras = "user_by_db_field_extras";
+
+            /// <summary>
+            /// Related resource name for the db table extra records linked to this service.
+            /// </summary>
+            public const string DbTableExtras = "db_table_extras_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the users in db table extra records linked to this service.
+            /// </summary>
+            public const string UsersInDbTableExtras = "user_by_db_table_extras";
+
+            /// <summary>
+            /// Related resource name for the email parameters record linked to this service.
+            /// </summary>
+            public const string EmailParametersConfig = "email_parameters_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the users in file service record linked to this service.
+            /// </summary>
+            public const string FileServiceConfig = "file_service_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the ldap config record linked to this service.
+            /// </summary>
+            public const string LdapConfig = "ldap_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the roles in ldap config record linked to this service.
+            /// </summary>
+            public const string RolesInLdapConfig = "role_by_ldap_config";
+
+            /// <summary>
+            /// Related resource name for the mongo db config record linked to this service.
+            /// </summary>
+            public const string MongoDbConfig = "mongodb_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the OAuth config record linked to this service.
+            /// </summary>
+            public const string OAuthConfig = "oauth_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the roles in OAuth config record linked to this service.
+            /// </summary>
+            public const string RolesInOAuthConfig = "role_by_oauth_config";
+
+            /// <summary>
+            /// Related resource name for the rackspace config record linked to this service.
+            /// </summary>
+            public const string RackspaceConfig = "rackspace_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the role service access records linked to this service.
+            /// </summary>
+            public const string RoleServiceAccesses = "role_service_access_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the users in role service access records linked to this service.
+            /// </summary>
+            public const string UsersInRoleServiceAccesses = "user_by_role_service_access";
+
+            /// <summary>
+            /// Related resource name for the roles in role service access records linked to this service.
+            /// </summary>
+            public const string RolesInRoleServiceAccesses = "role_by_role_service_access";
+
+            /// <summary>
+            /// Related resource name for the rws config record linked to this service.
+            /// </summary>
+            public const string RwsConfig = "rws_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the headers in rws config record linked to this service.
+            /// </summary>
+            public const string HeadersInRwsConfig = "rws_headers_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the parameters in rws config record linked to this service.
+            /// </summary>
+            public const string ParametersInRwsConfig = "rws_parameters_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the salesforce db config record linked to this service.
+            /// </summary>
+            public const string SalesforceDbConfig = "salesforce_db_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the script config records linked to this service.
+            /// </summary>
+            public const string ScriptConfigs = "script_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the script types in script config records linked to this service.
+            /// </summary>
+            public const string ScriptTypesInScriptConfigs = "script_type_by_script_config";
+
+            /// <summary>
+            /// Related resource name for user record linked to this service.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for user record linked to this service.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+
+            /// <summary>
+            /// Related resource name for service type record linked to this service.
+            /// </summary>
+            public const string ServiceType = "service_type_by_type";
+
+            /// <summary>
+            /// Related resource name for the service cache config record linked to this service.
+            /// </summary>
+            public const string ServiceCacheConfig = "service_cache_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the service doc records linked to this service.
+            /// </summary>
+            public const string ServiceDocs = "service_doc_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the SMTP config records linked to this service.
+            /// </summary>
+            public const string SmtpConfig = "smtp_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the SQL DB config records linked to this service.
+            /// </summary>
+            public const string SqlDbConfigs = "sql_db_config_by_service_id";
+
+            /// <summary>
+            /// Related resource name for the user config record linked to this service.
+            /// </summary>
+            public const string UserConfig = "user_config_by_service_id";
+        }
     }
 }
