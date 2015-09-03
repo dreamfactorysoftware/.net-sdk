@@ -78,20 +78,6 @@
         }
 
         [TestMethod]
-        public void ShouldDeleteAllCustomSettingAsync()
-        {
-            // Arrange
-            ICustomSettingsApi settingsApi = CreateSettingsApi();
-
-            // Act
-            IEnumerable<CustomResponse> settings = settingsApi.DeleteAllCustomSettingsAsync(new SqlQuery()).Result.ToList();
-
-            // Assert
-            settings.Count().ShouldBe(2);
-            settings.First().Name.ShouldBe("Language");
-        }
-
-        [TestMethod]
         public void ShouldUpdateCustomSettingAsync()
         {
             // Arrange

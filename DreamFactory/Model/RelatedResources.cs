@@ -722,5 +722,21 @@
             /// </summary>
             public const string UserConfig = "user_config_by_service_id";
         }
+
+        /// <summary>
+        /// Related resource names for environment record.
+        /// </summary>
+        public struct Environment
+        {
+            /// <summary>
+            /// Related resource name for the apps in app group records in this environment.
+            /// </summary>
+            public const string AppsInAppGroups = "app_group";
+
+            /// <summary>
+            /// Related resource name for the apps not in app group records in this environment.
+            /// </summary>
+            public const string AppsNotInAppGroups = "no_app_group";
+        }
     }
 }

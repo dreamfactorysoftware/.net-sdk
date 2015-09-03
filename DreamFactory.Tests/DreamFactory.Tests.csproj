@@ -406,9 +406,6 @@
     <None Include="TestData\rest\user\custom\Language\patch.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\rest\user\custom\delete.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="TestData\rest\user\custom\patch.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

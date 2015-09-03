@@ -35,13 +35,6 @@
         Task<IEnumerable<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
-        /// Delete all user|system setting.
-        /// </summary>
-        /// <param name="query">SQL query to return deleted records.</param>
-        /// <returns>Custom records deleted.</returns>
-        Task<IEnumerable<CustomResponse>> DeleteAllCustomSettingsAsync(SqlQuery query = null);
-
-        /// <summary>
         /// Retrieve one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>

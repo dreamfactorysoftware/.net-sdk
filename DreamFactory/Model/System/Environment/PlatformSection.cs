@@ -11,23 +11,18 @@
         public bool? IsHosted { get; set; }
 
         /// <summary>
-        /// is_private.
-        /// </summary>
-        public bool? IsPrivate { get; set; }
-
-        /// <summary>
         /// dsp_version_current.
         /// </summary>
-        public string DspVersionCurrent { get; set; }
+        public string VersionCurrent { get; set; }
 
         /// <summary>
         /// dsp_version_latest.
         /// </summary>
-        public string DspVersionLatest { get; set; }
+        public string VersionLatest { get; set; }
 
         /// <summary>
         /// upgrade_available.
         /// </summary>
         public bool? UpgradeAvailable { get; set; }
     }
-}
+}		

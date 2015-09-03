@@ -87,26 +87,6 @@
             return contentSerializer.Deserialize(response.Body, resources).resource;
         }
 
-        public async Task<IEnumerable<CustomResponse>> DeleteAllCustomSettingsAsync(SqlQuery query = null)
-        {
-            IHttpAddress address = baseAddress.WithResource("custom");
-
-            address = address.WithParameter("force", true);
-
-            if (query != null)
-            {
-                address = address.WithSqlQuery(query);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var settings = new { resource = new List<CustomResponse>() };
-            return contentSerializer.Deserialize(response.Body, settings).resource;
-        }
-
         public async Task<CustomResponse> GetCustomSettingAsync(string settingName, SqlQuery query = null)
         {
             if (settingName == null)

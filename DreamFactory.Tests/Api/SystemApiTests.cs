@@ -431,7 +431,7 @@
             EnvironmentResponse environment = systemApi.GetEnvironmentAsync().Result;
 
             // Assert
-            environment.Server.ServerOs.ShouldBe("linux");
+            environment.Platform.VersionCurrent.ShouldBe("2.0");
         }
 
         #endregion
