@@ -7,7 +7,7 @@
     using Shouldly;
 
     [TestClass]
-    public class HttpAddressTests
+    public class HttpAddressTests : BaseTest
     {
         [TestMethod]
         public void ShouldBuildAfterConstruction()
@@ -21,12 +21,12 @@
             };
 
             // Act
-            HttpAddress addressV1 = new HttpAddress("http://localhost:8765", RestApiVersion.V1, resources, parameters);
-            HttpAddress addressV2 = new HttpAddress("http://localhost:8765", RestApiVersion.V2, resources, parameters);
+            HttpAddress addressV1 = new HttpAddress(BaseAddress, RestApiVersion.V1, resources, parameters);
+            HttpAddress addressV2 = new HttpAddress(BaseAddress, RestApiVersion.V2, resources, parameters);
 
             // Assert
-            addressV1.Build().ShouldBe("http://localhost:8765/rest/user/session?one=1&two=true");
-            addressV2.Build().ShouldBe("http://localhost:8765/api/v2/user/session?one=1&two=true");
+            addressV1.Build().ShouldBe(BaseAddress + "/rest/user/session?one=1&two=true");
+            addressV2.Build().ShouldBe(BaseAddress + "/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@
             address = address.WithVersion(RestApiVersion.V2);
 
             // Assert
-            address.Build().ShouldBe("http://localhost:8765/api/v2/user/session?one=1&two=true");
+            address.Build().ShouldBe(BaseAddress + "/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@
             address = address.WithResource("add");
 
             // Assert
-            address.Build().ShouldBe("http://localhost:8765/rest/user/session/add?one=1&two=true");
+            address.Build().ShouldBe(BaseAddress + "/rest/user/session/add?one=1&two=true");
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@
             address = address.WithParameter("new", "value");
 
             // Assert
-            address.Build().ShouldBe("http://localhost:8765/rest/user/session?one=1&two=true&new=value");
+            address.Build().ShouldBe(BaseAddress + "/rest/user/session?one=1&two=true&new=value");
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@
                 { "two", true }
             };
 
-            return new HttpAddress("http://localhost:8765", RestApiVersion.V1, resources, parameters);
+            return new HttpAddress(BaseAddress, RestApiVersion.V1, resources, parameters);
         }
     }
 }

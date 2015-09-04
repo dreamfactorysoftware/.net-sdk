@@ -11,10 +11,8 @@
     using Shouldly;
 
     [TestClass]
-    public class RestContextTests
+    public class RestContextTests : BaseTest
     {
-        private const string BaseAddress = "http://localhost:8765";
-
         [TestMethod]
         public void ShouldCreateHttpFacade()
         {

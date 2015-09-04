@@ -12,10 +12,8 @@
     using Shouldly;
 
     [TestClass]
-    public class EmailApiTests
+    public class EmailApiTests : BaseTest
     {
-        private const string BaseAddress = "http://localhost:8765";
-
         [TestMethod]
         public void ShouldSendEmailAsync()
         {

@@ -14,12 +14,8 @@
     using Shouldly;
 
     [TestClass]
-    public class UserApiTests
+    public class UserApiTests : BaseTest
     {
-        private const string BaseAddress = "http://localhost:8765";
-        private const string AppName = "admin";
-        private const string AppApiKey = "api_key";
-
         #region --- Session ---
 
         [TestMethod]

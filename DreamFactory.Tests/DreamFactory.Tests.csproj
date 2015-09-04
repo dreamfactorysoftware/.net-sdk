@@ -103,6 +103,7 @@
     <Compile Include="Serialization\SnakeCasePropertyNameResolverTests.cs" />
     <Compile Include="Serialization\JsonContentSerializerTests.cs" />
     <Compile Include="TestDataHttpFacade.cs" />
+    <Compile Include="BaseTest.cs" />
     <None Include="TestData\rest\db\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

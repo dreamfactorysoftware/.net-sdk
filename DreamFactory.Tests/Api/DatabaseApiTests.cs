@@ -14,10 +14,8 @@
     using Shouldly;
 
     [TestClass]
-    public class DatabaseApiTests
+    public class DatabaseApiTests : BaseTest
     {
-        private const string BaseAddress = "http://localhost:8765";
-
         #region --- Schema ---
 
         [TestMethod]

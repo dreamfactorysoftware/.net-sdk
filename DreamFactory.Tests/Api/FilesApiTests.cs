@@ -13,10 +13,8 @@
     using Shouldly;
 
     [TestClass]
-    public class FilesApiTests
+    public class FilesApiTests : BaseTest
     {
-        private const string BaseAddress = "http://localhost:8765";
-
         #region --- Resources ---
 
         [TestMethod]

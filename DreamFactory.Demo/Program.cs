@@ -11,9 +11,9 @@
          *  Change these settings to match your local DF installation.
          */
 
-        internal const string BaseAddress = "http://localhost:8765";
-        internal const string AppName = "demo";
-        internal const string AppApiKey = "eea04e3e9b2b2a452cb1b49bbae52fa9a4336b874a5267608586378246ee4ebb";
+        internal const string BaseAddress = "http://dfv2.cloudapp.net:8080";
+        internal const string AppName = "admin";
+        internal const string AppApiKey = "6498a8ad1beb9d84d63035c5d1120c007fad6de706734db9689f8996707e0f7d";
         internal const string Email = "dream@factory.com";
         internal const string Password = "dreamfactory";
 
