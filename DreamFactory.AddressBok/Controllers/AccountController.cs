@@ -3,12 +3,16 @@
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Models;
+    using DreamFactory.Api;
 
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController()
+        private IUserApi _userApi;
+
+        public AccountController(IUserApi userApi)
         {
+            _userApi = userApi;
         }
 
         //
