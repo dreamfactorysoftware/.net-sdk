@@ -50,17 +50,15 @@
             ISystemApi systemApi = CreateSystemApi();
 
             // Act
-            Session session = systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Result;
+            Session session = systemApi.LoginAdminAsync("dream@factory.com", "dreamfactory").Result;
 
             // Assert
             session.Name.ShouldBe("SuperAdmin");
             session.SessionId.ShouldNotBeEmpty();
 
-            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(null, AppApiKey, "dream@factory.com", "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, null, "dream@factory.com", "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, null, "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", null));
-            Should.Throw<ArgumentOutOfRangeException>(() => systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory", -9999));
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(null, "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync("dream@factory.com", null));
+            Should.Throw<ArgumentOutOfRangeException>(() => systemApi.LoginAdminAsync("dream@factory.com", "dreamfactory", -9999));
         }
 
         [TestMethod]
@@ -68,7 +66,7 @@
         {
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
-            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+            systemApi.LoginAdminAsync("dream@factory.com", "dreamfactory").Wait();
 
             // Act
             Session session = systemApi.GetAdminSessionAsync().Result;
@@ -85,13 +83,11 @@
             ISystemApi systemApi = CreateSystemApi(out headers);
 
             // Act
-            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+            systemApi.LoginAdminAsync("dream@factory.com", "dreamfactory").Wait();
 
             // Assert
             Dictionary<string, object> dictionary = headers.Build();
-            dictionary.ContainsKey(HttpHeaders.FolderNameHeader).ShouldBe(true);
             dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            dictionary[HttpHeaders.FolderNameHeader].ShouldBe("admin");
         }
 
         [TestMethod]
@@ -113,7 +109,7 @@
             // Arrange
             HttpHeaders headers;
             ISystemApi systemApi = CreateSystemApi(out headers);
-            systemApi.LoginAdminAsync(AppName, AppApiKey, "dream@factory.com", "dreamfactory").Wait();
+            systemApi.LoginAdminAsync("dream@factory.com", "dreamfactory").Wait();
 
             // Act
             systemApi.LogoutAdminAsync().Wait();

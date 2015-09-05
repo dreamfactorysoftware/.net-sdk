@@ -1,18 +1,22 @@
 ﻿namespace DreamFactory.AddressBook.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Models;
     using DreamFactory.Api;
+    using DreamFactory.Model.User;
 
     [Authorize]
     public class AccountController : Controller
     {
-        private IUserApi _userApi;
+        private readonly IUserApi _userApi;
+        private readonly ISystemApi _systemApi;
 
-        public AccountController(IUserApi userApi)
+        public AccountController(IUserApi userApi, ISystemApi systemApi)
         {
             _userApi = userApi;
+            _systemApi = systemApi;
         }
 
         //
@@ -36,23 +40,32 @@
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            //switch (result)
-            //{
-            //    case SignInStatus.Success:
-            //        return RedirectToLocal(returnUrl);
-            //    case SignInStatus.LockedOut:
-            //        return View("Lockout");
-            //    case SignInStatus.RequiresVerification:
-            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-            //    case SignInStatus.Failure:
-            //    default:
-            //        ModelState.AddModelError("", "Invalid login attempt.");
-            //        return View(model);
-            //}
-            return View(model);
+            Session session = new Session();
+
+            try
+            {
+                session = await _userApi.LoginAsync(model.Email, model.Password);
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    session = await _systemApi.LoginAdminAsync(model.Email, model.Password);
+                }
+                catch
+                {;}
+            }
+
+            if (string.IsNullOrEmpty(session.SessionId))
+            {
+
+
+                Session["sessionId"] = session.SessionId;
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+            return RedirectToLocal(returnUrl);
         }
 
         //
@@ -70,26 +83,36 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            //    var result = await UserManager.CreateAsync(user, model.Password);
-            //    if (result.Succeeded)
-            //    {
-            //        await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-            //        
-            //        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-            //        // Send an email with this link
-            //        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            //        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-            //        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-            //
-            //        return RedirectToAction("Index", "Home");
-            //    }
-            //    AddErrors(result);
-            //}
+            if (ModelState.IsValid)
+            {
+                Register register = new Register
+                {
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Name = model.Name,
+                    NewPassword = model.Password
+                };
 
-            // If we got this far, something failed, redisplay form
+                bool result = await _userApi.RegisterAsync(register);
+
+                if (result)
+                {
+                    Session session = await _userApi.LoginAsync(model.Email, model.Password);
+
+                    if (string.IsNullOrEmpty(session.SessionId))
+                    {
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return RedirectToAction("Login", "Account");
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "There has been an error registering your account.");
+                }
+            }
             return View(model);
         }
 
@@ -99,19 +122,11 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            _userApi.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 
         #region Helpers
-
-        //private void AddErrors(IdentityResult result)
-        //{
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError("", error);
-        //    }
-        //}
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

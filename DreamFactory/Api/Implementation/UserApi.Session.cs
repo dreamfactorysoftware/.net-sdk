@@ -7,18 +7,8 @@
 
     internal partial class UserApi
     {
-        public async Task<Session> LoginAsync(string applicationName, string applicationApiKey, string email, string password, int duration)
+        public async Task<Session> LoginAsync(string email, string password, int duration)
         {
-            if (applicationName == null)
-            {
-                throw new ArgumentNullException("applicationName");
-            }
-
-            if (applicationApiKey == null)
-            {
-                throw new ArgumentNullException("applicationApiKey");
-            }
-
             if (email == null)
             {
                 throw new ArgumentNullException("email");
@@ -35,8 +25,6 @@
             }
 
             var address = baseAddress.WithResource("session");
-            baseHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
 
             Login login = new Login { Email = email, Password = password, Duration = duration };
             string loginContent = contentSerializer.Serialize(login);

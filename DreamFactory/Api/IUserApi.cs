@@ -25,13 +25,11 @@
         /// Successful login operation will set ApplicationName and SessionToken headers.
         /// If using with v1 of the api you do not need to specify the applicationApiKey.
         /// </remarks>
-        /// <param name="applicationName">Application name.</param>
-        /// <param name="applicationApiKey">Application api key.</param>
         /// <param name="email">Email.</param>
         /// <param name="password">Password.</param>
         /// <param name="duration">Session duration.</param>
         /// <returns>Session object instance.</returns>
-        Task<Session> LoginAsync(string applicationName, string applicationApiKey, string email, string password, int duration = 0);
+        Task<Session> LoginAsync(string email, string password, int duration = 0);
 
         /// <summary>
         /// Retrieve the current user session information.

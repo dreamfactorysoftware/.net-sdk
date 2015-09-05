@@ -7,18 +7,8 @@
 
     internal partial class SystemApi
     {
-        public async Task<Session> LoginAdminAsync(string applicationName, string applicationApiKey, string email, string password, int duration = 0)
+        public async Task<Session> LoginAdminAsync(string email, string password, int duration = 0)
         {
-            if (applicationName == null)
-            {
-                throw new ArgumentNullException("applicationName");
-            }
-
-            if (applicationApiKey == null)
-            {
-                throw new ArgumentNullException("applicationApiKey");
-            }
-
             if (email == null)
             {
                 throw new ArgumentNullException("email");
@@ -35,8 +25,6 @@
             }
 
             IHttpAddress address = baseAddress.WithResource("admin", "session");
-            baseHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
 
             Login login = new Login { Email = email, Password = password, Duration = duration };
             string loginContent = contentSerializer.Serialize(login);

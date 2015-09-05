@@ -14,7 +14,7 @@
 
             try
             {
-                Session session = await systemApi.LoginAdminAsync(Program.AppName, Program.AppApiKey, Program.Email, Program.Password);
+                Session session = await systemApi.LoginAdminAsync(Program.Email, Program.Password);
                 Console.WriteLine("Logged in as {0}", session.Name);
             }
             catch (Exception ex)

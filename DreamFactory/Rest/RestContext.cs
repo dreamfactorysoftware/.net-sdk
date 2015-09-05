@@ -18,9 +18,11 @@
         /// Initializes a new instance of the <see cref="RestContext"/> class.
         /// </summary>
         /// <param name="baseAddress">Base address (URL).</param>
+        /// <param name="applicationName">Application name.</param>
+        /// <param name="applicationApiKey">Application API key.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, RestApiVersion apiVersion = RestApiVersion.V1)
-            : this(baseAddress, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, RestApiVersion apiVersion = RestApiVersion.V1)
+            : this(baseAddress, applicationName, applicationApiKey, null, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
         {
         }
 
@@ -28,10 +30,26 @@
         /// Initializes a new instance of the <see cref="RestContext"/> class.
         /// </summary>
         /// <param name="baseAddress">Base address (URL).</param>
+        /// <param name="applicationName">Application name.</param>
+        /// <param name="applicationApiKey">Application API key.</param>
+        /// <param name="sessionId">SessionId to be added to base headers.</param>
+        /// <param name="apiVersion">REST API version to use.</param>
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, RestApiVersion apiVersion = RestApiVersion.V1)
+            : this(baseAddress, applicationName, applicationApiKey, sessionId, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RestContext"/> class.
+        /// </summary>
+        /// <param name="baseAddress">Base address (URL).</param>
+        /// <param name="applicationName">Application name.</param>
+        /// <param name="applicationApiKey">Application API key.</param>
+        /// <param name="sessionId">SessionId to be added to base headers.</param>
         /// <param name="httpFacade">User defined instance of <see cref="IHttpFacade"/>.</param>
         /// <param name="serializer">User defined instance of <see cref="IContentSerializer"/>.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, IHttpFacade httpFacade, IContentSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V1)
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, IHttpFacade httpFacade, IContentSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V1)
         {
             HttpUtils.CheckUrlString(baseAddress);
 
@@ -45,12 +63,22 @@
                 throw new ArgumentNullException("serializer");
             }
 
+            if (httpFacade == null)
+            {
+                throw new ArgumentNullException("applicationName");
+            }
+
+            if (serializer == null)
+            {
+                throw new ArgumentNullException("applicationApiKey");
+            }
+
             address = new HttpAddress(baseAddress, apiVersion);
 
             HttpFacade = httpFacade;
             ContentSerializer = serializer;
 
-            SetBaseHeaders();
+            SetBaseHeaders(applicationName, applicationApiKey, sessionId);
 
             Factory = new ServiceFactory(address, HttpFacade, ContentSerializer, httpHeaders);
         }
@@ -102,12 +130,18 @@
             return ContentSerializer.Deserialize(response.Body, resources).resource;
         }
 
-        private void SetBaseHeaders()
+        private void SetBaseHeaders(string applicationName, string applicationApiKey, string sessionId)
         {
             httpHeaders = new HttpHeaders();
-            httpHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, "admin");
+            httpHeaders.AddOrUpdate(HttpHeaders.FolderNameHeader, applicationName);
+            httpHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApiKeyHeader, applicationApiKey);
             httpHeaders.AddOrUpdate(HttpHeaders.ContentTypeHeader, ContentSerializer.ContentType);
             httpHeaders.AddOrUpdate(HttpHeaders.AcceptHeader, ContentSerializer.ContentType);
+
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                httpHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, sessionId);
+            }
         }
     }
 }

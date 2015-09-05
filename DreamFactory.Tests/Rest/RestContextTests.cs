@@ -19,7 +19,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
             
             // Assert
             context.HttpFacade.ShouldNotBe(null);
@@ -31,7 +31,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
 
             // Assert
             context.ContentSerializer.ShouldNotBe(null);
@@ -43,7 +43,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
 
             // Assert
             context.BaseHeaders.ShouldNotBe(null);
@@ -56,7 +56,7 @@
             IHttpFacade facade = Mock.Of<IHttpFacade>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, facade, new JsonContentSerializer());
+            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, facade, new JsonContentSerializer());
 
             // Assert
             context.HttpFacade.ShouldBeSameAs(facade);
@@ -69,7 +69,7 @@
             IContentSerializer serializer = Mock.Of<IContentSerializer>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, Mock.Of<IHttpFacade>(), serializer);
+            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, Mock.Of<IHttpFacade>(), serializer);
 
             // Assert
             context.ContentSerializer.ShouldBeSameAs(serializer);
@@ -123,7 +123,7 @@
         private static IRestContext CreateRestContext()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext(BaseAddress, httpFacade, new JsonContentSerializer());
+            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, httpFacade, new JsonContentSerializer());
             return context;
         }
     }

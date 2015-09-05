@@ -25,17 +25,15 @@
             IUserApi userApi = CreateUserApi();
 
             // Act
-            Session session = userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", "dreamfactory").Result;
+            Session session = userApi.LoginAsync("demo@factory.com", "dreamfactory").Result;
 
             // Assert
             session.Name.ShouldBe("demo");
             session.SessionId.ShouldNotBeEmpty();
 
-            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(null, AppApiKey, "demo@factory.com", "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, null, "demo@factory.com", "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, AppApiKey, null, "dreamfactory"));
-            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", null));
-            Should.Throw<ArgumentOutOfRangeException>(() => userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", "dreamfactory", -9999));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(null, "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync("demo@factory.com", null));
+            Should.Throw<ArgumentOutOfRangeException>(() => userApi.LoginAsync("demo@factory.com", "dreamfactory", -9999));
         }
 
         [TestMethod]
@@ -43,7 +41,7 @@
         {
             // Arrange
             IUserApi userApi = CreateUserApi();
-            userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", "dreamfactory").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Act
             Session session = userApi.GetSessionAsync().Result;
@@ -60,13 +58,11 @@
             IUserApi userApi = CreateUserApi(out headers);
 
             // Act
-            userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", "dreamfactory").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Assert
             Dictionary<string, object> dictionary = headers.Build();
-            dictionary.ContainsKey(HttpHeaders.FolderNameHeader).ShouldBe(true);
             dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            dictionary[HttpHeaders.FolderNameHeader].ShouldBe("admin");
         }
 
         [TestMethod]
@@ -88,7 +84,7 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            userApi.LoginAsync(AppName, AppApiKey, "demo@factory.com", "dreamfactory").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Act
             userApi.LogoutAsync().Wait();

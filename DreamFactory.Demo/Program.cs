@@ -44,7 +44,7 @@
                 new HttpDemo()
             };
 
-            IRestContext context = new RestContext(BaseAddress, RestApiVersion.V2);
+            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, RestApiVersion.V2);
 
             Array.ForEach(tests, test =>
             {
