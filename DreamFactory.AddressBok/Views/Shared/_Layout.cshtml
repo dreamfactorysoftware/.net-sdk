@@ -17,14 +17,14 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="/">
-                    <img src="~/Images/DreamFactory-logo-inverse-horiz.png" width="200px" style="margin:10px 10px 0 10px" />
+                    <img src="~/Images/DreamFactory-logo-inverse-horiz.png" width="200" style="margin:10px 10px 0 10px" />
                 </a>
             </div>
             <div class="navbar-collapse collapse">
                 @if (Request.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Contact groups", "List", "Group")</li>
+                        <li>@Html.ActionLink("Contact groups", "List", "ContactGroup")</li>
                     </ul>
                 }
                 @Html.Partial("_LoginPartial")

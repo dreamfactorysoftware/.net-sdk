@@ -21,10 +21,12 @@ namespace DreamFactory.AddressBok
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-table/bootstrap-table.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-table.css",
                       "~/Content/site.css"));
         }
     }

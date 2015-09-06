@@ -1,0 +1,38 @@
+﻿@using DreamFactory.AddressBook.Models.ContactGroup
+@model IEnumerable<DreamFactory.AddressBook.Models.ContactGroup.ContactGroup>
+
+@{
+    ViewBag.Title = "Contact groups";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <td width="20%">@Html.Label("Id")</td>
+        <td width="50%">@Html.Label("Name")</td>
+        <td width="30%">@Html.Label("Action")</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (ContactGroup group in Model)
+    {
+        <tr>
+            <td>@group.Id</td>
+            <td>@group.Name</td>
+            <td>
+                <a type="button" class="btn btn-default btn-sm" aria-label="Contacts" href="@Url.Action("List", "Contact", new { GroupId = group.Id })">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contacts
+                </a>
+                <a type="button" class="btn btn-default btn-sm" aria-label="Edit" href="@Url.Action("Edit", new { Id = group.Id })">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@Html.Partial("Paging", "ContactGroup")
