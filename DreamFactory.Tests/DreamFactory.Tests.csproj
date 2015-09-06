@@ -231,6 +231,12 @@
     <None Include="TestData\rest\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\rest\system\admin\password\post.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\rest\system\admin\password\post.request.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\system\admin\session\delete.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

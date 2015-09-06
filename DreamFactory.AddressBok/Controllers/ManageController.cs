@@ -6,12 +6,18 @@
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Models;
+    using DreamFactory.Api;
 
     [Authorize]
     public class ManageController : Controller
     {
-        public ManageController()
+        private readonly ISystemApi systemApi;
+        private readonly IUserApi userApi;
+
+        public ManageController(ISystemApi systemApi, IUserApi userApi)
         {
+            this.systemApi = systemApi;
+            this.userApi = userApi;
         }
 
         //
@@ -27,8 +33,6 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            ViewBag.StatusMessage = "Your password has been changed.";
-            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -37,17 +41,27 @@
             ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
 
+            Task<bool> result;
+
             if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryConfig.Roles.SysAdmin))
             {
-                //systemApi.ChangePasswordAdminAsync();
+                result = systemApi.ChangeAdminPasswordAsync(model.OldPassword, model.NewPassword);
             }
             else
             {
-                //userApi.ChangePasswordAsync();
+                result = userApi.ChangePasswordAsync(model.OldPassword, model.NewPassword);
+            }
+
+            if (await result)
+            {
+                ViewBag.StatusMessage = "Your password has been changed.";
+            }
+            else
+            {
+                ViewBag.StatusMessage = "Password was not changed. Please try again.";
             }
 
             return View(model);
         }
-
     }
 }

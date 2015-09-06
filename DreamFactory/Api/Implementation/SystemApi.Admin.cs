@@ -64,5 +64,28 @@
             var logout = new { success = false };
             return contentSerializer.Deserialize(response.Body, logout).success;
         }
+
+        public async Task<bool> ChangeAdminPasswordAsync(string oldPassword, string newPassword)
+        {
+            if (oldPassword == null)
+            {
+                throw new ArgumentNullException("oldPassword");
+            }
+
+            if (newPassword == null)
+            {
+                throw new ArgumentNullException("newPassword");
+            }
+
+            var address = baseAddress.WithResource("admin", "password");
+            PasswordRequest data = new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword };
+            string content = contentSerializer.Serialize(data);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
+        }
     }
 }

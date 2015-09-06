@@ -62,6 +62,22 @@
         }
 
         [TestMethod]
+        public void ShouldChangeAdminPasswordAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            bool result = systemApi.ChangeAdminPasswordAsync("oldPassword", "newPassword").Result;
+
+            // Assert
+            result.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => systemApi.ChangeAdminPasswordAsync(null, "newPassword"));
+            Should.Throw<ArgumentNullException>(() => systemApi.ChangeAdminPasswordAsync("oldPassword", null));
+        }
+
+        [TestMethod]
         public void ShouldGetAdminSessionAsync()
         {
             // Arrange

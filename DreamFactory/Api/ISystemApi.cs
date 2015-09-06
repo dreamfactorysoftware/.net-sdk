@@ -50,6 +50,14 @@
         /// <returns>Session object instance.</returns>
         Task<Session> GetAdminSessionAsync();
 
+        /// <summary>
+        /// Change the admin's password.
+        /// </summary>
+        /// <param name="oldPassword">Old password.</param>
+        /// <param name="newPassword">New password.</param>
+        /// <returns>True when API call was successful, false or error otherwise.</returns>
+        Task<bool> ChangeAdminPasswordAsync(string oldPassword, string newPassword);
+
         #endregion
 
         #region app
