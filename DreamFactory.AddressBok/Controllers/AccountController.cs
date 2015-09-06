@@ -145,8 +145,14 @@
             {
                 new Claim(ClaimTypes.Name, session.Name),
                 new Claim(ClaimTypes.NameIdentifier, session.Id),
-                new Claim(ClaimTypes.Role, DreamFactoryConfig.Roles.SysAdmin)
             };
+
+            if (session.IsSysAdmin.HasValue && session.IsSysAdmin.Value)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, DreamFactoryConfig.Roles.SysAdmin));
+
+            }
+
             ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = rememberMe }, identity);
         }
