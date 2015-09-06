@@ -1,22 +1,33 @@
 ﻿namespace DreamFactory.AddressBook.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Models;
     using DreamFactory.Api;
     using DreamFactory.Model.User;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
 
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly IUserApi _userApi;
-        private readonly ISystemApi _systemApi;
+        private readonly IUserApi userApi;
+        private readonly ISystemApi systemApi;
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get { return HttpContext.GetOwinContext().Authentication; }
+        }
+
 
         public AccountController(IUserApi userApi, ISystemApi systemApi)
         {
-            _userApi = userApi;
-            _systemApi = systemApi;
+            this.userApi = userApi;
+            this.systemApi = systemApi;
         }
 
         //
@@ -44,27 +55,25 @@
 
             try
             {
-                session = await _userApi.LoginAsync(model.Email, model.Password);
+                session = await userApi.LoginAsync(model.Email, model.Password);
             }
             catch (Exception)
             {
                 try
                 {
-                    session = await _systemApi.LoginAdminAsync(model.Email, model.Password);
+                    session = await systemApi.LoginAdminAsync(model.Email, model.Password);
                 }
                 catch
-                {;}
+                {; }
             }
 
             if (string.IsNullOrEmpty(session.SessionId))
             {
-
-
-                Session["sessionId"] = session.SessionId;
                 ModelState.AddModelError("", "Invalid login attempt.");
                 return View(model);
             }
 
+            SignIn(session, model.RememberMe);
             return RedirectToLocal(returnUrl);
         }
 
@@ -94,11 +103,11 @@
                     NewPassword = model.Password
                 };
 
-                bool result = await _userApi.RegisterAsync(register);
+                bool result = await userApi.RegisterAsync(register);
 
                 if (result)
                 {
-                    Session session = await _userApi.LoginAsync(model.Email, model.Password);
+                    Session session = await userApi.LoginAsync(model.Email, model.Password);
 
                     if (string.IsNullOrEmpty(session.SessionId))
                     {
@@ -106,6 +115,7 @@
                         return RedirectToAction("Login", "Account");
                     }
 
+                    SignIn(session, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -122,11 +132,24 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            _userApi.LogoutAsync();
+            userApi.LogoutAsync();
+            AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
         #region Helpers
+
+        private void SignIn(Session session, bool rememberMe)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, session.Name),
+                new Claim(ClaimTypes.NameIdentifier, session.Id),
+                new Claim(ClaimTypes.Role, DreamFactoryConfig.Roles.SysAdmin)
+            };
+            ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = rememberMe }, identity);
+        }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

@@ -1,5 +1,8 @@
 ﻿namespace DreamFactory.AddressBook.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Models;
@@ -24,50 +27,27 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            //ViewBag.StatusMessage =
-            //    message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-            //    : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-            //    : "";
-            //
+            ViewBag.StatusMessage = "Your password has been changed.";
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            //var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-            //if (result.Succeeded)
-            //{
-            //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //    if (user != null)
-            //    {
-            //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            //    }
-            //    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-            //}
-            //AddErrors(result);
+
+            ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryConfig.Roles.SysAdmin))
+            {
+                //systemApi.ChangePasswordAdminAsync();
+            }
+            else
+            {
+                //userApi.ChangePasswordAsync();
+            }
+
             return View(model);
         }
 
-#region Helpers
-       
-        //private void AddErrors(IdentityResult result)
-        //{
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError("", error);
-        //    }
-        //}
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
-#endregion
     }
 }
