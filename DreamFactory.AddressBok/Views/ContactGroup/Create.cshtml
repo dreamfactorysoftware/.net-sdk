@@ -1,5 +1,32 @@
-﻿@{
-    ViewBag.Title = "Create contact group";
+﻿@model DreamFactory.AddressBook.Models.Contacts.ContactGroup
+
+@{
+    ViewBag.Title = "Add new contact group";
 }
 
 <h2>@ViewBag.Title</h2>
+<br />
+<div class="row">
+    <div class="col-md-8">
+        <section id="editForm">
+            @using (Html.BeginForm("Create", "ContactGroup", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.HiddenFor(x => x.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a href="@Url.Action("List", "ContactGroup")" class="btn btn-default">Cancel</a>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>

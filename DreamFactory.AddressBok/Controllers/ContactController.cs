@@ -21,13 +21,40 @@
         [HttpGet]
         public async Task<ActionResult> List(int? groupId, int offset = 0, int limit = 10)
         {
-            SqlQuery query = new SqlQuery
-            {
-                Limit = limit,
-                Offset = offset * (limit - 1)
-            };
+            SqlQuery query;
+            SqlQuery relationshipQuery;
+            Task<IEnumerable<ContactGroup>> contactGroupsTask = null;
 
+            if (groupId.HasValue)
+            {
+                relationshipQuery = new SqlQuery
+                {
+                    Filter = "contact_group_id = " + groupId
+                };
+
+                query = new SqlQuery
+                {
+                    Filter = "id = " + groupId
+                };
+                contactGroupsTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
+            }
+            else
+            {
+                relationshipQuery = new SqlQuery();
+            }
+
+            IEnumerable<ContactContactGroup> contactContactGroups = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", relationshipQuery);
+
+            query = new SqlQuery
+            {
+                Ids = string.Join(",", contactContactGroups.Select(x => x.ContactId.ToString()))
+            };
             IEnumerable<Contact> contacts = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+
+            if (contactGroupsTask != null)
+            {
+                ViewBag.GroupName = (await contactGroupsTask).Select(x => x.Name).FirstOrDefault();
+            }
 
             ViewBag.Page = offset / limit + 1;
             ViewBag.PageSize = limit;

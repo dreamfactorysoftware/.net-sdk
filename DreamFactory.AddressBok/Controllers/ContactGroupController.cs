@@ -33,9 +33,30 @@
         }
 
         [HttpGet]
+        public ActionResult Create()
+        {
+            ContactGroup group = new ContactGroup();
+
+            return View(group);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(ContactGroup group)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(group);
+            }
+
+            IEnumerable<ContactGroup> records = await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { group }, new SqlQuery());
+
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            var query = new SqlQuery
+            SqlQuery query = new SqlQuery
             {
                 Filter = "id = " + id
             };
@@ -46,31 +67,14 @@
         }
 
         [HttpPost]
-        public ActionResult Edit(ContactGroup group)
+        public async Task<ActionResult> Edit(ContactGroup group)
         {
             if (!ModelState.IsValid)
             {
                 return View(group);
             }
 
-            return RedirectToAction("List");
-        }
-
-        [HttpGet]
-        public ActionResult Create()
-        {
-            ContactGroup group = new ContactGroup();
-
-            return View(group);
-        }
-
-        [HttpPost]
-        public ActionResult Create(ContactGroup group)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(group);
-            }
+            await databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { group });
 
             return RedirectToAction("List");
         }

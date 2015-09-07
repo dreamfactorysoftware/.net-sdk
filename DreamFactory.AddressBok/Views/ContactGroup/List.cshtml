@@ -6,7 +6,8 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<a href="@Url.Action("Create")" style="display: block;">Add new contact group</a>
+<br/>
 
 <table class="table table-hover table-striped">
     <thead>
@@ -31,6 +32,10 @@
                 </a>
             </td>
         </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr><td colspan="3" style="text-align: center">No records found.</td></tr>
     }
     </tbody>
 </table>

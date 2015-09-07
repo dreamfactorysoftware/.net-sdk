@@ -47,6 +47,12 @@
             List<StaffRecord> records = CreateStaffRecords().ToList();
             records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery()));
 
+            // Update record
+            Console.WriteLine("Creating {0} records...", TableName);
+            StaffRecord firstRecord = records.First();
+            firstRecord.FirstName = "Andrei 2";
+            await databaseApi.UpdateRecordsAsync(TableName, records);
+
             SqlQuery query = new SqlQuery { Filter = "age > 30", Order = "age", Fields = "*" };
             var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
             var ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();

@@ -53,7 +53,7 @@
 
             IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
 
-            var recordsRequest = new { record = records.ToList() };
+            var recordsRequest = new { resource = records.ToList() };
             string data = contentSerializer.Serialize(recordsRequest);
             IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, data);
 

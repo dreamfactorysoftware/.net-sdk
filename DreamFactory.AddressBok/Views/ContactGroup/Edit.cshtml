@@ -11,7 +11,7 @@
         <section id="editForm">
             @using (Html.BeginForm("Edit", "ContactGroup", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.HiddenFor(x => x.Id);
+                @Html.HiddenFor(x => x.Id)
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
