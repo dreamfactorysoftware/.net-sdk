@@ -4,7 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using DreamFactory.AddressBook.Models.Contacts;
+    using DreamFactory.AddressBook.Extensions;
+    using DreamFactory.AddressBook.Models.Contact;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
 
@@ -64,6 +65,42 @@
         }
 
         [HttpGet]
+        public ActionResult Create(int groupId)
+        {
+            ContactViewModel contact = new ContactViewModel
+            {
+                GroupId = groupId
+            };
+
+            return View(contact);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(ContactViewModel contact)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(contact);
+            }
+
+            IEnumerable<Contact> records = new List<Contact> { contact };
+            records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).ToList();
+
+            IEnumerable<ContactContactGroup> relationshipRecords = new List<ContactContactGroup>
+                {
+                    new ContactContactGroup
+                    {
+                        ContactId = records.Select(x => x.Id).First(),
+                        ContactGroupId = contact.GroupId
+                    }
+                };
+
+            await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+
+            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = contact.GroupId }));
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
             SqlQuery query = new SqlQuery
@@ -77,22 +114,27 @@
         }
 
         [HttpPost]
-        public ActionResult Edit(Contact contact)
+        public ActionResult Edit(ContactViewModel contact)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(contact);
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = contact.GroupId }));
         }
 
         [HttpGet]
-        public ActionResult Details()
+        public async Task<ActionResult> Details(int id)
         {
-            Contact group = new Contact();
+            SqlQuery query = new SqlQuery
+            {
+                Filter = "id = " + id
+            };
 
-            return View(group);
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+
+            return View(contact);
         }
     }
 }

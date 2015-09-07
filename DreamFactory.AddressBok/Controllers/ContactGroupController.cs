@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using DreamFactory.AddressBook.Models.Contacts;
+    using DreamFactory.AddressBook.Models.Contact;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
 

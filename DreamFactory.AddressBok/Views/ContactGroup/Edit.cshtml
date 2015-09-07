@@ -1,4 +1,5 @@
-﻿@model DreamFactory.AddressBook.Models.Contacts.ContactGroup
+﻿@using DreamFactory.AddressBook.Extensions
+@model DreamFactory.AddressBook.Models.Contact.ContactGroup
 
 @{
     ViewBag.Title = "Edit contact group: " + Model.Name;
@@ -23,7 +24,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-primary" />
-                        <a href="@Url.Action("List", "ContactGroup")" class="btn btn-default">Cancel</a>
+                        <a href="@Url.Action("List", "ContactGroup", Request.QueryString.ToRouteValues())" class="btn btn-default">Cancel</a>
                     </div>
                 </div>
             }

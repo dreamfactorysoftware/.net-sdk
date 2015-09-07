@@ -1,18 +1,19 @@
-﻿@model String
+﻿@using DreamFactory.AddressBook.Extensions
+@model String
 
 <div>
     <ul class="pagination" style="margin: 0">
         <li class="@(ViewBag.Page == 1 ? "disabled" : "")">
-            <a href="@Url.Action("List", Model)" aria-label="Previous">
+            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues())" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         @for (int i = 0; i < (ViewBag.TotalResults / ViewBag.PageSize) + 1; i++)
         {
-            <li class="@(ViewBag.Page == i+1 ? "disabled" : "")"><a href="@Url.Action("List", Model, new { Offset = ViewBag.PageSize * i })">@(i+1)</a></li>
+            <li class="@(ViewBag.Page == i+1 ? "disabled" : "")"><a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize * i }))">@(i+1)</a></li>
         }
         <li class="@(ViewBag.Page == ViewBag.TotalResults / ViewBag.PageSize + 1 ? "disabled" : "")">
-            <a href="@Url.Action("List", Model, new { Offset = ViewBag.PageSize * (ViewBag.TotalResults / ViewBag.PageSize + 1)})" aria-label="Next" >
+            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize * (ViewBag.TotalResults / ViewBag.PageSize + 1)}))" aria-label="Next" >
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>

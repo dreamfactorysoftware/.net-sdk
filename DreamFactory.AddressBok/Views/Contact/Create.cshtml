@@ -1,18 +1,18 @@
 ﻿@using DreamFactory.AddressBook.Extensions
-@model DreamFactory.AddressBook.Models.Contact.Contact
+@model DreamFactory.AddressBook.Models.Contact.ContactViewModel
 
 @{
-    ViewBag.Title = "Edit contact details for " + string.Format("{0} {1}", Model.FirstName, Model.LastName);
+    ViewBag.Title = "Add new contact";
 }
 
 <h2>@ViewBag.Title</h2>
 <br />
 <div class="row">
     <div class="col-md-8">
-        <section id="editForm">
-            @using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        <section id="createForm">
+            @using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.GroupId)
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })

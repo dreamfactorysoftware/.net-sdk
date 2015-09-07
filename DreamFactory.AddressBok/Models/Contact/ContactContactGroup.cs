@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.AddressBook.Models.Contacts
+﻿namespace DreamFactory.AddressBook.Models.Contact
 {
     public class ContactContactGroup
     {
