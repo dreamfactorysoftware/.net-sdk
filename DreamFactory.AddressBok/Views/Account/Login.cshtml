@@ -30,14 +30,16 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+                            <label>
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.NameFor(m => m.RememberMe)
+                            </label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-primary"/>
+                        <input type="submit" value="Log in" class="btn btn-primary" />
                         <a href="@Url.Action("Register", "Account")" class="btn btn-default">Register</a>
                     </div>
                 </div>

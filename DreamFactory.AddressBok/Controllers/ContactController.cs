@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using DreamFactory.AddressBook.Models.Contact;
+    using DreamFactory.AddressBook.Models.Contacts;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
 
@@ -18,9 +18,10 @@
             this.databaseApi = databaseApi;
         }
 
-        public async Task<ActionResult> List(int offset = 0, int limit = 10)
+        [HttpGet]
+        public async Task<ActionResult> List(int? groupId, int offset = 0, int limit = 10)
         {
-            var query = new SqlQuery
+            SqlQuery query = new SqlQuery
             {
                 Limit = limit,
                 Offset = offset * (limit - 1)
@@ -35,9 +36,10 @@
             return View(contacts);
         }
 
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            var query = new SqlQuery
+            SqlQuery query = new SqlQuery
             {
                 Filter = "id = " + id
             };
@@ -47,6 +49,18 @@
             return View(contact);
         }
 
+        [HttpPost]
+        public ActionResult Edit(Contact contact)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(contact);
+            }
+
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
         public ActionResult Details()
         {
             Contact group = new Contact();
