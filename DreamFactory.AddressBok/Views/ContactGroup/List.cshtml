@@ -1,13 +1,15 @@
 ﻿@using DreamFactory.AddressBook.Extensions
-@using DreamFactory.AddressBook.Models.Contact
-@model IEnumerable<DreamFactory.AddressBook.Models.Contact.ContactGroup>
+@using DreamFactory.AddressBook.Models.Entities
+@model IEnumerable<DreamFactory.AddressBook.Models.Entities.ContactGroup>
 
 @{
     ViewBag.Title = "Contact groups";
 }
 
 <h2>@ViewBag.Title</h2>
-<a href="@Url.Action("Create", Request.QueryString.ToRouteValues())" style="display: block;">Add new contact group</a>
+<div>
+    <a href="@Url.Action("Create", Request.QueryString.ToRouteValues())" style="display: block;">Add new contact group</a>
+</div>
 <br/>
 
 <table class="table table-hover table-striped">

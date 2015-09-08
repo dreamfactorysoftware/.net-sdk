@@ -1,4 +1,4 @@
-﻿namespace DreamFactory.AddressBook.Models.Contact
+﻿namespace DreamFactory.AddressBook.Models.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using DreamFactory.AddressBook.Properties;

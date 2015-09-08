@@ -1,7 +1,7 @@
 ﻿namespace DreamFactory.AddressBook.Models
 {
     using System.Collections.Generic;
-    using DreamFactory.AddressBook.Models.Contact;
+    using DreamFactory.AddressBook.Models.Entities;
 
     public class ContactGroupViewModel
     {

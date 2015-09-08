@@ -1,9 +1,9 @@
-﻿@using DreamFactory.AddressBook.Models.Contact
+﻿@using DreamFactory.AddressBook.Models.Entities
 @model DreamFactory.AddressBook.Models.ContactViewModel
 
 @{
     ViewBag.Title = "Contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
-    string imageSrc = string.IsNullOrEmpty(Model.Contact.ImageUrl) ? Url.Content("~/Images/profile-placeholder.png") : Model.Contact.ImageUrl;
+    string imageSrc = string.IsNullOrEmpty(Model.Contact.ImageUrl) ? Url.Content("~/Images/profile-placeholder.png") : Model.ImageData;
 }
 
 <h2>@ViewBag.Title</h2>

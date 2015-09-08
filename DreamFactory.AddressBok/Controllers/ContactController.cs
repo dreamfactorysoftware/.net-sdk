@@ -1,24 +1,37 @@
 ﻿namespace DreamFactory.AddressBook.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Extensions;
     using DreamFactory.AddressBook.Models;
-    using DreamFactory.AddressBook.Models.Contact;
+    using DreamFactory.AddressBook.Models.Entities;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
+    using DreamFactory.Model.File;
 
     [Authorize]
     [HandleError]
     public class ContactController : Controller
     {
         private readonly IDatabaseApi databaseApi;
+        private readonly IFilesApi filesApi;
 
-        public ContactController(IDatabaseApi databaseApi)
+        private readonly string[] validImageTypes =
+        {
+            "image/gif",
+            "image/jpeg",
+            "image/pjpeg",
+            "image/png"
+        };
+
+        public ContactController(IDatabaseApi databaseApi, IFilesApi filesApi)
         {
             this.databaseApi = databaseApi;
+            this.filesApi = filesApi;
         }
 
         [HttpGet]
@@ -76,7 +89,7 @@
             ContactViewModel contact = new ContactViewModel
             {
                 GroupId = groupId,
-                Contact =  new Contact(),
+                Contact = new Contact(),
                 ContactInfos = new List<ContactInfo>()
             };
 
@@ -86,9 +99,23 @@
         [HttpPost]
         public async Task<ActionResult> Create(ContactViewModel model)
         {
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0 && !validImageTypes.Contains(model.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
+            }
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
+            {
+                MemoryStream target = new MemoryStream();
+                model.ImageUpload.InputStream.CopyTo(target);
+                byte[] data = target.ToArray();
+                string base64Data = string.Format("data:{0};base64,{1}", model.ImageUpload.ContentType, Convert.ToBase64String(data));
+                FileResponse result = await filesApi.CreateFileAsync(Guid.NewGuid().ToString(), base64Data);
+                model.Contact.ImageUrl = result.Name;
             }
 
             IEnumerable<Contact> records = new List<Contact> { model.Contact };
@@ -133,6 +160,10 @@
         [HttpPost]
         public async Task<ActionResult> Edit(ContactViewModel model)
         {
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0 && !validImageTypes.Contains(model.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
+            }
             if (!ModelState.IsValid)
             {
                 SqlQuery contactInfoQuery = new SqlQuery
@@ -142,6 +173,16 @@
 
                 model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList();
                 return View(model);
+            }
+
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
+            {
+                MemoryStream target = new MemoryStream();
+                model.ImageUpload.InputStream.CopyTo(target);
+                byte[] data = target.ToArray();
+                string base64Data = string.Format("data:{0};base64,{1}", model.ImageUpload.ContentType, Convert.ToBase64String(data));
+                FileResponse result = await filesApi.CreateFileAsync(Guid.NewGuid().ToString(), base64Data);
+                model.Contact.ImageUrl = result.Name;
             }
 
             await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact });
@@ -162,10 +203,18 @@
                 Filter = "contact_id = " + id
             };
 
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault();
+            string imageData = string.Empty;
+            if (!string.IsNullOrEmpty(contact.ImageUrl))
+            {
+                imageData = await filesApi.GetTextFileAsync(contact.ImageUrl);
+            }
+
             ContactViewModel model = new ContactViewModel
             {
-                Contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault(),
-                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList()
+                Contact = contact,
+                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList(),
+                ImageData = imageData
             };
 
             return View(model);

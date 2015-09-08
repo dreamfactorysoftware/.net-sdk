@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-8">
         <section id="createForm">
-            @using (Html.BeginForm("Create", "ContactInfo", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Create", "ContactInfo", FormMethod.Post, new { @class = "form-horizontal", role = "form", autocomplete = "off" }))
             {
                 @Html.HiddenFor(m => m.ReturnUrl)
                 @Html.HiddenFor(m => m.ContactInfo.ContactId)

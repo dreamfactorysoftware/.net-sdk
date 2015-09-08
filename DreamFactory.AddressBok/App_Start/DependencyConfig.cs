@@ -18,6 +18,7 @@
             container.Register<IDatabaseApi>(() => context.Factory.CreateDatabaseApi(DreamFactoryConfig.DbServiceName), Lifestyle.Transient);
             container.Register<ISystemApi>(() => context.Factory.CreateSystemApi(), Lifestyle.Transient);
             container.Register<IUserApi>(() => context.Factory.CreateUserApi(), Lifestyle.Transient);
+            container.Register<IFilesApi>(() => context.Factory.CreateFilesApi(DreamFactoryConfig.FileServiceName), Lifestyle.Transient);
 
             container.RegisterMvcControllers();
             container.Verify();
