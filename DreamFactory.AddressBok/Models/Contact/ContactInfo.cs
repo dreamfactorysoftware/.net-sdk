@@ -12,9 +12,6 @@
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessage = null)]
         public int? ContactId { get; set; }
 
-        [Display(Name = "Contact info type")]
-        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessage = null)]
-        [MaxLength(32, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_MaxLength", ErrorMessage = null)]
         public string InfoType { get; set; }
 
         [Display(Name = "Phone")]

@@ -6,6 +6,6 @@
     {
         public int? GroupId { get; set; }
         public Contact Contact { get; set; }
-        public List<ContactInfo> ContactInfo { get; set; }
+        public List<ContactInfo> ContactInfos { get; set; }
     }
 }

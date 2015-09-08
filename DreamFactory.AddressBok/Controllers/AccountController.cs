@@ -13,6 +13,7 @@
     using Microsoft.Owin.Security.Cookies;
 
     [Authorize]
+    [HandleError]
     public class AccountController : Controller
     {
         private readonly IUserApi userApi;
@@ -163,7 +164,7 @@
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("List", "ContactGroup");
         }
 
         #endregion

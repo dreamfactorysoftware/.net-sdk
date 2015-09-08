@@ -9,6 +9,7 @@
     using DreamFactory.Model.Database;
 
     [Authorize]
+    [HandleError]
     public class ContactGroupController : Controller
     {
         private readonly IDatabaseApi databaseApi;

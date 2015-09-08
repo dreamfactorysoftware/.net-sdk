@@ -155,6 +155,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\ContactInfoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ContactGroupController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -167,7 +168,9 @@
     <Compile Include="Models\Contact\ContactGroup.cs" />
     <Compile Include="Models\Contact\ContactInfo.cs" />
     <Compile Include="Models\Contact\Contact.cs" />
+    <Compile Include="Models\Contact\ContactInfoViewModel.cs" />
     <Compile Include="Models\Contact\ContactViewModel.cs" />
+    <Compile Include="Models\Contact\InfoTypeEnum.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -193,6 +196,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Images\profile-placeholder.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Package\add_dotnet.dfpkg" />
@@ -236,6 +240,9 @@
     <Content Include="Views\Contact\Details.cshtml" />
     <Content Include="Views\ContactGroup\Create.cshtml" />
     <Content Include="Views\Contact\Create.cshtml" />
+    <Content Include="Views\ContactInfo\Details.cshtml" />
+    <Content Include="Views\ContactInfo\Create.cshtml" />
+    <Content Include="Views\ContactInfo\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

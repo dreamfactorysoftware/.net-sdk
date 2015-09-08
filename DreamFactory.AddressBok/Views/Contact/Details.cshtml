@@ -1,47 +1,60 @@
-﻿@model DreamFactory.AddressBook.Models.Contact.Contact
+﻿@using DreamFactory.AddressBook.Models.Contact
+@model DreamFactory.AddressBook.Models.Contact.ContactViewModel
 
 @{
-    ViewBag.Title = "Contact details for " + string.Format("{0} {1}", Model.FirstName, Model.LastName);
+    ViewBag.Title = "Contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
+    string imageSrc = string.IsNullOrEmpty(Model.Contact.ImageUrl) ? Url.Content("~/Images/profile-placeholder.png") : Model.Contact.ImageUrl;
 }
 
 <h2>@ViewBag.Title</h2>
 <br />
-<div class="row">
-    <div class="col-md-8">
-        <section id="contactDetails">
-            @using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
+
+<section id="contactDetails">
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@imageSrc" alt="Contact image" class="img-rounded" width="285">
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        <p class="form-control-static">@Html.DisplayTextFor(x => x.FirstName)</p>
+                    @Html.LabelFor(m => m.Contact.FirstName, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Contact.FirstName)</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        <p class="form-control-static">@Html.DisplayTextFor(x => x.LastName)</p>
+                    @Html.LabelFor(m => m.Contact.LastName, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Contact.LastName)</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Twitter, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Twitter)</p>
+                    @Html.LabelFor(m => m.Contact.Twitter, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Contact.Twitter)</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Skype, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Skype)</p>
+                    @Html.LabelFor(m => m.Contact.Skype, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Contact.Skype)</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Notes, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Notes)</p>
+                    @Html.LabelFor(m => m.Contact.Notes, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Html.DisplayTextFor(x => x.Contact.Notes)</p>
                     </div>
                 </div>
-            }
-        </section>
-    </div>
-</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                @foreach (ContactInfo contactInfo in Model.ContactInfos)
+                {
+                    @Html.Partial("~/Views/ContactInfo/Details.cshtml", contactInfo)
+                }
+            </div>
+        </div>
+    </form>
+</section>

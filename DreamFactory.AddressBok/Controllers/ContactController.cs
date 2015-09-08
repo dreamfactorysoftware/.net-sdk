@@ -10,6 +10,7 @@
     using DreamFactory.Model.Database;
 
     [Authorize]
+    [HandleError]
     public class ContactController : Controller
     {
         private readonly IDatabaseApi databaseApi;
@@ -73,7 +74,9 @@
         {
             ContactViewModel contact = new ContactViewModel
             {
-                GroupId = groupId
+                GroupId = groupId,
+                Contact =  new Contact(),
+                ContactInfos = new List<ContactInfo>()
             };
 
             return View(contact);
@@ -107,15 +110,20 @@
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            SqlQuery query = new SqlQuery
+            SqlQuery contactQuery = new SqlQuery
             {
                 Filter = "id = " + id
             };
 
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            SqlQuery contactInfoQuery = new SqlQuery
+            {
+                Filter = "contact_id = " + id
+            };
+
             ContactViewModel model = new ContactViewModel
             {
-                Contact = contact
+                Contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault(),
+                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList()
             };
 
             return View(model);
@@ -126,6 +134,12 @@
         {
             if (!ModelState.IsValid)
             {
+                SqlQuery contactInfoQuery = new SqlQuery
+                {
+                    Filter = "contact_id = " + model.Contact.Id
+                };
+
+                model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList();
                 return View(model);
             }
 
@@ -137,14 +151,23 @@
         [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
-            SqlQuery query = new SqlQuery
+            SqlQuery contactQuery = new SqlQuery
             {
                 Filter = "id = " + id
             };
 
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            SqlQuery contactInfoQuery = new SqlQuery
+            {
+                Filter = "contact_id = " + id
+            };
 
-            return View(contact);
+            ContactViewModel model = new ContactViewModel
+            {
+                Contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault(),
+                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList()
+            };
+
+            return View(model);
         }
     }
 }

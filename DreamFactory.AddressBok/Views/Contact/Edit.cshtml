@@ -1,4 +1,5 @@
 ﻿@using DreamFactory.AddressBook.Extensions
+@using DreamFactory.AddressBook.Models.Contact
 @model DreamFactory.AddressBook.Models.Contact.ContactViewModel
 
 @{
@@ -6,6 +7,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<a href="@Url.Action("Create", "ContactInfo", Request.QueryString.ToRouteValues(new { ContactId = Url.RequestContext.RouteData.Values["id"], ReturnUrl = Request.Url }))" style="display: block;">Add contact info</a>
 <br />
 <div class="row">
     <div class="col-md-8">
@@ -49,6 +51,16 @@
                         @Html.ValidationMessageFor(m => m.Contact.Notes, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.Label("Contact infos", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @foreach (ContactInfo contactInfo in Model.ContactInfos)
+                        {
+                            <a href="@Url.Action("Edit", "ContactInfo", Request.QueryString.ToRouteValues(new { Id = contactInfo.Id, ReturnUrl = Request.Url }))" style="display: block; margin: 10px 0">Edit @contactInfo.InfoType</a>
+                        }
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-primary" />

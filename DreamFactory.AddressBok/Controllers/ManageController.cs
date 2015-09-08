@@ -9,6 +9,7 @@
     using DreamFactory.Api;
 
     [Authorize]
+    [HandleError]
     public class ManageController : Controller
     {
         private readonly ISystemApi systemApi;

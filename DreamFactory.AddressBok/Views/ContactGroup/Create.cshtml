@@ -9,7 +9,7 @@
 <br />
 <div class="row">
     <div class="col-md-8">
-        <section id="editForm">
+        <section id="createForm">
             @using (Html.BeginForm("Create", "ContactGroup", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.HiddenFor(x => x.Id)
