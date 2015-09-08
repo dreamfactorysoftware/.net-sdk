@@ -4,7 +4,7 @@
 <div>
     <ul class="pagination" style="margin: 0">
         <li class="@(ViewBag.Page == 1 ? "disabled" : "")">
-            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues())" aria-label="Previous">
+            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = 0 }))" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
@@ -13,7 +13,7 @@
             <li class="@(ViewBag.Page == i+1 ? "disabled" : "")"><a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize * i }))">@(i+1)</a></li>
         }
         <li class="@(ViewBag.Page == ViewBag.TotalResults / ViewBag.PageSize + 1 ? "disabled" : "")">
-            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize * (ViewBag.TotalResults / ViewBag.PageSize + 1)}))" aria-label="Next" >
+            <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize * (ViewBag.TotalResults / ViewBag.PageSize)}))" aria-label="Next" >
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>

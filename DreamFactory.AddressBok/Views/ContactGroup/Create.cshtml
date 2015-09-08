@@ -1,5 +1,5 @@
 ﻿@using DreamFactory.AddressBook.Extensions
-@model DreamFactory.AddressBook.Models.Contact.ContactGroup
+@model DreamFactory.AddressBook.Models.ContactGroupViewModel
 
 @{
     ViewBag.Title = "Add new contact group";
@@ -12,13 +12,29 @@
         <section id="createForm">
             @using (Html.BeginForm("Create", "ContactGroup", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.ContactGroup.Id)
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.ContactGroup.Name, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.ContactGroup.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactGroup.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Contacts in group", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @for (int i = 0; i < Model.Contacts.Count; i++)
+                        {
+                            <div class="checkbox">
+                                <label>
+                                    <input data-val="true" id="contacts[@i].InGroup" name="contacts[@i].InGroup" type="checkbox" value="true">
+                                    <input name="contacts[@i].InGroup" type="hidden" value="false">
+                                    <input name="contacts[@i].ContactId" type="hidden" value="@Model.Contacts[i].ContactId">
+                                     @Model.Contacts[i].ContactName
+                                </label>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="form-group">

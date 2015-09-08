@@ -1,6 +1,6 @@
 ﻿@using DreamFactory.AddressBook.Extensions
 @using DreamFactory.AddressBook.Models.Contact
-@model DreamFactory.AddressBook.Models.Contact.ContactViewModel
+@model DreamFactory.AddressBook.Models.ContactViewModel
 
 @{
     ViewBag.Title = "Edit contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
@@ -63,7 +63,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="Save" class="btn btn-primary"/>
                         <a href="@Url.Action("List", "Contact", Request.QueryString.ToRouteValues())" class="btn btn-default">Cancel</a>
                     </div>
                 </div>

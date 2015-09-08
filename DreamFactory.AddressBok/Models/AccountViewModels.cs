@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.AddressBook.Models
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class LoginViewModel

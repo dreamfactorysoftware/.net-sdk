@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using DreamFactory.AddressBook.Models;
     using DreamFactory.AddressBook.Models.Contact;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
@@ -34,22 +35,43 @@
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            ContactGroup group = new ContactGroup();
+            List<ContactContactGroupViewModel> contacts = (await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery()))
+                .Select(x => new ContactContactGroupViewModel
+                {
+                    ContactId = x.Id.Value,
+                    ContactName = string.Format("{0} {1}", x.FirstName, x.LastName),
+                    InGroup = false
+                }).ToList();
 
-            return View(group);
+            ContactGroupViewModel model = new ContactGroupViewModel
+            {
+                ContactGroup = new ContactGroup(),
+                Contacts = contacts
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ContactGroup group)
+        public async Task<ActionResult> Create(ContactGroupViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(group);
+                return View(model);
             }
 
-            IEnumerable<ContactGroup> records = await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { group }, new SqlQuery());
+            IEnumerable<ContactGroup> records = await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
+
+            IEnumerable<ContactContactGroup> relationshipModel = model.Contacts
+                .Select(x => new ContactContactGroup
+                {
+                    ContactId = x.ContactId,
+                    ContactGroupId = records.Select(y => y.Id).FirstOrDefault()
+                });
+
+            await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipModel, new SqlQuery());
 
             return RedirectToAction("List");
         }
@@ -57,25 +79,84 @@
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            SqlQuery query = new SqlQuery
+            SqlQuery groupQuery = new SqlQuery
             {
                 Filter = "id = " + id
             };
 
-            ContactGroup group = (await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query)).FirstOrDefault();
+            SqlQuery contactsInGroupQuery = new SqlQuery
+            {
+                Filter = "contact_group_id = " + id
+            };
 
-            return View(group);
+            ContactGroup contactGroup = (await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", groupQuery)).FirstOrDefault();
+
+            List<ContactContactGroupViewModel> contacts = (await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery()))
+                .Select(x => new ContactContactGroupViewModel
+                {
+                    ContactId = x.Id.Value,
+                    ContactName = string.Format("{0} {1}", x.FirstName, x.LastName),
+                    InGroup = false
+                })
+                .ToList();
+
+            List<ContactContactGroup> contactsInGroup = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", contactsInGroupQuery)).ToList();
+
+            foreach (ContactContactGroup relationship in contactsInGroup)
+            {
+                contacts.FirstOrDefault(x => x.ContactId == relationship.ContactId.Value).InGroup = true;
+            }
+
+            ContactGroupViewModel model = new ContactGroupViewModel
+            {
+                ContactGroup = contactGroup,
+                Contacts = contacts
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(ContactGroup group)
+        public async Task<ActionResult> Edit(ContactGroupViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(group);
+                return View(model);
             }
 
-            await databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { group });
+            SqlQuery contactsInGroupQuery = new SqlQuery
+            {
+                Filter = "contact_group_id = " + model.ContactGroup.Id
+            };
+
+            databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup });
+
+            ContactContactGroup tmp;
+
+            Dictionary<int, ContactContactGroup> relationshipsInDb = 
+                (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", contactsInGroupQuery))
+                .ToDictionary(x => x.ContactId.Value, x => x);
+            Dictionary<int, ContactContactGroup> relationshipsInModel = 
+                model.Contacts
+                .Where(x => x.InGroup)
+                .ToDictionary(x => x.ContactId, x => new ContactContactGroup
+                {
+                    ContactGroupId = model.ContactGroup.Id,
+                    ContactId = x.ContactId
+                });
+
+            List<ContactContactGroup> relationshipsToDelete = 
+                relationshipsInDb.Values
+                .Where(relationship => !relationshipsInModel.TryGetValue(relationship.ContactId.Value, out tmp))
+                .ToList();
+
+            List<ContactContactGroup> relationshipsToAdd = 
+                relationshipsInModel.Values
+                .Where(relationship => !relationshipsInDb.TryGetValue(relationship.ContactId.Value, out tmp))
+                .ToList();
+
+            databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
+            databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete);
 
             return RedirectToAction("List");
         }

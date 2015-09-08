@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Extensions;
+    using DreamFactory.AddressBook.Models;
     using DreamFactory.AddressBook.Models.Contact;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;

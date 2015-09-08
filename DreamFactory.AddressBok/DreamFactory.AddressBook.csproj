@@ -164,12 +164,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ContactContactGroupViewModel.cs" />
     <Compile Include="Models\Contact\ContactContactGroup.cs" />
     <Compile Include="Models\Contact\ContactGroup.cs" />
+    <Compile Include="Models\ContactGroupViewModel.cs" />
     <Compile Include="Models\Contact\ContactInfo.cs" />
     <Compile Include="Models\Contact\Contact.cs" />
-    <Compile Include="Models\Contact\ContactInfoViewModel.cs" />
-    <Compile Include="Models\Contact\ContactViewModel.cs" />
+    <Compile Include="Models\ContactInfoViewModel.cs" />
+    <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\Contact\InfoTypeEnum.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

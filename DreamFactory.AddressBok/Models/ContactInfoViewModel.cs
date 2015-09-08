@@ -1,6 +1,7 @@
-﻿namespace DreamFactory.AddressBook.Models.Contact
+﻿namespace DreamFactory.AddressBook.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using DreamFactory.AddressBook.Models.Contact;
     using DreamFactory.AddressBook.Properties;
 
     public class ContactInfoViewModel

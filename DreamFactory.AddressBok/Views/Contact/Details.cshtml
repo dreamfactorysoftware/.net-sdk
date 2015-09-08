@@ -1,5 +1,5 @@
 ﻿@using DreamFactory.AddressBook.Models.Contact
-@model DreamFactory.AddressBook.Models.Contact.ContactViewModel
+@model DreamFactory.AddressBook.Models.ContactViewModel
 
 @{
     ViewBag.Title = "Contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <img src="@imageSrc" alt="Contact image" class="img-rounded" width="285">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin-top: 10px">
                 <div class="form-group">
                     @Html.LabelFor(m => m.Contact.FirstName, new { @class = "col-md-4 control-label" })
                     <div class="col-md-8">
