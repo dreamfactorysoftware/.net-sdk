@@ -1,8 +1,8 @@
 ﻿@using DreamFactory.AddressBook.Extensions
-@model DreamFactory.AddressBook.Models.Contact.Contact
+@model DreamFactory.AddressBook.Models.Contact.ContactViewModel
 
 @{
-    ViewBag.Title = "Edit contact details for " + string.Format("{0} {1}", Model.FirstName, Model.LastName);
+    ViewBag.Title = "Edit contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,41 +12,41 @@
         <section id="editForm">
             @using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Contact.Id)
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.Contact.FirstName, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Contact.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.FirstName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.Contact.LastName, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Contact.LastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.LastName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Twitter, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.Contact.Twitter, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Twitter, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Twitter, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Contact.Twitter, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Twitter, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Skype, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.Contact.Skype, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Skype, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Skype, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Contact.Skype, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Skype, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Notes, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.Contact.Notes, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(m => m.Contact.Notes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Notes, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">

@@ -80,14 +80,14 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ContactViewModel contact)
+        public async Task<ActionResult> Create(ContactViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(contact);
+                return View(model);
             }
 
-            IEnumerable<Contact> records = new List<Contact> { contact };
+            IEnumerable<Contact> records = new List<Contact> { model.Contact };
             records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).ToList();
 
             IEnumerable<ContactContactGroup> relationshipRecords = new List<ContactContactGroup>
@@ -95,13 +95,13 @@
                     new ContactContactGroup
                     {
                         ContactId = records.Select(x => x.Id).First(),
-                        ContactGroupId = contact.GroupId
+                        ContactGroupId = model.GroupId
                     }
                 };
 
             await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
 
-            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = contact.GroupId }));
+            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
         }
 
         [HttpGet]
@@ -113,19 +113,25 @@
             };
 
             Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            ContactViewModel model = new ContactViewModel
+            {
+                Contact = contact
+            };
 
-            return View(contact);
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(ContactViewModel contact)
+        public async Task<ActionResult> Edit(ContactViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(contact);
+                return View(model);
             }
 
-            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = contact.GroupId }));
+            await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact });
+
+            return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
         }
 
         [HttpGet]
