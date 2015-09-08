@@ -44,13 +44,17 @@
                 relationshipQuery = new SqlQuery();
             }
 
-            IEnumerable<ContactContactGroup> contactContactGroups = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", relationshipQuery);
+            IEnumerable<ContactContactGroup> contactContactGroups = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", relationshipQuery)).ToList();
 
-            query = new SqlQuery
+            IEnumerable<Contact> contacts = new List<Contact>();
+            if (contactContactGroups.Any())
             {
-                Ids = string.Join(",", contactContactGroups.Select(x => x.ContactId.ToString()))
-            };
-            IEnumerable<Contact> contacts = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+                query = new SqlQuery
+                {
+                    Ids = string.Join(",", contactContactGroups.Select(x => x.ContactId.ToString()))
+                };
+                contacts = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+            }
 
             if (contactGroupsTask != null)
             {
