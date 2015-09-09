@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using DreamFactory.AddressBook.Extensions;
     using DreamFactory.AddressBook.Models;
     using DreamFactory.AddressBook.Models.Entities;
     using DreamFactory.Api;
@@ -58,7 +57,7 @@
                 return View(model);
             }
 
-            IEnumerable<ContactInfo> records = await databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfo }, new SqlQuery());
+            await databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfo }, new SqlQuery());
 
             return Redirect(model.ReturnUrl);
         }
@@ -68,7 +67,8 @@
         {
             SqlQuery contactInfoQuery = new SqlQuery
             {
-                Filter = "id = " + id
+                Filter = "id = " + id,
+                Related = "contact_by_contact_id"
             };
 
             ContactInfo contactInfo = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).FirstOrDefault();
@@ -78,24 +78,11 @@
                 return Redirect(returnUrl);
             }
 
-            SqlQuery contactQuery = new SqlQuery
-            {
-                Filter = "id = " + contactInfo.ContactId
-            };
-
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault();
-
-            if (contact == null)
-            {
-                return Redirect(returnUrl);
-            }
-
-            ViewBag.ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName);
-
             ContactInfoViewModel model = new ContactInfoViewModel
             {
                 InfoType = (InfoType)Enum.Parse(typeof(InfoType), contactInfo.InfoType, true),
                 ContactInfo = contactInfo,
+                ContactName = string.Format("{0} {1}", contactInfo.Contact.FirstName, contactInfo.Contact.LastName),
                 ReturnUrl = returnUrl
             };
 

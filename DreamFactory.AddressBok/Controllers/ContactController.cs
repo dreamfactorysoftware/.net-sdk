@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Mvc;
     using DreamFactory.AddressBook.Extensions;
     using DreamFactory.AddressBook.Models;
@@ -37,43 +38,24 @@
         [HttpGet]
         public async Task<ActionResult> List(int? groupId, int offset = 0, int limit = 10)
         {
-            SqlQuery query;
-            SqlQuery relationshipQuery;
-            Task<IEnumerable<ContactGroup>> contactGroupsTask = null;
+            IEnumerable<Contact> contacts;
 
             if (groupId.HasValue)
             {
-                relationshipQuery = new SqlQuery
+                var query = new SqlQuery
                 {
-                    Filter = "contact_group_id = " + groupId
+                    Filter = "contact_group_id = " + groupId,
+                    Related = "contact_by_contact_id,contact_group_by_contact_group_id"
                 };
 
-                query = new SqlQuery
-                {
-                    Filter = "id = " + groupId
-                };
-                contactGroupsTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
+                IEnumerable<ContactContactGroup> contactContactGroups = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query)).ToList();
+
+                contacts = contactContactGroups.Select(x => x.Contact);
+                ViewBag.GroupName = contactContactGroups.Select(x => x.ContactGroup.Name).FirstOrDefault();
             }
             else
             {
-                relationshipQuery = new SqlQuery();
-            }
-
-            IEnumerable<ContactContactGroup> contactContactGroups = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", relationshipQuery)).ToList();
-
-            IEnumerable<Contact> contacts = new List<Contact>();
-            if (contactContactGroups.Any())
-            {
-                query = new SqlQuery
-                {
-                    Ids = string.Join(",", contactContactGroups.Select(x => x.ContactId.ToString()))
-                };
-                contacts = await databaseApi.GetRecordsAsync<Contact>("contact", query);
-            }
-
-            if (contactGroupsTask != null)
-            {
-                ViewBag.GroupName = (await contactGroupsTask).Select(x => x.Name).FirstOrDefault();
+                contacts = await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
             }
 
             ViewBag.Page = offset / limit + 1;
@@ -108,15 +90,7 @@
                 return View(model);
             }
 
-            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
-            {
-                MemoryStream target = new MemoryStream();
-                model.ImageUpload.InputStream.CopyTo(target);
-                byte[] data = target.ToArray();
-                string base64Data = string.Format("data:{0};base64,{1}", model.ImageUpload.ContentType, Convert.ToBase64String(data));
-                FileResponse result = await filesApi.CreateFileAsync(Guid.NewGuid().ToString(), base64Data);
-                model.Contact.ImageUrl = result.Name;
-            }
+            model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
 
             IEnumerable<Contact> records = new List<Contact> { model.Contact };
             records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).ToList();
@@ -136,22 +110,21 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(int id, int? groupId)
         {
-            SqlQuery contactQuery = new SqlQuery
+            SqlQuery query = new SqlQuery
             {
-                Filter = "id = " + id
+                Filter = "id = " + id,
+                Related = "contact_info_by_contact_id"
             };
 
-            SqlQuery contactInfoQuery = new SqlQuery
-            {
-                Filter = "contact_id = " + id
-            };
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
 
             ContactViewModel model = new ContactViewModel
             {
-                Contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault(),
-                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList()
+                GroupId = groupId,
+                Contact = contact,
+                ContactInfos = contact.ContactInfos
             };
 
             return View(model);
@@ -166,25 +139,16 @@
             }
             if (!ModelState.IsValid)
             {
-                SqlQuery contactInfoQuery = new SqlQuery
+                SqlQuery query = new SqlQuery
                 {
                     Filter = "contact_id = " + model.Contact.Id
                 };
 
-                model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList();
+                model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", query)).ToList();
                 return View(model);
             }
 
-            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
-            {
-                MemoryStream target = new MemoryStream();
-                model.ImageUpload.InputStream.CopyTo(target);
-                byte[] data = target.ToArray();
-                string base64Data = string.Format("data:{0};base64,{1}", model.ImageUpload.ContentType, Convert.ToBase64String(data));
-                FileResponse result = await filesApi.CreateFileAsync(Guid.NewGuid().ToString(), base64Data);
-                model.Contact.ImageUrl = result.Name;
-            }
-
+            model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
             await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact });
 
             return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
@@ -193,17 +157,13 @@
         [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
-            SqlQuery contactQuery = new SqlQuery
+            SqlQuery query = new SqlQuery
             {
-                Filter = "id = " + id
+                Filter = "id = " + id,
+                Related = "contact_info_by_contact_id"
             };
 
-            SqlQuery contactInfoQuery = new SqlQuery
-            {
-                Filter = "contact_id = " + id
-            };
-
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", contactQuery)).FirstOrDefault();
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
             string imageData = string.Empty;
             if (!string.IsNullOrEmpty(contact.ImageUrl))
             {
@@ -213,11 +173,31 @@
             ContactViewModel model = new ContactViewModel
             {
                 Contact = contact,
-                ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).ToList(),
+                ContactInfos = contact.ContactInfos,
                 ImageData = imageData
             };
 
             return View(model);
         }
+
+        #region private
+
+        private async Task<string> UploadImage(HttpPostedFileBase upload)
+        {
+            if (upload != null && upload.ContentLength > 0)
+            {
+                MemoryStream target = new MemoryStream();
+                upload.InputStream.CopyTo(target);
+                byte[] data = target.ToArray();
+                string base64Data = string.Format("data:{0};base64,{1}", upload.ContentType,
+                    Convert.ToBase64String(data));
+                FileResponse result = await filesApi.CreateFileAsync(Guid.NewGuid().ToString(), base64Data);
+                return result.Name;
+            }
+
+            return null;
+        }
+
+        #endregion
     }
 }

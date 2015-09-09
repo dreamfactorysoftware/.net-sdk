@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using DreamFactory.AddressBook.Properties;
+    using Newtonsoft.Json;
 
     public class ContactInfo
     {
@@ -41,5 +42,8 @@
         [Display(Name = "Country")]
         [MaxLength(64, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_MaxLength", ErrorMessage = null)]
         public string Country { get; set; }
+
+        [JsonProperty(PropertyName = "contact_by_contact_id")]
+        public Contact Contact { get; set; }
     }
 }

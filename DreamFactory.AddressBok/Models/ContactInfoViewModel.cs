@@ -12,5 +12,7 @@
         [Display(Name = "Contact info type")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessage = null)]
         public ContactInfo ContactInfo { get; set; }
+
+        public string ContactName { get; set; }
     }
 }

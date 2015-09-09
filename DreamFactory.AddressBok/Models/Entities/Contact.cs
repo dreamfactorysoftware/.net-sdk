@@ -1,7 +1,9 @@
 ﻿namespace DreamFactory.AddressBook.Models.Entities
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using DreamFactory.AddressBook.Properties;
+    using Newtonsoft.Json;
 
     public class Contact
     {
@@ -29,5 +31,8 @@
 
         [Display(Name = "Notes")]
         public string Notes { get; set; }
+
+        [JsonProperty(PropertyName = "contact_info_by_contact_id")]
+        public List<ContactInfo> ContactInfos { get; set; }
     }
 }
