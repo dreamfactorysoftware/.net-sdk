@@ -71,6 +71,8 @@
 
             // Act & Assert
             Should.Throw<ArgumentNullException>(() => builder.WithOutParam<bool>(null, 100));
+            Should.Throw<ArgumentNullException>(() => builder.WithInParam<bool>(null, true));
+            Should.Throw<ArgumentNullException>(() => builder.WithInOutParam<bool>(null, true, 100));
         }
     }
 }

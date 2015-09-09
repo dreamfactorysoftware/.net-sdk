@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Rest
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Http;
@@ -118,6 +119,40 @@
             // Assert
             Dictionary<string, object> headers = context.BaseHeaders.Build();
             headers[HttpHeaders.FolderNameHeader].ShouldBe("foo");
+        }
+
+        [TestMethod]
+        public void ShouldSetSessionIdHeader()
+        {
+            // Arrange
+            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, SessionId, new TestDataHttpFacade(), new JsonContentSerializer());
+
+            // Act
+            Dictionary<string, object> headers = context.BaseHeaders.Build();
+
+            // Assert
+            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe(SessionId);
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfSetApplicationNameArgumentIsNull()
+        {
+            // Arrange
+            IRestContext context = CreateRestContext();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => context.SetApplicationName(null));
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfAnyArgumentsAreNull()
+        {
+            // Arrange, Act & Assert
+            Should.Throw<ArgumentException>(() => new RestContext(null, AppName, AppApiKey, null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, null, AppApiKey, null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, null, null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, AppApiKey, null, null, new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, AppApiKey, null, new TestDataHttpFacade(), null));
         }
 
         private static IRestContext CreateRestContext()

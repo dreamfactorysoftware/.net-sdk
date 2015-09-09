@@ -53,6 +53,16 @@
         {
             HttpUtils.CheckUrlString(baseAddress);
 
+            if (applicationName == null)
+            {
+                throw new ArgumentNullException("applicationName");
+            }
+
+            if (applicationApiKey == null)
+            {
+                throw new ArgumentNullException("applicationApiKey");
+            }
+
             if (httpFacade == null)
             {
                 throw new ArgumentNullException("httpFacade");
@@ -61,16 +71,6 @@
             if (serializer == null)
             {
                 throw new ArgumentNullException("serializer");
-            }
-
-            if (httpFacade == null)
-            {
-                throw new ArgumentNullException("applicationName");
-            }
-
-            if (serializer == null)
-            {
-                throw new ArgumentNullException("applicationApiKey");
             }
 
             address = new HttpAddress(baseAddress, apiVersion);

@@ -1,6 +1,8 @@
 ﻿namespace DreamFactory.Tests.Http
 {
+    using System;
     using System.Collections.Generic;
+    using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Rest;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -96,6 +98,16 @@
 
             // Assert
             address.Build().ShouldBe(result);
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfSqlQueryNull()
+        {
+            // Arrange
+            IHttpAddress address = CreateTestHttpAddress();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => address.WithSqlQuery(null));
         }
 
         private static IHttpAddress CreateTestHttpAddress()
