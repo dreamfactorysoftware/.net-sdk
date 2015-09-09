@@ -7,10 +7,11 @@
     public class ContactInfoViewModel
     {
         public string ReturnUrl { get; set; }
-        public InfoType InfoType { get; set; }
 
         [Display(Name = "Contact info type")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessage = null)]
+        public InfoType InfoType { get; set; }
+
         public ContactInfo ContactInfo { get; set; }
 
         public string ContactName { get; set; }

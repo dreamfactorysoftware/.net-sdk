@@ -68,18 +68,18 @@
         [HttpGet]
         public ActionResult Create(int groupId)
         {
-            ContactViewModel contact = new ContactViewModel
+            ContactCreateViewModel contact = new ContactCreateViewModel
             {
                 GroupId = groupId,
                 Contact = new Contact(),
-                ContactInfos = new List<ContactInfo>()
+                ContactInfoViewModel = new ContactInfoViewModel()
             };
 
             return View(contact);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ContactViewModel model)
+        public async Task<ActionResult> Create(ContactCreateViewModel model)
         {
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0 && !validImageTypes.Contains(model.ImageUpload.ContentType))
             {
@@ -99,12 +99,18 @@
                 {
                     new ContactContactGroup
                     {
-                        ContactId = records.Select(x => x.Id).First(),
+                        ContactId = records.Select(x => x.Id).FirstOrDefault(),
                         ContactGroupId = model.GroupId
                     }
                 };
 
-            await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+            model.ContactInfoViewModel.ContactInfo.InfoType = model.ContactInfoViewModel.InfoType.ToString();
+            model.ContactInfoViewModel.ContactInfo.ContactId = records.Select(x => x.Id).FirstOrDefault();
+
+            Task<IEnumerable<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+            Task<IEnumerable<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
+
+            await Task.WhenAll(createRelationshipsTask, createContactInfoTask);
 
             return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
         }

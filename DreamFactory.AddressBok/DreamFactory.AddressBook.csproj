@@ -165,6 +165,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ContactContactGroupViewModel.cs" />
+    <Compile Include="Models\ContactCreateViewModel.cs" />
     <Compile Include="Models\Entities\ContactContactGroup.cs" />
     <Compile Include="Models\Entities\ContactGroup.cs" />
     <Compile Include="Models\ContactGroupViewModel.cs" />

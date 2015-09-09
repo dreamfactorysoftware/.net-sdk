@@ -1,5 +1,5 @@
 ﻿@using DreamFactory.AddressBook.Extensions
-@model DreamFactory.AddressBook.Models.ContactViewModel
+@model DreamFactory.AddressBook.Models.ContactCreateViewModel
 
 @{
     ViewBag.Title = "Add new contact";
@@ -56,10 +56,70 @@
                         @Html.ValidationMessageFor(m => m.Contact.Notes, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <br/>
+                <input type="hidden" value="0" name="ContactInfoViewModel.ContactInfo.ContactId"/>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.InfoType, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(m => m.ContactInfoViewModel.InfoType, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.InfoType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.Phone, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.Phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.Phone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.Address, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.City, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.City, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.State, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.State, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.State, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.Zip, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.Zip, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.Zip, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContactInfoViewModel.ContactInfo.Country, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ContactInfoViewModel.ContactInfo.Country, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactInfoViewModel.ContactInfo.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-primary"/>
-                        <a href="@Url.Action("List", "Contact", Request.QueryString.ToRouteValues())" class="btn btn-default">Cancel</a>
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a href="@Url.Action("List", "Contact" , Request.QueryString.ToRouteValues())" class="btn btn-default">Cancel</a>
                     </div>
                 </div>
             }
