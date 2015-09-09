@@ -96,8 +96,6 @@
     <Compile Include="Model\Database\TableInfo.cs" />
     <Compile Include="Model\Database\TypeMap.cs" />
     <Compile Include="Model\File\StorageResource.cs" />
-    <Compile Include="Model\File\ContainerRequest.cs" />
-    <Compile Include="Model\File\ContainerResponse.cs" />
     <Compile Include="Model\File\FileRequest.cs" />
     <Compile Include="Model\File\FolderRequest.cs" />
     <Compile Include="Model\File\FolderResponse.cs" />
@@ -118,10 +116,7 @@
     <Compile Include="Model\System\Email\EmailTemplateResponse.cs" />
     <Compile Include="Model\System\Email\RelatedEmailTemplate.cs" />
     <Compile Include="Model\System\Environment\EnvironmentResponse.cs" />
-    <Compile Include="Model\System\Environment\PhpInfoSection.cs" />
     <Compile Include="Model\System\Environment\PlatformSection.cs" />
-    <Compile Include="Model\System\Environment\ReleaseSection.cs" />
-    <Compile Include="Model\System\Environment\ServerSection.cs" />
     <Compile Include="Model\System\App\RelatedApp.cs" />
     <Compile Include="Model\System\App\AppResponse.cs" />
     <Compile Include="Model\System\AppGroup\RelatedAppGroup.cs" />
@@ -138,7 +133,7 @@
     <Compile Include="Model\System\Service\RelatedServiceType.cs" />
     <Compile Include="Model\System\Service\ServiceRequest.cs" />
     <Compile Include="Model\System\Service\ServiceResponse.cs" />
-    <Compile Include="Model\System\Setting\RelatedSystemSetting.cs" />
+    <Compile Include="Model\System\Setting\RelatedSetting.cs" />
     <Compile Include="Model\System\UserAppRole\RelatedUserAppRole.cs" />
     <Compile Include="Model\System\User\UserRequest.cs" />
     <Compile Include="Model\System\User\UserResponse.cs" />
@@ -171,7 +166,6 @@
     <Compile Include="Http\HttpUtils.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\IHttpHeaders.cs" />
-    <Compile Include="Model\Service.cs" />
     <Compile Include="Rest\ServiceFactory.cs" />
     <Compile Include="Serialization\IContentSerializer.cs" />
     <Compile Include="Http\IHttpFacade.cs" />

@@ -1,54 +1,44 @@
-﻿namespace DreamFactory.Model.System.Lookup
+﻿namespace DreamFactory.Model.System.Setting
 {
     using global::System;
 
     /// <summary>
-    /// RelatedLookup.
+    /// RelatedSetting.
     /// </summary>
-    public class RelatedLookup
+    public class RelatedSetting
     {
         /// <summary>
-        /// Id of this lookup.
+        /// Id of this setting.
         /// </summary>
         public int? Id { get; set; }
 
         /// <summary>
-        /// Name of this lookup.
+        /// Name of this setting.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Value of this lookup.
+        /// Value of this setting.
         /// </summary>
         public string Value { get; set; }
 
         /// <summary>
-        /// Indicator whether this lookup is private.
-        /// </summary>
-        public bool? Private { get; set; }
-
-        /// <summary>
-        /// Description of this lookup.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Id of the user that created this lookup.
+        /// Id of the user that created this setting.
         /// </summary>
         public int? CreatedById { get; set; }
 
         /// <summary>
-        /// Id of the user that last modified this lookup.
+        /// Id of the user that last modified this setting.
         /// </summary>
         public int? ModifiedById { get; set; }
 
         /// <summary>
-        /// Date this lookup was created.
+        /// Date this setting was created.
         /// </summary>
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
-        /// Date this lookup was last modified.
+        /// Date this setting was last modified.
         /// </summary>
         public DateTime? LastModifiedDate { get; set; }
     }

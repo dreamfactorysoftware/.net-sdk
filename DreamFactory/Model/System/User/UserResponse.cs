@@ -381,13 +381,13 @@
         /// System settings created by user.
         /// </summary>
         [JsonProperty(PropertyName = RelatedResources.User.SystemSettingsCreated)]
-        public List<RelatedSystemSetting> SystemSettingsCreated { get; set; }
+        public List<RelatedSetting> SystemSettingsCreated { get; set; }
 
         /// <summary>
         /// System settings last modified by user.
         /// </summary>
         [JsonProperty(PropertyName = RelatedResources.User.SystemSettingsLastModified)]
-        public List<RelatedSystemSetting> SystemSettingsLastModified { get; set; }
+        public List<RelatedSetting> SystemSettingsLastModified { get; set; }
 
         /// <summary>
         /// Token map linked to user.

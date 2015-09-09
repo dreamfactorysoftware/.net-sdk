@@ -1,10 +1,5 @@
 ﻿namespace DreamFactory.Model.System.Role
 {
-    using DreamFactory.Model.System.App;
-    using DreamFactory.Model.System.Service;
-    using DreamFactory.Model.System.User;
-    using global::System.Collections.Generic;
-
     /// <summary>
     /// RoleResponse.
     /// </summary>

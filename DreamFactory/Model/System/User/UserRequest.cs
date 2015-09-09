@@ -1,7 +1,5 @@
 ﻿namespace DreamFactory.Model.System.User
 {
-    using DreamFactory.Model.System.App;
-    using DreamFactory.Model.System.Role;
     using global::System;
 
     /// <summary>

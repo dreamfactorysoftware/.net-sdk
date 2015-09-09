@@ -24,5 +24,10 @@
         /// upgrade_available.
         /// </summary>
         public bool? UpgradeAvailable { get; set; }
+
+        /// <summary>
+        /// Host name.
+        /// </summary>
+        public string Host { get; set; }
     }
 }		

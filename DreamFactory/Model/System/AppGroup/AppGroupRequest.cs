@@ -1,8 +1,5 @@
 ﻿namespace DreamFactory.Model.System.AppGroup
 {
-    using DreamFactory.Model.System.App;
-    using global::System.Collections.Generic;
-
     /// <summary>
     /// AppGroupResponse.
     /// </summary>
