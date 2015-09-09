@@ -31,17 +31,17 @@
         public string LaunchUrl { get; set; }
 
         /// <summary>
-        /// True if the application requires fullscreen to run.
+        /// True if the application requires full screen to run.
         /// </summary>
         public bool? RequiresFullscreen { get; set; }
 
         /// <summary>
-        /// True allows the fullscreen toggle widget to be displayed.
+        /// True allows the full screen toggle widget to be displayed.
         /// </summary>
         public bool? AllowFullscreenToggle { get; set; }
 
         /// <summary>
-        /// Where the fullscreen toggle widget is to be displayed, defaults to top.
+        /// Where the full screen toggle widget is to be displayed, defaults to top.
         /// </summary>
         public string ToggleLocation { get; set; }
 

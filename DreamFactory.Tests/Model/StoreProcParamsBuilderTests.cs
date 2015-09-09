@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Model
 {
+    using System;
     using System.Linq;
     using DreamFactory.Model.Builder;
     using DreamFactory.Model.Database;
@@ -60,6 +61,16 @@
             param.ParamType.ShouldBe("OUT");
             param.Value.ShouldBe(null);
             param.Length.ShouldBe(100);
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfNameIsNull()
+        {
+            // Arrange
+            IStoreProcParamsBuilder builder = new StoreProcParamsBuilder();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => builder.WithOutParam<bool>(null, 100));
         }
     }
 }

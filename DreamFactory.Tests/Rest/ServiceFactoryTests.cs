@@ -54,13 +54,59 @@
         }
 
         [TestMethod]
-        public void Should()
+        public void ShouldCreateDatabaseApi()
         {
             // Arrange
+            HttpHeaders headers = new HttpHeaders();
+            IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
 
             // Act
+            IDatabaseApi api = factory.CreateDatabaseApi("mysql");
 
             // Assert
+            api.ShouldNotBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldCreateSystemApi()
+        {
+            // Arrange
+            HttpHeaders headers = new HttpHeaders();
+            IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
+
+            // Act
+            ISystemApi api = factory.CreateSystemApi();
+
+            // Assert
+            api.ShouldNotBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldCreateSystemCustomSettingsApi()
+        {
+            // Arrange
+            HttpHeaders headers = new HttpHeaders();
+            IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
+
+            // Act
+            ICustomSettingsApi api = factory.CreateSystemCustomSettingsApi();
+
+            // Assert
+            api.ShouldNotBe(null);
+        }
+
+        [TestMethod]
+        public void ShouldCreateUserCustomSettingsApi()
+        {
+            // Arrange
+            HttpHeaders headers = new HttpHeaders();
+            IServiceFactory factory = new ServiceFactory(Mock.Of<IHttpAddress>(), Mock.Of<IHttpFacade>(), Mock.Of<IContentSerializer>(), headers);
+
+            // Act
+            ICustomSettingsApi api = factory.CreateUserCustomSettingsApi();
+
+            // Assert
+            api.ShouldNotBe(null);
         }
     }
 }
