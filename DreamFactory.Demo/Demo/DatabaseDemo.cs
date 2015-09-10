@@ -21,7 +21,7 @@
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi(ServiceName);
 
             // List available tables
-            List<TableInfo> tables = new List<TableInfo>(await databaseApi.GetTableNamesAsync());
+            IEnumerable<TableInfo> tables = (await databaseApi.GetTableNamesAsync()).ToList();
             Console.WriteLine("Existing tables: {0}", tables.Select(x => x.Name).ToStringList());
 
             // Delete staff table if it exists
@@ -45,25 +45,25 @@
             // Create new record
             Console.WriteLine("Creating {0} records...", TableName);
             List<StaffRecord> records = CreateStaffRecords().ToList();
-            records = new List<StaffRecord>(await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery()));
+            records = (await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery())).Records;
 
             // Update record
             Console.WriteLine("Creating {0} records...", TableName);
             StaffRecord firstRecord = records.First();
             firstRecord.FirstName = "Andrei 2";
-            await databaseApi.UpdateRecordsAsync(TableName, records);
+            await databaseApi.UpdateRecordsAsync(TableName, records, new SqlQuery());
 
             SqlQuery query = new SqlQuery { Filter = "age > 30", Order = "age", Fields = "*" };
-            //var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
-            //var ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
-            //Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
+            IEnumerable<StaffRecord> selection = (await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query)).Records;
+            string ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
+            Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
 
             // Deleting one record
             Console.WriteLine("Deleting second record...");
-            await databaseApi.DeleteRecordsAsync(TableName, records.Skip(1).Take(1));
+            await databaseApi.DeleteRecordsAsync(TableName, records.Skip(1).Take(1), new SqlQuery());
 
             // Get table records
-            records = new List<StaffRecord>(await databaseApi.GetRecordsAsync<StaffRecord>(TableName, new SqlQuery()));
+            records = (await databaseApi.GetRecordsAsync<StaffRecord>(TableName, new SqlQuery())).Records;
             Console.WriteLine("Retrieved {0} records:", TableName);
             foreach (StaffRecord item in records)
             {

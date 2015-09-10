@@ -39,30 +39,43 @@
         public async Task<ActionResult> List(int? groupId, int offset = 0, int limit = 10)
         {
             IEnumerable<Contact> contacts;
+            SqlQuery query;
 
             if (groupId.HasValue)
             {
-                var query = new SqlQuery
+                query = new SqlQuery
                 {
+                    Offset = offset,
+                    Limit = limit,
                     Filter = "contact_group_id = " + groupId,
-                    Related = "contact_by_contact_id,contact_group_by_contact_group_id"
+                    Related = "contact_by_contact_id,contact_group_by_contact_group_id",
+                    IncludeCount = true
                 };
 
-                IEnumerable<ContactContactGroup> contactContactGroups = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query)).ToList();
+                RecordsResult<ContactContactGroup> result = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query);
 
-                contacts = contactContactGroups.Select(x => x.Contact).ToList();
-                ViewBag.GroupName = contactContactGroups.Select(x => x.ContactGroup.Name).FirstOrDefault();
+                contacts = result.Records.Select(x => x.Contact);
+
+                ViewBag.GroupName = result.Records.Select(x => x.ContactGroup.Name).FirstOrDefault();
+                ViewBag.TotalResults = result.Meta.Count;
             }
             else
             {
-                contacts = (await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery())).ToList();
+                query = new SqlQuery
+                {
+                    Offset = offset,
+                    Limit = limit,
+                    IncludeCount = true
+                };
+
+                RecordsResult<Contact> result = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+                contacts = result.Records;
+
+                ViewBag.TotalResults = result.Meta.Count;
             }
 
             ViewBag.Page = offset / limit + 1;
             ViewBag.PageSize = limit;
-            ViewBag.TotalResults = contacts.Count();
-
-            contacts = contacts.Skip(offset).Take(limit);
 
             return View(contacts);
         }
@@ -95,7 +108,7 @@
             model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
 
             IEnumerable<Contact> records = new List<Contact> { model.Contact };
-            records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).ToList();
+            records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).Records;
 
             IEnumerable<ContactContactGroup> relationshipRecords = new List<ContactContactGroup>
                 {
@@ -109,8 +122,8 @@
             model.ContactInfoViewModel.ContactInfo.InfoType = model.ContactInfoViewModel.InfoType.ToString();
             model.ContactInfoViewModel.ContactInfo.ContactId = records.Select(x => x.Id).FirstOrDefault();
 
-            Task<IEnumerable<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
-            Task<IEnumerable<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
+            Task<RecordsResult<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+            Task<RecordsResult<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
 
             await Task.WhenAll(createRelationshipsTask, createContactInfoTask);
 
@@ -126,7 +139,7 @@
                 Related = "contact_info_by_contact_id"
             };
 
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).Records.FirstOrDefault();
 
             ContactViewModel model = new ContactViewModel
             {
@@ -152,12 +165,12 @@
                     Filter = "contact_id = " + model.Contact.Id
                 };
 
-                model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", query)).ToList();
+                model.ContactInfos = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", query)).Records;
                 return View(model);
             }
 
             model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
-            await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact });
+            await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact }, new SqlQuery());
 
             return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
         }
@@ -171,7 +184,7 @@
                 Related = "contact_info_by_contact_id"
             };
 
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).Records.FirstOrDefault();
             string imageData = string.Empty;
             if (!string.IsNullOrEmpty(contact.ImageUrl))
             {

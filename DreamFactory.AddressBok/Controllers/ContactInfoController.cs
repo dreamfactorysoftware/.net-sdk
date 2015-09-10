@@ -29,7 +29,7 @@
                 Filter = "id = " + contactId
             };
 
-            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).FirstOrDefault();
+            Contact contact = (await databaseApi.GetRecordsAsync<Contact>("contact", query)).Records.FirstOrDefault();
 
             if (contact == null)
             {
@@ -71,7 +71,7 @@
                 Related = "contact_by_contact_id"
             };
 
-            ContactInfo contactInfo = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).FirstOrDefault();
+            ContactInfo contactInfo = (await databaseApi.GetRecordsAsync<ContactInfo>("contact_info", contactInfoQuery)).Records.FirstOrDefault();
 
             if (contactInfo == null)
             {
@@ -99,7 +99,7 @@
                 return View(model);
             }
 
-            await databaseApi.UpdateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfo });
+            await databaseApi.UpdateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfo }, new SqlQuery());
 
             return Redirect(model.ReturnUrl);
         }

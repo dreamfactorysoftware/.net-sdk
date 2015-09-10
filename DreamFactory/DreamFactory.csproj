@@ -90,6 +90,8 @@
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\Builder\IStoreProcParamsBuilder.cs" />
     <Compile Include="Model\Builder\StoreProcParamsBuilder.cs" />
+    <Compile Include="Model\Database\Metadata.cs" />
+    <Compile Include="Model\Database\RecordsResult.cs" />
     <Compile Include="Model\Database\SqlQuery.cs" />
     <Compile Include="Model\Database\StoredProcParam.cs" />
     <Compile Include="Model\Database\StoredProcRequest.cs" />

@@ -9,7 +9,7 @@
 
     internal partial class DatabaseApi
     {
-        public async Task<IEnumerable<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<RecordsResult<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -36,10 +36,10 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            return contentSerializer.Deserialize(response.Body, recordsRequest).resource;
+            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
         }
 
-        public async Task UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records)
+        public async Task<RecordsResult<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -51,6 +51,11 @@
                 throw new ArgumentNullException("records");
             }
 
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
             IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
 
             var recordsRequest = new { resource = records.ToList() };
@@ -59,9 +64,11 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
         }
 
-        public async Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
+        public async Task<RecordsResult<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -80,11 +87,10 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var recordSet = new { resource = new List<TRecord>() };
-            return contentSerializer.Deserialize(response.Body, recordSet).resource;
+            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
         }
 
-        public async Task DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records)
+        public async Task<RecordsResult<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -96,6 +102,11 @@
                 throw new ArgumentNullException("records");
             }
 
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
             IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
 
             var recordsRequest = new { resource = records.ToList() };
@@ -104,6 +115,8 @@
 
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
         }
     }
 }

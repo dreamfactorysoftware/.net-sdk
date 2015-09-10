@@ -23,21 +23,27 @@
         [HttpGet]
         public async Task<ActionResult> List(int offset = 0, int limit = 10)
         {
-            IEnumerable<ContactGroup> groups = (await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", new SqlQuery())).ToList();
+            SqlQuery query = new SqlQuery
+            {
+                Offset = offset,
+                Limit = limit,
+                IncludeCount = true
+            };
+
+            RecordsResult<ContactGroup> result = await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
 
             ViewBag.Page = offset / limit + 1;
             ViewBag.PageSize = limit;
-            ViewBag.TotalResults = groups.Count();
+            ViewBag.TotalResults = result.Meta.Count;
 
-            groups = groups.Skip(offset).Take(limit);
-
-            return View(groups);
+            return View(result.Records);
         }
 
         [HttpGet]
         public async Task<ActionResult> Create()
         {
             List<ContactContactGroupViewModel> contacts = (await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery()))
+                .Records
                 .Select(x => new ContactContactGroupViewModel
                 {
                     ContactId = x.Id.Value,
@@ -62,7 +68,7 @@
                 return View(model);
             }
 
-            IEnumerable<ContactGroup> records = await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
+            IEnumerable<ContactGroup> records = (await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery())).Records;
 
             IEnumerable<ContactContactGroup> relationshipModel = model.Contacts
                 .Where(x => x.InGroup)
@@ -86,19 +92,21 @@
                 Related = "contact_by_contact_group_relationship"
             };
 
-            Task<IEnumerable<Contact>> contactsTask = databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
-            Task<IEnumerable<ContactGroup>> contactGroupTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", groupQuery);
+            Task<RecordsResult<Contact>> contactsTask = databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
+            Task<RecordsResult<ContactGroup>> contactGroupTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", groupQuery);
             await Task.WhenAll(contactsTask, contactGroupTask);
+
+            var contactGroup = contactGroupTask.Result.Records.FirstOrDefault();
 
             ContactGroupViewModel model = new ContactGroupViewModel
             {
-                ContactGroup = contactGroupTask.Result.FirstOrDefault(),
-                Contacts = contactsTask.Result
+                ContactGroup = contactGroup,
+                Contacts = contactsTask.Result.Records
                 .Select(x => new ContactContactGroupViewModel
                 {
                     ContactId = x.Id.Value,
                     ContactName = string.Format("{0} {1}", x.FirstName, x.LastName),
-                    InGroup = contactGroupTask.Result.FirstOrDefault().Contacts.Any(y => y.Id == x.Id)
+                    InGroup = contactGroup.Contacts.Any(y => y.Id == x.Id)
                 })
                 .ToList()
             };
@@ -123,6 +131,7 @@
 
             Dictionary<int, ContactContactGroup> relationshipsInDb =
                 (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", contactsInGroupQuery))
+                .Records
                 .ToDictionary(x => x.ContactId.Value, x => x);
             Dictionary<int, ContactContactGroup> relationshipsInModel =
                 model.Contacts
@@ -143,9 +152,9 @@
                 .Where(relationship => !relationshipsInDb.TryGetValue(relationship.ContactId.Value, out tmp))
                 .ToList();
 
-            Task contactGroupTask = databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup });
-            Task<IEnumerable<ContactContactGroup>> contactGroupRelationshipAddTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
-            Task contactGroupRelationshipDeleteTask = databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete);
+            Task<RecordsResult<ContactGroup>> contactGroupTask = databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
+            Task<RecordsResult<ContactContactGroup>> contactGroupRelationshipAddTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
+            Task<RecordsResult<ContactContactGroup>> contactGroupRelationshipDeleteTask = databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete, new SqlQuery());
 
             await Task.WhenAll(contactGroupTask, contactGroupRelationshipAddTask, contactGroupRelationshipDeleteTask);
 

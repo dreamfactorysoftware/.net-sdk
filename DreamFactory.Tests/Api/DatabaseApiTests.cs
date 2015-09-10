@@ -131,7 +131,7 @@
             SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
-            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.ToList();
+            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.Records;
 
             // Assert
             created.Count.ShouldBe(3);
@@ -149,12 +149,19 @@
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
             IEnumerable<StaffRecord> records = CreateStaffRecords().Skip(1).ToList();
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
-            // Act & Assert
-            databaseApi.UpdateRecordsAsync("staff", records).Wait();
+            // Act
+            List<StaffRecord> updated = databaseApi.UpdateRecordsAsync("staff", records, query).Result.Records;
 
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records));
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null));
+            // Assert
+            updated.Count.ShouldBe(2);
+            updated.First().Uid.ShouldBe(2);
+            updated.Last().Uid.ShouldBe(3);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
         }
 
         [TestMethod]
@@ -165,15 +172,16 @@
             SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
-            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.ToList();
+            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.Records.ToList();
 
             // Assert
             records.Count.ShouldBe(3);
             records.First().Uid.ShouldBe(1);
             records.Last().Uid.ShouldBe(3);
 
-            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>(null, query));
-            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>("staff", null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
         }
 
         [TestMethod]
@@ -182,12 +190,34 @@
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
             IEnumerable<StaffRecord> records = CreateStaffRecords().Take(1).ToList();
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
-            // Act & Assert
-            databaseApi.DeleteRecordsAsync("staff", records).Wait();
+            // Act
+            List<StaffRecord> deleted = databaseApi.DeleteRecordsAsync("staff", records, query).Result.Records;
 
-            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync(null, records));
-            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync("staff", (List<StaffRecord>)null));
+            // Assert
+            deleted.Count.ShouldBe(1);
+            deleted.First().Uid.ShouldBe(0);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
+        }
+
+        [TestMethod]
+        public void ShouldReturnMetadataWhenQueryingRecordsAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+            SqlQuery query = new SqlQuery { Fields = "*", IncludeCount = true, IncludeSchema = true };
+
+            // Act
+            RecordsResult<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
+
+            // Assert
+            result.Meta.ShouldNotBe(null);
+            result.Meta.Count.ShouldBe(3);
+            result.Meta.Schema.ShouldNotBe(null);
         }
 
         #endregion
