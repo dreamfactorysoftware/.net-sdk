@@ -9,11 +9,11 @@
     public static class DreamFactoryConfig
     {
         public const RestApiVersion Version = RestApiVersion.V2;
-        public const string AppName = "Address book";
-        public const string AppApiKey = "1a66bc7ab148feaa24c97bc48714c172c619e11447ee3efcbbff50d869f881f9";
-        public const string BaseAddress = "http://dfv2.cloudapp.net:8080";
-        public const string DbServiceName = "mysql";
-        public const string EmailServiceName = "email";
+        public const string AppName = "Address Book ASP.NET";
+        public const string AppApiKey = "2d82361322f9b76f5550cb02285eb22393963dc8900738a5bde629c53742f8a5";
+        public const string BaseAddress = "http://dfv204.cloudapp.net:8080/";
+        public const string DbServiceName = "db3";
+        public const string EmailServiceName = "mail";
         public const string FileServiceName = "files";
         public const string SessionIdClaimType = "http://dreamfactory.com/claims/sessionid";
 

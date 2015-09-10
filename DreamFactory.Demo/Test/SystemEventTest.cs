@@ -15,10 +15,7 @@
         {
             ISystemApi systemApi = context.Factory.CreateSystemApi();
 
-            IEnumerable<string> events = (await systemApi.GetEventsAsync()).ToList();
-            Console.WriteLine("GetEventsAsync(): Found {0} events", events.Count());
-
-            string eventName = events.First();
+            string eventName = "system.get.pre_process";
 
             // create
             EventScriptRequest createRequest = CreateEventScript();

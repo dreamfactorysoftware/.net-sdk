@@ -58,7 +58,7 @@
             {
                 session = await userApi.LoginAsync(model.Email, model.Password);
             }
-            catch (Exception)
+            catch (DreamFactoryException)
             {
                 try
                 {
@@ -104,11 +104,25 @@
                     NewPassword = model.Password
                 };
 
-                bool result = await userApi.RegisterAsync(register);
+                bool result;
+                try
+                {
+                    result = await userApi.RegisterAsync(register);
+                }
+                catch (DreamFactoryException)
+                {
+                    ModelState.AddModelError("", "There was an error registering your account.");
+                    return View(model);
+                }
 
                 if (result)
                 {
-                    Session session = await userApi.LoginAsync(model.Email, model.Password);
+                    Session session = new Session();
+                    try
+                    {
+                        session = await userApi.LoginAsync(model.Email, model.Password);
+                    }
+                    catch (DreamFactoryException) {;}
 
                     if (string.IsNullOrEmpty(session.SessionId))
                     {

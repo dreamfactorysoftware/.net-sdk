@@ -13,7 +13,7 @@
     public class DatabaseDemo : IRunnable
     {
         private const string TableName = "staff";
-        private const string ServiceName = "mysql";
+        private const string ServiceName = "db3";
 
         public async Task RunAsync(IRestContext context)
         {
@@ -54,9 +54,9 @@
             await databaseApi.UpdateRecordsAsync(TableName, records);
 
             SqlQuery query = new SqlQuery { Filter = "age > 30", Order = "age", Fields = "*" };
-            var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
-            var ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
-            Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
+            //var selection = await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query);
+            //var ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
+            //Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
 
             // Deleting one record
             Console.WriteLine("Deleting second record...");

@@ -236,20 +236,6 @@
         #region --- EventScript ---
 
         [TestMethod]
-        public void ShouldGetEventScriptsAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-
-            // Act
-            List<string> events = systemApi.GetEventsAsync().Result.ToList();
-
-            // Assert
-            events.Count.ShouldBe(5);
-            events.First().ShouldBe("system.get.pre_process");
-        }
-
-        [TestMethod]
         public void ShouldGetScriptTypes()
         {
             // Arrange

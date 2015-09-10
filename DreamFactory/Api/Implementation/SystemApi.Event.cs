@@ -9,11 +9,6 @@
 
     internal partial class SystemApi
     {
-        public Task<IEnumerable<string>> GetEventsAsync()
-        {
-            return QueryRecordsAsync<string>("event", new SqlQuery());
-        }
-
         public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
             return QueryRecordAsync<EventScriptResponse>("event", eventName, query);

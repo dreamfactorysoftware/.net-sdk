@@ -28,8 +28,15 @@
 
             // Check admin app
             AppResponse adminApp = apps.Single(x => x.Name == "admin");
-            RelatedRole role = adminApp.Roles.First();
-            Console.WriteLine("admin app has first role: {0}", role.Name);
+            RelatedRole role = adminApp.Roles.FirstOrDefault();
+            if (role != null)
+            {
+                Console.WriteLine("admin app has first role: {0}", role.Name);
+            }
+            else
+            {
+                Console.WriteLine("admin app has no roles.");
+            }
             RelatedService service = adminApp.StorageService;
             Console.WriteLine("admin app has {0} {1}", service != null ? "service" : "no service", service != null ? service.Name : "");
 
