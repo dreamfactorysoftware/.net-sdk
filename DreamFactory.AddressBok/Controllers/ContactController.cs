@@ -50,17 +50,19 @@
 
                 IEnumerable<ContactContactGroup> contactContactGroups = (await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query)).ToList();
 
-                contacts = contactContactGroups.Select(x => x.Contact);
+                contacts = contactContactGroups.Select(x => x.Contact).ToList();
                 ViewBag.GroupName = contactContactGroups.Select(x => x.ContactGroup.Name).FirstOrDefault();
             }
             else
             {
-                contacts = await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
+                contacts = (await databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery())).ToList();
             }
 
             ViewBag.Page = offset / limit + 1;
             ViewBag.PageSize = limit;
             ViewBag.TotalResults = contacts.Count();
+
+            contacts = contacts.Skip(offset).Take(limit);
 
             return View(contacts);
         }
