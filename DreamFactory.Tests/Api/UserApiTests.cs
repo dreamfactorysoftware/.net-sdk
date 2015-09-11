@@ -2,11 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model.File;
     using DreamFactory.Model.User;
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
@@ -14,7 +12,7 @@
     using Shouldly;
 
     [TestClass]
-    public class UserApiTests : BaseTest
+    public class UserApiTests
     {
         #region --- Session ---
 
@@ -227,7 +225,7 @@
         private static IUserApi CreateUserApi(out HttpHeaders headers, string suffix = null)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             headers = new HttpHeaders();
             return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);
         }

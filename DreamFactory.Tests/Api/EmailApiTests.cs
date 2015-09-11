@@ -12,7 +12,7 @@
     using Shouldly;
 
     [TestClass]
-    public class EmailApiTests : BaseTest
+    public class EmailApiTests
     {
         [TestMethod]
         public void ShouldSendEmailAsync()
@@ -41,7 +41,7 @@
         private static IEmailApi CreateEmailApi()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new EmailApi(address, httpFacade, new JsonContentSerializer(), headers, "email");
         }

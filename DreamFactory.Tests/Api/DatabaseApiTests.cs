@@ -14,7 +14,7 @@
     using Shouldly;
 
     [TestClass]
-    public class DatabaseApiTests : BaseTest
+    public class DatabaseApiTests
     {
         #region --- Schema ---
 
@@ -308,7 +308,7 @@
         private static IDatabaseApi CreateDatabaseApi(string alt = null)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade(alt);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new DatabaseApi(address, httpFacade, new JsonContentSerializer(), headers, "db");
         }

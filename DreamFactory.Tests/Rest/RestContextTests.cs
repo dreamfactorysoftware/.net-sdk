@@ -12,7 +12,7 @@
     using Shouldly;
 
     [TestClass]
-    public class RestContextTests : BaseTest
+    public class RestContextTests
     {
         [TestMethod]
         public void ShouldCreateHttpFacade()
@@ -20,7 +20,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
             
             // Assert
             context.HttpFacade.ShouldNotBe(null);
@@ -32,7 +32,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
 
             // Assert
             context.ContentSerializer.ShouldNotBe(null);
@@ -44,7 +44,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
 
             // Assert
             context.BaseHeaders.ShouldNotBe(null);
@@ -57,7 +57,7 @@
             IHttpFacade facade = Mock.Of<IHttpFacade>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, facade, new JsonContentSerializer());
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, facade, new JsonContentSerializer());
 
             // Assert
             context.HttpFacade.ShouldBeSameAs(facade);
@@ -70,7 +70,7 @@
             IContentSerializer serializer = Mock.Of<IContentSerializer>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, Mock.Of<IHttpFacade>(), serializer);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, Mock.Of<IHttpFacade>(), serializer);
 
             // Assert
             context.ContentSerializer.ShouldBeSameAs(serializer);
@@ -125,13 +125,13 @@
         public void ShouldSetSessionIdHeader()
         {
             // Arrange
-            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, SessionId, new TestDataHttpFacade(), new JsonContentSerializer());
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", "session_id", new TestDataHttpFacade(), new JsonContentSerializer());
 
             // Act
             Dictionary<string, object> headers = context.BaseHeaders.Build();
 
             // Assert
-            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe(SessionId);
+            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe("session_id");
         }
 
         [TestMethod]
@@ -148,17 +148,17 @@
         public void ShouldThrowIfAnyArgumentsAreNull()
         {
             // Arrange, Act & Assert
-            Should.Throw<ArgumentException>(() => new RestContext(null, AppName, AppApiKey, null, new TestDataHttpFacade(), new JsonContentSerializer()));
-            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, null, AppApiKey, null, new TestDataHttpFacade(), new JsonContentSerializer()));
-            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, null, null, new TestDataHttpFacade(), new JsonContentSerializer()));
-            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, AppApiKey, null, null, new JsonContentSerializer()));
-            Should.Throw<ArgumentNullException>(() => new RestContext(BaseAddress, AppName, AppApiKey, null, new TestDataHttpFacade(), null));
+            Should.Throw<ArgumentException>(() => new RestContext(null, "app_name", "app_api_key", null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", null, "app_api_key", null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", null, null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", "app_api_key", null, null, new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", "app_api_key", null, new TestDataHttpFacade(), null));
         }
 
         private static IRestContext CreateRestContext()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, null, httpFacade, new JsonContentSerializer());
+            IRestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, httpFacade, new JsonContentSerializer());
             return context;
         }
     }

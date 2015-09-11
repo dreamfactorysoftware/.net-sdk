@@ -13,7 +13,7 @@
     using Shouldly;
 
     [TestClass]
-    public class FilesApiTests : BaseTest
+    public class FilesApiTests
     {
         #region --- Resources ---
 
@@ -217,7 +217,7 @@
         private static IFilesApi CreateFilesApi()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new FilesApi(address, httpFacade, new JsonContentSerializer(), headers, "files");
         }

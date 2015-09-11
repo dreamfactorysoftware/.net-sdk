@@ -14,7 +14,7 @@
     using Shouldly;
 
     [TestClass]
-    public class CustomSettingsApiTests : BaseTest
+    public class CustomSettingsApiTests
     {
         [TestMethod]
         public void ShouldGetCustomSettingsAsync()
@@ -112,7 +112,7 @@
         private static ICustomSettingsApi CreateSettingsApi()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             return new CustomSettingsApi(address, httpFacade, new JsonContentSerializer(), new HttpHeaders(), "user");
         }
 

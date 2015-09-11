@@ -39,11 +39,11 @@ The .NET SDK has been tested on the following platforms:
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
 The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
 ```csharp
-	internal const string BaseAddress = "http://dfv2.cloudapp.net:8080";
-    internal const string AppName = "admin";
-    internal const string AppApiKey = "6498a8ad1beb9d84d63035c5d1120c007fad6de706734db9689f8996707e0f7d";
-    internal const string Email = "dream@factory.com";
-    internal const string Password = "dreamfactory";
+    internal const string BaseAddress = "http://localhost:8080";
+    internal const string AppName = "<app_name>";
+    internal const string AppApiKey = "<app_api_key>";
+    internal const string Email = "<user_email>";
+    internal const string Password = "<user_password";
 ```
 
  > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
@@ -78,6 +78,7 @@ The Visual Studio solution has these projects:
 * DreamFactory       : the API library
 * DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
 * DreamFactory.Tests : Unit Tests (MSTest)
+* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
 
 The solution folder also contains:
 
@@ -227,10 +228,10 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
     // Your custom POCO
     class StaffRecord
     {
-        public int uid { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public int age { get; set; }
+        public int Uid { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
 	}
 
 	// Create tabe schema from StaffRecord type

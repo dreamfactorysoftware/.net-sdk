@@ -25,7 +25,7 @@
     using Shouldly;
 
     [TestClass]
-    public class SystemApiTests : BaseTest
+    public class SystemApiTests
     {
         private static ISystemApi CreateSystemApi(string suffix = null)
         {
@@ -36,7 +36,7 @@
         private static ISystemApi CreateSystemApi(out HttpHeaders headers, string suffix = null)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             headers = new HttpHeaders();
             return new SystemApi(address, httpFacade, new JsonContentSerializer(), headers);
         }
