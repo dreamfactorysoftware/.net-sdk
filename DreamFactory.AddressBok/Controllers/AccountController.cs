@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
@@ -111,8 +112,7 @@
                 }
                 catch (DreamFactoryException)
                 {
-                    ModelState.AddModelError("", "There was an error registering your account.");
-                    return View(model);
+                    result = false;
                 }
 
                 if (result)
@@ -126,7 +126,6 @@
 
                     if (string.IsNullOrEmpty(session.SessionId))
                     {
-                        ModelState.AddModelError("", "Invalid login attempt.");
                         return RedirectToAction("Login", "Account");
                     }
 
@@ -147,7 +146,18 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            userApi.LogoutAsync();
+            ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryConfig.Roles.SysAdmin))
+            {
+                systemApi.LogoutAdminAsync();
+            }
+            else
+            {
+                userApi.LogoutAsync();
+            }
+
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
