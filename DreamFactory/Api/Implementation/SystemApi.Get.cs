@@ -110,6 +110,33 @@
             return contentSerializer.Deserialize(response.Body, result).resource;
         }
 
+        private async Task<IEnumerable<TResponseRecord>> QueryRecordsWithParametersAsync<TResponseRecord>(string resource, params KeyValuePair<string, object>[] parameters)
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("parameters");
+            }
+
+            IHttpAddress address = baseAddress.WithResource(resource);
+
+            foreach (var keyValuePair in parameters)
+            {
+                address = address.WithParameter(keyValuePair.Key, keyValuePair.Value);
+            }
+
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpResponse response = await httpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+
+            var result = new { resource = new List<TResponseRecord>() };
+            return contentSerializer.Deserialize(response.Body, result).resource;
+        }
+
         #endregion
     }
 }

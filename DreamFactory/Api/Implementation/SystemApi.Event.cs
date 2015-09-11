@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
@@ -9,6 +8,11 @@
 
     internal partial class SystemApi
     {
+        public Task<IEnumerable<string>> GetEventsAsync()
+        {
+            return QueryRecordsWithParametersAsync<string>("event", new KeyValuePair<string, object>("as_list", true));
+        }
+
         public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
             return QueryRecordAsync<EventScriptResponse>("event", eventName, query);

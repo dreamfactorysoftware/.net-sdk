@@ -212,6 +212,12 @@
         #region event
 
         /// <summary>
+        /// Gets all system events.
+        /// </summary>
+        /// <returns>List of all event names.</returns>
+        Task<IEnumerable<string>> GetEventsAsync();
+
+        /// <summary>
         /// Gets event script by name.
         /// </summary>
         /// <param name="eventName">Event script identifier.</param>
