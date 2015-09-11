@@ -8,7 +8,10 @@
 
 <h2>@ViewBag.Title</h2>
 <div>
-    <a href="@Url.Action("Create", "Contact", Request.QueryString.ToRouteValues())">Add new contact</a>
+    @if (!string.IsNullOrEmpty(Request.QueryString["GroupId"]))
+    {
+        <a href="@Url.Action("Create", "Contact", Request.QueryString.ToRouteValues())">Add new contact</a>
+    }
 </div>
 <br />
 
