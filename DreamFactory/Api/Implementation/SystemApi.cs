@@ -1,47 +1,74 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System.Globalization;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Environment;
     using DreamFactory.Serialization;
 
-    internal partial class SystemApi : ISystemApi
+    internal partial class SystemApi : BaseApi, ISystemApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly HttpHeaders baseHeaders;
-
         public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, "system")
         {
-            this.baseAddress = baseAddress.WithResource("system");
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
+        }
+
+        public async Task<EnvironmentResponse> GetEnvironmentAsync()
+        {
+            IHttpAddress address = BaseAddress.WithResource("environment");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
+
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+
+            return ContentSerializer.Deserialize<EnvironmentResponse>(response.Body);
+        }
+
+        public async Task<IEnumerable<string>> GetConstantsAsync()
+        {
+            IHttpAddress address = BaseAddress.WithResource("constant");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
+
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+
+            Dictionary<string, object> types = ContentSerializer.Deserialize<Dictionary<string, object>>(response.Body);
+            return types.Keys;
+        }
+
+        public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
+        {
+            IHttpAddress address = BaseAddress.WithResource("constant", constant);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
+
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+
+            return ContentSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(response.Body)[constant];
         }
 
         public async Task<ConfigResponse> GetConfigAsync()
         {
-            IHttpAddress address = baseAddress.WithResource("config");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpAddress address = BaseAddress.WithResource("config");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
-            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
+            return ContentSerializer.Deserialize<ConfigResponse>(response.Body);
         }
 
         public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            IHttpAddress address = baseAddress.WithResource("config");
-            string body = contentSerializer.Serialize(config);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders, body);
+            IHttpAddress address = BaseAddress.WithResource("config");
+            string body = ContentSerializer.Serialize(config);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders, body);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
 
-            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
+            return ContentSerializer.Deserialize<ConfigResponse>(response.Body);
         }
     }
 }

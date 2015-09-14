@@ -1,7 +1,6 @@
-﻿namespace DreamFactory.Api.Implementation
+﻿namespace DreamFactory.Http
 {
     using System;
-    using DreamFactory.Http;
     using DreamFactory.Model.Database;
 
     internal static class HttpAddressExtensions

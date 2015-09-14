@@ -24,45 +24,45 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            IHttpAddress address = baseAddress.WithResource("admin", "session");
+            IHttpAddress address = base.BaseAddress.WithResource("admin", "session");
 
             Login login = new Login { Email = email, Password = password, Duration = duration };
-            string loginContent = contentSerializer.Serialize(login);
+            string loginContent = base.ContentSerializer.Serialize(login);
             IHttpRequest request = new HttpRequest(HttpMethod.Post,
                                                    address.Build(),
-                                                   baseHeaders,
+                                                   base.BaseHeaders,
                                                    loginContent);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
-            Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+            Session session = base.ContentSerializer.Deserialize<Session>(response.Body);
+            base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }
         public async Task<Session> GetAdminSessionAsync()
         {
-            var address = baseAddress.WithResource("admin", "session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            var address = base.BaseAddress.WithResource("admin", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
-            return contentSerializer.Deserialize<Session>(response.Body);
+            return base.ContentSerializer.Deserialize<Session>(response.Body);
         }
 
         public async Task<bool> LogoutAdminAsync()
         {
-            IHttpAddress address = baseAddress.WithResource("admin", "session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+            IHttpAddress address = base.BaseAddress.WithResource("admin", "session");
+            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), base.BaseHeaders);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
-            baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+            base.BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
 
             var logout = new { success = false };
-            return contentSerializer.Deserialize(response.Body, logout).success;
+            return base.ContentSerializer.Deserialize(response.Body, logout).success;
         }
 
         public async Task<bool> ChangeAdminPasswordAsync(string oldPassword, string newPassword)
@@ -77,15 +77,15 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            var address = baseAddress.WithResource("admin", "password");
+            var address = base.BaseAddress.WithResource("admin", "password");
             PasswordRequest data = new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword };
-            string content = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+            string content = base.ContentSerializer.Serialize(data);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), base.BaseHeaders, content);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
-            return contentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
+            return base.ContentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
         }
     }
 }
