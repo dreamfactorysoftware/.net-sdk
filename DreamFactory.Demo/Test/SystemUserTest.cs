@@ -16,15 +16,15 @@
 
         public async Task RunAsync(IRestContext context)
         {
-            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            ISystemUserApi userApi = context.Factory.CreateSystemUserApi();
 
-            IEnumerable<UserResponse> users = (await systemApi.GetUsersAsync(new SqlQuery())).ToList();
+            IEnumerable<UserResponse> users = (await userApi.GetUsersAsync(new SqlQuery())).ToList();
             Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.Name).ToStringList());
 
             UserResponse user = users.SingleOrDefault(x => x.Email == NewEmail);
             if (user != null)
             {
-                await DeleteUser(user, systemApi);
+                await DeleteUser(user, userApi);
             }
 
             UserRequest newUser = new UserRequest
@@ -36,22 +36,22 @@
                 IsActive = true
             };
 
-            users = await systemApi.CreateUsersAsync(new SqlQuery(), newUser);
+            users = await userApi.CreateUsersAsync(new SqlQuery(), newUser);
             user = users.Single(x => x.Email == NewEmail);
             Console.WriteLine("CreateUsersAsync(): {0}", context.ContentSerializer.Serialize(user));
 
             newUser.Id = user.Id;
             newUser.Name = "Andrei Smirnov";
-            user = (await systemApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.Email == NewEmail);
+            user = (await userApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.Email == NewEmail);
             Console.WriteLine("UpdateUsersAsync(): new name={0}", user.Name);
 
-            await DeleteUser(user, systemApi);
+            await DeleteUser(user, userApi);
         }
 
-        private static async Task DeleteUser(UserResponse user, ISystemApi systemApi)
+        private static async Task DeleteUser(UserResponse user, ISystemUserApi userApi)
         {
             Debug.Assert(user.Id.HasValue, "User ID must be set");
-            await systemApi.DeleteUsersAsync(new SqlQuery(), user.Id.Value);
+            await userApi.DeleteUsersAsync(new SqlQuery(), user.Id.Value);
             Console.WriteLine("DeleteUsersAsync():: id={0}", user.Id);
         }
     }

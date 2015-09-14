@@ -149,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\DreamFactoryConfig.cs" />
+    <Compile Include="App_Start\DreamFactoryContext.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

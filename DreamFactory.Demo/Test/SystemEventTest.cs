@@ -13,20 +13,20 @@
     {
         public async Task RunAsync(IRestContext context)
         {
-            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            ISystemEventApi eventApi = context.Factory.CreateSystemEventApi();
 
-            IEnumerable<string> events = (await systemApi.GetEventsAsync()).ToList();
+            IEnumerable<string> events = (await eventApi.GetEventsAsync()).ToList();
             Console.WriteLine("GetEventsAsync(): Found {0} events", events.Count());
 
             string eventName = events.First();
 
             // create
             EventScriptRequest createRequest = CreateEventScript();
-            EventScriptResponse createResponse = await systemApi.CreateEventScriptAsync(eventName, createRequest, new SqlQuery());
+            EventScriptResponse createResponse = await eventApi.CreateEventScriptAsync(eventName, createRequest, new SqlQuery());
             Console.WriteLine("CreateEventScriptAsync(): Created script {0}", createResponse.Name);
             
             // delete
-            EventScriptResponse deleteResponse = await systemApi.DeleteEventScriptAsync(eventName, new SqlQuery());
+            EventScriptResponse deleteResponse = await eventApi.DeleteEventScriptAsync(eventName, new SqlQuery());
             Console.WriteLine("DeleteEventScriptAsync(): Deleted script {0}", deleteResponse.Name);
         }
 

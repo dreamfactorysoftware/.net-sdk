@@ -64,6 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ISystemAppGroupApi.cs" />
+    <Compile Include="Api\ISystemEmailTemplateApi.cs" />
+    <Compile Include="Api\ISystemAppApi.cs" />
+    <Compile Include="Api\ISystemAdminApi.cs" />
     <Compile Include="Api\ICustomSettingsApi.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.Records.cs" />
     <Compile Include="Api\Implementation\DatabaseApi.Stored.cs" />
@@ -87,6 +91,10 @@
     <Compile Include="Api\Implementation\UserApi.Session.cs" />
     <Compile Include="Api\Implementation\UserApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
+    <Compile Include="Api\ISystemEventApi.cs" />
+    <Compile Include="Api\ISystemRoleApi.cs" />
+    <Compile Include="Api\ISystemUserApi.cs" />
+    <Compile Include="Api\ISystemServiceApi.cs" />
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\Builder\IStoreProcParamsBuilder.cs" />
     <Compile Include="Model\Builder\StoreProcParamsBuilder.cs" />

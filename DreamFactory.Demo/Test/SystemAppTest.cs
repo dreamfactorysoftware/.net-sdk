@@ -15,14 +15,14 @@
     {
         public async Task RunAsync(IRestContext context)
         {
-            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            ISystemAppApi appApi = context.Factory.CreateSystemAppApi();
 
             // Read
             SqlQuery query = new SqlQuery {
                 Fields = "*",
                 Related = String.Join(",", RelatedResources.App.StorageService, RelatedResources.App.Roles)
             };
-            IEnumerable<AppResponse> apps = (await systemApi.GetAppsAsync(query)).ToList();
+            IEnumerable<AppResponse> apps = (await appApi.GetAppsAsync(query)).ToList();
             Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiKey).ToStringList());
 
             // Cloning
@@ -32,13 +32,13 @@
             adminAppRequest.Name = adminApp.Name + "clone";
 
             // Creating a clone
-            apps = await systemApi.CreateAppsAsync(new SqlQuery(), adminAppRequest);
+            apps = await appApi.CreateAppsAsync(new SqlQuery(), adminAppRequest);
             AppResponse adminAppClone = apps.Single(x => x.Name == "adminclone");
             Console.WriteLine("Created a clone app={0}", adminAppClone.ApiKey);
 
             // Deleting the clone
             Debug.Assert(adminAppClone.Id.HasValue);
-            await systemApi.DeleteAppsAsync(new SqlQuery(), adminAppClone.Id.Value);
+            await appApi.DeleteAppsAsync(new SqlQuery(), adminAppClone.Id.Value);
             Console.WriteLine("Created clone has been deleted");
         }
     }

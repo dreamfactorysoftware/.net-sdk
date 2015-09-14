@@ -6,7 +6,7 @@
     using System.Web;
     using global::DreamFactory.Rest;
 
-    public static class DreamFactoryConfig
+    public static class DreamFactoryContext
     {
         public const RestApiVersion Version = RestApiVersion.V2;
         public const string AppName = "Address Book ASP.NET";

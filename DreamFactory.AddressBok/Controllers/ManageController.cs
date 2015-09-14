@@ -12,12 +12,12 @@
     [HandleError]
     public class ManageController : Controller
     {
-        private readonly ISystemApi systemApi;
+        private readonly ISystemAdminApi adminApi;
         private readonly IUserApi userApi;
 
-        public ManageController(ISystemApi systemApi, IUserApi userApi)
+        public ManageController(ISystemAdminApi adminApi, IUserApi userApi)
         {
-            this.systemApi = systemApi;
+            this.adminApi = adminApi;
             this.userApi = userApi;
         }
 
@@ -44,9 +44,9 @@
 
             Task<bool> result;
 
-            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryConfig.Roles.SysAdmin))
+            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryContext.Roles.SysAdmin))
             {
-                result = systemApi.ChangeAdminPasswordAsync(model.OldPassword, model.NewPassword);
+                result = adminApi.ChangeAdminPasswordAsync(model.OldPassword, model.NewPassword);
             }
             else
             {

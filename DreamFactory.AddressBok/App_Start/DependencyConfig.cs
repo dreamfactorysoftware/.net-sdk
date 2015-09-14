@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.AddressBook
 {
-    using System.Web;
     using System.Web.Mvc;
     using global::DreamFactory.Api;
     using global::DreamFactory.Rest;
@@ -13,12 +12,12 @@
         {
             Container container = new Container();
             
-            IRestContext context = new RestContext(DreamFactoryConfig.BaseAddress, DreamFactoryConfig.AppName, DreamFactoryConfig.AppApiKey, DreamFactoryConfig.SessionId, DreamFactoryConfig.Version);
+            IRestContext context = new RestContext(DreamFactoryContext.BaseAddress, DreamFactoryContext.AppName, DreamFactoryContext.AppApiKey, DreamFactoryContext.SessionId, DreamFactoryContext.Version);
 
-            container.Register<IDatabaseApi>(() => context.Factory.CreateDatabaseApi(DreamFactoryConfig.DbServiceName), Lifestyle.Transient);
-            container.Register<ISystemApi>(() => context.Factory.CreateSystemApi(), Lifestyle.Transient);
+            container.Register<IDatabaseApi>(() => context.Factory.CreateDatabaseApi(DreamFactoryContext.DbServiceName), Lifestyle.Transient);
+            container.Register<ISystemAdminApi>(() => context.Factory.CreateSystemAdminApi(), Lifestyle.Transient);
             container.Register<IUserApi>(() => context.Factory.CreateUserApi(), Lifestyle.Transient);
-            container.Register<IFilesApi>(() => context.Factory.CreateFilesApi(DreamFactoryConfig.FileServiceName), Lifestyle.Transient);
+            container.Register<IFilesApi>(() => context.Factory.CreateFilesApi(DreamFactoryContext.FileServiceName), Lifestyle.Transient);
 
             container.RegisterMvcControllers();
             container.Verify();

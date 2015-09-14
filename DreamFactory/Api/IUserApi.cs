@@ -1,9 +1,7 @@
 ﻿namespace DreamFactory.Api
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using DreamFactory.Model.System.App;
     using DreamFactory.Model.User;
+    using global::System.Threading.Tasks;
 
     /// <summary>
     /// Represents /user API.

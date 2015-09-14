@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Custom;
     using DreamFactory.Serialization;

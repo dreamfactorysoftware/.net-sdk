@@ -18,7 +18,7 @@
     public class AccountController : Controller
     {
         private readonly IUserApi userApi;
-        private readonly ISystemApi systemApi;
+        private readonly ISystemAdminApi adminApi;
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -26,10 +26,10 @@
         }
 
 
-        public AccountController(IUserApi userApi, ISystemApi systemApi)
+        public AccountController(IUserApi userApi, ISystemAdminApi adminApi)
         {
             this.userApi = userApi;
-            this.systemApi = systemApi;
+            this.adminApi = adminApi;
         }
 
         //
@@ -63,7 +63,7 @@
             {
                 try
                 {
-                    session = await systemApi.LoginAdminAsync(model.Email, model.Password);
+                    session = await adminApi.LoginAdminAsync(model.Email, model.Password);
                 }
                 catch
                 {; }
@@ -149,9 +149,9 @@
             ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
 
-            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryConfig.Roles.SysAdmin))
+            if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryContext.Roles.SysAdmin))
             {
-                systemApi.LogoutAdminAsync();
+                adminApi.LogoutAdminAsync();
             }
             else
             {
@@ -174,7 +174,7 @@
 
             if (session.IsSysAdmin.HasValue && session.IsSysAdmin.Value)
             {
-                claims.Add(new Claim(ClaimTypes.Role, DreamFactoryConfig.Roles.SysAdmin));
+                claims.Add(new Claim(ClaimTypes.Role, DreamFactoryContext.Roles.SysAdmin));
 
             }
 

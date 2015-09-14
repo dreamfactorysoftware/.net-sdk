@@ -2,13 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
-    using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -46,11 +45,11 @@
 
             // Get environment info - does not work for WAMP, uncomment when using linux hosted DSP.
             // EnvironmentResponse environment = await systemApi.GetEnvironmentAsync();
-            // Console.WriteLine("DreamFactory Server is running on {0}", environment.server.server_os);
+            // Console.WriteLine("DreamFactory Server is running on {0}", environment.Server);
             
             // Get constant //TODO: see about constants
-            //var contentTypes = await systemApi.GetConstantAsync("content_types");
-            //Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
+            // var contentTypes = await systemApi.GetConstantAsync("content_types");
+            // Console.WriteLine("Content Types: {0}", contentTypes.Keys.ToStringList());
         }
     }
 }
