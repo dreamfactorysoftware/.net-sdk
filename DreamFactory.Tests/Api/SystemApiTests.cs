@@ -271,15 +271,15 @@
             EventScriptRequest eventScript = CreateEventScript();
 
             // Act
-            EventScriptResponse response = systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, new SqlQuery()).Result;
+            EventScriptResponse response = systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), eventScript).Result;
 
             // Assert
             response.Name.ShouldBe("my_custom_script");
             response.Type.ShouldBe("v8js");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, eventScript, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, null));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, new SqlQuery(), eventScript));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, eventScript));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), null));
         }
 
         [TestMethod]
@@ -290,15 +290,15 @@
             EventScriptRequest eventScript = CreateEventScript();
 
             // Act
-            EventScriptResponse response = systemApi.UpdateEventScriptAsync("system.get.pre_process", eventScript, new SqlQuery()).Result;
+            EventScriptResponse response = systemApi.UpdateEventScriptAsync("system.get.pre_process", new SqlQuery(), eventScript).Result;
 
             // Assert
             response.Name.ShouldBe("my_custom_script");
             response.Type.ShouldBe("v8js");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, eventScript, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", eventScript, null));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, new SqlQuery(), eventScript));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, eventScript));
+            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), null));
         }
 
         [TestMethod]

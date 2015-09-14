@@ -11,9 +11,9 @@
 
     internal abstract class BaseApi
     {
-        protected IHttpAddress BaseAddress { get; }
-        protected IHttpFacade HttpFacade { get; }
-        protected IContentSerializer ContentSerializer { get; }
+        private IHttpAddress BaseAddress { get; }
+        private IHttpFacade HttpFacade { get; }
+        private IContentSerializer ContentSerializer { get; }
         protected HttpHeaders BaseHeaders { get; }
 
         protected BaseApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string apiName)
@@ -24,8 +24,10 @@
             this.BaseHeaders = baseHeaders;
         }
 
-        internal async Task<TResponseRecord> QueryRecordAsync<TResponseRecord>(string resource, string resourceIdentifier, SqlQuery query)
-            where TResponseRecord : class, new()
+        #region query
+
+        internal async Task<TResponse> QueryRecordAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
+            where TResponse : class, new()
         {
             if (resource == null)
             {
@@ -42,17 +44,30 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource, resourceIdentifier);
-            address = address.WithSqlQuery(query);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            return ContentSerializer.Deserialize<TResponseRecord>(response.Body);
+            return await QueryRecordAsync<TResponse>(new[] { resource, resourceIdentifier }, query);
         }
 
-        internal async Task<IEnumerable<TResponseRecord>> QueryRecordsAsync<TResponseRecord>(string resource, SqlQuery query)
+        internal async Task<TResponse> QueryRecordAsync<TResponse>(string[] resourceParts, SqlQuery query)
+            where TResponse : class, new()
+        {
+            if (resourceParts == null || resourceParts.Length < 1)
+            {
+                throw new ArgumentException("At least one resource part must be specified", "resourceParts");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            return await GetDeserializedResponse<TResponse>(
+                method: HttpMethod.Get,
+                resourceParts: resourceParts,
+                query: query
+                );
+        }
+
+        internal async Task<IEnumerable<TResponse>> QueryRecordsAsync<TResponse>(string resource, SqlQuery query)
         {
             if (resource == null)
             {
@@ -64,18 +79,16 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource);
-            address = address.WithSqlQuery(query);
+            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+                method: HttpMethod.Get,
+                resourceParts: new[] { resource },
+                query: query
+                );
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            var result = new { resource = new List<TResponseRecord>() };
-            return ContentSerializer.Deserialize(response.Body, result).resource;
+            return response.Records;
         }
 
-        internal async Task<IEnumerable<TResponseRecord>> QueryRecordsWithParametersAsync<TResponseRecord>(string resource, params KeyValuePair<string, object>[] parameters)
+        internal async Task<IEnumerable<TResponse>> QueryRecordsWithParametersAsync<TResponse>(string resource, params KeyValuePair<string, object>[] parameters)
         {
             if (resource == null)
             {
@@ -87,24 +100,22 @@
                 throw new ArgumentNullException("parameters");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource);
+            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+                method: HttpMethod.Get,
+                resourceParts: new[] { resource },
+                customParameters: parameters
+                );
 
-            foreach (var keyValuePair in parameters)
-            {
-                address = address.WithParameter(keyValuePair.Key, keyValuePair.Value);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), BaseHeaders);
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            var result = new { resource = new List<TResponseRecord>() };
-            return ContentSerializer.Deserialize(response.Body, result).resource;
+            return response.Records;
         }
 
-        internal async Task<IEnumerable<TResponseRecord>> CreateOrUpdateRecordsAsync<TRequestRecord, TResponseRecord>(HttpMethod method, string resource, SqlQuery query, params TRequestRecord[] records)
-            where TRequestRecord : IRecord
-            where TResponseRecord : class, new()
+        #endregion
+
+        #region create and update
+
+        internal async Task<IEnumerable<TResponse>> CreateOrUpdateRecordsAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, params TRequest[] records)
+            where TRequest : IRecord
+            where TResponse : class, new()
         {
             if (query == null)
             {
@@ -116,31 +127,29 @@
                 throw new ArgumentException("At least one parameter must be specified", "records");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource);
-            address = address.WithSqlQuery(query);
+            string body = ContentSerializer.Serialize(new { resource = new List<TRequest>(records), ids = records.Select(x => x.Id) });
+            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+                method: method,
+                body: body,
+                resourceParts: new[] { resource },
+                query: query
+                );
 
-            string body = ContentSerializer.Serialize(new { resource = new List<TRequestRecord>(records), ids = records.Select(x => x.Id) });
-            IHttpRequest request = new HttpRequest(method, address.Build(), BaseHeaders, body);
-
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            var responses = new { resource = new List<TResponseRecord>() };
-            return ContentSerializer.Deserialize(response.Body, responses).resource;
+            return response.Records;
         }
 
-        internal async Task<TResponseRecord> CreateOrUpdateRecordAsync<TRequestRecord, TResponseRecord>(string resource, string identifier, TRequestRecord record, HttpMethod method, SqlQuery query)
-            where TRequestRecord : class, new()
-            where TResponseRecord : class, new()
+        internal async Task<TResponse> CreateOrUpdateRecordAsync<TRequest, TResponse>(string resource, string resourceIdentifier, HttpMethod method, SqlQuery query, TRequest record)
+            where TRequest : class, new()
+            where TResponse : class, new()
         {
             if (resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
 
-            if (identifier == null)
+            if (resourceIdentifier == null)
             {
-                throw new ArgumentNullException("identifier");
+                throw new ArgumentNullException("resourceIdentifier");
             }
 
             if (record == null)
@@ -153,20 +162,44 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource, identifier);
-            address = address.WithSqlQuery(query);
-
-            string body = ContentSerializer.Serialize(record);
-            IHttpRequest request = new HttpRequest(method, address.Build(), BaseHeaders, body);
-
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            return ContentSerializer.Deserialize<TResponseRecord>(response.Body);
+            return await CreateOrUpdateRecordAsync<TRequest, TResponse>(new[] { resource, resourceIdentifier }, method, query, record);
         }
 
-        internal async Task<IEnumerable<TResponseRecord>> DeleteRecordsAsync<TResponseRecord>(string resource, SqlQuery query, bool force, params int[] ids)
-            where TResponseRecord : class, new()
+        internal async Task<TResponse> CreateOrUpdateRecordAsync<TRequest, TResponse>(string[] resourceParts, HttpMethod method, SqlQuery query, TRequest record)
+            where TRequest : class, new()
+            where TResponse : class, new()
+        {
+            if (resourceParts == null || resourceParts.Length < 1)
+            {
+                throw new ArgumentException("At least one resource part must be specified", "resourceParts");
+            }
+
+            if (record == null)
+            {
+                throw new ArgumentNullException("record");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+
+            string body = ContentSerializer.Serialize(record);
+            return await GetDeserializedResponse<TResponse>(
+                method: method,
+                body: body,
+                resourceParts: resourceParts,
+                query: query
+                );
+        }
+
+        #endregion
+
+        #region delete
+
+        internal async Task<IEnumerable<TResponse>> DeleteRecordsAsync<TResponse>(string resource, SqlQuery query, bool force, params int[] ids)
+            where TResponse : class, new()
         {
             if (resource == null)
             {
@@ -183,39 +216,31 @@
                 throw new ArgumentException("At least one application ID must be specified", "ids");
             }
 
-
-            IHttpAddress address = BaseAddress.WithResource(resource);
-            address = address.WithSqlQuery(query);
-
-            if (force)
+            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+            method: HttpMethod.Delete,
+            resourceParts: new[] { resource },
+            query: query,
+            customParameters: new[]
             {
-                address = address.WithParameter("force", true);
+                new KeyValuePair<string, object>("force", true),
+                new KeyValuePair<string, object>("ids", string.Join(",", ids))
             }
-            else
-            {
-                address = address.WithParameter("ids", string.Join(",", ids));
-            }
+            );
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), BaseHeaders);
-
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-
-            var responses = new { resource = new List<TResponseRecord>() };
-            return ContentSerializer.Deserialize(response.Body, responses).resource;
+            return response.Records;
         }
 
-        internal async Task<TResponseRecord> DeleteRecordAsync<TResponseRecord>(string resource, string identifier, SqlQuery query)
-            where TResponseRecord : class, new()
+        internal async Task<TResponse> DeleteRecordAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
+            where TResponse : class, new()
         {
             if (resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
 
-            if (identifier == null)
+            if (resourceIdentifier == null)
             {
-                throw new ArgumentNullException("identifier");
+                throw new ArgumentNullException("resourceIdentifier");
             }
 
             if (query == null)
@@ -223,15 +248,89 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = BaseAddress.WithResource(resource, identifier);
-            address = address.WithSqlQuery(query);
+            return await DeleteRecordAsync<TResponse>(new string[] { resource, resourceIdentifier }, query);
+        }
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), BaseHeaders);
+        internal async Task<TResponse> DeleteRecordAsync<TResponse>(string[] resourceParts, SqlQuery query)
+            where TResponse : class, new()
+        {
+            if (resourceParts == null || resourceParts.Length < 1)
+            {
+                throw new ArgumentException("At least one resource part must be specified", "resourceParts");
+            }
 
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            return await GetDeserializedResponse<TResponse>(
+            method: HttpMethod.Delete,
+            resourceParts: resourceParts,
+            query: query
+            );
+        }
+
+        #endregion
+
+        private async Task<TResponse> GetDeserializedResponse<TResponse>(
+            HttpMethod method,
+            string body = null,
+            string[] resourceParts = null,
+            KeyValuePair<string, object>[] customParameters = null,
+            SqlQuery query = null
+            )
+            where TResponse : class, new()
+        {
+            IHttpAddress address = BuildAddress(resourceParts, customParameters, query);
+
+            IHttpRequest request;
+            if (body == null)
+            {
+                request = new HttpRequest(method, address.Build(), BaseHeaders);
+            }
+            else
+            {
+                request = new HttpRequest(method, address.Build(), BaseHeaders, body);
+            }
+
+            return await ExecuteRequest<TResponse>(request);
+        }
+
+        private IHttpAddress BuildAddress(string[] resourceParts, KeyValuePair<string, object>[] customParameters, SqlQuery query)
+        {
+            IHttpAddress address = BaseAddress;
+            if (resourceParts != null)
+            {
+                address = address.WithResource(resourceParts);
+            }
+
+            if (customParameters != null)
+            {
+                foreach (var keyValuePair in customParameters)
+                {
+                    address = address.WithParameter(keyValuePair.Key, keyValuePair.Value);
+                }
+            }
+
+            if (query != null)
+            {
+                address = address.WithSqlQuery(query);
+            }
+            return address;
+        }
+
+        private async Task<TResponse> ExecuteRequest<TResponse>(IHttpRequest request)
+            where TResponse : class, new()
+        {
             IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+            return DeserializeResponse<TResponse>(response);
+        }
 
-            return ContentSerializer.Deserialize<TResponseRecord>(response.Body);
+        private TResponse DeserializeResponse<TResponse>(IHttpResponse response) where TResponse : class, new()
+        {
+            return ContentSerializer.Deserialize<TResponse>(response.Body);
         }
     }
 }

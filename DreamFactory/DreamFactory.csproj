@@ -82,7 +82,6 @@
     <Compile Include="Api\Implementation\CustomSettingsApi.cs" />
     <Compile Include="Http\HttpAddressExtensions.cs" />
     <Compile Include="Api\Implementation\SystemApi.Admin.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
     <Compile Include="Api\Implementation\SystemApi.Update.cs" />
     <Compile Include="Api\Implementation\SystemApi.Create.cs" />
@@ -156,6 +155,7 @@
     <Compile Include="Model\Database\FieldSchema.cs" />
     <Compile Include="Model\Builder\ITableSchemaBuilder.cs" />
     <Compile Include="Model\Builder\TableSchemaBuilder.cs" />
+    <Compile Include="Model\User\Logout.cs" />
     <Compile Include="Model\User\Login.cs" />
     <Compile Include="Model\User\PasswordRequest.cs" />
     <Compile Include="Model\User\PasswordResponse.cs" />

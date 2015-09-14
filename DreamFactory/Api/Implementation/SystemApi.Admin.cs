@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
 
     internal partial class SystemApi
@@ -24,45 +25,31 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            IHttpAddress address = base.BaseAddress.WithResource("admin", "session");
+            Session session = await CreateOrUpdateRecordAsync<Login, Session>(
+                resourceParts: new [] { "admin", "session" },
+                method: HttpMethod.Post,
+                record: new Login { Email = email, Password = password, Duration = duration },
+                query: new SqlQuery()
+                );
 
-            Login login = new Login { Email = email, Password = password, Duration = duration };
-            string loginContent = base.ContentSerializer.Serialize(login);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post,
-                                                   address.Build(),
-                                                   base.BaseHeaders,
-                                                   loginContent);
-
-            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
-
-            Session session = base.ContentSerializer.Deserialize<Session>(response.Body);
             base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
-
             return session;
         }
         public async Task<Session> GetAdminSessionAsync()
         {
-            var address = base.BaseAddress.WithResource("admin", "session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
-            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
-
-            return base.ContentSerializer.Deserialize<Session>(response.Body);
+            return await QueryRecordAsync<Session>(new[] { "admin", "session" }, new SqlQuery());
         }
 
         public async Task<bool> LogoutAdminAsync()
         {
-            IHttpAddress address = base.BaseAddress.WithResource("admin", "session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), base.BaseHeaders);
+            Logout logout = await DeleteRecordAsync<Logout>(new[] { "admin", "session" }, new SqlQuery());
 
-            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
+            if (logout.Success.HasValue && logout.Success.Value)
+            {
+                base.BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+            }
 
-            base.BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
-
-            var logout = new { success = false };
-            return base.ContentSerializer.Deserialize(response.Body, logout).success;
+            return logout.Success ?? false;
         }
 
         public async Task<bool> ChangeAdminPasswordAsync(string oldPassword, string newPassword)
@@ -77,15 +64,10 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            var address = base.BaseAddress.WithResource("admin", "password");
-            PasswordRequest data = new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword };
-            string content = base.ContentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), base.BaseHeaders, content);
+            PasswordResponse response = await CreateOrUpdateRecordAsync<PasswordRequest, PasswordResponse>("admin", "password", HttpMethod.Post,
+                new SqlQuery(), new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
 
-            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
-
-            return base.ContentSerializer.Deserialize<PasswordResponse>(response.Body).Success ?? false;
+            return response.Success ?? false;
         }
     }
 }

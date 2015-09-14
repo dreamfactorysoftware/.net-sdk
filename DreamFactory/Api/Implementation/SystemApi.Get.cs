@@ -6,8 +6,8 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
-    using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
 
@@ -43,9 +43,14 @@
             return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
         }
 
-        public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)
+        public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            return await QueryRecordsAsync<ScriptTypeResponse>("script_type", query);
+            return QueryRecordAsync<EventScriptResponse>("event", eventName, query);
+        }
+
+        public Task<IEnumerable<string>> GetEventsAsync()
+        {
+            return QueryRecordsWithParametersAsync<string>("event", new KeyValuePair<string, object>("as_list", true));
         }
     }
 }

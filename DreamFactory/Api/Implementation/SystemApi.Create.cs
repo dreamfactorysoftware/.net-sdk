@@ -7,6 +7,7 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -42,6 +43,11 @@
         {
             return CreateOrUpdateRecordsAsync<EmailTemplateRequest, EmailTemplateResponse>(HttpMethod.Post, "email_template", query, templates);
         }
-        
+
+        public Task<EventScriptResponse> CreateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript)
+        {
+            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, HttpMethod.Post, query, eventScript);
+        }
+
     }
 }

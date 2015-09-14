@@ -22,7 +22,7 @@
 
             // create
             EventScriptRequest createRequest = CreateEventScript();
-            EventScriptResponse createResponse = await eventApi.CreateEventScriptAsync(eventName, createRequest, new SqlQuery());
+            EventScriptResponse createResponse = await eventApi.CreateEventScriptAsync(eventName, new SqlQuery(), createRequest);
             Console.WriteLine("CreateEventScriptAsync(): Created script {0}", createResponse.Name);
             
             // delete

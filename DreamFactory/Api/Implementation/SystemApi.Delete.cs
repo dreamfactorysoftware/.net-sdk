@@ -6,6 +6,7 @@
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Email;
+    using DreamFactory.Model.System.Event;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Service;
     using DreamFactory.Model.System.User;
@@ -41,6 +42,10 @@
         {
             return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query, false, ids);
         }
-        
+
+        public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
+        {
+            return DeleteRecordAsync<EventScriptResponse>("event", eventName, query);
+        }
     }
 }
