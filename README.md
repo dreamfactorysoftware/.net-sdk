@@ -167,7 +167,7 @@ Default `SqlQuery` constructor populates the single property: *fields=**. This r
 
 #### REST API versioning
 
-Supported API versions defined by `RestApiVersion` enumeration. `V1` is used by default.
+Supported API versions defined by `RestApiVersion` enumeration. `V2` is used by default.
 The SDK uses version for building the complete URL, e.g. /rest for V1 and /api/v2 for V2.
 Note that building the URL is done transparently to the users.
 
@@ -186,13 +186,14 @@ See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/mas
 
 ##### Notes on user session management
 
-All API calls require Application-Name header to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
+All API calls require Application-Name header as well as Application-Api-Key to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
 
-* Both Application-Name and Session-ID headers are being set upon `IUserApi.LoginAsync()` completion,
-* Session-ID header gets removed upon `IUserApi.LogoutAsync()` completion,
-* Session-ID header gets updated if another login is made during `passwordChange()` call.
+* Both Application-Name and Application-Api-Key are being set when initializng `RestContaxt`.
+* Session-ID header is set upon `IUserApi.LoginAsync()` or `ISystemApi.LoginAdminAsync()` completion,
+* Session-ID header gets removed upon `IUserApi.LogoutAsync()` or `ISystemApi.LogoutAdminAsync()` completion,
+* Session-ID header gets updated if another login is made during `ChangePasswordAsync()` or `ChangeAdminPasswordAsync()` call.
 
-To use/set another Application-Name, simply call `LoginAsync` again with a new `applicationName` parameter.
+To use/set another Application-Name and Application-Api-Key you have to instantiate new `RestContaxt`.
 
 #### CustomSettings API
 
@@ -200,8 +201,7 @@ To use/set another Application-Name, simply call `LoginAsync` again with a new `
 
 The API can be created for user and system namespace.
 
-Because the SDK is targeting .NET users, the primary focus is made towards strong-typing, rather than duck-typing.
-To deal with a custom setting, a user must have the corresponding DTO class matching the setting's schema.
+Custom settings are key value pairs, value being string type. Therefore if you wish to save a DTO as a setting you will have to serialize the DTO prior to creating `Custom Request` .
 Please refer to the demo for sample API usage.
 
 #### Files API
@@ -209,13 +209,13 @@ Please refer to the demo for sample API usage.
 > See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/FilesDemo.cs)
 
 Summary on supported features:
-* CRUD operations on containers, folders and files,
+* CRUD operations on folders and files,
 * Bulk files uploading/downloading in ZIP format,
 * Text and binary files reading/writing.
 
 ##### Notes on metadata support
 
-Reading/Writing of metadata associated with file entities (container, folder, file) are not supported yet.
+Reading/Writing of metadata associated with file entities (folder, file) are not supported yet.
 
 #### Database API
 
@@ -277,7 +277,6 @@ EmailRequest request = new EmailRequestBuilder()
 ##### Current limitations
 
 * Reading/writing of metadata related to system records are not supported.
-* `EnvironmentResponse` has `PhpInfoSection` object is ignored on read.
 * Related entities are not retrieved (see related query parameter).
 * Unregister event listeners is not supported.
 * Provider and UserProvider APIs are not supported.

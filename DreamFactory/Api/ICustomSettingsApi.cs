@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Custom;
 
@@ -16,7 +15,7 @@
         /// </summary>
         /// <param name="query">SQL query to return created records.</param>
         /// <returns>Sequence of custom settings.</returns>
-        Task<IEnumerable<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null);
+        Task<RecordsResult<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null);
 
         /// <summary>
         /// Set custom user|system settings.
@@ -24,7 +23,7 @@
         /// <param name="customs">Collection of CustomRequest type.</param>
         /// <param name="query">SQL query to return created records.</param>
         /// <returns>Custom records created.</returns>
-        Task<IEnumerable<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
+        Task<RecordsResult<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
         /// Update custom user|system settings.
@@ -32,7 +31,7 @@
         /// <param name="customs">Collection of CustomRequest type.</param>
         /// <param name="query">SQL query to return updated records.</param>
         /// <returns>Custom records updated.</returns>
-        Task<IEnumerable<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
+        Task<RecordsResult<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
         /// Retrieve one custom user|system setting.

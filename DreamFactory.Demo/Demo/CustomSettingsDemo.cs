@@ -29,13 +29,13 @@
                 }
             };
 
-            if ((await settingsApi.SetCustomSettingsAsync(customSettings)).Any())
+            if ((await settingsApi.SetCustomSettingsAsync(customSettings)).Records.Any())
             {
                 Console.WriteLine("Created custom settings: preferences");
             }
 
             // Retrieving custom settings names
-            IEnumerable<string> names = (await settingsApi.GetCustomSettingsAsync()).Select(x => x.Name);
+            IEnumerable<string> names = (await settingsApi.GetCustomSettingsAsync()).Records.Select(x => x.Name);
             string flatList = string.Join(", ", names);
             Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 

@@ -30,7 +30,7 @@
             this.baseHeaders = baseHeaders;
         }
 
-        public async Task<IEnumerable<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
+        public async Task<RecordsResult<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
         {
             IHttpAddress address = baseAddress.WithResource("custom");
             if (query != null)
@@ -43,11 +43,10 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var settings = new { resource = new List<CustomResponse>() };
-            return contentSerializer.Deserialize(response.Body, settings).resource;
+            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
         }
         
-        public async Task<IEnumerable<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public async Task<RecordsResult<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
             IHttpAddress address = baseAddress.WithResource("custom");
 
@@ -63,11 +62,10 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var resources = new { resource = new List<CustomResponse>() };
-            return contentSerializer.Deserialize(response.Body, resources).resource;
+            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
         }
 
-        public async Task<IEnumerable<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public async Task<RecordsResult<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
             IHttpAddress address = baseAddress.WithResource("custom");
 
@@ -83,8 +81,7 @@
             IHttpResponse response = await httpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, contentSerializer);
 
-            var resources = new { resource = new List<CustomResponse>() };
-            return contentSerializer.Deserialize(response.Body, resources).resource;
+            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
         }
 
         public async Task<CustomResponse> GetCustomSettingAsync(string settingName, SqlQuery query = null)

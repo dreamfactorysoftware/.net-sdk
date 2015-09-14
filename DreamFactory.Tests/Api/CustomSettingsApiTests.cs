@@ -23,7 +23,7 @@
             ICustomSettingsApi settingsApi = CreateSettingsApi();
 
             // Act
-            IEnumerable<string> names = settingsApi.GetCustomSettingsAsync().Result.Select(x => x.Name);
+            IEnumerable<string> names = settingsApi.GetCustomSettingsAsync().Result.Records.Select(x => x.Name);
 
             // Assert
             names.ShouldContain("preferences");
@@ -37,7 +37,7 @@
             List<CustomRequest> userSettings = CreateUserSettings();
 
             // Act
-            bool ok = settingsApi.SetCustomSettingsAsync(userSettings).Result.Any();
+            bool ok = settingsApi.SetCustomSettingsAsync(userSettings).Result.Records.Any();
 
             // Assert
             ok.ShouldBe(true);
@@ -100,7 +100,7 @@
             List<CustomRequest> userSettings = CreateUserSettings();
 
             // Act
-            IEnumerable<CustomResponse> settings = settingsApi.UpdateCustomSettingsAsync(userSettings).Result.ToList();
+            IEnumerable<CustomResponse> settings = settingsApi.UpdateCustomSettingsAsync(userSettings).Result.Records.ToList();
 
             // Assert
             settings.Count().ShouldBe(2);
