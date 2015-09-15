@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Http;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
@@ -15,37 +16,37 @@
     {
         public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<AppResponse>("app", query, false, ids);
+            return RequestDeleteMultipleAsync<AppResponse>("app", query, false, ids);
         }
 
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<AppGroupResponse>("app_group", query, false, ids);
+            return RequestDeleteMultipleAsync<AppGroupResponse>("app_group", query, false, ids);
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<RoleResponse>("role", query, false, ids);
+            return RequestDeleteMultipleAsync<RoleResponse>("role", query, false, ids);
         }
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<UserResponse>("user", query, false, ids);
+            return RequestDeleteMultipleAsync<UserResponse>("user", query, false, ids);
         }
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<ServiceResponse>("service", query, false, ids);
+            return RequestDeleteMultipleAsync<ServiceResponse>("service", query, false, ids);
         }
 
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteAsync<EmailTemplateResponse>("email_template", query, false, ids);
+            return RequestDeleteMultipleAsync<EmailTemplateResponse>("email_template", query, false, ids);
         }
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
-            return DeleteAsync<EventScriptResponse>("event", eventName, query);
+            return RequestSingleAsync<EventScriptResponse>(HttpMethod.Delete, "event", eventName, query);
         }
     }
 }

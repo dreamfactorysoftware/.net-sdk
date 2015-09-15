@@ -25,7 +25,7 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            Session session = await CreateOrUpdateAsync<Login, Session>(
+            Session session = await RequestSingleWithPayloadAsync<Login, Session>(
                 HttpMethod.Post,
                 new[] { "session" },
                 new SqlQuery(),
@@ -39,12 +39,12 @@
 
         public async Task<Session> GetSessionAsync()
         {
-            return await SingleAsync<Session>(new [] { "session" }, new SqlQuery());
+            return await RequestSingleAsync<Session>(HttpMethod.Get, new [] { "session" }, new SqlQuery());
         }
 
         public async Task<bool> LogoutAsync()
         {
-            Logout logout = await DeleteAsync<Logout>(new[] { "session" }, new SqlQuery());
+            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, new[] { "session" }, new SqlQuery());
 
             if (logout.Success ?? false)
             {

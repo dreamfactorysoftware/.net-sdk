@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Http
 {
     using System;
+    using System.Collections.Generic;
     using DreamFactory.Model.Database;
 
     internal static class HttpAddressExtensions
@@ -59,11 +60,10 @@
 
             if (query.CustomParameters != null)
             {
-                foreach (var customParameter in query.CustomParameters)
+                foreach (KeyValuePair<string, object> customParameter in query.CustomParameters)
                 {
-                    
+                    httpAddress = httpAddress.WithParameter(customParameter.Key, customParameter.Value);
                 }
-                httpAddress = httpAddress.WithParameter("include_schema", query.IncludeSchema);
             }
 
             return httpAddress;

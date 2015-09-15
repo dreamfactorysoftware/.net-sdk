@@ -25,7 +25,7 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            Session session = await CreateOrUpdateAsync<Login, Session>(
+            Session session = await RequestSingleWithPayloadAsync<Login, Session>(
                 resourceParts: new [] { "admin", "session" },
                 method: HttpMethod.Post,
                 record: new Login { Email = email, Password = password, Duration = duration },
@@ -37,12 +37,12 @@
         }
         public async Task<Session> GetAdminSessionAsync()
         {
-            return await SingleAsync<Session>(new[] { "admin", "session" }, new SqlQuery());
+            return await RequestSingleAsync<Session>(HttpMethod.Get, new[] { "admin", "session" }, new SqlQuery());
         }
 
         public async Task<bool> LogoutAdminAsync()
         {
-            Logout logout = await DeleteAsync<Logout>(new[] { "admin", "session" }, new SqlQuery());
+            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, new[] { "admin", "session" }, new SqlQuery());
 
             if (logout.Success.HasValue && logout.Success.Value)
             {
@@ -64,7 +64,7 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            PasswordResponse response = await CreateOrUpdateAsync<PasswordRequest, PasswordResponse>(HttpMethod.Post, "admin", "password",
+            PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(HttpMethod.Post, "admin", "password",
                 new SqlQuery(), new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
 
             return response.Success ?? false;
