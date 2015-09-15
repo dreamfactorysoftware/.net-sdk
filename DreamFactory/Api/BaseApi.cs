@@ -11,9 +11,9 @@
 
     internal abstract class BaseApi
     {
-        private IHttpAddress BaseAddress { get; }
-        private IHttpFacade HttpFacade { get; }
-        private IContentSerializer ContentSerializer { get; }
+        protected IHttpFacade HttpFacade { get; }
+        protected IContentSerializer ContentSerializer { get; }
+        protected IHttpAddress BaseAddress { get; }
         protected HttpHeaders BaseHeaders { get; }
 
         protected BaseApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string apiName)
@@ -317,7 +317,7 @@
             return address;
         }
 
-        private async Task<TResponse> ExecuteRequest<TResponse>(IHttpRequest request)
+        internal async Task<TResponse> ExecuteRequest<TResponse>(IHttpRequest request)
             where TResponse : class, new()
         {
             IHttpResponse response = await HttpFacade.RequestAsync(request);

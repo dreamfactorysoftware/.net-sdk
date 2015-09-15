@@ -4,43 +4,59 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.File;
     using DreamFactory.Serialization;
 
-    internal partial class FilesApi : IFilesApi
+    internal partial class FilesApi : BaseApi, IFilesApi
     {
         private const string OctetStream = "application/octet-stream";
 
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
-
-        public FilesApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
+        public FilesApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string serviceName)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
-            this.baseAddress = baseAddress.WithResource(serviceName);
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
         public async Task<IEnumerable<StorageResource>> GetResourcesAsync(ListingFlags flags)
         {
-            IHttpAddress address = baseAddress.WithResource(string.Empty);
-            address = AddListingParameters(address, flags);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            SqlQuery query = new SqlQuery();
+            query.CustomParameters = AddListingParameters(query.CustomParameters, flags);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var resources = new { resource = new List<StorageResource>() };
-            return contentSerializer.Deserialize(response.Body, resources).resource;
+            return await base.RequestGetMultiple<StorageResource>(string.Empty, query);
         }
 
         public async Task<IEnumerable<string>> GetResourceNamesAsync()
         {
             var containers = await GetResourcesAsync(ListingFlags.IncludeFiles | ListingFlags.IncludeFolders);
             return containers.Select(x => x.Name);
+        }
+
+        private static Dictionary<string, object> AddListingParameters(Dictionary<string, object> parameters, ListingFlags mode)
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>(parameters);
+            int modeInt = (int)mode;
+
+            if ((modeInt & (int)ListingFlags.IncludeFiles) != 0)
+            {
+                result.Add("include_files", true);
+            }
+
+            if ((modeInt & (int)ListingFlags.IncludeFolders) != 0)
+            {
+                result.Add("include_folders", true);
+            }
+
+            if ((modeInt & (int)ListingFlags.IncludeProperties) != 0)
+            {
+                result.Add("include_properties", true);
+            }
+
+            if ((modeInt & (int)ListingFlags.IncludeSubFolders) != 0)
+            {
+                result.Add("full_tree", true);
+            }
+
+            return result;
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.File;
 
     internal partial class FilesApi
@@ -21,13 +20,10 @@
                 throw new ArgumentNullException("content");
             }
 
-            IHttpAddress address = baseAddress.WithResource(filepath).WithParameter("check_exist", checkExists);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-            
-            return contentSerializer.Deserialize<FileResponse>(response.Body);
+            IHttpAddress address = base.BaseAddress.WithResource(filepath);
+            address = address.WithParameter("check_exist", checkExists);
+            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), base.BaseHeaders, content);
+            return await ExecuteRequest<FileResponse>(request);
         }
 
         public async Task<FileResponse> CreateFileAsync(string filepath, byte[] contents, bool checkExists = true)
@@ -35,9 +31,9 @@
             return await CreateFileAsync(filepath, GetString(contents), checkExists);
         }
 
-        public Task<FileResponse> ReplaceFileContentsAsync(string filepath, byte[] contents)
+        public async Task<FileResponse> ReplaceFileContentsAsync(string filepath, byte[] contents)
         {
-            return ReplaceFileContentsAsync(filepath, GetString(contents));
+            return await ReplaceFileContentsAsync(filepath, GetString(contents));
         }
 
         public async Task<FileResponse> ReplaceFileContentsAsync(string filepath, string contents)
@@ -52,13 +48,10 @@
                 throw new ArgumentNullException("contents");
             }
 
-            IHttpAddress address = baseAddress.WithResource(filepath);
-            IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), baseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
+            IHttpAddress address = base.BaseAddress.WithResource(filepath);
+            IHttpRequest request = new HttpRequest(HttpMethod.Put, address.Build(), base.BaseHeaders.Exclude(HttpHeaders.ContentTypeHeader), contents);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FileResponse>(response.Body);
+            return await base.ExecuteRequest<FileResponse>(request);
         }
 
         public async Task<string> GetTextFileAsync(string filepath)
@@ -68,11 +61,11 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResource(filepath);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpAddress address = base.BaseAddress.WithResource(filepath);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
             return response.Body;
         }
@@ -84,11 +77,11 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResource(filepath);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders.Include(HttpHeaders.AcceptHeader, OctetStream));
+            IHttpAddress address = base.BaseAddress.WithResource(filepath);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders.Include(HttpHeaders.AcceptHeader, OctetStream));
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
             return response.RawBody;
         }
@@ -100,41 +93,7 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            IHttpAddress address = baseAddress.WithResource(filepath);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FileResponse>(response.Body);
-        }
-
-        private static IHttpAddress AddListingParameters(IHttpAddress source, ListingFlags mode)
-        {
-            int modeInt = (int)mode;
-
-            if ((modeInt & (int)ListingFlags.IncludeFiles) != 0)
-            {
-                source = source.WithParameter("include_files", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeFolders) != 0)
-            {
-                source = source.WithParameter("include_folders", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeProperties) != 0)
-            {
-                source = source.WithParameter("include_properties", true);
-            }
-
-            if ((modeInt & (int)ListingFlags.IncludeSubFolders) != 0)
-            {
-                source = source.WithParameter("full_tree", true);
-            }
-
-            return source;
+            return await base.RequestSingleAsync<FileResponse>(HttpMethod.Delete, new[] { filepath }, new SqlQuery());
         }
 
         static string GetString(byte[] bytes)

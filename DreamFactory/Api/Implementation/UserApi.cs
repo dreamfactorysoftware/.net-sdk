@@ -29,7 +29,7 @@
 
             RegisterResponse response = await RequestSingleWithPayloadAsync<Register, RegisterResponse>(
                 HttpMethod.Post, 
-                new [] { "register " },
+                new [] { "register" },
                 query, 
                 register);
 

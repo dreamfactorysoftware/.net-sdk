@@ -25,11 +25,12 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            Session session = await RequestSingleWithPayloadAsync<Login, Session>(
-                resourceParts: new [] { "admin", "session" },
+            Session session = await base.RequestSingleWithPayloadAsync<Login, Session>(
                 method: HttpMethod.Post,
-                record: new Login { Email = email, Password = password, Duration = duration },
-                query: new SqlQuery()
+                resource: "admin",
+                resourceIdentifier: "session",
+                query: new SqlQuery(),
+                record: new Login { Email = email, Password = password, Duration = duration }
                 );
 
             base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
@@ -37,7 +38,7 @@
         }
         public async Task<Session> GetAdminSessionAsync()
         {
-            return await RequestSingleAsync<Session>(HttpMethod.Get, new[] { "admin", "session" }, new SqlQuery());
+            return await base.RequestSingleAsync<Session>(HttpMethod.Get, new[] { "admin", "session" }, new SqlQuery());
         }
 
         public async Task<bool> LogoutAdminAsync()
@@ -64,7 +65,7 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(HttpMethod.Post, "admin", "password",
+            PasswordResponse response = await base.RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(HttpMethod.Post, "admin", "password",
                 new SqlQuery(), new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
 
             return response.Success ?? false;

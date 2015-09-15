@@ -1,8 +1,10 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.File;
 
     internal partial class FilesApi
@@ -14,14 +16,10 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource(path, string.Empty);
-            address = AddListingParameters(address, flags);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            SqlQuery query = new SqlQuery();
+            query.CustomParameters = AddListingParameters(query.CustomParameters, flags);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Get, new[] { path, string.Empty }, query);
         }
 
         public async Task<byte[]> DownloadFolderAsync(string path)
@@ -31,12 +29,12 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource(path, string.Empty)
-                                              .WithParameter("zip", true);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            IHttpAddress address = base.BaseAddress.WithResource(path, string.Empty);
+            address = address.WithParameter("zip", true);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
+            IHttpResponse response = await base.HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, base.ContentSerializer);
 
             return response.RawBody;
         }
@@ -48,22 +46,23 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource(path, string.Empty);
-            if (checkExists)
-            {
-                address = address.WithParameter("check_exist", true);
-            }
+            SqlQuery query = new SqlQuery();
+            query.CustomParameters.Add("check_exist", checkExists);
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+            return await base.RequestSingleAsync<FolderResponse>(
+                HttpMethod.Post,
+                new[] { path, string.Empty },
+                query
+                );
         }
 
         public async Task<FolderResponse> UploadFolderAsync(string path, string url, bool clean)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
+
             if (url == null)
             {
                 throw new ArgumentNullException("url");
@@ -71,18 +70,12 @@
 
             HttpUtils.CheckUrlString(url);
 
-            IHttpAddress address = baseAddress
-                .WithResource(path, string.Empty)
-                .WithParameter("extract", true)
-                .WithParameter("clean", clean)
-                .WithParameter("url", url);
+            SqlQuery query = new SqlQuery();
+            query.CustomParameters.Add("extract", true);
+            query.CustomParameters.Add("clean", clean);
+            query.CustomParameters.Add("url", url);
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, string.Empty);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+            return await RequestSingleAsync<FolderResponse>(HttpMethod.Post, new[] { path, string.Empty }, query);
         }
 
         public async Task<FolderResponse> DeleteFolderAsync(string path, bool force = false)
@@ -92,15 +85,11 @@
                 throw new ArgumentNullException("path");
             }
 
-            IHttpAddress address = baseAddress.WithResource(path, string.Empty)
-                                              .WithParameter("force", force);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FolderResponse>(response.Body);
+            return await RequestSingleAsync<FolderResponse>(
+                HttpMethod.Delete,
+                new[] { path, string.Empty },
+                new SqlQuery { CustomParameters = new Dictionary<string, object> { { "force", force } } }
+                );
         }
     }
 }

@@ -48,7 +48,7 @@
             records = (await databaseApi.CreateRecordsAsync(TableName, records, new SqlQuery())).Records;
 
             // Update record
-            Console.WriteLine("Creating {0} records...", TableName);
+            Console.WriteLine("Updating {0} records...", TableName);
             StaffRecord firstRecord = records.First();
             firstRecord.FirstName = "Andrei 2";
             await databaseApi.UpdateRecordsAsync(TableName, records, new SqlQuery());

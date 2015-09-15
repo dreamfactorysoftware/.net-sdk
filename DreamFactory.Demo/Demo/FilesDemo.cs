@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.File;
@@ -19,11 +18,11 @@
             Console.WriteLine("GetResourcesAsync(): {0}", names.ToStringList());
 
             // Creating a folder
-            await filesApi.CreateFolderAsync("test");
+           await filesApi.CreateFolderAsync("test", true);
             Console.WriteLine("Folder 'test' created.");
 
             // Creating a file
-            FileResponse response = await filesApi.CreateFileAsync("test/test.txt", "test", false);
+            FileResponse response = await filesApi.CreateFileAsync("test/test.txt", "test", true);
             Console.WriteLine("Created file: {0}", response.Path);
 
             // Reading the file
