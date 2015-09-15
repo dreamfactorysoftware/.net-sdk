@@ -26,7 +26,16 @@
 
         #region query
 
-        internal async Task<TResponse> QueryRecordAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
+        /// <summary>
+        /// Execute a get request for single record specified with resource and query parameters.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="resource">Resource of the record that will be fetched.</param>
+        /// <param name="resourceIdentifier">Resource identifier of the record that will be fetched.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> SingleAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -44,10 +53,19 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await QueryRecordAsync<TResponse>(new[] { resource, resourceIdentifier }, query);
+            return await SingleAsync<TResponse>(new[] { resource, resourceIdentifier }, query);
         }
 
-        internal async Task<TResponse> QueryRecordAsync<TResponse>(string[] resourceParts, SqlQuery query)
+        /// <summary>
+        /// Execute a get request for single record specified with resource parts and query parameters.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="resourceParts">Resource parts of the record that will be fetched.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentException">Thrown when resource parts argument is null or its length is less than 1.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> SingleAsync<TResponse>(string[] resourceParts, SqlQuery query)
             where TResponse : class, new()
         {
             if (resourceParts == null || resourceParts.Length < 1)
@@ -67,7 +85,15 @@
                 );
         }
 
-        internal async Task<IEnumerable<TResponse>> QueryRecordsAsync<TResponse>(string resource, SqlQuery query)
+        /// <summary>
+        /// Execute a get request for multiple records specified with resource and query parameters.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="resource">Resource of the records that will be fetched.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A collection of TResponse objects.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<IEnumerable<TResponse>> QueryAsync<TResponse>(string resource, SqlQuery query)
         {
             if (resource == null)
             {
@@ -88,7 +114,15 @@
             return response.Records;
         }
 
-        internal async Task<IEnumerable<TResponse>> QueryRecordsWithParametersAsync<TResponse>(string resource, params KeyValuePair<string, object>[] parameters)
+        /// <summary>
+        /// Execute a get request for multiple records specified with resource and collection of key/value pairs as parameters.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="resource">Resource of the records that will be fetched.</param>
+        /// <param name="parameters">Collection of key/value pairs that will be included in request query string.</param>
+        /// <returns>A collection of TResponse objects.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<IEnumerable<TResponse>> QueryAsync<TResponse>(string resource, params KeyValuePair<string, object>[] parameters)
         {
             if (resource == null)
             {
@@ -113,7 +147,19 @@
 
         #region create and update
 
-        internal async Task<IEnumerable<TResponse>> CreateOrUpdateRecordsAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, params TRequest[] records)
+        /// <summary>
+        /// Execute a create or update request with specified records as payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the records.</typeparam>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource of the records that will be created or updated.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="records">Records that should sent as payload.</param>
+        /// <returns>A collection of TResponse objects.</returns>
+        /// <exception cref="ArgumentException">Thrown when records argument is null or the length of an array is less than 1.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<IEnumerable<TResponse>> CreateOrUpdateAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, params TRequest[] records)
             where TRequest : IRecord
             where TResponse : class, new()
         {
@@ -138,7 +184,19 @@
             return response.Records;
         }
 
-        internal async Task<TResponse> CreateOrUpdateRecordAsync<TRequest, TResponse>(string resource, string resourceIdentifier, HttpMethod method, SqlQuery query, TRequest record)
+        /// <summary>
+        /// Execute a create or update request with specified record as payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the record.</typeparam>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource of the record that will be created or updated.</param>
+        /// <param name="resourceIdentifier">Resource identifier of the record that will be created or updated.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="record">Record that should sent as payload.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> CreateOrUpdateAsync<TRequest, TResponse>(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query, TRequest record)
             where TRequest : class, new()
             where TResponse : class, new()
         {
@@ -162,10 +220,22 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await CreateOrUpdateRecordAsync<TRequest, TResponse>(new[] { resource, resourceIdentifier }, method, query, record);
+            return await CreateOrUpdateAsync<TRequest, TResponse>(method, new[] { resource, resourceIdentifier }, query, record);
         }
 
-        internal async Task<TResponse> CreateOrUpdateRecordAsync<TRequest, TResponse>(string[] resourceParts, HttpMethod method, SqlQuery query, TRequest record)
+        /// <summary>
+        /// Execute a create or update request with specified record as payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the record.</typeparam>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resourceParts">Array of resource parts of the record to be created or updated. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="record">Record that should sent as payload.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentException">Thrown when resourceParts argument is null or the length of an array is less than 1.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> CreateOrUpdateAsync<TRequest, TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query, TRequest record)
             where TRequest : class, new()
             where TResponse : class, new()
         {
@@ -198,7 +268,18 @@
 
         #region delete
 
-        internal async Task<IEnumerable<TResponse>> DeleteRecordsAsync<TResponse>(string resource, SqlQuery query, bool force, params int[] ids)
+        /// <summary>
+        /// Execute a delete request on specified IDs of a given resource.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="resource">Resource of the ids that will be deleted.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="force">Indicator whether all records should be deleted.</param>
+        /// <param name="ids">IDs that should be deleted.</param>
+        /// <returns>A collection of TResponse objects.</returns>
+        /// <exception cref="ArgumentException">Thrown when ids argument is null or the length of an array is less than 1.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<IEnumerable<TResponse>> DeleteAsync<TResponse>(string resource, SqlQuery query, bool force, params int[] ids)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -222,7 +303,7 @@
             query: query,
             customParameters: new[]
             {
-                new KeyValuePair<string, object>("force", true),
+                new KeyValuePair<string, object>("force", force),
                 new KeyValuePair<string, object>("ids", string.Join(",", ids))
             }
             );
@@ -230,7 +311,16 @@
             return response.Records;
         }
 
-        internal async Task<TResponse> DeleteRecordAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
+        /// <summary>
+        /// Execute a delete request on a single record specified by resource and resource identifier.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="resource">Resource of the record to be deleted.</param>
+        /// <param name="resourceIdentifier">Resource identifier of the record to be deleted.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> DeleteAsync<TResponse>(string resource, string resourceIdentifier, SqlQuery query)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -248,10 +338,19 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await DeleteRecordAsync<TResponse>(new string[] { resource, resourceIdentifier }, query);
+            return await DeleteAsync<TResponse>(new string[] { resource, resourceIdentifier }, query);
         }
 
-        internal async Task<TResponse> DeleteRecordAsync<TResponse>(string[] resourceParts, SqlQuery query)
+        /// <summary>
+        /// Execute a delete request on a single record specified by resource parts.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <param name="resourceParts">Array of resource parts of the record to be deleted. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentException">Thrown when resourceParts argument is null or the length of an array is less than 1.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> DeleteAsync<TResponse>(string[] resourceParts, SqlQuery query)
             where TResponse : class, new()
         {
             if (resourceParts == null || resourceParts.Length < 1)

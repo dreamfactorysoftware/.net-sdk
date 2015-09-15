@@ -15,37 +15,37 @@
     {
         public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<AppResponse>("app", query, false, ids);
+            return DeleteAsync<AppResponse>("app", query, false, ids);
         }
 
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<AppGroupResponse>("app_group", query, false, ids);
+            return DeleteAsync<AppGroupResponse>("app_group", query, false, ids);
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<RoleResponse>("role", query, false, ids);
+            return DeleteAsync<RoleResponse>("role", query, false, ids);
         }
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<UserResponse>("user", query, false, ids);
+            return DeleteAsync<UserResponse>("user", query, false, ids);
         }
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<ServiceResponse>("service", query, false, ids);
+            return DeleteAsync<ServiceResponse>("service", query, false, ids);
         }
 
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
-            return DeleteRecordsAsync<EmailTemplateResponse>("email_template", query, false, ids);
+            return DeleteAsync<EmailTemplateResponse>("email_template", query, false, ids);
         }
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
-            return DeleteRecordAsync<EventScriptResponse>("event", eventName, query);
+            return DeleteAsync<EventScriptResponse>("event", eventName, query);
         }
     }
 }

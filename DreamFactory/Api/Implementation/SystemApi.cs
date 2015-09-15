@@ -18,34 +18,34 @@
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            return await QueryRecordAsync<EnvironmentResponse>(new[] { "environment" }, new SqlQuery());
+            return await SingleAsync<EnvironmentResponse>(new[] { "environment" }, new SqlQuery());
         }
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            Dictionary<string, object> result = await QueryRecordAsync<Dictionary<string, object>>(new[] { "constant" }, new SqlQuery());
+            Dictionary<string, object> result = await SingleAsync<Dictionary<string, object>>(new[] { "constant" }, new SqlQuery());
             return result.Keys;
         }
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            var result = await QueryRecordAsync<Dictionary<string, Dictionary<string, string>>>("constant", constant, new SqlQuery());
+            var result = await SingleAsync<Dictionary<string, Dictionary<string, string>>>("constant", constant, new SqlQuery());
             return result[constant];
         }
 
         public async Task<ConfigResponse> GetConfigAsync()
         {
-            return await QueryRecordAsync<ConfigResponse>(new[] { "config" }, new SqlQuery());
+            return await SingleAsync<ConfigResponse>(new[] { "config" }, new SqlQuery());
         }
 
         public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            return await CreateOrUpdateRecordAsync<ConfigRequest, ConfigResponse>(new[] {"config"}, HttpMethod.Post, new SqlQuery(), config);
+            return await CreateOrUpdateAsync<ConfigRequest, ConfigResponse>(HttpMethod.Post, new[] {"config"}, new SqlQuery(), config);
         }
 
         public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<ScriptTypeResponse>("script_type", query);
+            return await QueryAsync<ScriptTypeResponse>("script_type", query);
         }
     }
 }

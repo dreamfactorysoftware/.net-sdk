@@ -16,37 +16,37 @@
     {
         public Task<IEnumerable<AppResponse>> UpdateAppsAsync(SqlQuery query, params AppRequest[] apps)
         {
-            return CreateOrUpdateRecordsAsync<AppRequest, AppResponse>(HttpMethod.Patch, "app", query, apps);
+            return CreateOrUpdateAsync<AppRequest, AppResponse>(HttpMethod.Patch, "app", query, apps);
         }
 
         public Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups)
         {
-            return CreateOrUpdateRecordsAsync<AppGroupRequest, AppGroupResponse>(HttpMethod.Patch, "app_group", query, appGroups);
+            return CreateOrUpdateAsync<AppGroupRequest, AppGroupResponse>(HttpMethod.Patch, "app_group", query, appGroups);
         }
 
         public Task<IEnumerable<RoleResponse>> UpdateRolesAsync(SqlQuery query, params RoleRequest[] roles)
         {
-            return CreateOrUpdateRecordsAsync<RoleRequest, RoleResponse>(HttpMethod.Patch, "role", query, roles);
+            return CreateOrUpdateAsync<RoleRequest, RoleResponse>(HttpMethod.Patch, "role", query, roles);
         }
 
         public Task<IEnumerable<UserResponse>> UpdateUsersAsync(SqlQuery query, params UserRequest[] users)
         {
-            return CreateOrUpdateRecordsAsync<UserRequest, UserResponse>(HttpMethod.Patch, "user", query, users);
+            return CreateOrUpdateAsync<UserRequest, UserResponse>(HttpMethod.Patch, "user", query, users);
         }
 
         public Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(SqlQuery query, params ServiceRequest[] services)
         {
-            return CreateOrUpdateRecordsAsync<ServiceRequest, ServiceResponse>(HttpMethod.Patch, "service", query, services);
+            return CreateOrUpdateAsync<ServiceRequest, ServiceResponse>(HttpMethod.Patch, "service", query, services);
         }
 
         public Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates)
         {
-            return CreateOrUpdateRecordsAsync<EmailTemplateRequest, EmailTemplateResponse>(HttpMethod.Patch, "email_template", query, templates);
+            return CreateOrUpdateAsync<EmailTemplateRequest, EmailTemplateResponse>(HttpMethod.Patch, "email_template", query, templates);
         }
 
         public Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript)
         {
-            return CreateOrUpdateRecordAsync<EventScriptRequest, EventScriptResponse>("event", eventName, HttpMethod.Patch, query, eventScript);
+            return CreateOrUpdateAsync<EventScriptRequest, EventScriptResponse>(HttpMethod.Patch, "event", eventName, query, eventScript);
         }
     }
 }

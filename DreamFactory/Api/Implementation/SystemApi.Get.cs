@@ -15,42 +15,42 @@
     {
         public async Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<AppResponse>("app", query);
+            return await QueryAsync<AppResponse>("app", query);
         }
 
         public async Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<AppGroupResponse>("app_group", query);
+            return await QueryAsync<AppGroupResponse>("app_group", query);
         }
 
         public async Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<RoleResponse>("role", query);
+            return await QueryAsync<RoleResponse>("role", query);
         }
 
         public async Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<UserResponse>("user", query);
+            return await QueryAsync<UserResponse>("user", query);
         }
 
         public async Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<ServiceResponse>("service", query);
+            return await QueryAsync<ServiceResponse>("service", query);
         }
 
         public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query)
         {
-            return await QueryRecordsAsync<EmailTemplateResponse>("email_template", query);
+            return await QueryAsync<EmailTemplateResponse>("email_template", query);
         }
 
         public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            return QueryRecordAsync<EventScriptResponse>("event", eventName, query);
+            return SingleAsync<EventScriptResponse>("event", eventName, query);
         }
 
         public Task<IEnumerable<string>> GetEventsAsync()
         {
-            return QueryRecordsWithParametersAsync<string>("event", new KeyValuePair<string, object>("as_list", true));
+            return QueryAsync<string>("event", new KeyValuePair<string, object>("as_list", true));
         }
     }
 }
