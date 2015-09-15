@@ -104,6 +104,7 @@
     <Compile Include="Model\Database\StoredProcRequest.cs" />
     <Compile Include="Model\Database\TableInfo.cs" />
     <Compile Include="Model\Database\TypeMap.cs" />
+    <Compile Include="Model\Email\EmailResponse.cs" />
     <Compile Include="Model\File\StorageResource.cs" />
     <Compile Include="Model\File\FileRequest.cs" />
     <Compile Include="Model\File\FolderRequest.cs" />

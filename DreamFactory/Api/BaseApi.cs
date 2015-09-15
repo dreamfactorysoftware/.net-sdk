@@ -90,14 +90,13 @@
         /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
         /// <param name="query">Query parameters for the returned object.</param>
         /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentException">Thrown when resource parts argument is null or its length is less than 1.</exception>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
         internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query)
             where TResponse : class, new()
         {
-            if (resourceParts == null || resourceParts.Length < 1)
+            if (resourceParts == null)
             {
-                throw new ArgumentException("At least one resource part must be specified", "resourceParts");
+                throw new ArgumentNullException("resourceParts");
             }
 
             if (query == null)
@@ -194,15 +193,14 @@
         /// <param name="query">Query parameters for the returned object.</param>
         /// <param name="record">Record that should sent as payload.</param>
         /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentException">Thrown when resourceParts argument is null or the length of an array is less than 1.</exception>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
         internal async Task<TResponse> RequestSingleWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query, TRequest record)
             where TRequest : class, new()
             where TResponse : class, new()
         {
-            if (resourceParts == null || resourceParts.Length < 1)
+            if (resourceParts == null)
             {
-                throw new ArgumentException("At least one resource part must be specified", "resourceParts");
+                throw new ArgumentNullException("resourceParts");
             }
 
             if (record == null)
