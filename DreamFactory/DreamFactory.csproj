@@ -155,6 +155,8 @@
     <Compile Include="Model\Database\FieldSchema.cs" />
     <Compile Include="Model\Builder\ITableSchemaBuilder.cs" />
     <Compile Include="Model\Builder\TableSchemaBuilder.cs" />
+    <Compile Include="Model\User\ProfileUpdateResponse.cs" />
+    <Compile Include="Model\User\RegisterResponse.cs" />
     <Compile Include="Model\User\Logout.cs" />
     <Compile Include="Model\User\Login.cs" />
     <Compile Include="Model\User\PasswordRequest.cs" />

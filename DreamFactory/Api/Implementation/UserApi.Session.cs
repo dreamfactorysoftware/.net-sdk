@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
 
     internal partial class UserApi
@@ -24,46 +25,33 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            var address = baseAddress.WithResource("session");
+            Session session = await CreateOrUpdateAsync<Login, Session>(
+                HttpMethod.Post,
+                new[] { "session" },
+                new SqlQuery(),
+                new Login { Email = email, Password = password, Duration = duration }
+                );
 
-            Login login = new Login { Email = email, Password = password, Duration = duration };
-            string loginContent = contentSerializer.Serialize(login);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post,
-                                                   address.Build(),
-                                                   baseHeaders,
-                                                   loginContent);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+            BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }
 
         public async Task<Session> GetSessionAsync()
         {
-            var address = baseAddress.WithResource("session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<Session>(response.Body);
+            return await SingleAsync<Session>(new [] { "session" }, new SqlQuery());
         }
 
         public async Task<bool> LogoutAsync()
         {
-            var address = baseAddress.WithResource("session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+            Logout logout = await DeleteAsync<Logout>(new[] { "session" }, new SqlQuery());
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            if (logout.Success ?? false)
+            {
+                BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+            }
 
-            baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
-
-            var logout = new { success = false };
-            return contentSerializer.Deserialize(response.Body, logout).success;
+            return logout.Success ?? false;
         }
     }
 }

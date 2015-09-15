@@ -1,5 +1,7 @@
 ﻿namespace DreamFactory.Model.Database
 {
+    using global::System.Collections.Generic;
+
     /// <summary>
     /// SQL query parameters.
     /// </summary>
@@ -14,6 +16,7 @@
         public SqlQuery()
         {
             Fields = "*";
+            CustomParameters = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -60,5 +63,11 @@
         /// Include the schema of the table queried in returned metadata.
         /// </summary>
         public bool? IncludeSchema { get; set; }
+
+        /// <summary>
+        /// Collection of key/value pairs representing custom parameters that will be added to query string.
+        /// </summary>
+        /// <remarks>Adding parameters in this collection does not override any other parameters that were added in query string with the same key.</remarks>
+        public Dictionary<string, object> CustomParameters { get; set; }
     }
 }

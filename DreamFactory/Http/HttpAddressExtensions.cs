@@ -57,6 +57,15 @@
                 httpAddress = httpAddress.WithParameter("include_schema", query.IncludeSchema);
             }
 
+            if (query.CustomParameters != null)
+            {
+                foreach (var customParameter in query.CustomParameters)
+                {
+                    
+                }
+                httpAddress = httpAddress.WithParameter("include_schema", query.IncludeSchema);
+            }
+
             return httpAddress;
         }
     }

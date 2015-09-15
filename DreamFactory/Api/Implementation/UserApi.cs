@@ -3,22 +3,15 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
     using DreamFactory.Serialization;
 
-    internal partial class UserApi : IUserApi
+    internal partial class UserApi : BaseApi, IUserApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly HttpHeaders baseHeaders;
-
         public UserApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, "user")
         {
-            this.baseAddress = baseAddress.WithResource("user");
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
         public async Task<bool> RegisterAsync(Register register, bool login = false)
@@ -28,60 +21,40 @@
                 throw new ArgumentNullException("register");
             }
 
-            var address = baseAddress.WithResource("register");
+            SqlQuery query = new SqlQuery();
             if (login)
             {
-                address = address.WithParameter("login", true);
+                query.CustomParameters.Add("login", true);
             }
 
-            string content = contentSerializer.Serialize(register);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post,
-                                                   address.Build(),
-                                                   baseHeaders,
-                                                   content);
+            RegisterResponse response = await CreateOrUpdateAsync<Register, RegisterResponse>(
+                HttpMethod.Post, 
+                new [] { "register " },
+                query, 
+                register);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var success = new { success = false };
-            success = contentSerializer.Deserialize(response.Body, success);
-
-            if (success.success && login)
+            if ((response.Success ?? false) && login)
             {
-                Session session = await GetSessionAsync();
-                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+                BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, response.SessionToken);
             }
 
-            return success.success;
+            return response.Success ?? false;
         }
 
-        public async Task<bool> UpdateProfileAsync(ProfileRequest profileRequest)
+        public async Task<bool> UpdateProfileAsync(ProfileRequest profile)
         {
-            if (profileRequest == null)
+            if (profile == null)
             {
-                throw new ArgumentNullException("profileRequest");
+                throw new ArgumentNullException("profile");
             }
 
-            var address = baseAddress.WithResource("profile");
-            string content = contentSerializer.Serialize(profileRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var success = new { success = false };
-            return contentSerializer.Deserialize(response.Body, success).success;
+            ProfileUpdateResponse response = await CreateOrUpdateAsync<ProfileRequest, ProfileUpdateResponse>(HttpMethod.Post, new [] { "profile" }, new SqlQuery(), profile);
+            return response.Success ?? false;
         }
 
         public async Task<ProfileResponse> GetProfileAsync()
         {
-            var address = baseAddress.WithResource("profile");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<ProfileResponse>(response.Body);
+            return await SingleAsync<ProfileResponse>(new[]{ "profile" }, new SqlQuery());
         }
     }
 }

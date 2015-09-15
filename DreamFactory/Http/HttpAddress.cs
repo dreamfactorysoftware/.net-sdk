@@ -51,8 +51,15 @@
 
         public IHttpAddress WithParameter(string name, object value)
         {
-            Dictionary<string, object> temp = new Dictionary<string, object>(parameters) { { name, value } };
-            return new HttpAddress(baseAddress, version, resources, temp);
+            try
+            {
+                Dictionary<string, object> temp = new Dictionary<string, object>(parameters) { { name, value } };
+                return new HttpAddress(baseAddress, version, resources, temp);
+            }
+            catch (ArgumentException)
+            {
+                return this;
+            }
         }
 
         public string Build()

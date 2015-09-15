@@ -29,7 +29,7 @@
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            var result = await SingleAsync<Dictionary<string, Dictionary<string, string>>>("constant", constant, new SqlQuery());
+            var result = await RequestSingleAsync<Dictionary<string, Dictionary<string, string>>>("constant", constant, new SqlQuery());
             return result[constant];
         }
 

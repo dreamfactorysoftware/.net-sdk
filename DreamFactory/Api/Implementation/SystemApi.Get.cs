@@ -45,12 +45,12 @@
 
         public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            return SingleAsync<EventScriptResponse>("event", eventName, query);
+            return RequestSingleAsync<EventScriptResponse>("event", eventName, query);
         }
 
         public Task<IEnumerable<string>> GetEventsAsync()
         {
-            return QueryAsync<string>("event", new KeyValuePair<string, object>("as_list", true));
+            return QueryAsync<string>("event", new SqlQuery { CustomParameters = new Dictionary<string, object> { { "as_list", true } } });
         }
     }
 }
