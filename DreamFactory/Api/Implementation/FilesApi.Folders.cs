@@ -19,7 +19,7 @@
             SqlQuery query = new SqlQuery();
             query.CustomParameters = AddListingParameters(query.CustomParameters, flags);
 
-            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Get, new[] { path, string.Empty }, query);
+            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Get, path, string.Empty, query);
         }
 
         public async Task<byte[]> DownloadFolderAsync(string path)
@@ -49,11 +49,7 @@
             SqlQuery query = new SqlQuery();
             query.CustomParameters.Add("check_exist", checkExists);
 
-            return await base.RequestSingleAsync<FolderResponse>(
-                HttpMethod.Post,
-                new[] { path, string.Empty },
-                query
-                );
+            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
         }
 
         public async Task<FolderResponse> UploadFolderAsync(string path, string url, bool clean)
@@ -75,7 +71,7 @@
             query.CustomParameters.Add("clean", clean);
             query.CustomParameters.Add("url", url);
 
-            return await RequestSingleAsync<FolderResponse>(HttpMethod.Post, new[] { path, string.Empty }, query);
+            return await RequestSingleAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
         }
 
         public async Task<FolderResponse> DeleteFolderAsync(string path, bool force = false)
@@ -87,7 +83,8 @@
 
             return await RequestSingleAsync<FolderResponse>(
                 HttpMethod.Delete,
-                new[] { path, string.Empty },
+                path, 
+                string.Empty,
                 new SqlQuery { CustomParameters = new Dictionary<string, object> { { "force", force } } }
                 );
         }

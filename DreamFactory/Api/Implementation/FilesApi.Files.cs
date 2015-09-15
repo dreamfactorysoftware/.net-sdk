@@ -93,7 +93,7 @@
                 throw new ArgumentNullException("filepath");
             }
 
-            return await base.RequestSingleAsync<FileResponse>(HttpMethod.Delete, new[] { filepath }, new SqlQuery());
+            return await base.RequestSingleAsync<FileResponse>(HttpMethod.Delete, filepath, new SqlQuery());
         }
 
         static string GetString(byte[] bytes)

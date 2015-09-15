@@ -18,12 +18,12 @@
 
         public async Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            return await RequestSingleAsync<EnvironmentResponse>(HttpMethod.Get, new[] { "environment" }, new SqlQuery());
+            return await RequestSingleAsync<EnvironmentResponse>(HttpMethod.Get, "environment", new SqlQuery());
         }
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            Dictionary<string, object> result = await RequestSingleAsync<Dictionary<string, object>>(HttpMethod.Get, new[] { "constant" }, new SqlQuery());
+            Dictionary<string, object> result = await RequestSingleAsync<Dictionary<string, object>>(HttpMethod.Get, "constant", new SqlQuery());
             return result.Keys;
         }
 
@@ -35,12 +35,12 @@
 
         public async Task<ConfigResponse> GetConfigAsync()
         {
-            return await RequestSingleAsync<ConfigResponse>(HttpMethod.Get, new[] { "config" }, new SqlQuery());
+            return await RequestSingleAsync<ConfigResponse>(HttpMethod.Get, "config", new SqlQuery());
         }
 
         public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            return await RequestSingleWithPayloadAsync<ConfigRequest, ConfigResponse>(HttpMethod.Post, new[] {"config"}, new SqlQuery(), config);
+            return await RequestSingleWithPayloadAsync<ConfigRequest, ConfigResponse>(HttpMethod.Post, "config", new SqlQuery(), config);
         }
 
         public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)

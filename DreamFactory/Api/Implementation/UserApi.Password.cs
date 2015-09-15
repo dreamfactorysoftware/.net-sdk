@@ -23,7 +23,7 @@
 
             PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post, 
-                new []{ "password" }, 
+                "password", 
                 new SqlQuery(),
                 new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
 
@@ -39,7 +39,7 @@
 
             return await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post,
-                new[] { "password" },
+                "password",
                 new SqlQuery { CustomParameters = new Dictionary<string, object> { { "reset", true } } },
                 new PasswordRequest { Email = email });
         }
@@ -63,7 +63,7 @@
 
             PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post,
-                new[] { "password" },
+                "password",
                 new SqlQuery { CustomParameters = new Dictionary<string, object> { { "login", true } } }, 
                 new PasswordRequest { Email = email, NewPassword = newPassword, Code = code, SecurityAnswer = answer });
 

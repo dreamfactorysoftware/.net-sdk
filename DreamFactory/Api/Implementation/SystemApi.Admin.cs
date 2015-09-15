@@ -38,12 +38,12 @@
         }
         public async Task<Session> GetAdminSessionAsync()
         {
-            return await base.RequestSingleAsync<Session>(HttpMethod.Get, new[] { "admin", "session" }, new SqlQuery());
+            return await base.RequestSingleAsync<Session>(HttpMethod.Get, "admin", "session", new SqlQuery());
         }
 
         public async Task<bool> LogoutAdminAsync()
         {
-            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, new[] { "admin", "session" }, new SqlQuery());
+            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, "admin", "session", new SqlQuery());
 
             if (logout.Success.HasValue && logout.Success.Value)
             {

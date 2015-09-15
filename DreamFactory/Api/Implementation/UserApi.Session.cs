@@ -27,7 +27,7 @@
 
             Session session = await RequestSingleWithPayloadAsync<Login, Session>(
                 HttpMethod.Post,
-                new[] { "session" },
+                "session",
                 new SqlQuery(),
                 new Login { Email = email, Password = password, Duration = duration }
                 );
@@ -39,12 +39,12 @@
 
         public async Task<Session> GetSessionAsync()
         {
-            return await RequestSingleAsync<Session>(HttpMethod.Get, new [] { "session" }, new SqlQuery());
+            return await RequestSingleAsync<Session>(HttpMethod.Get, "session", new SqlQuery());
         }
 
         public async Task<bool> LogoutAsync()
         {
-            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, new[] { "session" }, new SqlQuery());
+            Logout logout = await RequestSingleAsync<Logout>(HttpMethod.Delete, "session", new SqlQuery());
 
             if (logout.Success ?? false)
             {

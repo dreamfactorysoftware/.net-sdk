@@ -27,6 +27,31 @@
         #region single record in response
 
         /// <summary>
+        /// Execute a request for single record specified with resource.
+        /// </summary>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource of the record.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string resource, SqlQuery query)
+            where TResponse : class, new()
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            return await RequestSingleAsync<TResponse>(method, new[] { resource }, query);
+        }
+
+        /// <summary>
         /// Execute a request for single record specified with resource and query parameters.
         /// </summary>
         /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
@@ -85,6 +110,39 @@
                 resourceParts: resourceParts,
                 query: query
                 );
+        }
+
+        /// <summary>
+        /// Execute a request with specified record as payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the record.</typeparam>
+        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource of the record.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="record">Record that should sent as payload.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<TResponse> RequestSingleWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, TRequest record)
+            where TRequest : class, new()
+            where TResponse : class, new()
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (record == null)
+            {
+                throw new ArgumentNullException("record");
+            }
+
+            if (query == null)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            return await RequestSingleWithPayloadAsync<TRequest, TResponse>(method, new[] { resource }, query, record);
         }
 
         /// <summary>
