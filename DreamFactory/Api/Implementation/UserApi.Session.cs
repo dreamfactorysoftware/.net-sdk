@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
 
     internal partial class UserApi
@@ -26,10 +25,10 @@
             }
 
             Session session = await RequestWithPayloadAsync<Login, Session>(
-                HttpMethod.Post,
-                "session",
-                new SqlQuery(),
-                new Login { Email = email, Password = password, Duration = duration }
+                method: HttpMethod.Post,
+                resource: "session",
+                query: null,
+                payload: new Login { Email = email, Password = password, Duration = duration }
                 );
 
             BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
@@ -37,14 +36,22 @@
             return session;
         }
 
-        public async Task<Session> GetSessionAsync()
+        public Task<Session> GetSessionAsync()
         {
-            return await RequestAsync<Session>(HttpMethod.Get, "session", new SqlQuery());
+            return RequestAsync<Session>(
+                method: HttpMethod.Get, 
+                resource: "session", 
+                query: null
+                );
         }
 
         public async Task<bool> LogoutAsync()
         {
-            Logout logout = await RequestAsync<Logout>(HttpMethod.Delete, "session", new SqlQuery());
+            Logout logout = await RequestAsync<Logout>(
+                method: HttpMethod.Delete, 
+                resource: "session", 
+                query: null
+                );
 
             if (logout.Success ?? false)
             {

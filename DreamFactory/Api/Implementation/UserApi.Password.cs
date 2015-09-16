@@ -1,7 +1,6 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.Database;
@@ -22,26 +21,31 @@
             }
 
             PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
-                HttpMethod.Post, 
-                "password", 
-                new SqlQuery(),
-                new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
+                method: HttpMethod.Post, 
+                resource: "password", 
+                query: null,
+                payload: new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword }
+                );
 
             return response.Success ?? false;
         }
 
-        public async Task<PasswordResponse> RequestPasswordResetAsync(string email)
+        public Task<PasswordResponse> RequestPasswordResetAsync(string email)
         {
             if (email == null)
             {
                 throw new ArgumentNullException("email");
             }
 
-            return await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
-                HttpMethod.Post,
-                "password",
-                new SqlQuery { CustomParameters = new Dictionary<string, object> { { "reset", true } } },
-                new PasswordRequest { Email = email });
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("reset", true);
+
+            return RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+                method: HttpMethod.Post,
+                resource: "password",
+                query: query,
+                payload: new PasswordRequest { Email = email }
+            );
         }
 
         public async Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code, string answer)
@@ -61,11 +65,15 @@
                 throw new ArgumentException("You must specify either code or answer parameters but not both.", "answer");
             }
 
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("login", true);
+
             PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
-                HttpMethod.Post,
-                "password",
-                new SqlQuery { CustomParameters = new Dictionary<string, object> { { "login", true } } }, 
-                new PasswordRequest { Email = email, NewPassword = newPassword, Code = code, SecurityAnswer = answer });
+                method: HttpMethod.Post,
+                resource: "password",
+                query: query, 
+                payload: new PasswordRequest { Email = email, NewPassword = newPassword, Code = code, SecurityAnswer = answer }
+                );
 
             if (response.Success ?? false)
             {

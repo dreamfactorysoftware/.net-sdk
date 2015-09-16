@@ -21,13 +21,15 @@
                 throw new ArgumentNullException("register");
             }
 
-            SqlQuery query = new SqlQuery();
-            if (login)
-            {
-                query.CustomParameters.Add("login", true);
-            }
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("login", login);
 
-            RegisterResponse response = await RequestWithPayloadAsync<Register, RegisterResponse>(HttpMethod.Post, "register", query, register);
+            RegisterResponse response = await RequestWithPayloadAsync<Register, RegisterResponse>(
+                method: HttpMethod.Post,
+                resource: "register",
+                query: query,
+                payload: register
+                );
 
             if ((response.Success ?? false) && login)
             {
@@ -44,13 +46,22 @@
                 throw new ArgumentNullException("profile");
             }
 
-            ProfileUpdateResponse response = await RequestWithPayloadAsync<ProfileRequest, ProfileUpdateResponse>(HttpMethod.Post, "profile", new SqlQuery(), profile);
+            ProfileUpdateResponse response = await RequestWithPayloadAsync<ProfileRequest, ProfileUpdateResponse>(
+                method: HttpMethod.Post, 
+                resource: "profile", 
+                query: null, 
+                payload: profile
+                );
             return response.Success ?? false;
         }
 
-        public async Task<ProfileResponse> GetProfileAsync()
+        public Task<ProfileResponse> GetProfileAsync()
         {
-            return await RequestAsync<ProfileResponse>(HttpMethod.Get, "profile", new SqlQuery());
+            return RequestAsync<ProfileResponse>(
+                method: HttpMethod.Get,
+                resource: "profile", 
+                query: new SqlQuery()
+                );
         }
     }
 }

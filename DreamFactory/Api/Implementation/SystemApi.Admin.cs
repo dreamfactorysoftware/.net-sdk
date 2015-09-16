@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
 
     internal partial class SystemApi
@@ -29,21 +28,31 @@
                 method: HttpMethod.Post,
                 resource: "admin",
                 resourceIdentifier: "session",
-                query: new SqlQuery(),
+                query: null,
                 payload: new Login { Email = email, Password = password, Duration = duration }
                 );
 
             base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
             return session;
         }
-        public async Task<Session> GetAdminSessionAsync()
+        public Task<Session> GetAdminSessionAsync()
         {
-            return await base.RequestAsync<Session>(HttpMethod.Get, "admin", "session", new SqlQuery());
+            return base.RequestAsync<Session>(
+                method: HttpMethod.Get, 
+                resource: "admin", 
+                resourceIdentifier: "session", 
+                query: null
+                );
         }
 
         public async Task<bool> LogoutAdminAsync()
         {
-            Logout logout = await RequestAsync<Logout>(HttpMethod.Delete, "admin", "session", new SqlQuery());
+            Logout logout = await base.RequestAsync<Logout>(
+                method: HttpMethod.Delete, 
+                resource: "admin", 
+                resourceIdentifier: "session", 
+                query: null
+                );
 
             if (logout.Success.HasValue && logout.Success.Value)
             {
@@ -65,8 +74,13 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(HttpMethod.Post, "admin", "password",
-                new SqlQuery(), new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword });
+            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+                method: HttpMethod.Post,
+                resource: "admin",
+                resourceIdentifier: "password",
+                query: null,
+                payload: new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword }
+                );
 
             return response.Success ?? false;
         }

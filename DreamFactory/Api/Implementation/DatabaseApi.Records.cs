@@ -9,7 +9,7 @@
 
     internal partial class DatabaseApi
     {
-        public async Task<DatabaseResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public Task<DatabaseResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -26,7 +26,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
+            return base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Post,
                 resource: "_table",
                 resourceIdentifier: tableName,
@@ -35,7 +35,7 @@
                 );
         }
 
-        public async Task<DatabaseResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public Task<DatabaseResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -52,7 +52,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
+            return base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Patch,
                 resource: "_table",
                 resourceIdentifier: tableName,
@@ -61,7 +61,7 @@
                 );
         }
 
-        public async Task<DatabaseResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
+        public Task<DatabaseResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -73,7 +73,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestAsync<DatabaseResourceWrapper<TRecord>>(
+            return base.RequestAsync<DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Get,
                 resource: "_table",
                 resourceIdentifier: tableName,
@@ -81,7 +81,7 @@
                 );
         }
 
-        public async Task<DatabaseResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public Task<DatabaseResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -98,7 +98,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
+            return base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Delete,
                 resource: "_table",
                 resourceIdentifier: tableName,

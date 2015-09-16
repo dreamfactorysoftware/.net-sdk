@@ -10,22 +10,22 @@
 
     internal partial class DatabaseApi
     {
-        public async Task<IEnumerable<string>> GetStoredProcNamesAsync(bool refresh)
+        public Task<IEnumerable<string>> GetStoredProcNamesAsync(bool refresh)
         {
-            return await GetNamesOnlyAsync("_proc", refresh);
+            return GetNamesOnlyAsync("_proc", refresh);
         }
 
-        public async Task CallStoredProcAsync(string procedureName, params StoredProcParam[] parameters)
+        public Task CallStoredProcAsync(string procedureName, params StoredProcParam[] parameters)
         {
             if (procedureName == null)
             {
                 throw new ArgumentNullException("procedureName");
             }
 
-            await CallStoredProc("_proc", procedureName, null, parameters);
+            return CallStoredProc("_proc", procedureName, null, parameters);
         }
 
-        public async Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
+        public Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new()
         {
             if (procedureName == null)
@@ -33,10 +33,10 @@
                 throw new ArgumentNullException("procedureName");
             }
 
-            return await CallStoredProc<TStoredProcResponse>("_proc", procedureName, null, parameters);
+            return CallStoredProc<TStoredProcResponse>("_proc", procedureName, null, parameters);
         }
 
-        public async Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
+        public Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
             where TStoredProcResponse : class, new()
         {
             if (procedureName == null)
@@ -49,15 +49,15 @@
                 throw new ArgumentNullException("wrapper");
             }
 
-            return await CallStoredProc<TStoredProcResponse>("_proc", procedureName, wrapper, parameters);
+            return CallStoredProc<TStoredProcResponse>("_proc", procedureName, wrapper, parameters);
         }
 
-        public async Task<IEnumerable<string>> GetStoredFuncNamesAsync(bool refresh)
+        public Task<IEnumerable<string>> GetStoredFuncNamesAsync(bool refresh)
         {
-            return await GetNamesOnlyAsync("_func", refresh);
+            return GetNamesOnlyAsync("_func", refresh);
         }
 
-        public async Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
+        public Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new()
         {
             if (functionName == null)
@@ -65,10 +65,10 @@
                 throw new ArgumentNullException("functionName");
             }
 
-            return await CallStoredProc<TStoredFuncResponse>("_func", functionName, null, parameters);
+            return CallStoredProc<TStoredFuncResponse>("_func", functionName, null, parameters);
         }
 
-        public async Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
+        public Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
             where TStoredFuncResponse : class, new()
         {
             if (functionName == null)
@@ -81,7 +81,7 @@
                 throw new ArgumentNullException("wrapper");
             }
 
-            return await CallStoredProc<TStoredFuncResponse>("_func", functionName, wrapper, parameters);
+            return CallStoredProc<TStoredFuncResponse>("_func", functionName, wrapper, parameters);
         }
 
         #region private methods
@@ -103,7 +103,7 @@
             return result.Records;
         }
 
-        private async Task<string> CallStoredProc(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
+        private Task<string> CallStoredProc(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
         {
             SqlQuery query = null;
             if (!string.IsNullOrEmpty(wrapper))
@@ -132,7 +132,7 @@
                 request = base.BuildRequest(HttpMethod.Get, null, new[] { resource, procedureName }, query);
             }
 
-            return await ExecuteRequest(request);
+            return ExecuteRequest(request);
         }
 
         private async Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)

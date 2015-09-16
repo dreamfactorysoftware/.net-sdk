@@ -16,37 +16,72 @@
     {
         public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<AppResponse>("app", query, false, ids);
+            return RequestDeleteAsync<AppResponse>(
+                resource: "app",
+                query: query, 
+                force: false, 
+                ids: ids
+                );
         }
 
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<AppGroupResponse>("app_group", query, false, ids);
+            return RequestDeleteAsync<AppGroupResponse>(
+                resource: "app_group",
+                query: query,
+                force: false,
+                ids: ids
+                );
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<RoleResponse>("role", query, false, ids);
+            return RequestDeleteAsync<RoleResponse>(
+                resource: "role",
+                query: query,
+                force: false,
+                ids: ids
+                );
         }
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<UserResponse>("user", query, false, ids);
+            return RequestDeleteAsync<UserResponse>(
+                resource: "user",
+                query: query,
+                force: false,
+                ids: ids
+                );
         }
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<ServiceResponse>("service", query, false, ids);
+            return RequestDeleteAsync<ServiceResponse>(
+                resource: "service",
+                query: query,
+                force: false,
+                ids: ids
+                );
         }
 
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<EmailTemplateResponse>("email_template", query, false, ids);
+            return RequestDeleteAsync<EmailTemplateResponse>(
+                resource: "email_template",
+                query: query,
+                force: false,
+                ids: ids
+                );
         }
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
-            return RequestAsync<EventScriptResponse>(HttpMethod.Delete, "event", eventName, query);
+            return RequestAsync<EventScriptResponse>(
+                method: HttpMethod.Delete,
+                resource: "event", 
+                resourceIdentifier: eventName, 
+                query: query
+                );
         }
     }
 }

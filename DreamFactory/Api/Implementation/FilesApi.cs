@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -14,7 +13,12 @@
     {
         private const string OctetStream = "application/octet-stream";
 
-        public FilesApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string serviceName)
+        public FilesApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders, 
+            string serviceName)
             : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
         }
@@ -35,7 +39,7 @@
 
         public async Task<IEnumerable<string>> GetResourceNamesAsync()
         {
-            var containers = await GetResourcesAsync(ListingFlags.IncludeFiles | ListingFlags.IncludeFolders);
+            IEnumerable<StorageResource> containers = await GetResourcesAsync(ListingFlags.IncludeFiles | ListingFlags.IncludeFolders);
             return containers.Select(x => x.Name);
         }
 

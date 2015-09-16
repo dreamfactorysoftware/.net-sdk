@@ -81,9 +81,9 @@
             return response.Records;
         }
 
-        public async Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
+        public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            return await base.RequestAsync<EventScriptResponse>(
+            return base.RequestAsync<EventScriptResponse>(
                 method: HttpMethod.Get, 
                 resource: "event",
                 resourceIdentifier: eventName,

@@ -22,18 +22,18 @@
         {
         }
 
-        public async Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
+        public Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
         {
-            return await base.RequestAsync<ResourceWrapper<CustomResponse>>(
+            return base.RequestAsync<ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Get,
                 resource: "custom",
                 query: query
                 );
         }
         
-        public async Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
+            return base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Post,
                 resource: "custom",
                 query: query,
@@ -41,9 +41,9 @@
                 );
         }
 
-        public async Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
+            return base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Patch,
                 resource: "custom",
                 query: query,
@@ -72,14 +72,14 @@
             };
         }
 
-        public async Task<CustomResponse> UpdateCustomSettingAsync(string settingName, CustomRequest custom, SqlQuery query = null)
+        public Task<CustomResponse> UpdateCustomSettingAsync(string settingName, CustomRequest custom, SqlQuery query = null)
         {
             if (settingName == null)
             {
                 throw new ArgumentNullException("settingName");
             }
 
-            return await base.RequestWithPayloadAsync<CustomRequest, CustomResponse>(
+            return base.RequestWithPayloadAsync<CustomRequest, CustomResponse>(
                 method: HttpMethod.Patch, 
                 resource: "custom", 
                 resourceIdentifier: settingName, 
@@ -88,14 +88,14 @@
                 );
         }
 
-        public async Task<CustomResponse> DeleteCustomSettingAsync(string settingName, SqlQuery query = null)
+        public Task<CustomResponse> DeleteCustomSettingAsync(string settingName, SqlQuery query = null)
         {
             if (settingName == null)
             {
                 throw new ArgumentNullException("settingName");
             }
 
-            return await base.RequestAsync<CustomResponse>(
+            return base.RequestAsync<CustomResponse>(
                 method: HttpMethod.Delete, 
                 resource: "custom", 
                 resourceIdentifier: settingName, 

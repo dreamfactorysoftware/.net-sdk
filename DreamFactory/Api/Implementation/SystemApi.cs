@@ -12,36 +12,64 @@
 
     internal partial class SystemApi : BaseApi, ISystemApi
     {
-        public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+        public SystemApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders)
             : base(baseAddress, httpFacade, contentSerializer, baseHeaders, "system")
         {
         }
 
-        public async Task<EnvironmentResponse> GetEnvironmentAsync()
+        public Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            return await RequestAsync<EnvironmentResponse>(HttpMethod.Get, "environment", new SqlQuery());
+            return RequestAsync<EnvironmentResponse>(
+                method: HttpMethod.Get,
+                resource: "environment", 
+                query: new SqlQuery()
+                );
         }
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            Dictionary<string, object> result = await RequestAsync<Dictionary<string, object>>(HttpMethod.Get, "constant", new SqlQuery());
+            Dictionary<string, object> result = await RequestAsync<Dictionary<string, object>>(
+                method: HttpMethod.Get, 
+                resource: "constant", 
+                query: new SqlQuery()
+                );
+
             return result.Keys;
         }
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            var result = await RequestAsync<Dictionary<string, Dictionary<string, string>>>(HttpMethod.Get, "constant", constant, new SqlQuery());
+            var result = await RequestAsync<Dictionary<string, Dictionary<string, string>>>(
+                method: HttpMethod.Get,
+                resource: "constant",
+                resourceIdentifier: constant,
+                query: new SqlQuery()
+                );
+
             return result[constant];
         }
 
-        public async Task<ConfigResponse> GetConfigAsync()
+        public Task<ConfigResponse> GetConfigAsync()
         {
-            return await RequestAsync<ConfigResponse>(HttpMethod.Get, "config", new SqlQuery());
+            return RequestAsync<ConfigResponse>(
+                method: HttpMethod.Get,
+                resource: "config",
+                query: new SqlQuery()
+                );
         }
 
-        public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
+        public Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            return await RequestWithPayloadAsync<ConfigRequest, ConfigResponse>(HttpMethod.Post, "config", new SqlQuery(), config);
+            return RequestWithPayloadAsync<ConfigRequest, ConfigResponse>(
+                method: HttpMethod.Post,
+                resource: "config",
+                query: new SqlQuery(),
+                payload: config
+                );
         }
 
         public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)

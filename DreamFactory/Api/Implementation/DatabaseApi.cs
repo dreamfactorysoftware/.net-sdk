@@ -10,7 +10,8 @@
 
     internal partial class DatabaseApi : BaseApi, IDatabaseApi
     {
-        public DatabaseApi(IHttpAddress baseAddress, 
+        public DatabaseApi(
+            IHttpAddress baseAddress, 
             IHttpFacade httpFacade, 
             IContentSerializer contentSerializer, 
             HttpHeaders baseHeaders, 
@@ -68,14 +69,14 @@
             return response.Success ?? false;
         }
 
-        public async Task<TableSchema> DescribeTableAsync(string tableName, bool refresh)
+        public Task<TableSchema> DescribeTableAsync(string tableName, bool refresh)
         {
             if (tableName == null)
             {
                 throw new ArgumentNullException("tableName");
             }
 
-            return await base.RequestAsync<TableSchema>(
+            return base.RequestAsync<TableSchema>(
                 method: HttpMethod.Get,
                 resource: "_schema",
                 resourceIdentifier: tableName,
@@ -83,7 +84,7 @@
                 );
         }
 
-        public async Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh)
+        public Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh)
         {
             if (tableName == null)
             {
@@ -95,7 +96,7 @@
                 throw new ArgumentNullException("fieldName");
             }
 
-            return await base.RequestAsync<FieldSchema>(
+            return base.RequestAsync<FieldSchema>(
                 method: HttpMethod.Get,
                 resourceParts: new [] { "_schema", tableName, fieldName },
                 query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }

@@ -3,13 +3,17 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
-    using DreamFactory.Model.Database;
     using DreamFactory.Model.Email;
     using DreamFactory.Serialization;
 
     internal class EmailApi : BaseApi, IEmailApi
     {
-        public EmailApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string serviceName)
+        public EmailApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders, 
+            string serviceName)
             : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
         }
@@ -21,7 +25,13 @@
                 throw new ArgumentNullException("emailRequest");
             }
 
-            EmailResponse response = await RequestWithPayloadAsync<EmailRequest, EmailResponse>(HttpMethod.Post, new string[] {}, new SqlQuery(), emailRequest);
+            EmailResponse response = await RequestWithPayloadAsync<EmailRequest, EmailResponse>(
+                method: HttpMethod.Post,
+                resourceParts: null,
+                query: null,
+                payload: emailRequest
+                );
+
             return response.Count ?? 0;
         }
     }
