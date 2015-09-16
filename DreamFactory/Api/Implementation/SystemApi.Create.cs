@@ -58,7 +58,7 @@
         {
             return base.RequestWithPayloadAsync<ServiceRequest, ServiceResponse>(
                 method: HttpMethod.Post,
-                resource: "role",
+                resource: "service",
                 query: query,
                 payload: services
                 );
@@ -68,7 +68,7 @@
         {
             return base.RequestWithPayloadAsync<EmailTemplateRequest, EmailTemplateResponse>(
                 method: HttpMethod.Post,
-                resource: "role",
+                resource: "email_template",
                 query: query,
                 payload: templates
                 );
@@ -78,7 +78,8 @@
         {
             return base.RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
                 method: HttpMethod.Post, 
-                resource: "role",
+                resource: "event",
+                resourceIdentifier: eventName,
                 query: query, 
                 payload: eventScript
                 );

@@ -58,7 +58,7 @@
         {
             return base.RequestWithPayloadAsync<ServiceRequest, ServiceResponse>(
                 method: HttpMethod.Patch,
-                resource: "services",
+                resource: "service",
                 query: query,
                 payload: services
                 );
@@ -79,6 +79,7 @@
             return base.RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
                 method: HttpMethod.Patch,
                 resource: "event", 
+                resourceIdentifier: eventName,
                 query: query, 
                 payload: eventScript
                 );
