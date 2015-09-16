@@ -1,1 +1,1 @@
-﻿{"resource":[{"name":"admin","description":"An application for administering this instance.","is_active":true,"requires_fullscreen":false,"allow_fullscreen_toggle":true,"toggle_location":"top","role_id":2}],"ids":[null]}
+﻿{"ids":[null],"resource":[{"name":"admin","description":"An application for administering this instance.","is_active":true,"requires_fullscreen":false,"allow_fullscreen_toggle":true,"toggle_location":"top","role_id":2}]}

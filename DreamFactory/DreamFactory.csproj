@@ -97,8 +97,8 @@
     <Compile Include="Http\IHttpAddress.cs" />
     <Compile Include="Model\Builder\IStoreProcParamsBuilder.cs" />
     <Compile Include="Model\Builder\StoreProcParamsBuilder.cs" />
+    <Compile Include="Model\Database\DatabaseResourceWrapper.cs" />
     <Compile Include="Model\Database\Metadata.cs" />
-    <Compile Include="Model\Database\ResourceWrapper.cs" />
     <Compile Include="Model\Database\SqlQuery.cs" />
     <Compile Include="Model\Database\StoredProcParam.cs" />
     <Compile Include="Model\Database\StoredProcRequest.cs" />
@@ -114,6 +114,8 @@
     <Compile Include="Model\Builder\IEmailRequestBuilder.cs" />
     <Compile Include="Model\IRecord.cs" />
     <Compile Include="Model\RelatedResources.cs" />
+    <Compile Include="Model\RequestResourceWrapper.cs" />
+    <Compile Include="Model\ResourceWrapper.cs" />
     <Compile Include="Model\SuccessResponse.cs" />
     <Compile Include="Model\System\AppAppGroup\RelatedAppToAppGroup.cs" />
     <Compile Include="Model\System\AppGroup\AppGroupRequest.cs" />

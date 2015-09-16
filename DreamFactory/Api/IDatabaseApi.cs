@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     /// <summary>
@@ -67,7 +68,7 @@
         /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         /// <returns>Sequence of created records and metadata if specified in query.</returns>
-        Task<ResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
+        Task<DatabaseResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// Update records in the specified table.
@@ -77,7 +78,7 @@
         /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         /// <returns>Sequence of updated records and metadata if specified in query.</returns>
-        Task<ResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
+        Task<DatabaseResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// Get table records by filter.
@@ -86,7 +87,7 @@
         /// <param name="query">See <see cref="SqlQuery"/> class.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         /// <returns>Sequence of queried records and metadata if specified in query.</returns>
-        Task<ResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query);
+        Task<DatabaseResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query);
 
         /// <summary>
         /// Delete one or more records.
@@ -96,7 +97,7 @@
         /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
         /// <returns>Sequence of deleted records and metadata if specified in query.</returns>
-        Task<ResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
+        Task<DatabaseResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// List callable stored procedures.

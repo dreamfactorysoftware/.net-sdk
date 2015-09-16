@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     internal partial class DatabaseApi
@@ -97,7 +98,7 @@
                 }
             };
 
-            ResourceWrapper<string> result = await RequestSingleAsync<ResourceWrapper<string>>(HttpMethod.Get, resource, query);
+            ResourceWrapper<string> result = await RequestAsync<ResourceWrapper<string>>(HttpMethod.Get, resource, query);
 
             return result.Records;
         }

@@ -11,6 +11,7 @@
     using DreamFactory.AddressBook.Models;
     using DreamFactory.AddressBook.Models.Entities;
     using DreamFactory.Api;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.File;
 
@@ -52,7 +53,7 @@
                     IncludeCount = true
                 };
 
-                ResourceWrapper<ContactContactGroup> result = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query);
+                DatabaseResourceWrapper<ContactContactGroup> result = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query);
 
                 contacts = result.Records.Select(x => x.Contact);
 
@@ -68,7 +69,7 @@
                     IncludeCount = true
                 };
 
-                ResourceWrapper<Contact> result = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+                DatabaseResourceWrapper<Contact> result = await databaseApi.GetRecordsAsync<Contact>("contact", query);
                 contacts = result.Records;
 
                 ViewBag.TotalResults = result.Meta.Count;
@@ -122,8 +123,8 @@
             model.ContactInfoViewModel.ContactInfo.InfoType = model.ContactInfoViewModel.InfoType.ToString();
             model.ContactInfoViewModel.ContactInfo.ContactId = records.Select(x => x.Id).FirstOrDefault();
 
-            Task<ResourceWrapper<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
-            Task<ResourceWrapper<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
 
             await Task.WhenAll(createRelationshipsTask, createContactInfoTask);
 

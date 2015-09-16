@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Custom;
     using DreamFactory.Serialization;
@@ -23,7 +24,7 @@
 
         public async Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
         {
-            return await base.RequestSingleAsync<ResourceWrapper<CustomResponse>>(
+            return await base.RequestAsync<ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Get,
                 resource: "custom",
                 query: query
@@ -32,21 +33,21 @@
         
         public async Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestSingleWithPayloadAsync<object, ResourceWrapper<CustomResponse>>(
+            return await base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Post,
                 resource: "custom",
                 query: query,
-                record: new { resource = customs, ids = customs.Select((item, index) => index) }
+                payload: new RequestResourceWrapper<CustomRequest> { Records = customs, Ids = customs.Select((item, index) => (int?)index).ToArray() }
                 );
         }
 
         public async Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestSingleWithPayloadAsync<object, ResourceWrapper<CustomResponse>>(
+            return await base.RequestWithPayloadAsync<RequestResourceWrapper<CustomRequest>, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Patch,
                 resource: "custom",
                 query: query,
-                record: new { resource = customs, ids = customs.Select((item, index) => index) }
+                payload: new RequestResourceWrapper<CustomRequest> { Records = customs, Ids = customs.Select((item, index) => (int?)index).ToArray() }
                 );
         }
 
@@ -78,12 +79,12 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            return await base.RequestSingleWithPayloadAsync<CustomRequest, CustomResponse>(
+            return await base.RequestWithPayloadAsync<CustomRequest, CustomResponse>(
                 method: HttpMethod.Patch, 
                 resource: "custom", 
                 resourceIdentifier: settingName, 
                 query: query, 
-                record: custom
+                payload: custom
                 );
         }
 
@@ -94,7 +95,7 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            return await base.RequestSingleAsync<CustomResponse>(
+            return await base.RequestAsync<CustomResponse>(
                 method: HttpMethod.Delete, 
                 resource: "custom", 
                 resourceIdentifier: settingName, 

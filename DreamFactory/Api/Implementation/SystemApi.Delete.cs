@@ -16,37 +16,37 @@
     {
         public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<AppResponse>("app", query, false, ids);
+            return RequestDeleteAsync<AppResponse>("app", query, false, ids);
         }
 
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<AppGroupResponse>("app_group", query, false, ids);
+            return RequestDeleteAsync<AppGroupResponse>("app_group", query, false, ids);
         }
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<RoleResponse>("role", query, false, ids);
+            return RequestDeleteAsync<RoleResponse>("role", query, false, ids);
         }
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<UserResponse>("user", query, false, ids);
+            return RequestDeleteAsync<UserResponse>("user", query, false, ids);
         }
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<ServiceResponse>("service", query, false, ids);
+            return RequestDeleteAsync<ServiceResponse>("service", query, false, ids);
         }
 
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteMultipleAsync<EmailTemplateResponse>("email_template", query, false, ids);
+            return RequestDeleteAsync<EmailTemplateResponse>("email_template", query, false, ids);
         }
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
-            return RequestSingleAsync<EventScriptResponse>(HttpMethod.Delete, "event", eventName, query);
+            return RequestAsync<EventScriptResponse>(HttpMethod.Delete, "event", eventName, query);
         }
     }
 }

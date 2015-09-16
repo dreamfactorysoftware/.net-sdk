@@ -21,7 +21,7 @@
 
         public async Task<IEnumerable<TableInfo>> GetAccessComponentsAsync()
         {
-            ResourceWrapper<TableInfo> response = await base.RequestSingleAsync<ResourceWrapper<TableInfo>>(
+            ResourceWrapper<TableInfo> response = await base.RequestAsync<ResourceWrapper<TableInfo>>(
                 method: HttpMethod.Get, 
                 resourceParts: null, 
                 query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "as_list", true } } }
@@ -32,7 +32,7 @@
 
         public async Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
-            ResourceWrapper<TableInfo> response = await base.RequestSingleAsync<ResourceWrapper<TableInfo>>(
+            ResourceWrapper<TableInfo> response = await base.RequestAsync<ResourceWrapper<TableInfo>>(
                 method: HttpMethod.Get, 
                 resource: "_table", 
                 query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", true } } }
@@ -58,7 +58,7 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            SuccessResponse response = await base.RequestSingleAsync<SuccessResponse>(
+            SuccessResponse response = await base.RequestAsync<SuccessResponse>(
                 method: HttpMethod.Delete,
                 resource: "_schema",
                 resourceIdentifier: tableName,
@@ -75,7 +75,7 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            return await base.RequestSingleAsync<TableSchema>(
+            return await base.RequestAsync<TableSchema>(
                 method: HttpMethod.Get,
                 resource: "_schema",
                 resourceIdentifier: tableName,
@@ -95,7 +95,7 @@
                 throw new ArgumentNullException("fieldName");
             }
 
-            return await base.RequestSingleAsync<FieldSchema>(
+            return await base.RequestAsync<FieldSchema>(
                 method: HttpMethod.Get,
                 resourceParts: new [] { "_schema", tableName, fieldName },
                 query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }
@@ -109,11 +109,11 @@
                 throw new ArgumentNullException("tableSchema");
             }
 
-            SuccessResponse result = await base.RequestSingleWithPayloadAsync<ResourceWrapper<TableSchema>, SuccessResponse>(
+            SuccessResponse result = await base.RequestWithPayloadAsync<RequestResourceWrapper<TableSchema>, SuccessResponse>(
                 method: httpMethod,
                 resource: "_schema",
                 query: null,
-                record: new ResourceWrapper<TableSchema> { Records = new List<TableSchema>(new [] { tableSchema }) }
+                payload: new RequestResourceWrapper<TableSchema> { Records = new List<TableSchema>(new [] { tableSchema }) }
                 );
 
             return result.Success ?? false;

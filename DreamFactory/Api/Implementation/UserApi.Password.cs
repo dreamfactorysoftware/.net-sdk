@@ -21,7 +21,7 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post, 
                 "password", 
                 new SqlQuery(),
@@ -37,7 +37,7 @@
                 throw new ArgumentNullException("email");
             }
 
-            return await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            return await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post,
                 "password",
                 new SqlQuery { CustomParameters = new Dictionary<string, object> { { "reset", true } } },
@@ -61,7 +61,7 @@
                 throw new ArgumentException("You must specify either code or answer parameters but not both.", "answer");
             }
 
-            PasswordResponse response = await RequestSingleWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 HttpMethod.Post,
                 "password",
                 new SqlQuery { CustomParameters = new Dictionary<string, object> { { "login", true } } }, 

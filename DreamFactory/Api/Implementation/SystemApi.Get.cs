@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
@@ -16,42 +17,89 @@
     {
         public async Task<IEnumerable<AppResponse>> GetAppsAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<AppResponse>("app", query);
+            ResourceWrapper<AppResponse> response = await base.RequestAsync<ResourceWrapper<AppResponse>>(
+                method: HttpMethod.Get,
+                resource: "app", 
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<AppGroupResponse>> GetAppGroupsAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<AppGroupResponse>("app_group", query);
+            ResourceWrapper<AppGroupResponse> response = await base.RequestAsync<ResourceWrapper<AppGroupResponse>>(
+                method: HttpMethod.Get,
+                resource: "app_group", 
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<RoleResponse>> GetRolesAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<RoleResponse>("role", query);
+            ResourceWrapper<RoleResponse> response = await base.RequestAsync<ResourceWrapper<RoleResponse>>(
+                method: HttpMethod.Get,
+                resource: "role",
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<UserResponse>> GetUsersAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<UserResponse>("user", query);
+            ResourceWrapper<UserResponse> response = await base.RequestAsync<ResourceWrapper<UserResponse>>(
+                method: HttpMethod.Get,
+                resource: "user",
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<ServiceResponse>> GetServicesAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<ServiceResponse>("service", query);
+            ResourceWrapper<ServiceResponse> response = await base.RequestAsync<ResourceWrapper<ServiceResponse>>(
+                method: HttpMethod.Get,
+                resource: "service",
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<EmailTemplateResponse>> GetEmailTemplatesAsync(SqlQuery query)
         {
-            return await RequestGetMultiple<EmailTemplateResponse>("email_template", query);
+            ResourceWrapper<EmailTemplateResponse> response = await base.RequestAsync<ResourceWrapper<EmailTemplateResponse>>(
+                method: HttpMethod.Get,
+                resource: "email_template",
+                query: query
+                );
+
+            return response.Records;
         }
 
-        public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
+        public async Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            return RequestSingleAsync<EventScriptResponse>(HttpMethod.Get, "event", eventName, query);
+            return await base.RequestAsync<EventScriptResponse>(
+                method: HttpMethod.Get, 
+                resource: "event",
+                resourceIdentifier: eventName,
+                query: query
+                );
         }
 
-        public Task<IEnumerable<string>> GetEventsAsync()
+        public async Task<IEnumerable<string>> GetEventsAsync()
         {
-            return RequestGetMultiple<string>("event", new SqlQuery { CustomParameters = new Dictionary<string, object> { { "as_list", true } } });
+            ResourceWrapper<string> response = await base.RequestAsync<ResourceWrapper<string>>(
+                method: HttpMethod.Get,
+                resource: "event",
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "as_list", true } } }
+                );
+
+            return response.Records;
         }
     }
 }

@@ -6,6 +6,7 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Builder;
     using DreamFactory.Model.Database;
     using DreamFactory.Rest;
@@ -212,7 +213,7 @@
             SqlQuery query = new SqlQuery { Fields = "*", IncludeCount = true, IncludeSchema = true };
 
             // Act
-            ResourceWrapper<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
+            DatabaseResourceWrapper<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
 
             // Assert
             result.Meta.ShouldNotBe(null);

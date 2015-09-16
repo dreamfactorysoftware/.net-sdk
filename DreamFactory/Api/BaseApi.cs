@@ -24,68 +24,19 @@
             this.BaseHeaders = baseHeaders;
         }
 
-        /// <summary>
-        /// Execute a request and return response body.
-        /// </summary>
-        /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the record.</param>
-        /// <param name="resourceIdentifier">Resource identifier of the record.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<string> RequestBodyAsync(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query)
-        {
-            if (resource == null)
-            {
-                throw new ArgumentNullException("resource");
-            }
 
-            if (resourceIdentifier == null)
-            {
-                throw new ArgumentNullException("resourceIdentifier");
-            }
-
-            return await RequestBodyAsync(
-                method: method, 
-                resourceParts: new[] { resource, resourceIdentifier }, 
-                query: query
-                );
-        }
+        #region request
 
         /// <summary>
-        /// Execute a request and return response body.
+        /// Execute a request specified with a resource.
         /// </summary>
+        /// <typeparam name="TResponse">Type of the response.</typeparam>
         /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A single object of type TResponse.</returns>
+        /// <param name="resource">Resource.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>An object of type TResponse.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<string> RequestBodyAsync(HttpMethod method, string[] resourceParts, SqlQuery query)
-        {
-            if (resourceParts == null)
-            {
-                throw new ArgumentNullException("resourceParts");
-            }
-
-            return await GetResponseBody(
-                method: method,
-                resourceParts: resourceParts,
-                query: query
-                );
-        }
-
-        #region single record in response
-
-        /// <summary>
-        /// Execute a request for single record specified with resource.
-        /// </summary>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
-        /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the record.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string resource, SqlQuery query)
+        internal Task<TResponse> RequestAsync<TResponse>(HttpMethod method, string resource, SqlQuery query)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -93,20 +44,20 @@
                 throw new ArgumentNullException("resource");
             }
 
-            return await RequestSingleAsync<TResponse>(method, new[] { resource }, query);
+            return RequestAsync<TResponse>(method, new[] { resource }, query);
         }
 
         /// <summary>
-        /// Execute a request for single record specified with resource and query parameters.
+        /// Execute a request specified with resource and query parameters.
         /// </summary>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the record.</param>
-        /// <param name="resourceIdentifier">Resource identifier of the record.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A single object of type TResponse.</returns>
+        /// <param name="resource">Resource.</param>
+        /// <param name="resourceIdentifier">Resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>An object of type TResponse.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query)
+        internal Task<TResponse> RequestAsync<TResponse>(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -119,114 +70,22 @@
                 throw new ArgumentNullException("resourceIdentifier");
             }
 
-            return await RequestSingleAsync<TResponse>(method, new[] { resource, resourceIdentifier }, query);
+            return RequestAsync<TResponse>(method, new[] { resource, resourceIdentifier }, query);
         }
 
         /// <summary>
-        /// Execute a request for single record specified with resource parts and query parameters.
+        /// Execute a request specified with resource parts and query parameters.
         /// </summary>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
+        /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query)
+        /// <param name="resourceParts">Array of resource parts. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>An object of type TResponse.</returns>
+        internal Task<TResponse> RequestAsync<TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query)
             where TResponse : class, new()
         {
-            return await GetDeserializedResponse<TResponse>(
+            return GetDeserializedResponse<TResponse>(
                 method: method,
-                resourceParts: resourceParts,
-                query: query
-                );
-        }
-
-        /// <summary>
-        /// Execute a request with specified record as payload.
-        /// </summary>
-        /// <typeparam name="TRequest">Type of the record.</typeparam>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
-        /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the record.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <param name="record">Record that should sent as payload.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, TRequest record)
-            where TRequest : class, new()
-            where TResponse : class, new()
-        {
-            if (resource == null)
-            {
-                throw new ArgumentNullException("resource");
-            }
-
-            if (record == null)
-            {
-                throw new ArgumentNullException("record");
-            }
-
-            return await RequestSingleWithPayloadAsync<TRequest, TResponse>(method, new[] { resource }, query, record);
-        }
-
-        /// <summary>
-        /// Execute a request with specified record as payload.
-        /// </summary>
-        /// <typeparam name="TRequest">Type of the record.</typeparam>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
-        /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the record.</param>
-        /// <param name="resourceIdentifier">Resource identifier of the record.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <param name="record">Record that should sent as payload.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query, TRequest record)
-            where TRequest : class, new()
-            where TResponse : class, new()
-        {
-            if (resource == null)
-            {
-                throw new ArgumentNullException("resource");
-            }
-
-            if (resourceIdentifier == null)
-            {
-                throw new ArgumentNullException("resourceIdentifier");
-            }
-
-            if (record == null)
-            {
-                throw new ArgumentNullException("record");
-            }
-
-            return await RequestSingleWithPayloadAsync<TRequest, TResponse>(method, new[] { resource, resourceIdentifier }, query, record);
-        }
-
-        /// <summary>
-        /// Execute a request with specified record as payload.
-        /// </summary>
-        /// <typeparam name="TRequest">Type of the record.</typeparam>
-        /// <typeparam name="TResponse">Type of the record included in response.</typeparam>
-        /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <param name="record">Record that should sent as payload.</param>
-        /// <returns>A single object of type TResponse.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<TResponse> RequestSingleWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query, TRequest record)
-            where TRequest : class, new()
-            where TResponse : class, new()
-        {
-            if (record == null)
-            {
-                throw new ArgumentNullException("record");
-            }
-
-            string body = ContentSerializer.Serialize(record);
-            return await GetDeserializedResponse<TResponse>(
-                method: method,
-                body: body,
                 resourceParts: resourceParts,
                 query: query
                 );
@@ -234,46 +93,75 @@
 
         #endregion
 
-        #region multiple records in response
+        #region request without deserialization
 
         /// <summary>
-        /// Execute a get request for multiple records specified with resource and query parameters.
+        /// Execute a request and return response body.
         /// </summary>
-        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
-        /// <param name="resource">Resource of the records that will be fetched.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <returns>A collection of TResponse objects.</returns>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource.</param>
+        /// <param name="resourceIdentifier">Resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Response body.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<IEnumerable<TResponse>> RequestGetMultiple<TResponse>(string resource, SqlQuery query)
+        internal Task<string> RequestBodyAsync(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query)
         {
             if (resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
 
-            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
-                method: HttpMethod.Get,
-                resourceParts: new[] { resource },
+            if (resourceIdentifier == null)
+            {
+                throw new ArgumentNullException("resourceIdentifier");
+            }
+
+            return RequestBodyAsync(
+                method: method,
+                resourceParts: new[] { resource, resourceIdentifier },
                 query: query
                 );
-
-            return response.Records;
         }
 
         /// <summary>
-        /// Execute a create or update request with specified records as payload.
+        /// Execute a request and return response body.
         /// </summary>
-        /// <typeparam name="TRequest">Type of the records.</typeparam>
-        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
         /// <param name="method">HttpMethod to be used in request.</param>
-        /// <param name="resource">Resource of the records that will be created or updated.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
-        /// <param name="records">Records that should sent as payload.</param>
-        /// <returns>A collection of TResponse objects.</returns>
-        /// <exception cref="ArgumentException">Thrown when records argument is null or the length of an array is less than 1.</exception>
+        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <returns>Response body.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<IEnumerable<TResponse>> RequestCreateOrUpdateMultipleAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, TRequest[] records)
-            where TRequest : IRecord
+        internal Task<string> RequestBodyAsync(HttpMethod method, string[] resourceParts, SqlQuery query)
+        {
+            if (resourceParts == null)
+            {
+                throw new ArgumentNullException("resourceParts");
+            }
+
+            return GetResponseBody(
+                method: method,
+                resourceParts: resourceParts,
+                query: query
+                );
+        }
+
+        #endregion
+
+        #region request with payload
+
+        /// <summary>
+        /// Execute a request with specified resource and payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the request payload</typeparam>
+        /// <typeparam name="TResponse">Type of response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="payload">Request payload.</param>
+        /// <returns>An object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal Task<TResponse> RequestWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, TRequest payload)
+            where TRequest : class, new()
             where TResponse : class, new()
         {
             if (resource == null)
@@ -281,34 +169,128 @@
                 throw new ArgumentNullException("resource");
             }
 
-            if (records == null || records.Length < 1)
+            if (payload == null)
             {
-                throw new ArgumentException("At least one parameter must be specified", "records");
+                throw new ArgumentNullException("payload");
             }
 
-            string body = ContentSerializer.Serialize(new { resource = new List<TRequest>(records), ids = records.Select(x => x.Id) });
-            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
+            return RequestWithPayloadAsync<TRequest, TResponse>(method, new[] { resource }, query, payload);
+        }
+
+        /// <summary>
+        /// Execute a request with specified resource, resource identifier and payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the request payload</typeparam>
+        /// <typeparam name="TResponse">Type of response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource.</param>
+        /// <param name="resourceIdentifier">Resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="payload">Request payload.</param>
+        /// <returns>An object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal Task<TResponse> RequestWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query, TRequest payload)
+            where TRequest : class, new()
+            where TResponse : class, new()
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (resourceIdentifier == null)
+            {
+                throw new ArgumentNullException("resourceIdentifier");
+            }
+
+            if (payload == null)
+            {
+                throw new ArgumentNullException("payload");
+            }
+
+            return RequestWithPayloadAsync<TRequest, TResponse>(method, new[] { resource, resourceIdentifier }, query, payload);
+        }
+
+        /// <summary>
+        /// Execute a request with specified resource parts and payload.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the request payload</typeparam>
+        /// <typeparam name="TResponse">Type of response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="payload">Request payload.</param>
+        /// <returns>An object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal Task<TResponse> RequestWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query, TRequest payload)
+            where TRequest : class, new()
+            where TResponse : class, new()
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException("payload");
+            }
+
+            string body = ContentSerializer.Serialize(payload);
+            return GetDeserializedResponse<TResponse>(
                 method: method,
                 body: body,
-                resourceParts: new[] { resource },
+                resourceParts: resourceParts,
                 query: query
+                );
+        }
+
+        /// <summary>
+        /// Execute a request with specified resource and payload that is a collection.
+        /// </summary>
+        /// <typeparam name="TRequest">Type of the request payload</typeparam>
+        /// <typeparam name="TResponse">Type of the objects included in response.</typeparam>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="payload">Collection of records that should sent as payload.</param>
+        /// <returns>A collection of TResponse objects.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        /// <exception cref="ArgumentException">Thrown when records collection is null or its length is less than 1.</exception>
+        internal async Task<IEnumerable<TResponse>> RequestWithPayloadAsync<TRequest, TResponse>(HttpMethod method, string resource, SqlQuery query, params TRequest[] payload)
+            where TRequest : IRecord
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (payload == null || payload.Length < 1)
+            {
+                throw new ArgumentException("At least one parameter must be specified", "payload");
+            }
+
+            DatabaseResourceWrapper<TResponse> response = await RequestWithPayloadAsync<RequestResourceWrapper<TRequest>, DatabaseResourceWrapper<TResponse>>(
+                method: method,
+                resource: resource,
+                query: query,
+                payload: new RequestResourceWrapper<TRequest> { Records = new List<TRequest>(payload), Ids = payload.Select(x => x.Id).ToArray() }
                 );
 
             return response.Records;
         }
 
+        #endregion
+
+        #region request delete
+
         /// <summary>
         /// Execute a delete request on specified IDs of a given resource.
         /// </summary>
-        /// <typeparam name="TResponse">Type of the records included in response.</typeparam>
+        /// <typeparam name="TResponse">Type of the objects included in response.</typeparam>
         /// <param name="resource">Resource of the ids that will be deleted.</param>
-        /// <param name="query">Query parameters for the returned object.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="force">Indicator whether all records should be deleted.</param>
         /// <param name="ids">IDs that should be deleted.</param>
         /// <returns>A collection of TResponse objects.</returns>
         /// <exception cref="ArgumentException">Thrown when ids argument is null or the length of an array is less than 1.</exception>
         /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
-        internal async Task<IEnumerable<TResponse>> RequestDeleteMultipleAsync<TResponse>(string resource, SqlQuery query, bool force, params int[] ids)
+        internal async Task<IEnumerable<TResponse>> RequestDeleteAsync<TResponse>(string resource, SqlQuery query, bool force, params int[] ids)
             where TResponse : class, new()
         {
             if (resource == null)
@@ -318,13 +300,13 @@
 
             if (ids == null || ids.Length < 1)
             {
-                throw new ArgumentException("At least one application ID must be specified", "ids");
+                throw new ArgumentException("At least one identifier must be specified", "ids");
             }
 
             query.CustomParameters.Add("force", force);
             query.CustomParameters.Add("ids", string.Join(",", ids));
 
-            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
+            DatabaseResourceWrapper<TResponse> response = await GetDeserializedResponse<DatabaseResourceWrapper<TResponse>>(
             method: HttpMethod.Delete,
             resourceParts: new[] { resource },
             query: query
@@ -335,7 +317,9 @@
 
         #endregion
 
-        private async Task<string> GetResponseBody(
+        #region private methods
+
+        private Task<string> GetResponseBody(
             HttpMethod method,
             string body = null,
             string[] resourceParts = null,
@@ -343,10 +327,10 @@
             )
         {
             IHttpRequest request = BuildRequest(method, body, resourceParts, query);
-            return await ExecuteRequest(request);
+            return ExecuteRequest(request);
         }
 
-        private async Task<TResponse> GetDeserializedResponse<TResponse>(
+        private Task<TResponse> GetDeserializedResponse<TResponse>(
             HttpMethod method,
             string body = null,
             string[] resourceParts = null,
@@ -355,9 +339,18 @@
             where TResponse : class, new()
         {
             IHttpRequest request = BuildRequest(method, body, resourceParts, query);
-            return await ExecuteRequest<TResponse>(request);
+            return ExecuteRequest<TResponse>(request);
         }
 
+        #endregion
+
+        /// <summary>
+        /// Builds IHttpRequest from given arguments.
+        /// </summary>
+        /// <param name="method">HttpMethod used in request.</param>
+        /// <param name="body">Body used in request.</param>
+        /// <param name="resourceParts">Array of resource parts. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
         internal IHttpRequest BuildRequest(HttpMethod method, string body, string[] resourceParts, SqlQuery query)
         {
             IHttpAddress address = BuildAddress(resourceParts, query);

@@ -1,9 +1,11 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.File;
     using DreamFactory.Serialization;
@@ -22,7 +24,13 @@
             SqlQuery query = new SqlQuery();
             query.CustomParameters = AddListingParameters(query.CustomParameters, flags);
 
-            return await base.RequestGetMultiple<StorageResource>(string.Empty, query);
+            ResourceWrapper<StorageResource> response = await base.RequestAsync<ResourceWrapper<StorageResource>>(
+                method: HttpMethod.Get,
+                resource: string.Empty, 
+                query: query
+                );
+
+            return response.Records;
         }
 
         public async Task<IEnumerable<string>> GetResourceNamesAsync()

@@ -7,6 +7,7 @@
     using DreamFactory.AddressBook.Models;
     using DreamFactory.AddressBook.Models.Entities;
     using DreamFactory.Api;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     [Authorize]
@@ -30,7 +31,7 @@
                 IncludeCount = true
             };
 
-            ResourceWrapper<ContactGroup> result = await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
+            DatabaseResourceWrapper<ContactGroup> result = await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
 
             ViewBag.Page = offset / limit + 1;
             ViewBag.PageSize = limit;
@@ -92,8 +93,8 @@
                 Related = "contact_by_contact_group_relationship"
             };
 
-            Task<ResourceWrapper<Contact>> contactsTask = databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
-            Task<ResourceWrapper<ContactGroup>> contactGroupTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", groupQuery);
+            Task<DatabaseResourceWrapper<Contact>> contactsTask = databaseApi.GetRecordsAsync<Contact>("contact", new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactGroup>> contactGroupTask = databaseApi.GetRecordsAsync<ContactGroup>("contact_group", groupQuery);
             await Task.WhenAll(contactsTask, contactGroupTask);
 
             var contactGroup = contactGroupTask.Result.Records.FirstOrDefault();
@@ -152,9 +153,9 @@
                 .Where(relationship => !relationshipsInDb.TryGetValue(relationship.ContactId.Value, out tmp))
                 .ToList();
 
-            Task<ResourceWrapper<ContactGroup>> contactGroupTask = databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
-            Task<ResourceWrapper<ContactContactGroup>> contactGroupRelationshipAddTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
-            Task<ResourceWrapper<ContactContactGroup>> contactGroupRelationshipDeleteTask = databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete, new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactGroup>> contactGroupTask = databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactContactGroup>> contactGroupRelationshipAddTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
+            Task<DatabaseResourceWrapper<ContactContactGroup>> contactGroupRelationshipDeleteTask = databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete, new SqlQuery());
 
             await Task.WhenAll(contactGroupTask, contactGroupRelationshipAddTask, contactGroupRelationshipDeleteTask);
 

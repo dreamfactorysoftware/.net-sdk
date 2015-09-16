@@ -158,6 +158,10 @@
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
             EmailTemplateRequest[] templates = CreateEmailTemplates();
+            foreach (EmailTemplateRequest template in templates)
+            {
+                template.Id = null;
+            }
 
             // Act
             List<EmailTemplateResponse> emailTemplates = systemApi.CreateEmailTemplatesAsync(new SqlQuery(), templates).Result.ToList();

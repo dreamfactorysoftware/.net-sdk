@@ -1,1 +1,1 @@
-﻿{"resource":[{"id":1,"name":"User Invite Default"},{"id":2,"name":"User Registration Default"},{"id":3,"name":"Password Reset Default"}],"ids":[1,2,3]}
+﻿{"ids":[null,null,null],"resource":[{"name":"User Invite Default"},{"name":"User Registration Default"},{"name":"Password Reset Default"}]}

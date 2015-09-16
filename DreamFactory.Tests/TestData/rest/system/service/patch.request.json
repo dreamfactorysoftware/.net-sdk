@@ -1,1 +1,1 @@
-﻿{"resource":[{"id":1,"name":"system","label":"System Management","description":"Service for managing system resources.","is_active":true,"type":"system"}],"ids":[1]}
+﻿{"ids":[1],"resource":[{"id":1,"name":"system","label":"System Management","description":"Service for managing system resources.","is_active":true,"type":"system"}]}

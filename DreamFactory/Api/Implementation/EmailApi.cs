@@ -21,7 +21,7 @@
                 throw new ArgumentNullException("emailRequest");
             }
 
-            EmailResponse response = await RequestSingleWithPayloadAsync<EmailRequest, EmailResponse>(HttpMethod.Post, new string[] {}, new SqlQuery(), emailRequest);
+            EmailResponse response = await RequestWithPayloadAsync<EmailRequest, EmailResponse>(HttpMethod.Post, new string[] {}, new SqlQuery(), emailRequest);
             return response.Count ?? 0;
         }
     }

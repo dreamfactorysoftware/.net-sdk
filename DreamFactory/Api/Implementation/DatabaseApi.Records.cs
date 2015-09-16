@@ -4,11 +4,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     internal partial class DatabaseApi
     {
-        public async Task<ResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<DatabaseResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -25,16 +26,16 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Post,
                 resource: "_table",
                 resourceIdentifier: tableName,
                 query: query,
-                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
+                payload: new RequestResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
                 );
         }
 
-        public async Task<ResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<DatabaseResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -51,16 +52,16 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Patch,
                 resource: "_table",
                 resourceIdentifier: tableName,
                 query: query,
-                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
+                payload: new RequestResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
                 );
         }
 
-        public async Task<ResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
+        public async Task<DatabaseResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -72,7 +73,7 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestSingleAsync<ResourceWrapper<TRecord>>(
+            return await base.RequestAsync<DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Get,
                 resource: "_table",
                 resourceIdentifier: tableName,
@@ -80,7 +81,7 @@
                 );
         }
 
-        public async Task<ResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<DatabaseResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -97,12 +98,12 @@
                 throw new ArgumentNullException("query");
             }
 
-            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+            return await base.RequestWithPayloadAsync<RequestResourceWrapper<TRecord>, DatabaseResourceWrapper<TRecord>>(
                 method: HttpMethod.Delete,
                 resource: "_table",
                 resourceIdentifier: tableName,
                 query: query,
-                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records)}
+                payload: new RequestResourceWrapper<TRecord> { Records = new List<TRecord>(records)}
                 );
         }
     }

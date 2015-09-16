@@ -19,7 +19,7 @@
             SqlQuery query = new SqlQuery();
             query.CustomParameters = AddListingParameters(query.CustomParameters, flags);
 
-            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Get, path, string.Empty, query);
+            return await base.RequestAsync<FolderResponse>(HttpMethod.Get, path, string.Empty, query);
         }
 
         public async Task<byte[]> DownloadFolderAsync(string path)
@@ -49,7 +49,7 @@
             SqlQuery query = new SqlQuery();
             query.CustomParameters.Add("check_exist", checkExists);
 
-            return await base.RequestSingleAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
+            return await base.RequestAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
         }
 
         public async Task<FolderResponse> UploadFolderAsync(string path, string url, bool clean)
@@ -71,7 +71,7 @@
             query.CustomParameters.Add("clean", clean);
             query.CustomParameters.Add("url", url);
 
-            return await RequestSingleAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
+            return await RequestAsync<FolderResponse>(HttpMethod.Post, path, string.Empty, query);
         }
 
         public async Task<FolderResponse> DeleteFolderAsync(string path, bool force = false)
@@ -81,7 +81,7 @@
                 throw new ArgumentNullException("path");
             }
 
-            return await RequestSingleAsync<FolderResponse>(
+            return await RequestAsync<FolderResponse>(
                 HttpMethod.Delete,
                 path, 
                 string.Empty,
