@@ -20,7 +20,7 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 method: HttpMethod.Post, 
                 resource: "password", 
                 query: null,
@@ -40,7 +40,7 @@
             SqlQuery query = new SqlQuery { Fields = null };
             query.CustomParameters.Add("reset", true);
 
-            return RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            return base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 method: HttpMethod.Post,
                 resource: "password",
                 query: query,
@@ -68,7 +68,7 @@
             SqlQuery query = new SqlQuery { Fields = null };
             query.CustomParameters.Add("login", true);
 
-            PasswordResponse response = await RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
                 method: HttpMethod.Post,
                 resource: "password",
                 query: query, 
@@ -78,7 +78,7 @@
             if (response.Success ?? false)
             {
                 Session session = await GetSessionAsync();
-                BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+                base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
             }
 
             return response.Success ?? false;

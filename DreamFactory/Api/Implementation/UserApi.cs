@@ -9,7 +9,11 @@
 
     internal partial class UserApi : BaseApi, IUserApi
     {
-        public UserApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders)
+        public UserApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders)
             : base(baseAddress, httpFacade, contentSerializer, baseHeaders, "user")
         {
         }
@@ -24,7 +28,7 @@
             SqlQuery query = new SqlQuery { Fields = null };
             query.CustomParameters.Add("login", login);
 
-            RegisterResponse response = await RequestWithPayloadAsync<Register, RegisterResponse>(
+            RegisterResponse response = await base.RequestWithPayloadAsync<Register, RegisterResponse>(
                 method: HttpMethod.Post,
                 resource: "register",
                 query: query,
@@ -33,7 +37,7 @@
 
             if ((response.Success ?? false) && login)
             {
-                BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, response.SessionToken);
+                base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, response.SessionToken);
             }
 
             return response.Success ?? false;
@@ -46,7 +50,7 @@
                 throw new ArgumentNullException("profile");
             }
 
-            ProfileUpdateResponse response = await RequestWithPayloadAsync<ProfileRequest, ProfileUpdateResponse>(
+            ProfileUpdateResponse response = await base.RequestWithPayloadAsync<ProfileRequest, ProfileUpdateResponse>(
                 method: HttpMethod.Post, 
                 resource: "profile", 
                 query: null, 
@@ -57,7 +61,7 @@
 
         public Task<ProfileResponse> GetProfileAsync()
         {
-            return RequestAsync<ProfileResponse>(
+            return base.RequestAsync<ProfileResponse>(
                 method: HttpMethod.Get,
                 resource: "profile", 
                 query: new SqlQuery()

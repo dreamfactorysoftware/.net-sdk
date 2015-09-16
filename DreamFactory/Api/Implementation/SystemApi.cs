@@ -23,7 +23,7 @@
 
         public Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            return RequestAsync<EnvironmentResponse>(
+            return base.RequestAsync<EnvironmentResponse>(
                 method: HttpMethod.Get,
                 resource: "environment", 
                 query: new SqlQuery()
@@ -32,7 +32,7 @@
 
         public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            Dictionary<string, object> result = await RequestAsync<Dictionary<string, object>>(
+            Dictionary<string, object> result = await base.RequestAsync<Dictionary<string, object>>(
                 method: HttpMethod.Get, 
                 resource: "constant", 
                 query: new SqlQuery()
@@ -43,7 +43,7 @@
 
         public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            var result = await RequestAsync<Dictionary<string, Dictionary<string, string>>>(
+            var result = await base.RequestAsync<Dictionary<string, Dictionary<string, string>>>(
                 method: HttpMethod.Get,
                 resource: "constant",
                 resourceIdentifier: constant,
@@ -55,7 +55,7 @@
 
         public Task<ConfigResponse> GetConfigAsync()
         {
-            return RequestAsync<ConfigResponse>(
+            return base.RequestAsync<ConfigResponse>(
                 method: HttpMethod.Get,
                 resource: "config",
                 query: new SqlQuery()
@@ -64,7 +64,7 @@
 
         public Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
         {
-            return RequestWithPayloadAsync<ConfigRequest, ConfigResponse>(
+            return base.RequestWithPayloadAsync<ConfigRequest, ConfigResponse>(
                 method: HttpMethod.Post,
                 resource: "config",
                 query: new SqlQuery(),

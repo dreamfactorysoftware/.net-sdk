@@ -25,7 +25,7 @@
                 throw new ArgumentNullException("emailRequest");
             }
 
-            EmailResponse response = await RequestWithPayloadAsync<EmailRequest, EmailResponse>(
+            EmailResponse response = await base.RequestWithPayloadAsync<EmailRequest, EmailResponse>(
                 method: HttpMethod.Post,
                 resourceParts: null,
                 query: null,

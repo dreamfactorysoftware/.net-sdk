@@ -16,7 +16,7 @@
     {
         public Task<IEnumerable<AppResponse>> UpdateAppsAsync(SqlQuery query, params AppRequest[] apps)
         {
-            return RequestWithPayloadAsync<AppRequest, AppResponse>(
+            return base.RequestWithPayloadAsync<AppRequest, AppResponse>(
                 method: HttpMethod.Patch,
                 resource: "app", 
                 query: query, 
@@ -26,7 +26,7 @@
 
         public Task<IEnumerable<AppGroupResponse>> UpdateAppGroupsAsync(SqlQuery query, params AppGroupRequest[] appGroups)
         {
-            return RequestWithPayloadAsync<AppGroupRequest, AppGroupResponse>(
+            return base.RequestWithPayloadAsync<AppGroupRequest, AppGroupResponse>(
                 method: HttpMethod.Patch,
                 resource: "app_group",
                 query: query,
@@ -36,7 +36,7 @@
 
         public Task<IEnumerable<RoleResponse>> UpdateRolesAsync(SqlQuery query, params RoleRequest[] roles)
         {
-            return RequestWithPayloadAsync<RoleRequest, RoleResponse>(
+            return base.RequestWithPayloadAsync<RoleRequest, RoleResponse>(
                 method: HttpMethod.Patch,
                 resource: "role",
                 query: query,
@@ -46,7 +46,7 @@
 
         public Task<IEnumerable<UserResponse>> UpdateUsersAsync(SqlQuery query, params UserRequest[] users)
         {
-            return RequestWithPayloadAsync<UserRequest, UserResponse>(
+            return base.RequestWithPayloadAsync<UserRequest, UserResponse>(
                 method: HttpMethod.Patch,
                 resource: "user",
                 query: query,
@@ -56,7 +56,7 @@
 
         public Task<IEnumerable<ServiceResponse>> UpdateServicesAsync(SqlQuery query, params ServiceRequest[] services)
         {
-            return RequestWithPayloadAsync<ServiceRequest, ServiceResponse>(
+            return base.RequestWithPayloadAsync<ServiceRequest, ServiceResponse>(
                 method: HttpMethod.Patch,
                 resource: "services",
                 query: query,
@@ -66,7 +66,7 @@
 
         public Task<IEnumerable<EmailTemplateResponse>> UpdateEmailTemplatesAsync(SqlQuery query, params EmailTemplateRequest[] templates)
         {
-            return RequestWithPayloadAsync<EmailTemplateRequest, EmailTemplateResponse>(
+            return base.RequestWithPayloadAsync<EmailTemplateRequest, EmailTemplateResponse>(
                 method: HttpMethod.Patch,
                 resource: "email_template",
                 query: query,
@@ -76,7 +76,7 @@
 
         public Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript)
         {
-            return RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
+            return base.RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
                 method: HttpMethod.Patch,
                 resource: "event", 
                 query: query, 

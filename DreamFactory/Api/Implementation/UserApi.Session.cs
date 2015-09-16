@@ -24,21 +24,21 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            Session session = await RequestWithPayloadAsync<Login, Session>(
+            Session session = await base.RequestWithPayloadAsync<Login, Session>(
                 method: HttpMethod.Post,
                 resource: "session",
                 query: null,
                 payload: new Login { Email = email, Password = password, Duration = duration }
                 );
 
-            BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+            base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }
 
         public Task<Session> GetSessionAsync()
         {
-            return RequestAsync<Session>(
+            return base.RequestAsync<Session>(
                 method: HttpMethod.Get, 
                 resource: "session", 
                 query: null
@@ -47,7 +47,7 @@
 
         public async Task<bool> LogoutAsync()
         {
-            Logout logout = await RequestAsync<Logout>(
+            Logout logout = await base.RequestAsync<Logout>(
                 method: HttpMethod.Delete, 
                 resource: "session", 
                 query: null
@@ -55,7 +55,7 @@
 
             if (logout.Success ?? false)
             {
-                BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+                base.BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
             }
 
             return logout.Success ?? false;

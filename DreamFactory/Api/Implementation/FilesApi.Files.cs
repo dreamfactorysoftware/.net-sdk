@@ -21,15 +21,8 @@
                 throw new ArgumentNullException("content");
             }
 
-            SqlQuery query = new SqlQuery
-            {
-                Fields = null,
-                CustomParameters = new Dictionary<string, object>
-                {
-                    { "check_exists", checkExists }
-                }
-            };
-
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("check_exists", checkExists);
             IHttpRequest request = base.BuildRequest(HttpMethod.Post, content, new[] { filepath }, query);
 
             return ExecuteRequest<FileResponse>(request);

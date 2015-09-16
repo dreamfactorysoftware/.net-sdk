@@ -22,10 +22,13 @@
 
         public async Task<IEnumerable<TableInfo>> GetAccessComponentsAsync()
         {
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("as_list", true);
+
             ResourceWrapper<TableInfo> response = await base.RequestAsync<ResourceWrapper<TableInfo>>(
                 method: HttpMethod.Get, 
                 resourceParts: null, 
-                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "as_list", true } } }
+                query: query
                 );
 
             return response.Records;
@@ -33,10 +36,13 @@
 
         public async Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("refresh", refresh);
+
             ResourceWrapper<TableInfo> response = await base.RequestAsync<ResourceWrapper<TableInfo>>(
                 method: HttpMethod.Get, 
                 resource: "_table", 
-                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", true } } }
+                query: query
                 );
 
             return response.Records;
@@ -76,11 +82,14 @@
                 throw new ArgumentNullException("tableName");
             }
 
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("refresh", refresh);
+
             return base.RequestAsync<TableSchema>(
                 method: HttpMethod.Get,
                 resource: "_schema",
                 resourceIdentifier: tableName,
-                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }
+                query: query
                 );
         }
 
@@ -96,10 +105,13 @@
                 throw new ArgumentNullException("fieldName");
             }
 
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("refresh", refresh);
+
             return base.RequestAsync<FieldSchema>(
                 method: HttpMethod.Get,
                 resourceParts: new [] { "_schema", tableName, fieldName },
-                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }
+                query: query
                 );
         }
 

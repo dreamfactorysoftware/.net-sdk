@@ -16,7 +16,7 @@
     {
         public Task<IEnumerable<AppResponse>>  DeleteAppsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<AppResponse>(
+            return base.RequestDeleteAsync<AppResponse>(
                 resource: "app",
                 query: query, 
                 force: false, 
@@ -26,7 +26,7 @@
 
         public Task<IEnumerable<AppGroupResponse>> DeleteAppGroupsAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<AppGroupResponse>(
+            return base.RequestDeleteAsync<AppGroupResponse>(
                 resource: "app_group",
                 query: query,
                 force: false,
@@ -36,7 +36,7 @@
 
         public Task<IEnumerable<RoleResponse>> DeleteRolesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<RoleResponse>(
+            return base.RequestDeleteAsync<RoleResponse>(
                 resource: "role",
                 query: query,
                 force: false,
@@ -46,7 +46,7 @@
 
         public Task<IEnumerable<UserResponse>> DeleteUsersAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<UserResponse>(
+            return base.RequestDeleteAsync<UserResponse>(
                 resource: "user",
                 query: query,
                 force: false,
@@ -56,7 +56,7 @@
 
         public Task<IEnumerable<ServiceResponse>> DeleteServicesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<ServiceResponse>(
+            return base.RequestDeleteAsync<ServiceResponse>(
                 resource: "service",
                 query: query,
                 force: false,
@@ -66,7 +66,7 @@
 
         public Task<IEnumerable<EmailTemplateResponse>> DeleteEmailTemplatesAsync(SqlQuery query, params int[] ids)
         {
-            return RequestDeleteAsync<EmailTemplateResponse>(
+            return base.RequestDeleteAsync<EmailTemplateResponse>(
                 resource: "email_template",
                 query: query,
                 force: false,
@@ -76,7 +76,7 @@
 
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
-            return RequestAsync<EventScriptResponse>(
+            return base.RequestAsync<EventScriptResponse>(
                 method: HttpMethod.Delete,
                 resource: "event", 
                 resourceIdentifier: eventName, 
