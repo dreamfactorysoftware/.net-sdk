@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Http;
     using DreamFactory.Model.Database;
 
     internal partial class DatabaseApi
     {
-        public async Task<RecordsResult<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<ResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -26,20 +25,16 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
-            address = address.WithSqlQuery(query);
-
-            var recordsRequest = new { resource = records.ToList() };
-            string data = contentSerializer.Serialize(recordsRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, data);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+                method: HttpMethod.Post,
+                resource: "_table",
+                resourceIdentifier: tableName,
+                query: query,
+                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
+                );
         }
 
-        public async Task<RecordsResult<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<ResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -56,19 +51,16 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
-
-            var recordsRequest = new { resource = records.ToList() };
-            string data = contentSerializer.Serialize(recordsRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, data);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+                method: HttpMethod.Patch,
+                resource: "_table",
+                resourceIdentifier: tableName,
+                query: query,
+                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records) }
+                );
         }
 
-        public async Task<RecordsResult<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
+        public async Task<ResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -80,17 +72,15 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
-            address = address.WithSqlQuery(query);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
+            return await base.RequestSingleAsync<ResourceWrapper<TRecord>>(
+                method: HttpMethod.Get,
+                resource: "_table",
+                resourceIdentifier: tableName,
+                query: query
+                );
         }
 
-        public async Task<RecordsResult<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
+        public async Task<ResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query)
         {
             if (tableName == null)
             {
@@ -107,16 +97,13 @@
                 throw new ArgumentNullException("query");
             }
 
-            IHttpAddress address = baseAddress.WithResource("_table").WithResource(tableName);
-
-            var recordsRequest = new { resource = records.ToList() };
-            string data = contentSerializer.Serialize(recordsRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, data);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<TRecord>>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<ResourceWrapper<TRecord>, ResourceWrapper<TRecord>>(
+                method: HttpMethod.Delete,
+                resource: "_table",
+                resourceIdentifier: tableName,
+                query: query,
+                record: new ResourceWrapper<TRecord> { Records = new List<TRecord>(records)}
+                );
         }
     }
 }

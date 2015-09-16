@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="query">SQL query to return created records.</param>
         /// <returns>Sequence of custom settings.</returns>
-        Task<RecordsResult<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null);
+        Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null);
 
         /// <summary>
         /// Set custom user|system settings.
@@ -23,7 +23,7 @@
         /// <param name="customs">Collection of CustomRequest type.</param>
         /// <param name="query">SQL query to return created records.</param>
         /// <returns>Custom records created.</returns>
-        Task<RecordsResult<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
+        Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
         /// Update custom user|system settings.
@@ -31,7 +31,7 @@
         /// <param name="customs">Collection of CustomRequest type.</param>
         /// <param name="query">SQL query to return updated records.</param>
         /// <returns>Custom records updated.</returns>
-        Task<RecordsResult<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
+        Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
         /// Retrieve one custom user|system setting.

@@ -4,51 +4,41 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Serialization;
 
-    internal partial class DatabaseApi : IDatabaseApi
+    internal partial class DatabaseApi : BaseApi, IDatabaseApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
-
-        public DatabaseApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
+        public DatabaseApi(IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders, 
+            string serviceName)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
-            this.baseAddress = baseAddress.WithResource(serviceName);
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
         public async Task<IEnumerable<TableInfo>> GetAccessComponentsAsync()
         {
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, baseAddress.Build(), baseHeaders);
+            ResourceWrapper<TableInfo> response = await base.RequestSingleAsync<ResourceWrapper<TableInfo>>(
+                method: HttpMethod.Get, 
+                resourceParts: null, 
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "as_list", true } } }
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var resource = new { resource = new List<TableInfo>() };
-            return contentSerializer.Deserialize(response.Body, resource).resource;
+            return response.Records;
         }
 
         public async Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas, bool refresh = false)
         {
-            IHttpAddress address = baseAddress.WithResource("_table");
-                
-            if (refresh)
-            {
-                address = address.WithParameter("refresh", true);
-            }
+            ResourceWrapper<TableInfo> response = await base.RequestSingleAsync<ResourceWrapper<TableInfo>>(
+                method: HttpMethod.Get, 
+                resource: "_table", 
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", true } } }
+                );
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var resource = new { resource = new List<TableInfo>() };
-            return contentSerializer.Deserialize(response.Body, resource).resource;
+            return response.Records;
         }
 
         public Task<bool> CreateTableAsync(TableSchema tableSchema)
@@ -68,16 +58,14 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            IHttpAddress address = baseAddress.WithResource( "_schema", tableName);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+            SuccessResponse response = await base.RequestSingleAsync<SuccessResponse>(
+                method: HttpMethod.Delete,
+                resource: "_schema",
+                resourceIdentifier: tableName,
+                query: null
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var result = new { success = false };
-            result = contentSerializer.Deserialize(response.Body, result);
-
-            return result.success;
+            return response.Success ?? false;
         }
 
         public async Task<TableSchema> DescribeTableAsync(string tableName, bool refresh)
@@ -87,19 +75,12 @@
                 throw new ArgumentNullException("tableName");
             }
 
-            IHttpAddress address = baseAddress.WithResource( "_schema", tableName);
-
-            if (refresh)
-            {
-                address = address.WithParameter("refresh", true);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<TableSchema>(response.Body);
+            return await base.RequestSingleAsync<TableSchema>(
+                method: HttpMethod.Get,
+                resource: "_schema",
+                resourceIdentifier: tableName,
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }
+                );
         }
 
         public async Task<FieldSchema> DescribeFieldAsync(string tableName, string fieldName, bool refresh)
@@ -114,19 +95,11 @@
                 throw new ArgumentNullException("fieldName");
             }
 
-            IHttpAddress address = baseAddress.WithResource( "_schema", tableName, fieldName);
-
-            if (refresh)
-            {
-                address = address.WithParameter("refresh", true);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<FieldSchema>(response.Body);
+            return await base.RequestSingleAsync<FieldSchema>(
+                method: HttpMethod.Get,
+                resourceParts: new [] { "_schema", tableName, fieldName },
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "refresh", refresh } } }
+                );
         }
 
         private async Task<bool> CreateOrUpdateTableAsync(HttpMethod httpMethod, TableSchema tableSchema)
@@ -136,19 +109,14 @@
                 throw new ArgumentNullException("tableSchema");
             }
 
-            IHttpAddress address = baseAddress.WithResource("_schema");
+            SuccessResponse result = await base.RequestSingleWithPayloadAsync<ResourceWrapper<TableSchema>, SuccessResponse>(
+                method: httpMethod,
+                resource: "_schema",
+                query: null,
+                record: new ResourceWrapper<TableSchema> { Records = new List<TableSchema>(new [] { tableSchema }) }
+                );
 
-            var tableSchemas = new { resource = new List<TableSchema> { tableSchema } };
-            string body = contentSerializer.Serialize(tableSchemas);
-            IHttpRequest request = new HttpRequest(httpMethod, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var result = new { success = false };
-            result = contentSerializer.Deserialize(response.Body, result);
-
-            return result.success;
+            return result.Success ?? false;
         }
     }
 }

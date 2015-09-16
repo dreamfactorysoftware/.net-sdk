@@ -24,6 +24,56 @@
             this.BaseHeaders = baseHeaders;
         }
 
+        /// <summary>
+        /// Execute a request and return response body.
+        /// </summary>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resource">Resource of the record.</param>
+        /// <param name="resourceIdentifier">Resource identifier of the record.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<string> RequestBodyAsync(HttpMethod method, string resource, string resourceIdentifier, SqlQuery query)
+        {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+
+            if (resourceIdentifier == null)
+            {
+                throw new ArgumentNullException("resourceIdentifier");
+            }
+
+            return await RequestBodyAsync(
+                method: method, 
+                resourceParts: new[] { resource, resourceIdentifier }, 
+                query: query
+                );
+        }
+
+        /// <summary>
+        /// Execute a request and return response body.
+        /// </summary>
+        /// <param name="method">HttpMethod to be used in request.</param>
+        /// <param name="resourceParts">Array of resource parts of the record. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters for the returned object.</param>
+        /// <returns>A single object of type TResponse.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required arguments are null.</exception>
+        internal async Task<string> RequestBodyAsync(HttpMethod method, string[] resourceParts, SqlQuery query)
+        {
+            if (resourceParts == null)
+            {
+                throw new ArgumentNullException("resourceParts");
+            }
+
+            return await GetResponseBody(
+                method: method,
+                resourceParts: resourceParts,
+                query: query
+                );
+        }
+
         #region single record in response
 
         /// <summary>
@@ -84,11 +134,6 @@
         internal async Task<TResponse> RequestSingleAsync<TResponse>(HttpMethod method, string[] resourceParts, SqlQuery query)
             where TResponse : class, new()
         {
-            if (resourceParts == null)
-            {
-                throw new ArgumentNullException("resourceParts");
-            }
-
             return await GetDeserializedResponse<TResponse>(
                 method: method,
                 resourceParts: resourceParts,
@@ -173,11 +218,6 @@
             where TRequest : class, new()
             where TResponse : class, new()
         {
-            if (resourceParts == null)
-            {
-                throw new ArgumentNullException("resourceParts");
-            }
-
             if (record == null)
             {
                 throw new ArgumentNullException("record");
@@ -211,7 +251,7 @@
                 throw new ArgumentNullException("resource");
             }
 
-            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
                 method: HttpMethod.Get,
                 resourceParts: new[] { resource },
                 query: query
@@ -247,7 +287,7 @@
             }
 
             string body = ContentSerializer.Serialize(new { resource = new List<TRequest>(records), ids = records.Select(x => x.Id) });
-            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
                 method: method,
                 body: body,
                 resourceParts: new[] { resource },
@@ -284,7 +324,7 @@
             query.CustomParameters.Add("force", force);
             query.CustomParameters.Add("ids", string.Join(",", ids));
 
-            RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
+            ResourceWrapper<TResponse> response = await GetDeserializedResponse<ResourceWrapper<TResponse>>(
             method: HttpMethod.Delete,
             resourceParts: new[] { resource },
             query: query
@@ -295,6 +335,17 @@
 
         #endregion
 
+        private async Task<string> GetResponseBody(
+            HttpMethod method,
+            string body = null,
+            string[] resourceParts = null,
+            SqlQuery query = null
+            )
+        {
+            IHttpRequest request = BuildRequest(method, body, resourceParts, query);
+            return await ExecuteRequest(request);
+        }
+
         private async Task<TResponse> GetDeserializedResponse<TResponse>(
             HttpMethod method,
             string body = null,
@@ -302,6 +353,12 @@
             SqlQuery query = null
             )
             where TResponse : class, new()
+        {
+            IHttpRequest request = BuildRequest(method, body, resourceParts, query);
+            return await ExecuteRequest<TResponse>(request);
+        }
+
+        internal IHttpRequest BuildRequest(HttpMethod method, string body, string[] resourceParts, SqlQuery query)
         {
             IHttpAddress address = BuildAddress(resourceParts, query);
 
@@ -314,8 +371,7 @@
             {
                 request = new HttpRequest(method, address.Build(), BaseHeaders, body);
             }
-
-            return await ExecuteRequest<TResponse>(request);
+            return request;
         }
 
         /// <summary>

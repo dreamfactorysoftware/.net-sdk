@@ -4,9 +4,10 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Records query result containing metadata.
+    /// Wrapper for resources in either request or response.
     /// </summary>
-    public class RecordsResult<T>
+    /// <remarks>Meta property is populated only in response if request query contained IncludeSchema or IncludeCount parameter.</remarks>
+    public class ResourceWrapper<T>
     {
         /// <summary>
         /// Query result set.

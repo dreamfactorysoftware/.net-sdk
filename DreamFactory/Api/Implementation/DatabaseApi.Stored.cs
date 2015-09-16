@@ -32,9 +32,7 @@
                 throw new ArgumentNullException("procedureName");
             }
 
-            IHttpResponse response = await CallStoredProc("_proc", procedureName, null, parameters);
-
-            return contentSerializer.Deserialize<TStoredProcResponse>(response.Body);
+            return await CallStoredProc<TStoredProcResponse>("_proc", procedureName, null, parameters);
         }
 
         public async Task<TStoredProcResponse> CallStoredProcAsync<TStoredProcResponse>(string procedureName, string wrapper, params StoredProcParam[] parameters)
@@ -50,9 +48,7 @@
                 throw new ArgumentNullException("wrapper");
             }
 
-            IHttpResponse response = await CallStoredProc("_proc", procedureName, wrapper, parameters);
-
-            return contentSerializer.Deserialize<TStoredProcResponse>(response.Body);
+            return await CallStoredProc<TStoredProcResponse>("_proc", procedureName, wrapper, parameters);
         }
 
         public async Task<IEnumerable<string>> GetStoredFuncNamesAsync(bool refresh)
@@ -68,9 +64,7 @@
                 throw new ArgumentNullException("functionName");
             }
 
-            IHttpResponse response = await CallStoredProc("_func", functionName, null, parameters);
-
-            return contentSerializer.Deserialize<TStoredFuncResponse>(response.Body);
+            return await CallStoredProc<TStoredFuncResponse>("_func", functionName, null, parameters);
         }
 
         public async Task<TStoredFuncResponse> CallStoredFuncAsync<TStoredFuncResponse>(string functionName, string wrapper, params StoredProcParam[] parameters)
@@ -86,36 +80,38 @@
                 throw new ArgumentNullException("wrapper");
             }
 
-            IHttpResponse response = await CallStoredProc("_func", functionName, wrapper, parameters);
-
-            return contentSerializer.Deserialize<TStoredFuncResponse>(response.Body);
+            return await CallStoredProc<TStoredFuncResponse>("_func", functionName, wrapper, parameters);
         }
+
+        #region private methods
 
         private async Task<IEnumerable<string>> GetNamesOnlyAsync(string resource, bool refresh)
         {
-            IHttpAddress address = baseAddress.WithResource(resource).WithParameter("names_only", true);
-
-            if (refresh)
+            SqlQuery query = new SqlQuery
             {
-                address = address.WithParameter("refresh", true);
-            }
+                Fields = null,
+                CustomParameters = new Dictionary<string, object>
+                {
+                    { "names_only", true },
+                    { "refresh", refresh }
+                }
+            };
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            ResourceWrapper<string> result = await RequestSingleAsync<ResourceWrapper<string>>(HttpMethod.Get, resource, query);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var result = new { resource = new List<string>() };
-            return contentSerializer.Deserialize(response.Body, result).resource;
+            return result.Records;
         }
 
-        private async Task<IHttpResponse> CallStoredProc(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
+        private async Task<string> CallStoredProc(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
         {
-            IHttpAddress address = baseAddress.WithResource( resource, procedureName);
-
+            SqlQuery query = null;
             if (!string.IsNullOrEmpty(wrapper))
             {
-                address = address.WithParameter("wrapper", wrapper);
+                query = new SqlQuery
+                {
+                    Fields = null,
+                    CustomParameters = new Dictionary<string, object> { { "wrapper", wrapper } }
+                };
             }
 
             IHttpRequest request;
@@ -127,18 +123,25 @@
                     Params = parameters.ToList(),
                     Wrapper = wrapper
                 };
-                string body = contentSerializer.Serialize(storedProc);
-                request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
+                string body = base.ContentSerializer.Serialize(storedProc);
+                request = base.BuildRequest(HttpMethod.Post, body, new[] { resource, procedureName }, query);
             }
             else
             {
-                request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+                request = base.BuildRequest(HttpMethod.Get, null, new[] { resource, procedureName }, query);
             }
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response;
+            return await ExecuteRequest(request);
         }
+
+        private async Task<TStoredProcResponse> CallStoredProc<TStoredProcResponse>(string resource, string procedureName, string wrapper, params StoredProcParam[] parameters)
+            where TStoredProcResponse : class, new()
+        {
+            string responseBody = await CallStoredProc(resource, procedureName, wrapper, parameters);
+
+            return base.ContentSerializer.Deserialize<TStoredProcResponse>(responseBody);
+        }
+
+        #endregion
     }
 }

@@ -212,7 +212,7 @@
             SqlQuery query = new SqlQuery { Fields = "*", IncludeCount = true, IncludeSchema = true };
 
             // Act
-            RecordsResult<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
+            ResourceWrapper<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
 
             // Assert
             result.Meta.ShouldNotBe(null);

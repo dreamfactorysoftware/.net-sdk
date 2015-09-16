@@ -21,18 +21,18 @@
         {
         }
 
-        public async Task<RecordsResult<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
+        public async Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
         {
-            return await base.RequestSingleAsync<RecordsResult<CustomResponse>>(
+            return await base.RequestSingleAsync<ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Get,
                 resource: "custom",
                 query: query
                 );
         }
         
-        public async Task<RecordsResult<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public async Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestSingleWithPayloadAsync<object, RecordsResult<CustomResponse>>(
+            return await base.RequestSingleWithPayloadAsync<object, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Post,
                 resource: "custom",
                 query: query,
@@ -40,9 +40,9 @@
                 );
         }
 
-        public async Task<RecordsResult<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
+        public async Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            return await base.RequestSingleWithPayloadAsync<object, RecordsResult<CustomResponse>>(
+            return await base.RequestSingleWithPayloadAsync<object, ResourceWrapper<CustomResponse>>(
                 method: HttpMethod.Patch,
                 resource: "custom",
                 query: query,
@@ -56,15 +56,18 @@
             {
                 throw new ArgumentNullException("settingName");
             }
-            
-            IHttpAddress address = base.BaseAddress.WithResource("custom", settingName);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
-            string responseBody = await base.ExecuteRequest(request);
+
+            string reponseBody = await base.RequestBodyAsync(
+                method: HttpMethod.Get,
+                resource: "custom",
+                resourceIdentifier: settingName,
+                query: null
+                );
 
             return new CustomResponse
             {
                 Name = settingName,
-                Value = responseBody
+                Value = reponseBody
             };
         }
 

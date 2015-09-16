@@ -52,7 +52,7 @@
                     IncludeCount = true
                 };
 
-                RecordsResult<ContactContactGroup> result = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query);
+                ResourceWrapper<ContactContactGroup> result = await databaseApi.GetRecordsAsync<ContactContactGroup>("contact_group_relationship", query);
 
                 contacts = result.Records.Select(x => x.Contact);
 
@@ -68,7 +68,7 @@
                     IncludeCount = true
                 };
 
-                RecordsResult<Contact> result = await databaseApi.GetRecordsAsync<Contact>("contact", query);
+                ResourceWrapper<Contact> result = await databaseApi.GetRecordsAsync<Contact>("contact", query);
                 contacts = result.Records;
 
                 ViewBag.TotalResults = result.Meta.Count;
@@ -122,8 +122,8 @@
             model.ContactInfoViewModel.ContactInfo.InfoType = model.ContactInfoViewModel.InfoType.ToString();
             model.ContactInfoViewModel.ContactInfo.ContactId = records.Select(x => x.Id).FirstOrDefault();
 
-            Task<RecordsResult<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
-            Task<RecordsResult<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
+            Task<ResourceWrapper<ContactContactGroup>> createRelationshipsTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipRecords, new SqlQuery());
+            Task<ResourceWrapper<ContactInfo>> createContactInfoTask = databaseApi.CreateRecordsAsync("contact_info", new List<ContactInfo> { model.ContactInfoViewModel.ContactInfo }, new SqlQuery());
 
             await Task.WhenAll(createRelationshipsTask, createContactInfoTask);
 

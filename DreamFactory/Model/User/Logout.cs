@@ -3,11 +3,7 @@
     /// <summary>
     /// Logout.
     /// </summary>
-    public class Logout
+    public class Logout : SuccessResponse
     {
-        /// <summary>
-        /// Indicator whether logout was successful.
-        /// </summary>
-        public bool? Success { get; set; }
     }
 }
