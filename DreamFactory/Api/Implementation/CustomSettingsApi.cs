@@ -9,103 +9,62 @@
     using DreamFactory.Model.System.Custom;
     using DreamFactory.Serialization;
 
-    internal class CustomSettingsApi : ICustomSettingsApi
+    internal class CustomSettingsApi : BaseApi, ICustomSettingsApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
-
         public CustomSettingsApi(
             IHttpAddress baseAddress,
             IHttpFacade httpFacade,
             IContentSerializer contentSerializer,
-            IHttpHeaders baseHeaders,
+            HttpHeaders baseHeaders,
             string serviceName)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
-            this.baseAddress = baseAddress.WithResource(serviceName);
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
         public async Task<RecordsResult<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null)
         {
-            IHttpAddress address = baseAddress.WithResource("custom");
-            if (query != null)
-            {
-                address = address.WithSqlQuery(query);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
+            return await base.RequestSingleAsync<RecordsResult<CustomResponse>>(
+                method: HttpMethod.Get,
+                resource: "custom",
+                query: query
+                );
         }
         
         public async Task<RecordsResult<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            IHttpAddress address = baseAddress.WithResource("custom");
-
-            if (query != null)
-            {
-                address.WithSqlQuery(query);
-            }
-
-            var body = new { resource = customs, ids = customs.Select((item, index) => index) };
-            string content = contentSerializer.Serialize(body);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<object, RecordsResult<CustomResponse>>(
+                method: HttpMethod.Post,
+                resource: "custom",
+                query: query,
+                record: new { resource = customs, ids = customs.Select((item, index) => index) }
+                );
         }
 
         public async Task<RecordsResult<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null)
         {
-            IHttpAddress address = baseAddress.WithResource("custom");
-
-            if (query != null)
-            {
-                address.WithSqlQuery(query);
-            }
-
-            var body = new { resource = customs, ids = customs.Select((item, index) => index) };
-            string content = contentSerializer.Serialize(body);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<RecordsResult<CustomResponse>>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<object, RecordsResult<CustomResponse>>(
+                method: HttpMethod.Patch,
+                resource: "custom",
+                query: query,
+                record: new { resource = customs, ids = customs.Select((item, index) => index) }
+                );
         }
 
-        public async Task<CustomResponse> GetCustomSettingAsync(string settingName, SqlQuery query = null)
+        public async Task<CustomResponse> GetCustomSettingAsync(string settingName)
         {
             if (settingName == null)
             {
                 throw new ArgumentNullException("settingName");
             }
-
-            IHttpAddress address = baseAddress.WithResource("custom", settingName);
-
-            if (query != null)
-            {
-                address = address.WithSqlQuery(query);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            
+            IHttpAddress address = base.BaseAddress.WithResource("custom", settingName);
+            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), base.BaseHeaders);
+            string responseBody = await base.ExecuteRequest(request);
 
             return new CustomResponse
             {
                 Name = settingName,
-                Value = response.Body
+                Value = responseBody
             };
         }
 
@@ -116,20 +75,13 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            IHttpAddress address = baseAddress.WithResource("custom", settingName);
-
-            if (query != null)
-            {
-                address = address.WithSqlQuery(query);
-            }
-
-            string content = contentSerializer.Serialize(custom);
-            IHttpRequest request = new HttpRequest(HttpMethod.Patch, address.Build(), baseHeaders, content);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<CustomResponse>(response.Body);
+            return await base.RequestSingleWithPayloadAsync<CustomRequest, CustomResponse>(
+                method: HttpMethod.Patch, 
+                resource: "custom", 
+                resourceIdentifier: settingName, 
+                query: query, 
+                record: custom
+                );
         }
 
         public async Task<CustomResponse> DeleteCustomSettingAsync(string settingName, SqlQuery query = null)
@@ -139,13 +91,12 @@
                 throw new ArgumentNullException("settingName");
             }
 
-            var address = baseAddress.WithResource("custom", settingName);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<CustomResponse>(response.Body);
+            return await base.RequestSingleAsync<CustomResponse>(
+                method: HttpMethod.Delete, 
+                resource: "custom", 
+                resourceIdentifier: settingName, 
+                query: query
+                );
         }
     }
 }

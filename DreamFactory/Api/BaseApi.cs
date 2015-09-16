@@ -43,11 +43,6 @@
                 throw new ArgumentNullException("resource");
             }
 
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
-            }
-
             return await RequestSingleAsync<TResponse>(method, new[] { resource }, query);
         }
 
@@ -74,11 +69,6 @@
                 throw new ArgumentNullException("resourceIdentifier");
             }
 
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
-            }
-
             return await RequestSingleAsync<TResponse>(method, new[] { resource, resourceIdentifier }, query);
         }
 
@@ -97,11 +87,6 @@
             if (resourceParts == null)
             {
                 throw new ArgumentNullException("resourceParts");
-            }
-
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
             }
 
             return await GetDeserializedResponse<TResponse>(
@@ -134,11 +119,6 @@
             if (record == null)
             {
                 throw new ArgumentNullException("record");
-            }
-
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
             }
 
             return await RequestSingleWithPayloadAsync<TRequest, TResponse>(method, new[] { resource }, query, record);
@@ -175,11 +155,6 @@
                 throw new ArgumentNullException("record");
             }
 
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
-            }
-
             return await RequestSingleWithPayloadAsync<TRequest, TResponse>(method, new[] { resource, resourceIdentifier }, query, record);
         }
 
@@ -206,11 +181,6 @@
             if (record == null)
             {
                 throw new ArgumentNullException("record");
-            }
-
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
             }
 
             string body = ContentSerializer.Serialize(record);
@@ -241,11 +211,6 @@
                 throw new ArgumentNullException("resource");
             }
 
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
-            }
-
             RecordsResult<TResponse> response = await GetDeserializedResponse<RecordsResult<TResponse>>(
                 method: HttpMethod.Get,
                 resourceParts: new[] { resource },
@@ -271,9 +236,9 @@
             where TRequest : IRecord
             where TResponse : class, new()
         {
-            if (query == null)
+            if (resource == null)
             {
-                throw new ArgumentNullException("query");
+                throw new ArgumentNullException("resource");
             }
 
             if (records == null || records.Length < 1)
@@ -309,11 +274,6 @@
             if (resource == null)
             {
                 throw new ArgumentNullException("resource");
-            }
-
-            if (query == null)
-            {
-                throw new ArgumentNullException("query");
             }
 
             if (ids == null || ids.Length < 1)
@@ -358,7 +318,12 @@
             return await ExecuteRequest<TResponse>(request);
         }
 
-        private IHttpAddress BuildAddress(string[] resourceParts, SqlQuery query)
+        /// <summary>
+        /// Builds IHttpAddress from given resourceParts and query.
+        /// </summary>
+        /// <param name="resourceParts">Array of resource parts. Usually consists of resource and resource identifier.</param>
+        /// <param name="query">Query parameters.</param>
+        internal IHttpAddress BuildAddress(string[] resourceParts, SqlQuery query)
         {
             IHttpAddress address = BaseAddress;
             if (resourceParts != null)
@@ -373,17 +338,31 @@
             return address;
         }
 
-        internal async Task<TResponse> ExecuteRequest<TResponse>(IHttpRequest request)
-            where TResponse : class, new()
+        /// <summary>
+        /// Executes given IHttpRequest and returns response body.
+        /// </summary>
+        /// <param name="request">Request to be executed.</param>
+        /// <returns>Response body.</returns>
+        /// <exception cref="DreamFactoryException">Thrown when there was an error executing request.</exception>
+        internal async Task<string> ExecuteRequest(IHttpRequest request)
         {
             IHttpResponse response = await HttpFacade.RequestAsync(request);
             HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-            return DeserializeResponse<TResponse>(response);
+            return response.Body;
         }
 
-        private TResponse DeserializeResponse<TResponse>(IHttpResponse response) where TResponse : class, new()
+        /// <summary>
+        /// Executes given IHttpRequest and returns deserialized response body.
+        /// </summary>
+        /// <typeparam name="TResponse">Type response body will be deserialized to.</typeparam>
+        /// <param name="request">Request to be executed.</param>
+        /// <returns>Response body deserialized to type TResponse.</returns>
+        /// <exception cref="DreamFactoryException">Thrown when there was an error executing request.</exception>
+        internal async Task<TResponse> ExecuteRequest<TResponse>(IHttpRequest request)
+            where TResponse : class, new()
         {
-            return ContentSerializer.Deserialize<TResponse>(response.Body);
+            string body = await ExecuteRequest(request);
+            return ContentSerializer.Deserialize<TResponse>(body);
         }
     }
 }

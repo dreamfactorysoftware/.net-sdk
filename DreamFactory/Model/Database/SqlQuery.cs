@@ -11,7 +11,7 @@
         /// Initializes a new instance of the <see cref="SqlQuery"/> class.
         /// </summary>
         /// <remarks>
-        /// Default ctor sets fields=*.
+        /// By default ctor sets fields=* unless stated otherwise in parameters.
         /// </remarks>
         public SqlQuery()
         {

@@ -37,9 +37,8 @@
         /// Retrieve one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <param name="query">SQL query to return records.</param>
         /// <returns cref="CustomResponse">Custom setting record.</returns>
-        Task<CustomResponse> GetCustomSettingAsync(string settingName, SqlQuery query = null);
+        Task<CustomResponse> GetCustomSettingAsync(string settingName);
 
         /// <summary>
         /// Set or update one custom user|system setting.

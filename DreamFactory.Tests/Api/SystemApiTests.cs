@@ -150,8 +150,6 @@
             // Assert
             emailTemplates.Count.ShouldBe(3);
             emailTemplates.First().Name.ShouldBe("User Invite Default");
-
-            Should.Throw<ArgumentNullException>(() => systemApi.GetEmailTemplatesAsync(null));
         }
 
         [TestMethod]
@@ -168,7 +166,6 @@
             emailTemplates.Count.ShouldBe(3);
             emailTemplates.First().Name.ShouldBe("User Invite Default");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEmailTemplatesAsync(null, templates));
             Should.Throw<ArgumentException>(() => systemApi.CreateEmailTemplatesAsync(new SqlQuery(), null));
         }
 
@@ -186,7 +183,6 @@
             emailTemplates.Count.ShouldBe(3);
             emailTemplates.First().Name.ShouldBe("User Invite Default");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.UpdateEmailTemplatesAsync(null, templates));
             Should.Throw<ArgumentException>(() => systemApi.UpdateEmailTemplatesAsync(new SqlQuery(), null));
         }
 
@@ -205,7 +201,6 @@
             emailTemplates.Count.ShouldBe(3);
             emailTemplates.First().Name.ShouldBe("User Invite Default");
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteEmailTemplatesAsync(null, ids));
             Should.Throw<ArgumentException>(() => systemApi.DeleteEmailTemplatesAsync(new SqlQuery(), null));
         }
 
@@ -278,7 +273,6 @@
             response.Type.ShouldBe("v8js");
 
             Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, new SqlQuery(), eventScript));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, eventScript));
             Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), null));
         }
 
@@ -297,7 +291,6 @@
             response.Type.ShouldBe("v8js");
 
             Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, new SqlQuery(), eventScript));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", null, eventScript));
             Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), null));
         }
 
@@ -315,7 +308,6 @@
             response.Type.ShouldBe("v8js");
 
             Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync(null, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteEventScriptAsync("system.get.pre_process", null));
         }
 
         [TestMethod]
@@ -332,7 +324,6 @@
             response.Type.ShouldBe("v8js");
 
             Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync(null, new SqlQuery()));
-            Should.Throw<ArgumentNullException>(() => systemApi.GetEventScriptAsync("system.get.pre_process", null));
         }
 
         private static EventScriptRequest CreateEventScript()
@@ -364,8 +355,6 @@
             // Assert
             apps.Count.ShouldBe(4);
             apps.First().Name.ShouldBe("admin");
-
-            Should.Throw<ArgumentNullException>(() => systemApi.GetAppsAsync(null));
         }
 
         [TestMethod]
@@ -382,7 +371,6 @@
             // Assert
             created.Id.ShouldBe(1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateAppsAsync(null, app));
             Should.Throw<ArgumentException>(() => systemApi.CreateAppsAsync(new SqlQuery()));
         }
 
@@ -406,7 +394,6 @@
             // Act & Assert
             systemApi.DeleteAppsAsync(new SqlQuery(), 1, 2, 3);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteAppsAsync(null, 1, 2, 3));
             Should.Throw<ArgumentException>(() => systemApi.DeleteAppsAsync(new SqlQuery()));
         }
 
@@ -548,7 +535,6 @@
             // Assert
             created.Id.ShouldBe(1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateAppGroupsAsync(null, appGroup));
             Should.Throw<ArgumentException>(() => systemApi.CreateAppGroupsAsync(new SqlQuery()));
         }
 
@@ -572,7 +558,6 @@
             // Act & Assert
             systemApi.DeleteAppGroupsAsync(new SqlQuery(), 1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteAppGroupsAsync(null, 1));
             Should.Throw<ArgumentException>(() => systemApi.DeleteAppGroupsAsync(new SqlQuery()));
         }
 
@@ -618,7 +603,6 @@
             // Assert
             created.Id.ShouldBe(1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateServicesAsync(null, service));
             Should.Throw<ArgumentException>(() => systemApi.CreateServicesAsync(new SqlQuery()));
         }
 
@@ -642,7 +626,6 @@
             // Act & Assert
             systemApi.DeleteServicesAsync(new SqlQuery(), 1, 2, 3);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteServicesAsync(null, 1, 2, 3));
             Should.Throw<ArgumentException>(() => systemApi.DeleteServicesAsync(new SqlQuery()));
         }
 
@@ -691,7 +674,6 @@
             // Assert
             created.Id.ShouldBe(1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateRolesAsync(null, role));
             Should.Throw<ArgumentException>(() => systemApi.CreateRolesAsync(new SqlQuery()));
         }
 
@@ -715,7 +697,6 @@
             // Act & Assert
             systemApi.DeleteRolesAsync(new SqlQuery(), 1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteRolesAsync(null, 1));
             Should.Throw<ArgumentException>(() => systemApi.DeleteRolesAsync(new SqlQuery()));
         }
 
@@ -762,7 +743,6 @@
             // Assert
             created.Id.ShouldBe(1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateUsersAsync(null, user));
             Should.Throw<ArgumentException>(() => systemApi.CreateUsersAsync(new SqlQuery()));
         }
 
@@ -786,7 +766,6 @@
             // Act & Assert
             systemApi.DeleteUsersAsync(new SqlQuery(), 1);
 
-            Should.Throw<ArgumentNullException>(() => systemApi.DeleteUsersAsync(null, 1));
             Should.Throw<ArgumentException>(() => systemApi.DeleteUsersAsync(new SqlQuery()));
         }
 
