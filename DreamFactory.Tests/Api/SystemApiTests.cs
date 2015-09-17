@@ -54,7 +54,7 @@
 
             // Assert
             session.Name.ShouldBe("SuperAdmin");
-            session.SessionId.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeNullOrEmpty();
 
             Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync(null, "dreamfactory"));
             Should.Throw<ArgumentNullException>(() => systemApi.LoginAdminAsync("dream@factory.com", null));
@@ -88,7 +88,7 @@
             Session session = systemApi.GetAdminSessionAsync().Result;
 
             // Assert
-            session.SessionId.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeNullOrEmpty();
         }
 
         [TestMethod]

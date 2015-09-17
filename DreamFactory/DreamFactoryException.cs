@@ -6,7 +6,7 @@
     /// <summary>
     /// DreamFactoryException.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class DreamFactoryException : Exception
     {
         /// <inheritdoc />
@@ -16,13 +16,6 @@
 
         /// <inheritdoc />
         public DreamFactoryException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        /// <inheritdoc />
-        protected DreamFactoryException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
         {
         }
     }

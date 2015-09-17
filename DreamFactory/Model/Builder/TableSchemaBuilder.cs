@@ -78,12 +78,12 @@
         /// <inheritdoc />
         public ITableSchemaBuilder WithFieldsFrom<TRecord>() where TRecord : class, new()
         {
-            PropertyInfo[] properties = typeof(TRecord).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = (typeof(TRecord)).GetTypeInfo().DeclaredProperties;
             foreach (PropertyInfo propertyInfo in properties)
             {
-                if (string.Compare(propertyNameResolver.Resolve(propertyInfo.Name), "id", StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Compare(propertyNameResolver.Resolve(propertyInfo.Name), "id", StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    if (!propertyInfo.PropertyType.IsValueType)
+                    if (!propertyInfo.PropertyType.GetTypeInfo().IsValueType)
                     {
                         throw new NotSupportedException("Field 'id' must be of a value type");
                     }

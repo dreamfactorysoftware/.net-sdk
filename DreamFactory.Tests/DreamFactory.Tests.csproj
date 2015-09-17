@@ -44,8 +44,8 @@
       <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Shouldly, Version=2.4.0.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
@@ -95,6 +95,7 @@
     <Compile Include="Serialization\SnakeCasePropertyNameResolverTests.cs" />
     <Compile Include="Serialization\JsonContentSerializerTests.cs" />
     <Compile Include="TestDataHttpFacade.cs" />
+    <None Include="app.config" />
     <None Include="TestData\rest\db\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -106,7 +107,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="TestData\rest\db\_table\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

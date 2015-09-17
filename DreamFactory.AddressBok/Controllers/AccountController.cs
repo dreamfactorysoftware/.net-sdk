@@ -1,6 +1,5 @@
 ﻿namespace DreamFactory.AddressBook.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -144,18 +143,18 @@
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public async Task<ActionResult> LogOff()
         {
             ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
 
             if (claims.Any(x => x.Type == ClaimTypes.Role && x.Value == DreamFactoryContext.Roles.SysAdmin))
             {
-                adminApi.LogoutAdminAsync();
+                await adminApi.LogoutAdminAsync();
             }
             else
             {
-                userApi.LogoutAsync();
+                await userApi.LogoutAsync();
             }
 
             AuthenticationManager.SignOut();

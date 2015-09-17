@@ -27,7 +27,7 @@
 
             // Assert
             session.Name.ShouldBe("demo");
-            session.SessionId.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeNullOrEmpty();
 
             Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(null, "dreamfactory"));
             Should.Throw<ArgumentNullException>(() => userApi.LoginAsync("demo@factory.com", null));
@@ -45,7 +45,7 @@
             Session session = userApi.GetSessionAsync().Result;
 
             // Assert
-            session.SessionId.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeNullOrEmpty();
         }
 
         [TestMethod]
