@@ -15,7 +15,7 @@
 
             // getSession()
             Session session = await userApi.GetSessionAsync();
-            Console.WriteLine("Session ID: {0}", session.SessionId);
+            Console.WriteLine("Session ID: [{0}...]", session.SessionId.Substring(0, 32));
 
             // getProfile()
             ProfileResponse profile = await userApi.GetProfileAsync();

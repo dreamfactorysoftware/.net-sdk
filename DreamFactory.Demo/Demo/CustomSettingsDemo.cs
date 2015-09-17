@@ -46,9 +46,9 @@
 
             // Deleting preferences
             await settingsApi.DeleteCustomSettingAsync("Language");
-            Console.WriteLine("Deleted Language preferences:");
+            Console.WriteLine("Deleted Language preferences!");
             await settingsApi.DeleteCustomSettingAsync("TimeZone");
-            Console.WriteLine("Deleted TimeZone preferences:");
+            Console.WriteLine("Deleted TimeZone preferences!");
         }
     }
 }

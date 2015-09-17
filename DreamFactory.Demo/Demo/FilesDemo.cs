@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
     using DreamFactory.Model.File;
@@ -15,10 +16,14 @@
 
             // Display resources
             IEnumerable<string> names = await filesApi.GetResourceNamesAsync();
-            Console.WriteLine("GetResourcesAsync(): {0}", names.ToStringList());
+            Console.WriteLine("GetResourcesAsync():");
+            foreach (string name in names)
+            {
+                Console.WriteLine("\t{0}", name);
+            }
 
             // Creating a folder
-           await filesApi.CreateFolderAsync("test", true);
+            await filesApi.CreateFolderAsync("test", true);
             Console.WriteLine("Folder 'test' created.");
 
             // Creating a file

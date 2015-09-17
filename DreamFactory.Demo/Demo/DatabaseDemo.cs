@@ -23,6 +23,10 @@
             // List available tables
             IEnumerable<TableInfo> tables = (await databaseApi.GetTableNamesAsync()).ToList();
             Console.WriteLine("Existing tables: {0}", tables.Select(x => x.Name).ToStringList());
+            foreach (TableInfo table in tables)
+            {
+                Console.WriteLine("\t{0}", table.Name);
+            }
 
             // Delete staff table if it exists
             if (tables.Any(x => x.Name == TableName))

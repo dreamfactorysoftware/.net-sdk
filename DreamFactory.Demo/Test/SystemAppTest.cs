@@ -23,7 +23,11 @@
                 Related = String.Join(",", RelatedResources.App.StorageService, RelatedResources.App.Roles)
             };
             IEnumerable<AppResponse> apps = (await appApi.GetAppsAsync(query)).ToList();
-            Console.WriteLine("Apps: {0}", apps.Select(x => x.ApiKey).ToStringList());
+            Console.WriteLine("Apps:");
+            foreach (AppResponse app in apps)
+            {
+                Console.WriteLine("\tName: {0}, ApiKey: {1}", app.Name, app.ApiKey);
+            }
 
             // Cloning
             AppResponse adminApp = apps.Single(x => x.Name == "admin");
@@ -34,7 +38,7 @@
             // Creating a clone
             apps = await appApi.CreateAppsAsync(new SqlQuery(), adminAppRequest);
             AppResponse adminAppClone = apps.Single(x => x.Name == "adminclone");
-            Console.WriteLine("Created a clone app={0}", adminAppClone.ApiKey);
+            Console.WriteLine("Created a clone app Name:{0}, ApiKey:{1}", adminAppClone.Name, adminAppClone.ApiKey);
 
             // Deleting the clone
             Debug.Assert(adminAppClone.Id.HasValue);
