@@ -6,11 +6,11 @@
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
-    using DreamFactory.Model;
     using DreamFactory.Model.Database;
     using DreamFactory.Model.System.App;
     using DreamFactory.Model.System.AppGroup;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Cors;
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
@@ -196,7 +196,7 @@
             // Arrange
             ISystemApi systemApi = CreateSystemApi();
             EmailTemplateRequest[] templates = CreateEmailTemplates();
-            int[] ids = new [] {1,2,3};
+            int[] ids = templates.Where(x => x.Id != null).Select(x => x.Id.Value).ToArray();
 
             // Act
             List<EmailTemplateResponse> emailTemplates = systemApi.DeleteEmailTemplatesAsync(new SqlQuery(), ids).Result.ToList();
@@ -787,6 +787,102 @@
         }
 
         #endregion
+
+        #region --- CORS ---
+
+        [TestMethod]
+        public void ShouldGetCorsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<CorsResponse> results = systemApi.GetCorsAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            results.Count.ShouldBe(2);
+            results.First().Origin.ShouldBe("http://domain.foo");
+        }
+
+        [TestMethod]
+        public void ShouldCreateCorsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            CorsRequest[] cors = CreateCorsRecords();
+            foreach (CorsRequest record in cors)
+            {
+                record.Id = null;
+            }
+
+            // Act
+            List<CorsResponse> results = systemApi.CreateCorsAsync(new SqlQuery(), cors).Result.ToList();
+
+            // Assert
+            results.Count.ShouldBe(2);
+            results.First().Origin.ShouldBe("http://domain.foo");
+
+            Should.Throw<ArgumentException>(() => systemApi.CreateCorsAsync(new SqlQuery(), null));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateCorsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            CorsRequest[] cors = CreateCorsRecords();
+
+            // Act
+            List<CorsResponse> results = systemApi.UpdateCorsAsync(new SqlQuery(), cors).Result.ToList();
+
+            // Assert
+            results.Count.ShouldBe(2);
+            results.First().Origin.ShouldBe("http://domain.foo");
+
+            Should.Throw<ArgumentException>(() => systemApi.UpdateCorsAsync(new SqlQuery(), null));
+        }
+
+        [TestMethod]
+        public void ShouldDeleteCorsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            CorsRequest[] cors = CreateCorsRecords();
+            int[] ids = cors.Where(x => x.Id != null).Select(x => x.Id.Value).ToArray();
+
+            // Act
+            List<CorsResponse> results = systemApi.DeleteCorsAsync(new SqlQuery(), ids).Result.ToList();
+
+            // Assert
+            results.Count.ShouldBe(2);
+            results.First().Origin.ShouldBe("http://domain.foo");
+
+            Should.Throw<ArgumentException>(() => systemApi.DeleteCorsAsync(new SqlQuery(), null));
+        }
+
+        private CorsRequest[] CreateCorsRecords()
+        {
+            return new[]
+            {
+                new CorsRequest
+                {
+                    Id = 1,
+                    Path = "http://domain.foo",
+                    Origin = "http://domain.foo",
+                    Enabled = true
+                },
+                new CorsRequest
+                {
+                    Id = 2,
+                    Path = "http://domain.bar",
+                    Origin = "http://domain.bar",
+                    Enabled = true
+                }
+            };
+        }
+
+        #endregion
+
 
     }
 }

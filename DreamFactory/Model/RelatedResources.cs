@@ -738,5 +738,21 @@
             /// </summary>
             public const string AppsNotInAppGroups = "no_app_group";
         }
+
+        /// <summary>
+        /// Related resource names for cors record.
+        /// </summary>
+        public struct Cors
+        {
+            /// <summary>
+            /// Related resource name for the user created record.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for the user modified record.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+        }
     }
 }

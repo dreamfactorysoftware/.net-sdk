@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Cors.cs" />
     <Compile Include="Api\Implementation\SystemApi.Role.cs" />
     <Compile Include="Api\Implementation\SystemApi.EmailTemplate.cs" />
     <Compile Include="Api\Implementation\SystemApi.Event.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Api\Implementation\SystemApi.AppGroup.cs" />
     <Compile Include="Api\Implementation\SystemApi.App.cs" />
     <Compile Include="Api\ISystemAppGroupApi.cs" />
+    <Compile Include="Api\ISystemCorsApi.cs" />
     <Compile Include="Api\ISystemEmailTemplateApi.cs" />
     <Compile Include="Api\ISystemAppApi.cs" />
     <Compile Include="Api\ISystemAdminApi.cs" />
@@ -126,6 +128,8 @@
     <Compile Include="Model\System\App\AppRequest.cs" />
     <Compile Include="Model\System\Config\ConfigRequest.cs" />
     <Compile Include="Model\System\Config\ConfigResponse.cs" />
+    <Compile Include="Model\System\Cors\CorsRequest.cs" />
+    <Compile Include="Model\System\Cors\CorsResponse.cs" />
     <Compile Include="Model\System\Custom\CustomRequest.cs" />
     <Compile Include="Model\System\Custom\CustomResponse.cs" />
     <Compile Include="Model\System\Email\EmailTemplateRequest.cs" />

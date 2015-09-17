@@ -11,7 +11,7 @@
     /// Represents /system API.
     /// </summary>
     public interface ISystemApi : ISystemAdminApi, ISystemAppApi, 
-        ISystemAppGroupApi, ISystemEmailTemplateApi, ISystemEventApi, 
+        ISystemAppGroupApi, ISystemCorsApi, ISystemEmailTemplateApi, ISystemEventApi, 
         ISystemRoleApi, ISystemServiceApi, ISystemUserApi
     {
         /// <summary>
