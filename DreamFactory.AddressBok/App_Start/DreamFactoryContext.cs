@@ -36,5 +36,10 @@
         {
             public const string SysAdmin = "sys_admin";
         }
+
+        public static IRestContext Create()
+        {
+            return new RestContext(BaseAddress, AppName, AppApiKey, SessionId, Version);
+        }
     }
 }

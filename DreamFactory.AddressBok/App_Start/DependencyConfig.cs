@@ -11,8 +11,8 @@
         public static void Initialize()
         {
             Container container = new Container();
-            
-            IRestContext context = new RestContext(DreamFactoryContext.BaseAddress, DreamFactoryContext.AppName, DreamFactoryContext.AppApiKey, DreamFactoryContext.SessionId, DreamFactoryContext.Version);
+
+            IRestContext context = DreamFactoryContext.Create();
 
             container.Register<IDatabaseApi>(() => context.Factory.CreateDatabaseApi(DreamFactoryContext.DbServiceName), Lifestyle.Transient);
             container.Register<ISystemAdminApi>(() => context.Factory.CreateSystemAdminApi(), Lifestyle.Transient);
