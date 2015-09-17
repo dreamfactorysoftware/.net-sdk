@@ -65,6 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApi.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Role.cs" />
+    <Compile Include="Api\Implementation\SystemApi.EmailTemplate.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Event.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Service.cs" />
+    <Compile Include="Api\Implementation\SystemApi.User.cs" />
+    <Compile Include="Api\Implementation\SystemApi.AppGroup.cs" />
+    <Compile Include="Api\Implementation\SystemApi.App.cs" />
     <Compile Include="Api\ISystemAppGroupApi.cs" />
     <Compile Include="Api\ISystemEmailTemplateApi.cs" />
     <Compile Include="Api\ISystemAppApi.cs" />
@@ -82,10 +89,6 @@
     <Compile Include="Api\Implementation\CustomSettingsApi.cs" />
     <Compile Include="Http\HttpAddressExtensions.cs" />
     <Compile Include="Api\Implementation\SystemApi.Admin.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Delete.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Update.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Create.cs" />
-    <Compile Include="Api\Implementation\SystemApi.Get.cs" />
     <Compile Include="Api\Implementation\UserApi.Password.cs" />
     <Compile Include="Api\Implementation\UserApi.Session.cs" />
     <Compile Include="Api\Implementation\UserApi.cs" />
