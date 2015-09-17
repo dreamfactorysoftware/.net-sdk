@@ -203,6 +203,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Package\add_dotnet.dfpkg" />
+    <None Include="Properties\PublishProfiles\df20 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\df20 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\df20.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
