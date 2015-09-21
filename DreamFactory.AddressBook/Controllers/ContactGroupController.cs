@@ -71,15 +71,19 @@
 
             IEnumerable<ContactGroup> records = (await databaseApi.CreateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery())).Records;
 
-            IEnumerable<ContactContactGroup> relationshipModel = model.Contacts
+            List<ContactContactGroup> relationshipModel = model.Contacts
                 .Where(x => x.InGroup)
                 .Select(x => new ContactContactGroup
                 {
                     ContactId = x.ContactId,
                     ContactGroupId = records.Select(y => y.Id).FirstOrDefault()
-                });
+                })
+                .ToList();
 
-            await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipModel, new SqlQuery());
+            if (relationshipModel.Count > 0)
+            {
+                await databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipModel, new SqlQuery());
+            }
 
             return RedirectToAction("List");
         }
@@ -153,11 +157,21 @@
                 .Where(relationship => !relationshipsInDb.TryGetValue(relationship.ContactId.Value, out tmp))
                 .ToList();
 
-            Task<DatabaseResourceWrapper<ContactGroup>> contactGroupTask = databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery());
-            Task<DatabaseResourceWrapper<ContactContactGroup>> contactGroupRelationshipAddTask = databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery());
-            Task<DatabaseResourceWrapper<ContactContactGroup>> contactGroupRelationshipDeleteTask = databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete, new SqlQuery());
+            List<Task> tasks = new List<Task>();
 
-            await Task.WhenAll(contactGroupTask, contactGroupRelationshipAddTask, contactGroupRelationshipDeleteTask);
+            tasks.Add(databaseApi.UpdateRecordsAsync("contact_group", new List<ContactGroup> { model.ContactGroup }, new SqlQuery()));
+
+            if (relationshipsToAdd.Count > 0)
+            {
+                tasks.Add(databaseApi.CreateRecordsAsync("contact_group_relationship", relationshipsToAdd, new SqlQuery()));
+            }
+
+            if (relationshipsToDelete.Count > 0)
+            {
+                tasks.Add(databaseApi.DeleteRecordsAsync("contact_group_relationship", relationshipsToDelete, new SqlQuery()));
+            }
+
+            await Task.WhenAll(tasks);
 
             return RedirectToAction("List");
         }

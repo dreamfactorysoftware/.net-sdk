@@ -101,8 +101,7 @@ Console demo requires a test user to be specified in Program.cs file. Open the f
 
 ### Running the Address Book Demo
 
-
-First of all DreamFactory instance should be configured to run the app
+Configure the DreamFactory instance to run the app:
 
 - Enable [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) for development purposes.
 	- In the admin console, navigate to the Config tab and click on CORS in the left sidebar.
@@ -129,8 +128,8 @@ First of all DreamFactory instance should be configured to run the app
 	- Save changes.
 
 - Import the package file for the app.
-	- From the Apps tab in the admin console, click Import and click 'Address Book for Android' in the list of sample apps. The Address Book package contains the application description, schemas, and sample data.
-	- Leave storage service and folder blank. This is a native Android app so it requires no file storage on the server.
+	- From the Apps tab in the admin console, click Import and the DreamFactory.AddressBook project for add_dotnet.dfpkg in App_Package folder. The Address Book package contains the application description, schemas, and sample data.
+	- Leave storage service and folder blank because this app will be running locally.
 	- Click the Import button. If successful, your app will appear on the Apps tab. You may have to refresh the page to see your new app in the list.
 	
 - Make sure you have a SQL database service named 'db'. Depending on how you installed DreamFactory you may or may not have a 'db' service already available on your instance. You can add one by going to the Services tab in the admin console and creating a new SQL service. Make sure you set the name to 'db'.
@@ -142,9 +141,10 @@ First of all DreamFactory instance should be configured to run the app
 	public const string AppApiKey= "<app_api_key>";
 	public const RestApiVersion Version = RestApiVersion.V2;
 	public const string DbServiceName = "db";
-	public const string EmailServiceName = "mail";
 	public const string FileServiceName = "files";
 ```
+
+You can now run the app by starting the DreamFactory.AddressBook project in your browser. When the app starts up you can register a new user, or log in as an existing user (ex. admin you've set up first time you opened DreamFactory admin app).
 
 ## API
 

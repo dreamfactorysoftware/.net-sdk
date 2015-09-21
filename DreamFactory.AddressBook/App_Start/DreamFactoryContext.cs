@@ -9,11 +9,10 @@
     public static class DreamFactoryContext
     {
         public const RestApiVersion Version = RestApiVersion.V2;
-        public const string AppName = "Address Book ASP.NET";
-        public const string AppApiKey = "12cfcb21888ddf0a37ec98eb6d6f766e72776773c56aa1c9c8ded236cdae0305";
-        public const string BaseAddress = "http://dfv20.cloudapp.net/";
-        public const string DbServiceName = "db3";
-        public const string EmailServiceName = "mail";
+        public const string AppName = "<app_name>";
+        public const string AppApiKey = "<app_api_key>";
+        public const string BaseAddress = "http://localhost:8080";
+        public const string DbServiceName = "db";
         public const string FileServiceName = "files";
 
         #region security

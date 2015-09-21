@@ -13,7 +13,7 @@
     public class DatabaseDemo : IRunnable
     {
         private const string TableName = "staff";
-        private const string ServiceName = "db3";
+        private const string ServiceName = "db";
 
         public async Task RunAsync(IRestContext context)
         {

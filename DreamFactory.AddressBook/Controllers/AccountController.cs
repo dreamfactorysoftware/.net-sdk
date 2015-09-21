@@ -171,10 +171,9 @@
                 new Claim(ClaimTypes.NameIdentifier, session.Id),
             };
 
-            if (session.IsSysAdmin.HasValue && session.IsSysAdmin.Value)
+            if (session.IsSysAdmin ?? false)
             {
                 claims.Add(new Claim(ClaimTypes.Role, DreamFactoryContext.Roles.SysAdmin));
-
             }
 
             ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);

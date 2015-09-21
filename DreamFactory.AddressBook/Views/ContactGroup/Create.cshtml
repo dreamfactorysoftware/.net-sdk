@@ -24,17 +24,19 @@
                 <div class="form-group">
                     @Html.Label("Contacts in group", new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @for (int i = 0; i < Model.Contacts.Count; i++)
-                        {
-                            <div class="checkbox">
-                                <label>
-                                    <input data-val="true" id="contacts[@i].InGroup" name="contacts[@i].InGroup" type="checkbox" value="true">
-                                    <input name="contacts[@i].InGroup" type="hidden" value="false">
-                                    <input name="contacts[@i].ContactId" type="hidden" value="@Model.Contacts[i].ContactId">
-                                     @Model.Contacts[i].ContactName
-                                </label>
-                            </div>
-                        }
+                        <div class="checkbox-list">
+                            @for (int i = 0; i < Model.Contacts.Count; i++)
+                            {
+                                <div class="checkbox">
+                                    <label>
+                                        <input data-val="true" id="contacts[@i].InGroup" name="contacts[@i].InGroup" type="checkbox" value="true">
+                                        <input name="contacts[@i].InGroup" type="hidden" value="false">
+                                        <input name="contacts[@i].ContactId" type="hidden" value="@Model.Contacts[i].ContactId">
+                                        @Model.Contacts[i].ContactName
+                                    </label>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
