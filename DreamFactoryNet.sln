@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C441D1
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamFactory.AddressBook", "DreamFactory.AddressBok\DreamFactory.AddressBook.csproj", "{266AD20A-D964-4B4B-B61B-F4DB77AF8602}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DreamFactory.AddressBook", "DreamFactory.AddressBook\DreamFactory.AddressBook.csproj", "{266AD20A-D964-4B4B-B61B-F4DB77AF8602}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
