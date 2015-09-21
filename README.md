@@ -5,6 +5,37 @@
 
 The .NET SDK provides classes and interfaces to access the DreamFactory REST API.
 
+## Quick links
+- [Solution structure](#solution-structure)
+- [Distribution](#distribution)
+	- [Dependencies](#dependencies)
+	- [Building from Source Code](#building-from-source-code)
+- [Demo](#demo)
+	- [Running the Console Demo](#running-the-console-demo)
+	- [Running the Address Book demo](#running-the-address-book-demo)
+- [Supported API's](#api)
+	- [User](#user-api)
+	- [CustomSettings](#customsettings-api)
+	- [Files](#files-api)
+	- [Database](#database-api)
+	- [Email](#email-api)
+	- [System](#system-api)
+	
+## Solution structure
+
+The Visual Studio solution has these projects:
+
+* DreamFactory       : the API library
+* DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
+* DreamFactory.Tests : Unit Tests (MSTest)
+* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
+
+The solution folder also contains:
+
+* ReSharper settings file (team-shared),
+* NuGet package specification file,
+* this README file.
+
 ## Distribution
 
 The package can be either installed from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or simply built from the source code with Visual Studio.
@@ -34,16 +65,28 @@ The .NET SDK has been tested on the following platforms:
 * Windows 10 with Visual Studio 2015 CTP
 * Mac OS X (Yosemite) with Xamarin 
 
-### Running the Demo
+### Building from Source Code
+
+Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
+You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
+When changing the target framework version, pay attention to the dependent package versions - you will need to reinstall them:
+
+```powershell
+	update-package -reinstall -ignoreDependencies
+```
+
+## Demo
+
+### Running the Console Demo
 
 To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
 The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
 ```csharp
-    internal const string BaseAddress = "http://localhost:8080";
-    internal const string AppName = "<app_name>";
-    internal const string AppApiKey = "<app_api_key>";
-    internal const string Email = "<user_email>";
-    internal const string Password = "<user_password";
+	internal const string BaseAddress = "http://localhost:8080";
+	internal const string AppName = "<app_name>";
+	internal const string AppApiKey = "<app_api_key>";
+	internal const string Email = "<user_email>";
+	internal const string Password = "<user_password";
 ```
 
  > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
@@ -55,36 +98,26 @@ The demo requires a test user to be specified in Program.cs file. Open the file 
 * A console window will appear with demo output;
 * If the demo has been completed successfully, you will see the total number of tests executed. 
 
-### Running Unit Tests
+### Running the Address Book Demo
 
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* In Visual Studio main menu, select *TEST -> Run -> All Tests*;
-* When testing is done, you will see *Test Explorer* window with testing status. 
-
-### Building from Source Code
-
-Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
-You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
-When changing the target framework version, pay attention to the dependent package versions - you will need to reinstall them:
-
-```powershell
-	update-package -reinstall -ignoreDependencies
+To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
+The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+```csharp
+	internal const string BaseAddress = "http://localhost:8080";
+	internal const string AppName = "<app_name>";
+	internal const string AppApiKey = "<app_api_key>";
+	internal const string Email = "<user_email>";
+	internal const string Password = "<user_password";
 ```
 
-## Solution structure
+ > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
 
-The Visual Studio solution has these projects:
-
-* DreamFactory       : the API library
-* DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
-* DreamFactory.Tests : Unit Tests (MSTest)
-* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
-
-The solution folder also contains:
-
-* ReSharper settings file (team-shared),
-* NuGet package specification file,
-* this README file.
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* Open Program.cs and modify the settings;
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
+* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
+* A console window will appear with demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed. 
 
 ## API
 
@@ -127,11 +160,11 @@ The SDK comes with unirest-net implementation of `IHttpFacade` - the `UnirestHtt
 Here is an [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/HttpDemo.cs):
 
 ```csharp
-    string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
-    IHttpRequest request = new HttpRequest(HttpMethod.Get, url);
-    IHttpFacade httpFacade = new UnirestHttpFacade();
-    IHttpResponse response = await httpFacade.SendAsync(request);
-    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
+	string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
+	IHttpRequest request = new HttpRequest(HttpMethod.Get, url);
+	IHttpFacade httpFacade = new UnirestHttpFacade();
+	IHttpResponse response = await httpFacade.SendAsync(request);
+	Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
 ```
 
 ### DreamFactory API overview
@@ -141,17 +174,17 @@ Each DreamFactory's service has a corresponding interface that exposes all funct
 The service instances are created with `IRestContext.Factory` methods:
 
 ```csharp
-    IRestContext context = new RestContext(BaseAddress);
-    IUserApi userApi = context.Factory.CreateUserApi();
-    Session session = await userApi.LoginAsync("demo", "api_key", "user@mail.com", "qwerty");
-    Console.WriteLine("Logged in as {0}", session.display_name);
+	IRestContext context = new RestContext(BaseAddress);
+	IUserApi userApi = context.Factory.CreateUserApi();
+	Session session = await userApi.LoginAsync("demo", "api_key", "user@mail.com", "qwerty");
+	Console.WriteLine("Logged in as {0}", session.display_name);
 ```
 
 Specify service name for creating an interface to a named service:
 ```csharp
-    IRestContext context = new RestContext(BaseAddress);
-    IFilesApi filesApi = context.Factory.CreateFilesApi("files");
-    await filesApi.CreateFileAsync(...);
+	IRestContext context = new RestContext(BaseAddress);
+	IFilesApi filesApi = context.Factory.CreateFilesApi("files");
+	await filesApi.CreateFileAsync(...);
 ```
 
 #### Serialization
@@ -225,18 +258,18 @@ Reading/Writing of metadata associated with file entities (folder, file) are not
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
 ```csharp
-    // Your custom POCO
-    class StaffRecord
-    {
-        public int Uid { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
+	// Your custom POCO
+	class StaffRecord
+	{
+		public int Uid { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public int Age { get; set; }
 	}
 
 	// Create tabe schema from StaffRecord type
 	ITableSchemaBuilder builder = new TableSchemaBuilder();
-    builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+	builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.

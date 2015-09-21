@@ -15,6 +15,9 @@
         public const string DbServiceName = "db3";
         public const string EmailServiceName = "mail";
         public const string FileServiceName = "files";
+
+        #region security
+
         public const string SessionIdClaimType = "http://dreamfactory.com/claims/sessionid";
 
         public static string SessionId
@@ -36,6 +39,8 @@
         {
             public const string SysAdmin = "sys_admin";
         }
+
+        #endregion
 
         public static IRestContext Create()
         {
