@@ -13,7 +13,7 @@ The .NET SDK provides classes and interfaces to access the DreamFactory REST API
 - [Demo](#demo)
 	- [Running the Console Demo](#running-the-console-demo)
 	- [Running the Address Book demo](#running-the-address-book-demo)
-- [Supported API's](#api)
+- [API overview](#api)
 	- [User](#user-api)
 	- [CustomSettings](#customsettings-api)
 	- [Files](#files-api)
@@ -77,16 +77,17 @@ When changing the target framework version, pay attention to the dependent packa
 
 ## Demo
 
+To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
+
 ### Running the Console Demo
 
-To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
 ```csharp
 	internal const string BaseAddress = "http://localhost:8080";
 	internal const string AppName = "<app_name>";
 	internal const string AppApiKey = "<app_api_key>";
 	internal const string Email = "<user_email>";
-	internal const string Password = "<user_password";
+	internal const string Password = "<user_password>";
 ```
 
  > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
@@ -100,24 +101,50 @@ The demo requires a test user to be specified in Program.cs file. Open the file 
 
 ### Running the Address Book Demo
 
-To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+
+First of all DreamFactory instance should be configured to run the app
+
+- Enable [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) for development purposes.
+	- In the admin console, navigate to the Config tab and click on CORS in the left sidebar.
+	- Click Add.
+	- Set Origin, Paths, and Headers to *.
+	- Set Max Age to 0.
+	- Allow all HTTP verbs and check the Enabled box.
+	- Click update when you are done.
+	- More info on setting up CORS is available [here](https://github.com/dreamfactorysoftware/dsp-core/wiki/CORs-Configuration).
+
+- Create a default role for new users and enable open registration
+	- In the admin console, click the Roles tab then click Create in the left sidebar.
+	- Enter a name for the role and check the Active box.
+	- Go to the Access tab.
+	- Add a new entry under Service Access (you can make it more restrictive later).
+		- set Service = All
+		- set Component = *
+		- check all HTTP verbs under Access
+		- set Requester = API
+	- Click Create Role.
+	- Click the Services tab, then edit the user service. Go to Config and enable Allow Open Registration.
+	- Set the Open Reg Role Id to the name of the role you just created.
+	- Make sure Open Reg Email Service Id is blank, so that new users can register without email confirmation.
+	- Save changes.
+
+- Import the package file for the app.
+	- From the Apps tab in the admin console, click Import and click 'Address Book for Android' in the list of sample apps. The Address Book package contains the application description, schemas, and sample data.
+	- Leave storage service and folder blank. This is a native Android app so it requires no file storage on the server.
+	- Click the Import button. If successful, your app will appear on the Apps tab. You may have to refresh the page to see your new app in the list.
+	
+- Make sure you have a SQL database service named 'db'. Depending on how you installed DreamFactory you may or may not have a 'db' service already available on your instance. You can add one by going to the Services tab in the admin console and creating a new SQL service. Make sure you set the name to 'db'.
+
+- The demo also requires a couple of constants to be specified in DreamFactoryContext.cs file located in the DreamFactory.AddressBook project. Open the file and modify the settings to match your setup.
 ```csharp
-	internal const string BaseAddress = "http://localhost:8080";
-	internal const string AppName = "<app_name>";
-	internal const string AppApiKey = "<app_api_key>";
-	internal const string Email = "<user_email>";
-	internal const string Password = "<user_password";
+	public const string BaseAddress = "http://localhost:8080";
+	public const string AppName = "<app_name>";
+	public const string AppApiKey= "<app_api_key>";
+	public const RestApiVersion Version = RestApiVersion.V2;
+	public const string DbServiceName = "db";
+	public const string EmailServiceName = "mail";
+	public const string FileServiceName = "files";
 ```
-
- > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
-
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* Open Program.cs and modify the settings;
-* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
-* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
-* A console window will appear with demo output;
-* If the demo has been completed successfully, you will see the total number of tests executed. 
 
 ## API
 
