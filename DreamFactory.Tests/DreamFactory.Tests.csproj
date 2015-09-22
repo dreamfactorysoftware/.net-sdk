@@ -110,6 +110,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="TestData\rest\db\_proc\foo\get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\rest\db\_table\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

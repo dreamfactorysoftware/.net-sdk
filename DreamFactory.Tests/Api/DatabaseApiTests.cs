@@ -180,9 +180,8 @@
             records.First().Uid.ShouldBe(1);
             records.Last().Uid.ShouldBe(3);
 
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>(null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>("staff", null));
         }
 
         [TestMethod]
@@ -200,9 +199,9 @@
             deleted.Count.ShouldBe(1);
             deleted.First().Uid.ShouldBe(0);
 
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
-            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync("staff", records, null));
         }
 
         [TestMethod]
@@ -277,6 +276,21 @@
             Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, parameters));
             Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, "dataset", parameters));
             Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>("foo", null, parameters));
+        }
+
+        [TestMethod]
+        public void ShouldCallStoredProcWithoutParametersAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+
+            // Act & Assert
+            databaseApi.CallStoredProcAsync<ProcResponse>("foo", "dataset").Wait();
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync(null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, "dataset"));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>("foo", (string)null));
         }
 
         [TestMethod]

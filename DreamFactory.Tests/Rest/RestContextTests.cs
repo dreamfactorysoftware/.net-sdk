@@ -135,6 +135,19 @@
         }
 
         [TestMethod]
+        public void ShouldSetSessionIdHeader2()
+        {
+            // Arrange
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", "session_id");
+
+            // Act
+            Dictionary<string, object> headers = context.BaseHeaders.Build();
+
+            // Assert
+            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe("session_id");
+        }
+
+        [TestMethod]
         public void ShouldThrowIfSetApplicationNameArgumentIsNull()
         {
             // Arrange

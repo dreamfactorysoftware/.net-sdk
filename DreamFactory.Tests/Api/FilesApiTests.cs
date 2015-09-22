@@ -80,6 +80,19 @@
         }
 
         [TestMethod]
+        public void ShouldUploadFolderAsync()
+        {
+            // Arrange
+            IFilesApi filesApi = CreateFilesApi();
+
+            // Act & Assert
+            filesApi.UploadFolderAsync("calendar", "http://www.7-zip.org/a/7za920.zip", true).Wait();
+
+            Should.Throw<ArgumentNullException>(() => filesApi.UploadFolderAsync(null, string.Empty, false));
+            Should.Throw<ArgumentNullException>(() => filesApi.UploadFolderAsync(string.Empty, null, false));
+        }
+
+        [TestMethod]
         public void ShouldDownloadFolderAsync()
         {
             // Arrange

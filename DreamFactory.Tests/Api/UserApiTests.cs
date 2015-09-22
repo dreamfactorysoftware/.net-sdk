@@ -49,6 +49,29 @@
         }
 
         [TestMethod]
+        public void RegisterShouldChangeBaseHeadersIfLoginTrue()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            Register register = new Register
+            {
+                Email = "test@mail.com",
+                FirstName = "first",
+                LastName = "last",
+                Name = "display",
+                NewPassword = "qwerty"
+            };
+
+            // Act
+            userApi.RegisterAsync(register, true).Wait();
+
+            // Assert
+            Dictionary<string, object> dictionary = headers.Build();
+            dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
+        }
+
+        [TestMethod]
         public void LoginShouldChangeBaseHeaders()
         {
             // Arrange
