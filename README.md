@@ -53,10 +53,11 @@ The API has been built with [unirest-net](http://unirest.io/net.html) library. A
 
 unirest-net, in turn, has the following dependencies:
 
-- `Microsoft.Bcl (≥ 1.1.9)`
+- `Microsoft.Bcl (≥ 1.1.10)`
 - `Microsoft.Bcl.Build (≥ 1.0.21)`
-- `Newtonsoft.Json (≥ 6.0.6)`
-- `Microsoft.Net.Http (≥ 2.1.10)`
+- `Microsoft.Bcl.Async (≥ 1.0.168)`
+- `Newtonsoft.Json (≥ 7.0.1)`
+- `Microsoft.Net.Http (≥ 2.2.29)`
 
 The .NET SDK has been tested on the following platforms:
 

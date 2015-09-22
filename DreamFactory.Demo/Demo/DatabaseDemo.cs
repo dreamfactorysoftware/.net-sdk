@@ -21,7 +21,7 @@
             IDatabaseApi databaseApi = context.Factory.CreateDatabaseApi(ServiceName);
 
             // List available tables
-            IEnumerable<TableInfo> tables = (await databaseApi.GetTableNamesAsync()).ToList();
+            IEnumerable<TableInfo> tables = (await databaseApi.GetTableNamesAsync(true)).ToList();
             Console.WriteLine("Existing tables: {0}", tables.Select(x => x.Name).ToStringList());
             foreach (TableInfo table in tables)
             {
