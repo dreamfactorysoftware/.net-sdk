@@ -55,6 +55,7 @@
     <Compile Include="Api\Implementation\SystemApi.Cors.cs" />
     <Compile Include="Api\Implementation\SystemApi.cs" />
     <Compile Include="Api\Implementation\SystemApi.EmailTemplate.cs" />
+    <Compile Include="Api\Implementation\SystemApi.Lookup.cs" />
     <Compile Include="Api\Implementation\SystemApi.Event.cs" />
     <Compile Include="Api\Implementation\SystemApi.Role.cs" />
     <Compile Include="Api\Implementation\SystemApi.Service.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Api\ISystemApi.cs" />
     <Compile Include="Api\ISystemAppApi.cs" />
     <Compile Include="Api\ISystemAppGroupApi.cs" />
+    <Compile Include="Api\ISystemLookupApi.cs" />
     <Compile Include="Api\ISystemCorsApi.cs" />
     <Compile Include="Api\ISystemEmailTemplateApi.cs" />
     <Compile Include="Api\ISystemEventApi.cs" />
@@ -141,6 +143,8 @@
     <Compile Include="Model\System\Event\EventScriptResponse.cs" />
     <Compile Include="Model\System\Event\RelatedEventScript.cs" />
     <Compile Include="Model\System\Event\RelatedEventSubscriber.cs" />
+    <Compile Include="Model\System\Lookup\LookupRequest.cs" />
+    <Compile Include="Model\System\Lookup\LookupResponse.cs" />
     <Compile Include="Model\System\Lookup\RelatedLookup.cs" />
     <Compile Include="Model\System\RoleServiceAccess\RelatedRoleServiceAccess.cs" />
     <Compile Include="Model\System\Role\RelatedRole.cs" />

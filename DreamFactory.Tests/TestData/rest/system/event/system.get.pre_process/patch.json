@@ -1,8 +1,0 @@
-﻿{
-  "name": "my_custom_script",
-  "type": "v8js",
-  "is_active": true,
-  "affects_process": true,
-  "content": "text",
-  "config": "text"
-}

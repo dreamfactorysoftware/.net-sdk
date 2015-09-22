@@ -42,17 +42,6 @@
                 );
         }
 
-        public Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript)
-        {
-            return base.RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
-                method: HttpMethod.Patch,
-                resource: "event",
-                resourceIdentifier: eventName,
-                query: query,
-                payload: eventScript
-                );
-        }
-
         public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
         {
             return base.RequestAsync<EventScriptResponse>(

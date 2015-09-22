@@ -35,15 +35,6 @@
         Task<EventScriptResponse> CreateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript);
 
         /// <summary>
-        /// Update event script.
-        /// </summary>
-        /// <param name="eventName">Event script identifier.</param>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="eventScript">Event script to update.</param>
-        /// <returns>Event script with queried fields and relationships.</returns>
-        Task<EventScriptResponse> UpdateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript);
-
-        /// <summary>
         /// Delete event script.
         /// </summary>
         /// <param name="eventName">Event script identifier.</param>

@@ -754,5 +754,21 @@
             /// </summary>
             public const string UserLastModified = "user_by_last_modified_by_id";
         }
+
+        /// <summary>
+        /// Related resource names for lookup record.
+        /// </summary>
+        public struct Lookup
+        {
+            /// <summary>
+            /// Related resource name for the user created record.
+            /// </summary>
+            public const string UserCreated = "user_by_created_by_id";
+
+            /// <summary>
+            /// Related resource name for the user modified record.
+            /// </summary>
+            public const string UserLastModified = "user_by_last_modified_by_id";
+        }
     }
 }

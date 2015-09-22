@@ -14,6 +14,7 @@
     using DreamFactory.Model.System.Email;
     using DreamFactory.Model.System.Environment;
     using DreamFactory.Model.System.Event;
+    using DreamFactory.Model.System.Lookup;
     using DreamFactory.Model.System.Role;
     using DreamFactory.Model.System.Script;
     using DreamFactory.Model.System.Service;
@@ -271,24 +272,6 @@
 
             // Act
             EventScriptResponse response = systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), eventScript).Result;
-
-            // Assert
-            response.Name.ShouldBe("my_custom_script");
-            response.Type.ShouldBe("v8js");
-
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync(null, new SqlQuery(), eventScript));
-            Should.Throw<ArgumentNullException>(() => systemApi.CreateEventScriptAsync("system.get.pre_process", new SqlQuery(), null));
-        }
-
-        [TestMethod]
-        public void ShouldUpdateEventScriptAsync()
-        {
-            // Arrange
-            ISystemApi systemApi = CreateSystemApi();
-            EventScriptRequest eventScript = CreateEventScript();
-
-            // Act
-            EventScriptResponse response = systemApi.UpdateEventScriptAsync("system.get.pre_process", new SqlQuery(), eventScript).Result;
 
             // Assert
             response.Name.ShouldBe("my_custom_script");
@@ -883,6 +866,75 @@
 
         #endregion
 
+        #region --- Lookup ---
+
+        [TestMethod]
+        public void ShouldGetLookupsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act
+            List<LookupResponse> lookups = systemApi.GetLookupsAsync(new SqlQuery()).Result.ToList();
+
+            // Assert
+            lookups.Count.ShouldBe(1);
+            lookups.First().Value.ShouldBe("text");
+        }
+
+        [TestMethod]
+        public void ShouldCreateLookupAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            LookupRequest lookup = CreateLookup();
+            lookup.Id = null;
+
+            // Act
+            LookupResponse created = systemApi.CreateLookupsAsync(new SqlQuery(), lookup).Result.First();
+
+            // Assert
+            created.Id.ShouldBe(1);
+
+            Should.Throw<ArgumentException>(() => systemApi.CreateLookupsAsync(new SqlQuery()));
+        }
+
+        [TestMethod]
+        public void ShouldUpdateLookupAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+            LookupRequest lookup = CreateLookup();
+
+            // Act & Assert
+            systemApi.UpdateLookupsAsync(new SqlQuery(), lookup).Wait();
+        }
+
+        [TestMethod]
+        public void ShouldDeleteLookupsAsync()
+        {
+            // Arrange
+            ISystemApi systemApi = CreateSystemApi();
+
+            // Act & Assert
+            systemApi.DeleteLookupsAsync(new SqlQuery(), 1, 2, 3);
+
+            Should.Throw<ArgumentException>(() => systemApi.DeleteLookupsAsync(new SqlQuery()));
+        }
+
+        private static LookupRequest CreateLookup()
+        {
+            return new LookupRequest
+            {
+                Id = 1,
+                Name = "First",
+                Value = "text",
+                Private = false,
+                Description = "text"
+            };
+        }
+
+        #endregion
 
     }
 }

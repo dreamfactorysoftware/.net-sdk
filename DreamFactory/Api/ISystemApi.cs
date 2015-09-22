@@ -12,7 +12,7 @@
     /// </summary>
     public interface ISystemApi : ISystemAdminApi, ISystemAppApi, 
         ISystemAppGroupApi, ISystemCorsApi, ISystemEmailTemplateApi, ISystemEventApi, 
-        ISystemRoleApi, ISystemServiceApi, ISystemUserApi
+        ISystemLookupApi, ISystemRoleApi, ISystemServiceApi, ISystemUserApi
     {
         /// <summary>
         /// Retrieve system configuration properties.
