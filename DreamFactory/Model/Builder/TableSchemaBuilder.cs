@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Model.Builder
 {
     using DreamFactory.Model.Database;
+    using DreamFactory.Serialization;
     using global::System;
     using global::System.Collections.Generic;
     using global::System.Reflection;
@@ -13,6 +14,7 @@
         private readonly List<FieldSchema> fields;
 
         private string tableName;
+        private readonly IPropertyNameResolver propertyNameResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableSchemaBuilder"/> class.
@@ -20,6 +22,17 @@
         public TableSchemaBuilder()
         {
             fields = new List<FieldSchema>();
+            propertyNameResolver = new SnakeCasePropertyNameResolver();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableSchemaBuilder"/> class.
+        /// <param name="propertyNameResolver">Resolver to be used when serializing property names.</param>
+        /// </summary>
+        public TableSchemaBuilder(IPropertyNameResolver propertyNameResolver)
+        {
+            fields = new List<FieldSchema>();
+            this.propertyNameResolver = propertyNameResolver;
         }
 
         /// <inheritdoc />
@@ -36,10 +49,10 @@
 
             FieldSchema field = new FieldSchema
             {
-                name = fieldName,
-                required = required,
-                default_value = defaultValue.ToString().ToLowerInvariant(),
-                type = typeName
+                Name = fieldName,
+                Required = required,
+                DefaultValue = defaultValue.ToString().ToLowerInvariant(),
+                Type = typeName
             };
 
             fields.Add(field);
@@ -51,11 +64,11 @@
         {
             FieldSchema field = new FieldSchema
             {
-                name = fieldName,
-                required = true,
-                type = "id",
-                is_primary_key = true,
-                auto_increment = true
+                Name = fieldName,
+                Required = true,
+                Type = "id",
+                IsPrimaryKey = true,
+                AutoIncrement = true
             };
 
             fields.Add(field);
@@ -65,17 +78,17 @@
         /// <inheritdoc />
         public ITableSchemaBuilder WithFieldsFrom<TRecord>() where TRecord : class, new()
         {
-            PropertyInfo[] properties = typeof(TRecord).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = (typeof(TRecord)).GetTypeInfo().DeclaredProperties;
             foreach (PropertyInfo propertyInfo in properties)
             {
-                if (string.Compare(propertyInfo.Name, "id", StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Compare(propertyNameResolver.Resolve(propertyInfo.Name), "id", StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    if (!propertyInfo.PropertyType.IsValueType)
+                    if (!propertyInfo.PropertyType.GetTypeInfo().IsValueType)
                     {
                         throw new NotSupportedException("Field 'id' must be of a value type");
                     }
 
-                    WithKeyField(propertyInfo.Name);
+                    WithKeyField(propertyNameResolver.Resolve(propertyInfo.Name));
                     continue;
                 }
 
@@ -83,9 +96,9 @@
 
                 FieldSchema field = new FieldSchema
                 {
-                    name = propertyInfo.Name,
-                    required = false,
-                    type = typeName
+                    Name = propertyNameResolver.Resolve(propertyInfo.Name),
+                    Required = false,
+                    Type = typeName
                 };
 
                 fields.Add(field);
@@ -97,7 +110,7 @@
         /// <inheritdoc />
         public TableSchema Build()
         {
-            return new TableSchema { name = tableName, field = fields };
+            return new TableSchema { Name = tableName, Field = fields };
         }
     }
 }

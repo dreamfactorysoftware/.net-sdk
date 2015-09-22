@@ -107,7 +107,7 @@
 
             // Assert
             response.Code.ShouldBe(200);
-            response.Body.ShouldBeEmpty();
+            response.Body.ShouldNotBe(null);
 
             stopServerEvent.Set();
         }

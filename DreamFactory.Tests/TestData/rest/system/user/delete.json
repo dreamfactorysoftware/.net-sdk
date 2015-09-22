@@ -1,0 +1,23 @@
+﻿{
+  "resource": [
+    {
+      "id": 1,
+      "name": "dreamUser",
+      "first_name": "Dream",
+      "last_name": "Factory",
+      "last_login_date": null,
+      "email": "system@factory.com",
+      "is_active": true,
+      "phone": null,
+      "security_question": null,
+      "confirm_code": null,
+      "default_app_id": null,
+      "adldap": null,
+      "oauth_provider": null,
+      "created_date": "2015-09-02 19:55:09",
+      "last_modified_date": "2015-09-02 19:55:09",
+      "created_by_id": 1,
+      "last_modified_by_id": null
+    }
+  ]
+}

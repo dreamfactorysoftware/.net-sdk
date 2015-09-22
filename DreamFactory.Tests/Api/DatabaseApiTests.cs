@@ -1,10 +1,12 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
+    using DreamFactory.Model;
     using DreamFactory.Model.Builder;
     using DreamFactory.Model.Database;
     using DreamFactory.Rest;
@@ -15,8 +17,6 @@
     [TestClass]
     public class DatabaseApiTests
     {
-        private const string BaseAddress = "http://localhost";
-
         #region --- Schema ---
 
         [TestMethod]
@@ -29,23 +29,22 @@
             List<TableInfo> result = databaseApi.GetAccessComponentsAsync().Result.ToList();
 
             // Assert
-            result.Count.ShouldBe(3);
-            result.Any(x => x.name == "todo").ShouldBe(true);
+            result.Count.ShouldBe(4);
+            result.Any(x => x.Name == "_table").ShouldBe(true);
         }
 
         [TestMethod]
         public void ShouldGetTableNamesAsync()
         {
             // Arrange
-            IDatabaseApi databaseApi = CreateDatabaseApi("alt");
+            IDatabaseApi databaseApi = CreateDatabaseApi();
 
             // Act
-            List<string> names = databaseApi.GetTableNamesAsync(true).Result.ToList();
+            List<string> names = databaseApi.GetTableNamesAsync(true).Result.Select(x => x.Name).ToList();
 
             // Assert
-            names.Count.ShouldBe(7);
+            names.Count.ShouldBe(3);
             names.ShouldContain("todo");
-            names.ShouldContain("_schema/todo");
         }
 
         [TestMethod]
@@ -57,6 +56,8 @@
 
             // Act & Assert
             databaseApi.CreateTableAsync(schema).Wait();
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CreateTableAsync(null));
         }
 
         [TestMethod]
@@ -68,6 +69,8 @@
 
             // Act & Assert
             databaseApi.UpdateTableAsync(schema).Wait();
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateTableAsync(null));
         }
 
         [TestMethod]
@@ -81,6 +84,8 @@
 
             // Assert
             success.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteTableAsync(null));
         }
 
         [TestMethod]
@@ -93,7 +98,9 @@
             TableSchema schema = databaseApi.DescribeTableAsync("staff").Result;
 
             // Assert
-            schema.name.ShouldBe("staff");
+            schema.Name.ShouldBe("staff");
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.DescribeTableAsync(null));
         }
 
         [TestMethod]
@@ -106,7 +113,10 @@
             FieldSchema schema = databaseApi.DescribeFieldAsync("staff", "field").Result;
 
             // Assert
-            schema.name.ShouldBe("field");
+            schema.Name.ShouldBe("field");
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.DescribeFieldAsync(null, "field"));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DescribeFieldAsync("staff", null));
         }
 
         #endregion
@@ -118,16 +128,20 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
-            IEnumerable<StaffRecord> records = CreateStaffRecords();
-            SqlQuery query = new SqlQuery { fields = "*" };
+            IEnumerable<StaffRecord> records = CreateStaffRecords().ToList();
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
-            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.ToList();
+            List<StaffRecord> created = databaseApi.CreateRecordsAsync("staff", records, query).Result.Records;
 
             // Assert
             created.Count.ShouldBe(3);
-            created.First().uid.ShouldBe(1);
-            created.Last().uid.ShouldBe(3);
+            created.First().Uid.ShouldBe(1);
+            created.Last().Uid.ShouldBe(3);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CreateRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CreateRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CreateRecordsAsync("staff", records, null));
         }
 
         [TestMethod]
@@ -135,10 +149,20 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
-            IEnumerable<StaffRecord> records = CreateStaffRecords().Skip(1);
+            IEnumerable<StaffRecord> records = CreateStaffRecords().Skip(1).ToList();
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
-            // Act & Assert
-            databaseApi.UpdateRecordsAsync("staff", records).Wait();
+            // Act
+            List<StaffRecord> updated = databaseApi.UpdateRecordsAsync("staff", records, query).Result.Records;
+
+            // Assert
+            updated.Count.ShouldBe(2);
+            updated.First().Uid.ShouldBe(2);
+            updated.Last().Uid.ShouldBe(3);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.UpdateRecordsAsync("staff", records, null));
         }
 
         [TestMethod]
@@ -146,15 +170,18 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
-            SqlQuery query = new SqlQuery { fields = "*" };
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
             // Act
-            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.ToList();
+            List<StaffRecord> records = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result.Records.ToList();
 
             // Assert
             records.Count.ShouldBe(3);
-            records.First().uid.ShouldBe(1);
-            records.Last().uid.ShouldBe(3);
+            records.First().Uid.ShouldBe(1);
+            records.Last().Uid.ShouldBe(3);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>(null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.GetRecordsAsync<StaffRecord>("staff", null));
         }
 
         [TestMethod]
@@ -162,10 +189,35 @@
         {
             // Arrange
             IDatabaseApi databaseApi = CreateDatabaseApi();
-            IEnumerable<StaffRecord> records = CreateStaffRecords().Take(1);
+            IEnumerable<StaffRecord> records = CreateStaffRecords().Take(1).ToList();
+            SqlQuery query = new SqlQuery { Fields = "*" };
 
-            // Act & Assert
-            databaseApi.DeleteRecordsAsync("staff", records).Wait();
+            // Act
+            List<StaffRecord> deleted = databaseApi.DeleteRecordsAsync("staff", records, query).Result.Records;
+
+            // Assert
+            deleted.Count.ShouldBe(1);
+            deleted.First().Uid.ShouldBe(0);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync(null, records, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync("staff", (List<StaffRecord>)null, query));
+            Should.Throw<ArgumentNullException>(() => databaseApi.DeleteRecordsAsync("staff", records, null));
+        }
+
+        [TestMethod]
+        public void ShouldReturnMetadataWhenQueryingRecordsAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+            SqlQuery query = new SqlQuery { Fields = "*", IncludeCount = true, IncludeSchema = true };
+
+            // Act
+            DatabaseResourceWrapper<StaffRecord> result = databaseApi.GetRecordsAsync<StaffRecord>("staff", query).Result;
+
+            // Assert
+            result.Meta.ShouldNotBe(null);
+            result.Meta.Count.ShouldBe(3);
+            result.Meta.Schema.ShouldNotBe(null);
         }
 
         #endregion
@@ -215,10 +267,30 @@
             ProcResponse result = databaseApi.CallStoredProcAsync<ProcResponse>("foo", "dataset", parameters).Result;
 
             // Assert
-            result.foo.ShouldBe(123);
-            result.bar.ShouldBe("test");
-            result.dataset.Count.ShouldBe(2);
-            result.dataset.Any(x => x.first_name == "Selena").ShouldBe(true);
+            result.Foo.ShouldBe(123);
+            result.Bar.ShouldBe("test");
+            result.Dataset.Count.ShouldBe(2);
+            result.Dataset.Any(x => x.FirstName == "Selena").ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync(null, parameters));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, parameters));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, "dataset", parameters));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>("foo", null, parameters));
+        }
+
+        [TestMethod]
+        public void ShouldCallStoredProcWithoutParametersAsync()
+        {
+            // Arrange
+            IDatabaseApi databaseApi = CreateDatabaseApi();
+
+            // Act & Assert
+            databaseApi.CallStoredProcAsync<ProcResponse>("foo", "dataset").Wait();
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync(null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>(null, "dataset"));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredProcAsync<ProcResponse>("foo", (string)null));
         }
 
         [TestMethod]
@@ -236,10 +308,14 @@
             ProcResponse result = databaseApi.CallStoredFuncAsync<ProcResponse>("foo", "dataset", parameters).Result;
 
             // Assert
-            result.foo.ShouldBe(123);
-            result.bar.ShouldBe("test");
-            result.dataset.Count.ShouldBe(2);
-            result.dataset.Any(x => x.first_name == "Selena").ShouldBe(true);
+            result.Foo.ShouldBe(123);
+            result.Bar.ShouldBe("test");
+            result.Dataset.Count.ShouldBe(2);
+            result.Dataset.Any(x => x.FirstName == "Selena").ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredFuncAsync<ProcResponse>(null, parameters));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredFuncAsync<ProcResponse>(null, "dataset", parameters));
+            Should.Throw<ArgumentNullException>(() => databaseApi.CallStoredFuncAsync<ProcResponse>("foo", null, parameters));
         }
 
         #endregion
@@ -247,7 +323,7 @@
         private static IDatabaseApi CreateDatabaseApi(string alt = null)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade(alt);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new DatabaseApi(address, httpFacade, new JsonContentSerializer(), headers, "db");
         }
@@ -260,26 +336,25 @@
 
         private static IEnumerable<StaffRecord> CreateStaffRecords()
         {
-            yield return new StaffRecord { first_name = "Andrei", last_name = "Smirnov", age = 35, active = true };
-            yield return new StaffRecord { first_name = "Mike", last_name = "Meyers", age = 33, active = false };
-            yield return new StaffRecord { first_name = "Selena", last_name = "Gomez", age = 24, active = false };
+            yield return new StaffRecord { FirstName = "Andrei", LastName = "Smirnov", Age = 35, Active = true };
+            yield return new StaffRecord { FirstName = "Mike", LastName = "Meyers", Age = 33, Active = false };
+            yield return new StaffRecord { FirstName = "Selena", LastName = "Gomez", Age = 24, Active = false };
         }
 
-        // ReSharper disable InconsistentNaming
         internal class StaffRecord
         {
-            public int uid { get; set; }
-            public string first_name { get; set; }
-            public string last_name { get; set; }
-            public int age { get; set; }
-            public bool active { get; set; }
+            public int Uid { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int Age { get; set; }
+            public bool Active { get; set; }
         }
 
         internal class ProcResponse
         {
-            public List<StaffRecord> dataset { get; set; }
-            public int foo { get; set; }
-            public string bar { get; set; }
+            public List<StaffRecord> Dataset { get; set; }
+            public int Foo { get; set; }
+            public string Bar { get; set; }
         }
     }
 }

@@ -1,0 +1,56 @@
+﻿@using DreamFactory.AddressBook.Extensions
+
+<div>
+    <ul class="pagination" style="margin: 0">
+        @if (ViewBag.Page == 1)
+        {
+            <li class="disabled">
+                <a aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = (ViewBag.Page - 2) * ViewBag.PageSize }))" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        }
+
+        @for (int i = 0; i < (ViewBag.TotalResults / ViewBag.PageSize) + (ViewBag.TotalResults % ViewBag.PageSize == 0 && ViewBag.TotalResults != 0 ? 0 : 1); i++)
+        {
+            if (ViewBag.Page == i + 1)
+            {
+                <li class="disabled">
+                    <a>@(i + 1)</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.PageSize*i }))">@(i + 1)</a>
+                </li>
+            }
+        }
+
+        @if (ViewBag.Page == ViewBag.TotalResults/ViewBag.PageSize + 1)
+        {
+            <li class="disabled">
+                <a aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("List", Model, Request.QueryString.ToRouteValues(new { Offset = ViewBag.Page * ViewBag.PageSize }))" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
+
+    </ul>
+</div>

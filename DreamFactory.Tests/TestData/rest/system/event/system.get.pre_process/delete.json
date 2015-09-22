@@ -1,0 +1,12 @@
+﻿{
+  "name": "my_custom_script",
+  "type": "v8js",
+  "is_active": true,
+  "affects_process": true,
+  "content": "text",
+  "config": "text",
+  "created_date": "2015-08-31 18:14:09",
+  "last_modified_date": "2015-08-31 18:14:09",
+  "created_by_id": 1,
+  "last_modified_by_id": null
+}

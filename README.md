@@ -5,6 +5,37 @@
 
 The .NET SDK provides classes and interfaces to access the DreamFactory REST API.
 
+## Quick links
+- [Solution structure](#solution-structure)
+- [Distribution](#distribution)
+	- [Dependencies](#dependencies)
+	- [Building from Source Code](#building-from-source-code)
+- [Demo](#demo)
+	- [Running the Console Demo](#running-the-console-demo)
+	- [Running the Address Book demo](#running-the-address-book-demo)
+- [API overview](#api)
+	- [User](#user-api)
+	- [CustomSettings](#customsettings-api)
+	- [Files](#files-api)
+	- [Database](#database-api)
+	- [Email](#email-api)
+	- [System](#system-api)
+	
+## Solution structure
+
+The Visual Studio solution has these projects:
+
+* DreamFactory       : the API library
+* DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
+* DreamFactory.Tests : Unit Tests (MSTest)
+* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
+
+The solution folder also contains:
+
+* ReSharper settings file (team-shared),
+* NuGet package specification file,
+* this README file.
+
 ## Distribution
 
 The package can be either installed from [nuget.org](https://www.nuget.org/packages/DreamFactoryNet) or simply built from the source code with Visual Studio.
@@ -22,10 +53,11 @@ The API has been built with [unirest-net](http://unirest.io/net.html) library. A
 
 unirest-net, in turn, has the following dependencies:
 
-- `Microsoft.Bcl (≥ 1.1.9)`
+- `Microsoft.Bcl (≥ 1.1.10)`
 - `Microsoft.Bcl.Build (≥ 1.0.21)`
-- `Newtonsoft.Json (≥ 6.0.6)`
-- `Microsoft.Net.Http (≥ 2.1.10)`
+- `Microsoft.Bcl.Async (≥ 1.0.168)`
+- `Newtonsoft.Json (≥ 7.0.1)`
+- `Microsoft.Net.Http (≥ 2.2.29)`
 
 The .NET SDK has been tested on the following platforms:
 
@@ -33,32 +65,6 @@ The .NET SDK has been tested on the following platforms:
 * Windows 8.1 with Visual Studio 2013
 * Windows 10 with Visual Studio 2015 CTP
 * Mac OS X (Yosemite) with Xamarin 
-
-### Running the Demo
-
-To run the Demo, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-The demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
-```csharp
-	internal const string BaseAddress = "http://localhost";
-	internal const string DefaultApp = "todoangular";
-	internal const string Email = "admin@mail.com";
-	internal const string Password = "dream";
-```
-
- > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
-
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* Open Program.cs and modify the settings;
-* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
-* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
-* A console window will appear with demo output;
-* If the demo has been completed successfully, you will see the total number of tests executed. 
-
-### Running Unit Tests
-
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* In Visual Studio main menu, select *TEST -> Run -> All Tests*;
-* When testing is done, you will see *Test Explorer* window with testing status. 
 
 ### Building from Source Code
 
@@ -70,19 +76,76 @@ When changing the target framework version, pay attention to the dependent packa
 	update-package -reinstall -ignoreDependencies
 ```
 
-## Solution structure
+## Demo
 
-The Visual Studio solution has these projects:
+To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
 
-* DreamFactory       : the API library
-* DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
-* DreamFactory.Tests : Unit Tests (MSTest)
+### Running the Console Demo
 
-The solution folder also contains:
+Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+```csharp
+	internal const string BaseAddress = "http://localhost:8080";
+	internal const string AppName = "<app_name>";
+	internal const string AppApiKey = "<app_api_key>";
+	internal const string Email = "<user_email>";
+	internal const string Password = "<user_password>";
+```
 
-* ReSharper settings file (team-shared),
-* NuGet package specification file,
-* this README file.
+ > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
+
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* Open Program.cs and modify the settings;
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
+* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
+* A console window will appear with demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed. 
+
+### Running the Address Book Demo
+
+Configure the DreamFactory instance to run the app:
+
+- Enable [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) for development purposes.
+	- In the admin console, navigate to the Config tab and click on CORS in the left sidebar.
+	- Click Add.
+	- Set Origin, Paths, and Headers to *.
+	- Set Max Age to 0.
+	- Allow all HTTP verbs and check the Enabled box.
+	- Click update when you are done.
+	- More info on setting up CORS is available [here](https://github.com/dreamfactorysoftware/dsp-core/wiki/CORs-Configuration).
+
+- Create a default role for new users and enable open registration
+	- In the admin console, click the Roles tab then click Create in the left sidebar.
+	- Enter a name for the role and check the Active box.
+	- Go to the Access tab.
+	- Add a new entry under Service Access (you can make it more restrictive later).
+		- set Service = All
+		- set Component = *
+		- check all HTTP verbs under Access
+		- set Requester = API
+	- Click Create Role.
+	- Click the Services tab, then edit the user service. Go to Config and enable Allow Open Registration.
+	- Set the Open Reg Role Id to the name of the role you just created.
+	- Make sure Open Reg Email Service Id is blank, so that new users can register without email confirmation.
+	- Save changes.
+
+- Import the package file for the app.
+	- From the Apps tab in the admin console, click Import and the DreamFactory.AddressBook project for add_dotnet.dfpkg in App_Package folder. The Address Book package contains the application description, schemas, and sample data.
+	- Leave storage service and folder blank because this app will be running locally.
+	- Click the Import button. If successful, your app will appear on the Apps tab. You may have to refresh the page to see your new app in the list.
+	
+- Make sure you have a SQL database service named 'db'. Depending on how you installed DreamFactory you may or may not have a 'db' service already available on your instance. You can add one by going to the Services tab in the admin console and creating a new SQL service. Make sure you set the name to 'db'.
+
+- The demo also requires a couple of constants to be specified in DreamFactoryContext.cs file located in the DreamFactory.AddressBook project. Open the file and modify the settings to match your setup.
+```csharp
+	public const string BaseAddress = "http://localhost:8080";
+	public const string AppName = "<app_name>";
+	public const string AppApiKey= "<app_api_key>";
+	public const RestApiVersion Version = RestApiVersion.V2;
+	public const string DbServiceName = "db";
+	public const string FileServiceName = "files";
+```
+
+You can now run the app by starting the DreamFactory.AddressBook project in your browser. When the app starts up you can register a new user, or log in as an existing user (ex. admin you've set up first time you opened DreamFactory admin app).
 
 ## API
 
@@ -125,11 +188,11 @@ The SDK comes with unirest-net implementation of `IHttpFacade` - the `UnirestHtt
 Here is an [example](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/HttpDemo.cs):
 
 ```csharp
-    string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
-    IHttpRequest request = new HttpRequest(HttpMethod.Get, url);
-    IHttpFacade httpFacade = new UnirestHttpFacade();
-    IHttpResponse response = await httpFacade.SendAsync(request);
-    Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
+	string url = "https://www.random.org/cgi-bin/randbyte?nbytes=16&format=h";
+	IHttpRequest request = new HttpRequest(HttpMethod.Get, url);
+	IHttpFacade httpFacade = new UnirestHttpFacade();
+	IHttpResponse response = await httpFacade.SendAsync(request);
+	Console.WriteLine("Response CODE = {0}, BODY = {1}", response.Code, response.Body);
 ```
 
 ### DreamFactory API overview
@@ -139,17 +202,17 @@ Each DreamFactory's service has a corresponding interface that exposes all funct
 The service instances are created with `IRestContext.Factory` methods:
 
 ```csharp
-    IRestContext context = new RestContext(BaseAddress);
-    IUserApi userApi = context.Factory.CreateUserApi();
-    Session session = await userApi.LoginAsync("admin", "user@mail.com", "qwerty");
-    Console.WriteLine("Logged in as {0}", session.display_name);
+	IRestContext context = new RestContext(BaseAddress);
+	IUserApi userApi = context.Factory.CreateUserApi();
+	Session session = await userApi.LoginAsync("demo", "api_key", "user@mail.com", "qwerty");
+	Console.WriteLine("Logged in as {0}", session.display_name);
 ```
 
 Specify service name for creating an interface to a named service:
 ```csharp
-    IRestContext context = new RestContext(BaseAddress);
-    IFilesApi filesApi = context.Factory.CreateFilesApi("files");
-    await filesApi.CreateFileAsync(...);
+	IRestContext context = new RestContext(BaseAddress);
+	IFilesApi filesApi = context.Factory.CreateFilesApi("files");
+	await filesApi.CreateFileAsync(...);
 ```
 
 #### Serialization
@@ -165,7 +228,7 @@ Default `SqlQuery` constructor populates the single property: *fields=**. This r
 
 #### REST API versioning
 
-Supported API versions defined by `RestApiVersion` enumeration. `V1` is used by default.
+Supported API versions defined by `RestApiVersion` enumeration. `V2` is used by default.
 The SDK uses version for building the complete URL, e.g. /rest for V1 and /api/v2 for V2.
 Note that building the URL is done transparently to the users.
 
@@ -184,13 +247,14 @@ See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/mas
 
 ##### Notes on user session management
 
-All API calls require Application-Name header to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
+All API calls require Application-Name header as well as Application-Api-Key to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
 
-* Both Application-Name and Session-ID headers are being set upon `IUserApi.LoginAsync()` completion,
-* Session-ID header gets removed upon `IUserApi.LogoutAsync()` completion,
-* Session-ID header gets updated if another login is made during `passwordChange()` call.
+* Both Application-Name and Application-Api-Key are being set when initializng `RestContaxt`.
+* Session-ID header is set upon `IUserApi.LoginAsync()` or `ISystemApi.LoginAdminAsync()` completion,
+* Session-ID header gets removed upon `IUserApi.LogoutAsync()` or `ISystemApi.LogoutAdminAsync()` completion,
+* Session-ID header gets updated if another login is made during `ChangePasswordAsync()` or `ChangeAdminPasswordAsync()` call.
 
-To use/set another Application-Name, simply call `LoginAsync` again with a new `applicationName` parameter.
+To use/set another Application-Name and Application-Api-Key you have to instantiate new `RestContaxt`.
 
 #### CustomSettings API
 
@@ -198,8 +262,7 @@ To use/set another Application-Name, simply call `LoginAsync` again with a new `
 
 The API can be created for user and system namespace.
 
-Because the SDK is targeting .NET users, the primary focus is made towards strong-typing, rather than duck-typing.
-To deal with a custom setting, a user must have the corresponding DTO class matching the setting's schema.
+Custom settings are key value pairs, value being string type. Therefore if you wish to save a DTO as a setting you will have to serialize the DTO prior to creating `Custom Request` .
 Please refer to the demo for sample API usage.
 
 #### Files API
@@ -207,13 +270,13 @@ Please refer to the demo for sample API usage.
 > See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/FilesDemo.cs)
 
 Summary on supported features:
-* CRUD operations on containers, folders and files,
+* CRUD operations on folders and files,
 * Bulk files uploading/downloading in ZIP format,
 * Text and binary files reading/writing.
 
 ##### Notes on metadata support
 
-Reading/Writing of metadata associated with file entities (container, folder, file) are not supported yet.
+Reading/Writing of metadata associated with file entities (folder, file) are not supported yet.
 
 #### Database API
 
@@ -223,20 +286,21 @@ Reading/Writing of metadata associated with file entities (container, folder, fi
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
 ```csharp
-    // Your custom POCO
-    class StaffRecord
-    {
-        public int uid { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public int age { get; set; }
+	// Your custom POCO
+	class StaffRecord
+	{
+		public int Uid { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public int Age { get; set; }
 	}
 
 	// Create tabe schema from StaffRecord type
 	ITableSchemaBuilder builder = new TableSchemaBuilder();
-    builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+	builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
+For more advanced scenarios and relationship building you should build up your own TableSchema object.
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
 Related entities (records) are not retrieved (see related query parameter).
 
@@ -275,7 +339,6 @@ EmailRequest request = new EmailRequestBuilder()
 ##### Current limitations
 
 * Reading/writing of metadata related to system records are not supported.
-* `EnvironmentResponse` has `PhpInfoSection` object is ignored on read.
-* Related entities are not retrieved (see related query parameter).
-* Unregister event listeners is not supported.
-* Provider and UserProvider APIs are not supported.
+* Some related entities are not retrieved (see related query parameter).
+* Some related entities are retrieved as objects and are not strongly typed.
+* Some related entities that are strongly typed do not have any properties.

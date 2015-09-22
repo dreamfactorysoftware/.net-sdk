@@ -41,7 +41,7 @@
         /// Gets services exposed from the current DSP.
         /// </summary>
         /// <returns>Sequence of service descriptors.</returns>
-        Task<IEnumerable<Service>> GetServicesAsync();
+        Task<IEnumerable<string>> GetServicesAsync();
 
         /// <summary>
         /// Gets resources available for the service.

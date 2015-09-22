@@ -1,0 +1,83 @@
+﻿@using DreamFactory.AddressBook.Extensions
+@using DreamFactory.AddressBook.Models.Entities
+@model DreamFactory.AddressBook.Models.ContactViewModel
+
+@{
+    ViewBag.Title = "Edit contact details for " + string.Format("{0} {1}", Model.Contact.FirstName, Model.Contact.LastName);
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    <a href="@Url.Action("Create", "ContactInfo", Request.QueryString.ToRouteValues(new { ContactId = Url.RequestContext.RouteData.Values["id"], ReturnUrl = Request.Url }))">Add contact info</a>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-8">
+        <section id="editForm">
+            @using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", autocomplete = "off" }))
+            {
+                @Html.HiddenFor(x => x.GroupId)
+                @Html.HiddenFor(x => x.Contact.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contact.FirstName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Contact.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contact.LastName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Contact.LastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Change image", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ImageUpload, new { type = "file", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ImageUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contact.Twitter, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Contact.Twitter, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Twitter, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contact.Skype, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Contact.Skype, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Skype, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contact.Notes, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.Contact.Notes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Contact.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Contact infos", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @foreach (ContactInfo contactInfo in Model.ContactInfos)
+                        {
+                            <a href="@Url.Action("Edit", "ContactInfo", Request.QueryString.ToRouteValues(new { Id = contactInfo.Id, ReturnUrl = Request.Url }))" style="display: block; margin: 10px 0">Edit @contactInfo.InfoType</a>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-primary"/>
+                        <a href="@Url.Action("List", "Contact", Request.QueryString.ToRouteValues())" class="btn btn-default">Cancel</a>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>

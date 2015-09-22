@@ -1,0 +1,16 @@
+﻿{
+  "resource": [
+    {
+      "id": 1,
+      "path": "http://domain.foo",
+      "origin": "http://domain.foo",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "path": "http://domain.bar",
+      "origin": "http://domain.bar",
+      "enabled": true
+    }
+  ]
+}

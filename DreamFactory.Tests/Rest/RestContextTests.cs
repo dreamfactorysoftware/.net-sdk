@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Rest
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using DreamFactory.Http;
@@ -13,15 +14,13 @@
     [TestClass]
     public class RestContextTests
     {
-        private const string BaseAddress = "http://localhost";
-
         [TestMethod]
         public void ShouldCreateHttpFacade()
         {
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
             
             // Assert
             context.HttpFacade.ShouldNotBe(null);
@@ -33,7 +32,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
 
             // Assert
             context.ContentSerializer.ShouldNotBe(null);
@@ -45,7 +44,7 @@
             // Arrange
 
             // Act
-            RestContext context = new RestContext(BaseAddress);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key");
 
             // Assert
             context.BaseHeaders.ShouldNotBe(null);
@@ -58,7 +57,7 @@
             IHttpFacade facade = Mock.Of<IHttpFacade>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, facade, new JsonContentSerializer());
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, facade, new JsonContentSerializer());
 
             // Assert
             context.HttpFacade.ShouldBeSameAs(facade);
@@ -71,7 +70,7 @@
             IContentSerializer serializer = Mock.Of<IContentSerializer>();
 
             // Act
-            RestContext context = new RestContext(BaseAddress, Mock.Of<IHttpFacade>(), serializer);
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, Mock.Of<IHttpFacade>(), serializer);
 
             // Assert
             context.ContentSerializer.ShouldBeSameAs(serializer);
@@ -84,12 +83,12 @@
             IRestContext context = CreateRestContext();
 
             // Act
-            List<Service> services = context.GetServicesAsync().Result.ToList();
+            List<string> services = context.GetServicesAsync().Result.ToList();
 
             // Assert
             services.ShouldNotBeEmpty();
-            services.ShouldContain(x => x.api_name == "files");
-            services.ShouldContain(x => x.api_name == "email");
+            services.ShouldContain(x => x == "files");
+            services.ShouldContain(x => x == "email");
         }
 
         [TestMethod]
@@ -103,9 +102,9 @@
 
             // Assert
             resources.ShouldNotBeEmpty();
-            resources.ShouldContain(x => x.name == "password");
-            resources.ShouldContain(x => x.name == "profile");
-            resources.ShouldContain(x => x.name == "session");
+            resources.ShouldContain(x => x.Name == "password");
+            resources.ShouldContain(x => x.Name == "profile");
+            resources.ShouldContain(x => x.Name == "session");
         }
 
         [TestMethod]
@@ -119,13 +118,60 @@
 
             // Assert
             Dictionary<string, object> headers = context.BaseHeaders.Build();
-            headers[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("foo");
+            headers[HttpHeaders.FolderNameHeader].ShouldBe("foo");
+        }
+
+        [TestMethod]
+        public void ShouldSetSessionIdHeader()
+        {
+            // Arrange
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", "session_id", new TestDataHttpFacade(), new JsonContentSerializer());
+
+            // Act
+            Dictionary<string, object> headers = context.BaseHeaders.Build();
+
+            // Assert
+            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe("session_id");
+        }
+
+        [TestMethod]
+        public void ShouldSetSessionIdHeader2()
+        {
+            // Arrange
+            RestContext context = new RestContext("http://base_address", "app_name", "app_api_key", "session_id");
+
+            // Act
+            Dictionary<string, object> headers = context.BaseHeaders.Build();
+
+            // Assert
+            headers[HttpHeaders.DreamFactorySessionTokenHeader].ShouldBe("session_id");
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfSetApplicationNameArgumentIsNull()
+        {
+            // Arrange
+            IRestContext context = CreateRestContext();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => context.SetApplicationName(null));
+        }
+
+        [TestMethod]
+        public void ShouldThrowIfAnyArgumentsAreNull()
+        {
+            // Arrange, Act & Assert
+            Should.Throw<ArgumentException>(() => new RestContext(null, "app_name", "app_api_key", null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", null, "app_api_key", null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", null, null, new TestDataHttpFacade(), new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", "app_api_key", null, null, new JsonContentSerializer()));
+            Should.Throw<ArgumentNullException>(() => new RestContext("http://base_address", "app_name", "app_api_key", null, new TestDataHttpFacade(), null));
         }
 
         private static IRestContext CreateRestContext()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext(BaseAddress, httpFacade, new JsonContentSerializer());
+            IRestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, httpFacade, new JsonContentSerializer());
             return context;
         }
     }

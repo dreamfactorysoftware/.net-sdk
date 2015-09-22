@@ -10,15 +10,16 @@
     {
         public async Task RunAsync(IRestContext context)
         {
-            IUserApi userApi = context.Factory.CreateUserApi();
+            ISystemApi systemApi = context.Factory.CreateSystemApi();
 
             try
             {
-                Session session = await userApi.LoginAsync(Program.DefaultApp, Program.Email, Program.Password);
-                Console.WriteLine("Logged in as {0}", session.display_name);
+                Session session = await systemApi.LoginAdminAsync(Program.Email, Program.Password);
+                Console.WriteLine("Logged in as {0}", session.Name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Unfortunately, something went wrong.");
                 Console.WriteLine("Please check the following:");

@@ -1,29 +1,45 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.System.Environment
+﻿namespace DreamFactory.Model.System.Environment
 {
+    using DreamFactory.Model.System.App;
+    using global::System.Collections.Generic;
+    using Newtonsoft.Json;
+
     /// <summary>
     /// EnvironmentResponse.
     /// </summary>
     public class EnvironmentResponse
     {
-        /// <summary>
-        /// server.
-        /// </summary>
-        public ServerSection server { get; set; }
 
         /// <summary>
-        /// release.
+        /// Platform info.
         /// </summary>
-        public ReleaseSection release { get; set; }
+        public PlatformSection Platform { get; set; }
 
         /// <summary>
-        /// platform.
+        /// Authentication metadata.
         /// </summary>
-        public PlatformSection platform { get; set; }
+        public object Authentication { get; set; }
 
         /// <summary>
-        /// php_info.
+        /// Server metadata.
         /// </summary>
-        public PhpInfoSection php_info { get; set; }
+        public object Server { get; set; }
+
+        /// <summary>
+        /// Config metadata.
+        /// </summary>
+        public object Config { get; set; }
+
+        /// <summary>
+        /// Related app groups.
+        /// </summary>
+        [JsonProperty(PropertyName = RelatedResources.Environment.AppsInAppGroups)]
+        public List<RelatedApp> AppsInAppGroups { get; set; }
+
+        /// <summary>
+        /// Unrelated app groups.
+        /// </summary>
+        [JsonProperty(PropertyName = RelatedResources.Environment.AppsNotInAppGroups)]
+        public List<RelatedApp> AppsNotInAppGroups { get; set; }
     }
 }

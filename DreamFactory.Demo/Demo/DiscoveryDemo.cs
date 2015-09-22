@@ -11,11 +11,11 @@
         public async Task RunAsync(IRestContext context)
         {
             // List available services
-            IEnumerable<Service> services = context.GetServicesAsync().Result;
+            IEnumerable<string> services = context.GetServicesAsync().Result;
             Console.WriteLine("Available services:");
-            foreach (Service service in services)
+            foreach (string service in services)
             {
-                Console.WriteLine("{0}:\t{1}", service.api_name, service.name);
+                Console.WriteLine("\t/{0}", service);
             }
 
             // List resources
@@ -24,7 +24,7 @@
             Console.WriteLine("/user resources:");
             foreach (Resource resource in resources)
             {
-                Console.WriteLine("\t/{0}", resource.name);
+                Console.WriteLine("\t/{0}", resource.Name);
             }
 
             resources = await context.GetResourcesAsync("files");
@@ -32,7 +32,7 @@
             Console.WriteLine("/files resources:");
             foreach (Resource resource in resources)
             {
-                Console.WriteLine("\t/{0}", resource.name);
+                Console.WriteLine("\t/{0}", resource.Name);
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿namespace DreamFactory.Tests.Http
 {
+    using System;
     using System.Collections.Generic;
+    using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
     using DreamFactory.Rest;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,12 +23,12 @@
             };
 
             // Act
-            HttpAddress addressV1 = new HttpAddress("http://localhost", RestApiVersion.V1, resources, parameters);
-            HttpAddress addressV2 = new HttpAddress("http://localhost", RestApiVersion.V2, resources, parameters);
+            HttpAddress addressV1 = new HttpAddress("http://base_address", RestApiVersion.V1, resources, parameters);
+            HttpAddress addressV2 = new HttpAddress("http://base_address", RestApiVersion.V2, resources, parameters);
 
             // Assert
-            addressV1.Build().ShouldBe("http://localhost/rest/user/session?one=1&two=true");
-            addressV2.Build().ShouldBe("http://localhost/api/v2.0/user/session?one=1&two=true");
+            addressV1.Build().ShouldBe("http://base_address" + "/rest/user/session?one=1&two=true");
+            addressV2.Build().ShouldBe("http://base_address" + "/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]
@@ -39,7 +41,7 @@
             address = address.WithVersion(RestApiVersion.V2);
 
             // Assert
-            address.Build().ShouldBe("http://localhost/api/v2.0/user/session?one=1&two=true");
+            address.Build().ShouldBe("http://base_address/api/v2/user/session?one=1&two=true");
         }
 
         [TestMethod]
@@ -52,7 +54,7 @@
             address = address.WithResource("add");
 
             // Assert
-            address.Build().ShouldBe("http://localhost/rest/user/session/add?one=1&two=true");
+            address.Build().ShouldBe("http://base_address/rest/user/session/add?one=1&two=true");
         }
 
         [TestMethod]
@@ -65,7 +67,7 @@
             address = address.WithParameter("new", "value");
 
             // Assert
-            address.Build().ShouldBe("http://localhost/rest/user/session?one=1&two=true&new=value");
+            address.Build().ShouldBe("http://base_address/rest/user/session?one=1&two=true&new=value");
         }
 
         [TestMethod]
@@ -98,6 +100,16 @@
             address.Build().ShouldBe(result);
         }
 
+        [TestMethod]
+        public void ShouldThrowIfSqlQueryNull()
+        {
+            // Arrange
+            IHttpAddress address = CreateTestHttpAddress();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => address.WithSqlQuery(null));
+        }
+
         private static IHttpAddress CreateTestHttpAddress()
         {
             List<string> resources = new List<string> { "user", "session" };
@@ -107,7 +119,7 @@
                 { "two", true }
             };
 
-            return new HttpAddress("http://localhost", RestApiVersion.V1, resources, parameters);
+            return new HttpAddress("http://base_address", RestApiVersion.V1, resources, parameters);
         }
     }
 }

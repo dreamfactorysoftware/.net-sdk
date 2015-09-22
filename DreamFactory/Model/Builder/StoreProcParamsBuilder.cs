@@ -29,10 +29,10 @@ namespace DreamFactory.Model.Builder
 
             StoredProcParam parameter = new StoredProcParam
             {
-                name = name,
-                param_type = "IN",
-                type = TypeMap.GetTypeName(typeof (TParam)),
-                value = value.ToString(),
+                Name = name,
+                ParamType = "IN",
+                Type = TypeMap.GetTypeName(typeof (TParam)),
+                Value = value.ToString(),
             };
 
             parameters.Add(parameter);
@@ -50,11 +50,11 @@ namespace DreamFactory.Model.Builder
 
             StoredProcParam parameter = new StoredProcParam
             {
-                name = name,
-                param_type = "INOUT",
-                type = TypeMap.GetTypeName(typeof (TParam)),
-                value = Equals(value, default(TParam)) ? null : value.ToString(),
-                length = length
+                Name = name,
+                ParamType = "INOUT",
+                Type = TypeMap.GetTypeName(typeof (TParam)),
+                Value = Equals(value, default(TParam)) ? null : value.ToString(),
+                Length = length
             };
 
             parameters.Add(parameter);
@@ -72,10 +72,10 @@ namespace DreamFactory.Model.Builder
 
             StoredProcParam parameter = new StoredProcParam
             {
-                name = name,
-                param_type = "OUT",
-                type = TypeMap.GetTypeName(typeof(TParam)),
-                length = length
+                Name = name,
+                ParamType = "OUT",
+                Type = TypeMap.GetTypeName(typeof(TParam)),
+                Length = length
             };
 
             parameters.Add(parameter);

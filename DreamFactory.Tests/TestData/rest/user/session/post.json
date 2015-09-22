@@ -1,66 +1,13 @@
 ﻿{
-  "id": 2,
-  "display_name": "Andrei Smirnov",
-  "first_name": "Andrei",
-  "last_name": "Smirnov",
-  "email": "user@mail.com",
-  "is_sys_admin": false,
-  "last_login_date": "2015-04-09 03:13:29",
-  "role": "test",
-  "role_id": 1,
-  "dsp_name": "dsp-pinebit",
-  "ticket": "dMp2jVffwkSgubq8FF0d_XUO4Ygn4XPZhMAVVG_eS0Y,",
-  "ticket_expiry": 1428589558,
-  "session_id": "112vnq0mdi593usc2dd8j2gn7ppuukj0s45tcdqjfb9a67mfsq90",
-  "app_groups": [],
-  "no_group_apps": [
-    {
-      "id": 1,
-      "api_name": "todojquery",
-      "name": "Todo List jQuery",
-      "description": "A simple jQuery application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
-      "is_url_external": false,
-      "launch_url": "https://dsp-pinebit.cloud.dreamfactory.com/files/applications/todojquery/index.html",
-      "requires_fullscreen": false,
-      "allow_fullscreen_toggle": true,
-      "toggle_location": "top",
-      "is_default": false
-    },
-    {
-      "id": 2,
-      "api_name": "todoangular",
-      "name": "Todo List AngularJS",
-      "description": "A simple AngularJS application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
-      "is_url_external": false,
-      "launch_url": "https://dsp-pinebit.cloud.dreamfactory.com/files/applications/todoangular/index.html",
-      "requires_fullscreen": false,
-      "allow_fullscreen_toggle": true,
-      "toggle_location": "top",
-      "is_default": false
-    },
-    {
-      "id": 3,
-      "api_name": "todosencha",
-      "name": "Todo List Sencha",
-      "description": "A simple Sencha application showing how to create, update, and delete database records on the DreamFactory Services Platform.",
-      "is_url_external": false,
-      "launch_url": "https://dsp-pinebit.cloud.dreamfactory.com/files/applications/todosencha/index.html",
-      "requires_fullscreen": false,
-      "allow_fullscreen_toggle": true,
-      "toggle_location": "top",
-      "is_default": false
-    },
-    {
-      "id": 4,
-      "api_name": "calendar",
-      "name": "Calendar",
-      "description": "A sample application showing how to perform CRUD operations on your DreamFactory Services Platform (DSP).",
-      "is_url_external": false,
-      "launch_url": "https://dsp-pinebit.cloud.dreamfactory.com/files/applications/calendar/index.html",
-      "requires_fullscreen": false,
-      "allow_fullscreen_toggle": true,
-      "toggle_location": "top",
-      "is_default": false
-    }
-  ]
+	"session_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJfaWQiOjIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODc2NVwvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6IjE0NDA2MTk0NDUiLCJleHAiOiIxNDQwNjIzMDQ1IiwibmJmIjoiMTQ0MDYxOTQ0NSIsImp0aSI6ImU4ZDhmOWJlOGVkYzk2ZTY5ZDdhZGVmYWVmNDNjNmJhIn0.-DyPDFqmqhKWs0qNTjg5lHQeNyoN9TMPRHMRiSEVVt0",
+	"session_id": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJfaWQiOjIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODc2NVwvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6IjE0NDA2MTk0NDUiLCJleHAiOiIxNDQwNjIzMDQ1IiwibmJmIjoiMTQ0MDYxOTQ0NSIsImp0aSI6ImU4ZDhmOWJlOGVkYzk2ZTY5ZDdhZGVmYWVmNDNjNmJhIn0.-DyPDFqmqhKWs0qNTjg5lHQeNyoN9TMPRHMRiSEVVt0",
+	"id": 2,
+	"name": "demo",
+	"first_name": "demo",
+	"last_name": "demo",
+	"email": "demo@factory.com",
+	"is_sys_admin": false,
+	"last_login_date": "2015-08-26 20:04:05",
+	"role": "DemoUser",
+	"role_id": 2
 }

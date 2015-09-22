@@ -11,10 +11,11 @@
          *  Change these settings to match your local DF installation.
          */
 
-        internal const string BaseAddress = "http://localhost";
-        internal const string DefaultApp = "todoangular";
-        internal const string Email = "admin@mail.com";
-        internal const string Password = "dream";
+        internal const string BaseAddress = "http://localhost:8080";
+        internal const string AppName = "<app_name>";
+        internal const string AppApiKey = "<app_api_key>";
+        internal const string Email = "<user_email>";
+        internal const string Password = "<user_password>";
 
         /// <summary>
         /// This program runs both integration tests and demos.
@@ -38,14 +39,12 @@
                 new SystemAppTest(),
                 new SystemUserTest(),
                 new SystemRoleTest(),
-                new SystemDeviceTest(),
-                new SystemScriptTest(),
                 new SystemEventTest(),
                 new LogoutDemo(),
                 new HttpDemo()
             };
 
-            IRestContext context = new RestContext(BaseAddress);
+            IRestContext context = new RestContext(BaseAddress, AppName, AppApiKey, RestApiVersion.V2);
 
             Array.ForEach(tests, test =>
             {
@@ -57,6 +56,7 @@
             Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine("Total tests: {0}.", tests.Length);
+            Console.ReadLine();
         }
     }
 }

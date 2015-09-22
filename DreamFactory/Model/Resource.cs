@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+﻿namespace DreamFactory.Model
 {
     /// <summary>
     /// Resource.
@@ -9,6 +8,6 @@ namespace DreamFactory.Model
         /// <summary>
         /// Name of the resource.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 }

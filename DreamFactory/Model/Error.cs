@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model
+﻿namespace DreamFactory.Model
 {
     /// <summary>
     /// Error data.
@@ -9,11 +8,11 @@ namespace DreamFactory.Model
         /// <summary>
         /// Gets error message.
         /// </summary>
-        public string message { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets HTTP status code.
         /// </summary>
-        public int code { get; set; }
+        public int Code { get; set; }
     }
 }

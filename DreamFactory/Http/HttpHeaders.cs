@@ -11,9 +11,15 @@
         private readonly Dictionary<string, object> headers;
 
         /// <summary>
-        /// X-Dreamfactory-Application-Name header.
+        /// X-Folder-Name header.
         /// </summary>
-        public const string DreamFactoryApplicationHeader = "X-Dreamfactory-Application-Name";
+        public const string FolderNameHeader = "X-Folder-Name";
+
+
+        /// <summary>
+        /// X-Folder-Name header.
+        /// </summary>
+        public const string DreamFactoryApiKeyHeader = "X-DreamFactory-Api-Key";
 
         /// <summary>
         /// X-DreamFactory-Session-Token header.

@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.User
+﻿namespace DreamFactory.Model.User
 {
     using global::System.Collections.Generic;
 
@@ -11,66 +10,61 @@ namespace DreamFactory.Model.User
         /// <summary>
         /// Identifier for the current user.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Email address of the current user.
         /// </summary>
-        public string email { get; set; }
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Name of the current user.
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// First name of the current user.
         /// </summary>
-        public string first_name { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name of the current user.
         /// </summary>
-        public string last_name { get; set; }
-
-        /// <summary>
-        /// Full display name of the current user.
-        /// </summary>
-        public string display_name { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Is the current user a system administrator.
         /// </summary>
-        public bool? is_sys_admin { get; set; }
+        public bool? IsSysAdmin { get; set; }
 
         /// <summary>
         /// Name of the role to which the current user is assigned.
         /// </summary>
-        public string role { get; set; }
+        public string Role { get; set; }
 
         /// <summary>
         /// Date timestamp of the last login for the current user.
         /// </summary>
-        public string last_login_date { get; set; }
+        public string LastLoginDate { get; set; }
 
         /// <summary>
         /// App groups and the containing apps.
         /// </summary>
-        public List<SessionApp> app_groups { get; set; }
+        public List<SessionApp> AppGroups { get; set; }
 
         /// <summary>
         /// Apps that are not in any app groups.
         /// </summary>
-        public List<SessionApp> no_group_apps { get; set; }
+        public List<SessionApp> NoGroupApps { get; set; }
         
         /// <summary>
         /// Id for the current session, used in X-DreamFactory-Session-Token header for API requests.
         /// </summary>
-        public string session_id { get; set; }
+        public string SessionId { get; set; }
 
         /// <summary>
-        /// Timed ticket that can be used to start a separate session.
+        /// Token for the current session, used in X-DreamFactory-Session-Token header for API requests.
         /// </summary>
-        public string ticket { get; set; }
-
-        /// <summary>
-        /// Expiration time for the given ticket.
-        /// </summary>
-        public string ticket_expiry { get; set; }
+        public string SessionToken { get; set; }
     }
 }

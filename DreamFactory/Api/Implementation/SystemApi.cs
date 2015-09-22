@@ -1,78 +1,86 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System.Globalization;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Config;
+    using DreamFactory.Model.System.Environment;
+    using DreamFactory.Model.System.Script;
     using DreamFactory.Serialization;
 
-    internal partial class SystemApi : ISystemApi
+    internal partial class SystemApi : BaseApi, ISystemApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
-
-        public SystemApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders)
+        public SystemApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, "system")
         {
-            this.baseAddress = baseAddress.WithResource("system");
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
-        public async Task<byte[]> DownloadApplicationPackageAsync(int applicationId, bool includeFiles, bool includeServices, bool includeSchema)
+        public Task<EnvironmentResponse> GetEnvironmentAsync()
         {
-            IHttpAddress address = baseAddress
-                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
-                .WithParameter("pkg", true)
-                .WithParameter("include_files", includeFiles)
-                .WithParameter("include_services", includeServices)
-                .WithParameter("include_schema", includeSchema);
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response.RawBody;
+            return base.RequestAsync<EnvironmentResponse>(
+                method: HttpMethod.Get,
+                resource: "environment", 
+                query: new SqlQuery()
+                );
         }
 
-        public async Task<byte[]> DownloadApplicationSdkAsync(int applicationId)
+        public async Task<IEnumerable<string>> GetConstantsAsync()
         {
-            IHttpAddress address = baseAddress
-                .WithResource("app", applicationId.ToString(CultureInfo.InvariantCulture))
-                .WithParameter("sdk", true);
+            Dictionary<string, object> result = await base.RequestAsync<Dictionary<string, object>>(
+                method: HttpMethod.Get, 
+                resource: "constant", 
+                query: new SqlQuery()
+                );
 
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return response.RawBody;
+            return result.Keys;
         }
 
-        public async Task<ConfigResponse> GetConfigAsync()
+        public async Task<Dictionary<string, string>> GetConstantAsync(string constant)
         {
-            IHttpAddress address = baseAddress.WithResource("config");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
+            var result = await base.RequestAsync<Dictionary<string, Dictionary<string, string>>>(
+                method: HttpMethod.Get,
+                resource: "constant",
+                resourceIdentifier: constant,
+                query: new SqlQuery()
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
+            return result[constant];
         }
 
-        public async Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
+        public Task<ConfigResponse> GetConfigAsync()
         {
-            IHttpAddress address = baseAddress.WithResource("config");
-            string body = contentSerializer.Serialize(config);
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders, body);
+            return base.RequestAsync<ConfigResponse>(
+                method: HttpMethod.Get,
+                resource: "config",
+                query: new SqlQuery()
+                );
+        }
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        public Task<ConfigResponse> SetConfigAsync(ConfigRequest config)
+        {
+            return base.RequestWithPayloadAsync<ConfigRequest, ConfigResponse>(
+                method: HttpMethod.Post,
+                resource: "config",
+                query: new SqlQuery(),
+                payload: config
+                );
+        }
 
-            return contentSerializer.Deserialize<ConfigResponse>(response.Body);
+        public async Task<IEnumerable<ScriptTypeResponse>> GetScriptTypesAsync(SqlQuery query)
+        {
+            ResourceWrapper<ScriptTypeResponse> response = await base.RequestAsync<ResourceWrapper<ScriptTypeResponse>>(
+                method: HttpMethod.Get,
+                resource: "script_type", 
+                query: query
+                );
+
+            return response.Records;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
@@ -13,8 +14,6 @@
     [TestClass]
     public class EmailApiTests
     {
-        private const string BaseAddress = "http://localhost";
-
         [TestMethod]
         public void ShouldSendEmailAsync()
         {
@@ -29,18 +28,28 @@
             count.ShouldBe(1);
         }
 
+        [TestMethod]
+        public void ShouldThrowExceptions()
+        {
+            // Arrange
+            IEmailApi emailApi = CreateEmailApi();
+
+            // Act & Assert
+            Should.Throw<ArgumentNullException>(() => emailApi.SendEmailAsync(null));
+        }
+
         private static IEmailApi CreateEmailApi()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             HttpHeaders headers = new HttpHeaders();
             return new EmailApi(address, httpFacade, new JsonContentSerializer(), headers, "email");
         }
 
         private static EmailRequest CreateEmailRequest()
         {
-            EmailAddress address = new EmailAddress { email = "motodrug@gmail.com" };
-            return new EmailRequest { to = new List<EmailAddress> { address }, subject = "Hello from the demo!", body_text = "Hello, moto!" };
+            EmailAddress address = new EmailAddress { Email = "motodrug@gmail.com" };
+            return new EmailRequest { To = new List<EmailAddress> { address }, Subject = "Hello from the demo!", BodyText = "Hello, moto!" };
         }
     }
 }

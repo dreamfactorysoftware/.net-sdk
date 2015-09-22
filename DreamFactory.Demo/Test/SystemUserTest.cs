@@ -14,47 +14,45 @@
     {
         private const string NewEmail = "user@mail.com";
 
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
-            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            ISystemUserApi userApi = context.Factory.CreateSystemUserApi();
 
-            IEnumerable<UserResponse> users = await systemApi.GetUsersAsync(new SqlQuery());
-            Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.display_name).ToStringList());
+            IEnumerable<UserResponse> users = (await userApi.GetUsersAsync(new SqlQuery())).ToList();
+            Console.WriteLine("GetUsersAsync(): {0}", users.Select(x => x.Name).ToStringList());
 
-            UserResponse user = users.SingleOrDefault(x => x.email == NewEmail);
+            UserResponse user = users.SingleOrDefault(x => x.Email == NewEmail);
             if (user != null)
             {
-                await DeleteUser(user, systemApi);
+                await DeleteUser(user, userApi);
             }
 
             UserRequest newUser = new UserRequest
             {
-                first_name = "Andrei",
-                last_name = "Smirnov",
-                display_name = "pinebit",
-                email = NewEmail,
-                password = "dream",
-                is_active = true
+                FirstName = "Andrei",
+                LastName = "Smirnov",
+                Name = "pinebit",
+                Email = NewEmail,
+                IsActive = true
             };
 
-            users = await systemApi.CreateUsersAsync(new SqlQuery(), newUser);
-            user = users.Single(x => x.email == NewEmail);
+            users = await userApi.CreateUsersAsync(new SqlQuery(), newUser);
+            user = users.Single(x => x.Email == NewEmail);
             Console.WriteLine("CreateUsersAsync(): {0}", context.ContentSerializer.Serialize(user));
 
-            newUser.id = user.id;
-            newUser.display_name = "Andrei Smirnov";
-            user = (await systemApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.email == NewEmail);
-            Console.WriteLine("UpdateUsersAsync(): new display_name={0}", user.display_name);
+            newUser.Id = user.Id;
+            newUser.Name = "Andrei Smirnov";
+            user = (await userApi.UpdateUsersAsync(new SqlQuery(), newUser)).Single(x => x.Email == NewEmail);
+            Console.WriteLine("UpdateUsersAsync(): new name={0}", user.Name);
 
-            await DeleteUser(user, systemApi);
+            await DeleteUser(user, userApi);
         }
 
-        private static async Task DeleteUser(UserResponse user, ISystemApi systemApi)
+        private static async Task DeleteUser(UserResponse user, ISystemUserApi userApi)
         {
-            Debug.Assert(user.id.HasValue, "User ID must be set");
-            await systemApi.DeleteUsersAsync(user.id.Value);
-            Console.WriteLine("DeleteUsersAsync():: id={0}", user.id);
+            Debug.Assert(user.Id.HasValue, "User ID must be set");
+            await userApi.DeleteUsersAsync(new SqlQuery(), user.Id.Value);
+            Console.WriteLine("DeleteUsersAsync():: id={0}", user.Id);
         }
     }
 }

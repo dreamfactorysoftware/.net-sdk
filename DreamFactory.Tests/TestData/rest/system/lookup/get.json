@@ -1,0 +1,15 @@
+﻿{
+  "resource": [
+    {
+      "id": 1,
+      "name": "First lookup second time",
+      "value": "text",
+      "private": false,
+      "description": "text",
+      "created_date": "2015-09-22 10:19:24",
+      "last_modified_date": "2015-09-22 10:20:04",
+      "created_by_id": 1,
+      "last_modified_by_id": 1
+    }
+  ]
+}

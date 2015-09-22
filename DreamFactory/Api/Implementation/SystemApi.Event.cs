@@ -1,59 +1,55 @@
 ﻿namespace DreamFactory.Api.Implementation
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Event;
 
     internal partial class SystemApi
     {
-        public async Task<IEnumerable<EventCacheResponse>> GetEventsAsync(bool allEvents)
+        public Task<EventScriptResponse> GetEventScriptAsync(string eventName, SqlQuery query)
         {
-            IHttpAddress address = baseAddress.WithResource("event").WithParameter("as_cached", false);
-            if (allEvents)
-            {
-                address = address.WithParameter("all_events", true);
-            }
-
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var records = new { record = new List<EventCacheResponse>() };
-            return contentSerializer.Deserialize(response.Body, records).record;
+            return base.RequestAsync<EventScriptResponse>(
+                method: HttpMethod.Get,
+                resource: "event",
+                resourceIdentifier: eventName,
+                query: query
+                );
         }
 
-        public async Task RegisterEventsAsync(params EventRequest[] requests)
+        public async Task<IEnumerable<string>> GetEventsAsync()
         {
-            if (requests == null || requests.Length < 1)
-            {
-                throw new ArgumentException("At least one parameter must be specificed", "requests");
-            }
+            ResourceWrapper<string> response = await base.RequestAsync<ResourceWrapper<string>>(
+                method: HttpMethod.Get,
+                resource: "event",
+                query: new SqlQuery { Fields = null, CustomParameters = new Dictionary<string, object> { { "as_list", true } } }
+                );
 
-            IHttpAddress address = baseAddress.WithResource("event");
-            var records = new { record = new List<EventRequest>(requests) };
-            string body = contentSerializer.Serialize(records);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            return response.Records;
         }
 
-        public async Task UnregisterEventsAsync(params EventRequest[] requests)
+
+        public Task<EventScriptResponse> CreateEventScriptAsync(string eventName, SqlQuery query, EventScriptRequest eventScript)
         {
-            if (requests == null || requests.Length < 1)
-            {
-                throw new ArgumentException("At least one parameter must be specificed", "requests");
-            }
+            return base.RequestWithPayloadAsync<EventScriptRequest, EventScriptResponse>(
+                method: HttpMethod.Post,
+                resource: "event",
+                resourceIdentifier: eventName,
+                query: query,
+                payload: eventScript
+                );
+        }
 
-            IHttpAddress address = baseAddress.WithResource("event");
-            var records = new { record = new List<EventRequest>(requests) };
-            string body = contentSerializer.Serialize(records);
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders, body);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+        public Task<EventScriptResponse> DeleteEventScriptAsync(string eventName, SqlQuery query)
+        {
+            return base.RequestAsync<EventScriptResponse>(
+                method: HttpMethod.Delete,
+                resource: "event",
+                resourceIdentifier: eventName,
+                query: query
+                );
         }
     }
 }
