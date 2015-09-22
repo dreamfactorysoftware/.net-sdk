@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DreamFactoryNet</id>
-    <version>1.0.2</version>
+    <version>2.0.0</version>
     <authors>DreamFactory</authors>
     <owners>DreamFactory.com</owners>
     <iconUrl>https://raw.githubusercontent.com/dreamfactorysoftware/.net-sdk/master/favicon_32x32.png</iconUrl>
@@ -14,12 +14,10 @@
     <copyright>Copyright (c) DreamFactory 2015</copyright>
     <tags>DreamFactory REST .NET API</tags>
     <dependencies>
-      <dependency id="Unirest-API" version="1.0.6.8" />
+      <dependency id="Unirest-API" version="1.0.7.6" />
     </dependencies>
   </metadata>
   <files>
-    <file src="DreamFactory\bin\Release\DreamFactory.dll" target="lib/net45" />
-    <file src="DreamFactory\bin\Release\DreamFactory.pdb" target="lib/net45" />
-    <file src="DreamFactory\bin\Release\DreamFactory.xml" target="lib/net45" />
+    <file src="DreamFactory\bin\Release\DreamFactory.dll" target="lib/portable-net45+win8+wp8+wpa81" />
   </files>
 </package>
