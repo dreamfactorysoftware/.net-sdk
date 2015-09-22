@@ -299,6 +299,7 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
 	builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
+For more advanced scenarios and relationship building you should build up your own TableSchema object.
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
 Related entities (records) are not retrieved (see related query parameter).
 
@@ -337,6 +338,6 @@ EmailRequest request = new EmailRequestBuilder()
 ##### Current limitations
 
 * Reading/writing of metadata related to system records are not supported.
-* Related entities are not retrieved (see related query parameter).
-* Unregister event listeners is not supported.
-* Provider and UserProvider APIs are not supported.
+* Some related entities are not retrieved (see related query parameter).
+* Some related entities are retrieved as objects and are not strongly typed.
+* Some related entities that are strongly typed do not have any properties.

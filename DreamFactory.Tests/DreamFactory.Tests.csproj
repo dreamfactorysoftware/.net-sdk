@@ -395,9 +395,6 @@
     <None Include="TestData\rest\system\role\post.request.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\rest\system\script\get.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="TestData\rest\system\script_type\get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
