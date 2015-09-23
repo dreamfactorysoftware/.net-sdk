@@ -61,10 +61,17 @@ unirest-net, in turn, has the following dependencies:
 
 The .NET SDK has been tested on the following platforms:
 
-* Windows 7 with Visual Studio 2012 and 2013
+* Windows 7 with Visual Studio 2012
 * Windows 8.1 with Visual Studio 2013
-* Windows 10 with Visual Studio 2015 CTP
-* Mac OS X (Yosemite) with Xamarin 
+* Windows 10 with Visual Studio 2015
+
+For following targets:
+
+* ASP.NET 4.5+
+* ASP.NET 5
+* Xamarin.Android
+* Xamarin.iOS
+* WP8
 
 ### Building from Source Code
 
