@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg?branch=1.0.2)](https://travis-ci.org/dreamfactorysoftware/.net-sdk)
+[![Build Status](https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg?branch=release-2.0)](https://travis-ci.org/dreamfactorysoftware/.net-sdk)
 [![NuGet](https://img.shields.io/nuget/v/DreamFactoryNet.svg?style=flat)](http://www.nuget.org/packages/DreamFactoryNet/)
 
 # .NET SDK for the DreamFactory REST API
