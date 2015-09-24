@@ -59,19 +59,16 @@ unirest-net, in turn, has the following dependencies:
 - `Newtonsoft.Json (≥ 7.0.1)`
 - `Microsoft.Net.Http (≥ 2.2.29)`
 
-The .NET SDK has been tested on the following platforms:
+Supported platforms:
 
-* Windows 7 with Visual Studio 2012
-* Windows 8.1 with Visual Studio 2013
-* Windows 10 with Visual Studio 2015
-
-For following targets:
-
-* ASP.NET 4.5+
+* ASP.NET 4.5, 4,6
 * ASP.NET 5
-* Xamarin.Android
-* Xamarin.iOS
-* WP8
+* Android (Xamarin)
+* iOS (Xamarin)
+* WinRT and WinRT Phone (Windows 8 and Phone 8.1)
+* Windows Phone Silverlight 8
+
+At this moment UAP10.0 (Universal App Platform) is not supported because of the dependancy on unirest-net that doesn't support that target.
 
 ### Building from Source Code
 
