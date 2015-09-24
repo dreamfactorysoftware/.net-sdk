@@ -1,0 +1,6 @@
+{
+  "name": "Address Book with ASP.NET",
+  "description": "An address book app with ASP.NET showing user registration, user login, and CRUD.",
+  "type": 0,
+  "active": true
+}
