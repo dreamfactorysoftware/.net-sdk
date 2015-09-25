@@ -9,10 +9,10 @@ The .NET SDK provides classes and interfaces to access the DreamFactory REST API
 - [Solution structure](#solution-structure)
 - [Distribution](#distribution)
 	- [Dependencies](#dependencies)
-	- [Building from Source Code](#building-from-source-code)
+	- [Supported platforms](#supported-platforms)
 - [Demo](#demo)
-	- [Running the Console Demo](#running-the-console-demo)
 	- [Running the Address Book demo](#running-the-address-book-demo)
+	- [Running the Console Demo](#running-the-console-demo)
 - [API overview](#api)
 	- [User](#user-api)
 	- [CustomSettings](#customsettings-api)
@@ -61,6 +61,9 @@ unirest-net, in turn, has the following dependencies:
 
 Supported platforms:
 
+
+### Supported platforms
+
 * ASP.NET 4.5, 4,6
 * ASP.NET 5
 * Android (Xamarin)
@@ -70,39 +73,9 @@ Supported platforms:
 
 At this moment UAP10.0 (Universal App Platform) is not supported because of the dependancy on unirest-net that doesn't support that target.
 
-### Building from Source Code
-
-Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
-You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
-When changing the target framework version, pay attention to the dependent package versions - you will need to reinstall them:
-
-```powershell
-	update-package -reinstall -ignoreDependencies
-```
-
 ## Demo
 
-To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-
-### Running the Console Demo
-
-Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
-```csharp
-	internal const string BaseAddress = "http://localhost:8080";
-	internal const string AppName = "<app_name>";
-	internal const string AppApiKey = "<app_api_key>";
-	internal const string Email = "<user_email>";
-	internal const string Password = "<user_password>";
-```
-
- > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
-
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* Open Program.cs and modify the settings;
-* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
-* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
-* A console window will appear with demo output;
-* If the demo has been completed successfully, you will see the total number of tests executed. 
+To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) version 2.0+ on your machine.
 
 ### Running the Address Book Demo
 
@@ -150,6 +123,26 @@ Configure the DreamFactory instance to run the app:
 ```
 
 You can now run the app by starting the DreamFactory.AddressBook project in your browser. When the app starts up you can register a new user, or log in as an existing user (ex. admin you've set up first time you opened DreamFactory admin app).
+
+### Running the Console Demo
+
+Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+```csharp
+	internal const string BaseAddress = "http://localhost:8080";
+	internal const string AppName = "<app_name>";
+	internal const string AppApiKey = "<app_api_key>";
+	internal const string Email = "<user_email>";
+	internal const string Password = "<user_password>";
+```
+
+ > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
+
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* Open Program.cs and modify the settings;
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
+* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
+* A console window will appear with demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed. 
 
 ## API
 
