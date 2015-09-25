@@ -297,9 +297,28 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
 	builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
-For more advanced scenarios and relationship building you should build up your own TableSchema object.
+For more advanced scenarios and relationship building you should build up your own TableSchema object:
+```csharp
+	TableSchema schema = new TableSchema();
+    schema.Name = "<table_name>";
+    schema.Field = new List<FieldSchema>
+    {
+        // fields...
+        new FieldSchema
+        {
+            Name = "<foreign_key_column_name>",
+            Type = "reference",
+            AllowNull = false,
+            RefTable = "<related_table_name>",
+            RefFields = "<related_table_column_name>"
+        },
+        // more fields...
+    };
+    
+    await databaseApi.CreateTableAsync(staffSchema);
+```
+
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
-Related entities (records) are not retrieved (see related query parameter).
 
 #### Notes on table records operations
 
