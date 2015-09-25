@@ -26,9 +26,9 @@ The .NET SDK provides classes and interfaces to access the DreamFactory REST API
 The Visual Studio solution has these projects:
 
 * DreamFactory       : the API library
+* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
 * DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
 * DreamFactory.Tests : Unit Tests (MSTest)
-* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
 
 The solution folder also contains:
 
@@ -58,9 +58,6 @@ unirest-net, in turn, has the following dependencies:
 - `Microsoft.Bcl.Async (≥ 1.0.168)`
 - `Newtonsoft.Json (≥ 7.0.1)`
 - `Microsoft.Net.Http (≥ 2.2.29)`
-
-Supported platforms:
-
 
 ### Supported platforms
 
@@ -106,7 +103,7 @@ Configure the DreamFactory instance to run the app:
 	- Save changes.
 
 - Import the package file for the app.
-	- From the Apps tab in the admin console, click Import and the DreamFactory.AddressBook project for add_dotnet.dfpkg in App_Package folder. The Address Book package contains the application description, schemas, and sample data.
+	- From the Apps tab in the admin console, click Import and locate add_dotnet.dfpkg file in DreamFactory.AddressBook/App_Package folder. The Address Book package contains the application description, schemas, and sample data.
 	- Leave storage service and folder blank because this app will be running locally.
 	- Click the Import button. If successful, your app will appear on the Apps tab. You may have to refresh the page to see your new app in the list.
 	
@@ -159,7 +156,7 @@ The IO-bound calls (HTTP request and stream IO) have `ConfigureAwait(false)`.
 
 ### Errors handling
 
-- On wrong arguments (preconditions), expect `Argument*Exception` to be thrown.
+- On wrong arguments (preconditions), expect `ArgumentException` to be thrown.
 - On Bad HTTP status codes, expect `DreamFactoryException` to be thrown.
 > `DreamFactoryException` is normally supplied with a reasonable message provided by DreamFactory server, unless it fails with an HTML page returned with the response.
 
@@ -217,6 +214,8 @@ Specify service name for creating an interface to a named service:
 The API supports pluggable serialization. This SDK comes with the default `JsonContentSerializer` which is using [Json.NET](http://www.newtonsoft.com/json).
 To use your custom serializer, consider using the other `RestContext` constructor accepting a user-defined `IContentSerializer` instance.
 
+By default `JsonContentSerializer` uses `SnakeCaseContractResolver` to resolve property names which means it allows you to use pascal-cased convention in your code and change the names on serialization to follow snake-cased convention (ex MyProperty to my_property). To override this behavior you will have to provide your own `DefaultContractResolver` and plug it into `JsonContentSerializer`.
+
 #### SQL query parameters
 
 Most DreamFactory resources persist in the system database, e.g. Users, Apps, Services. When calling CRUD API methods accessing these resources be prepared to deal with related SQL query parameters. All such APIs accept a `SqlQuery` class instance. You can populate any fields of this class, but do check swagger contract for the service you about to use. The API implementation will set any non-null fields as query parameters.
@@ -242,8 +241,6 @@ See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/mas
 
 > See [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/UserDemo.cs)
 
-##### Notes on user session management
-
 All API calls require Application-Name header as well as Application-Api-Key to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
 
 * Both Application-Name and Application-Api-Key are being set when initializng `RestContaxt`.
@@ -258,8 +255,6 @@ To use/set another Application-Name and Application-Api-Key you have to instanti
 > See [ICustomSettingsApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ICustomSettingsApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/CustomSettingsDemo.cs)
 
 The API can be created for user and system namespace.
-
-Custom settings are key value pairs, value being string type. Therefore if you wish to save a DTO as a setting you will have to serialize the DTO prior to creating `Custom Request` .
 Please refer to the demo for sample API usage.
 
 #### Files API
@@ -267,19 +262,18 @@ Please refer to the demo for sample API usage.
 > See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/FilesDemo.cs)
 
 Summary on supported features:
+
 * CRUD operations on folders and files,
-* Bulk files uploading/downloading in ZIP format,
-* Text and binary files reading/writing.
+* Bulk files upload/download in ZIP format,
+* Text and binary files read/write.
 
-##### Notes on metadata support
-
-Reading/Writing of metadata associated with file entities (folder, file) are not supported yet.
+Reading/Writing of metadata associated with file entities (folder, file) are not supported.
 
 #### Database API
 
 > See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/DatabaseDemo.cs)
 
-#### Notes on schema management
+##### Notes on schema management
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
 ```csharp
@@ -320,13 +314,12 @@ For more advanced scenarios and relationship building you should build up your o
 
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
 
-#### Notes on table records operations
+##### Notes on table records operations
 
-* Input/Output is always a user-defined POCO classes that must match the corresponding table's schema;
-* `CreateRecordsAsync` returns the created records back to user with key fields (IDs) updated;
-* `GetRecordsAsync` has three overloads to retrieve: all records, records by ids and by given SQL query.
+* Input are user-defined POCO classes that must match the corresponding table's schema;
+* Output is instance of [DatabaseResourceWrapper](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Model/Database/DatabaseResourceWrapper.cs) containing records and metadata if it was requested.
 
-#### Notes on stored procedures/functions
+##### Notes on stored procedures/functions
 
 When calling a stored procedure or function, some overloads use a collection of `StoreProcParams` instances. To simplify creating such a collection, consider using `StoreProcParamsBuilder` class.
 When response (or return values) is expected, a user must define `TStoredProcResponse` POCO that shall have fields for OUT-parameters and for wrapper.
