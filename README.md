@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg?branch=1.0.2)](https://travis-ci.org/dreamfactorysoftware/.net-sdk)
+[![Build Status](https://travis-ci.org/dreamfactorysoftware/.net-sdk.svg?branch=develop)](https://travis-ci.org/dreamfactorysoftware/.net-sdk)
 [![NuGet](https://img.shields.io/nuget/v/DreamFactoryNet.svg?style=flat)](http://www.nuget.org/packages/DreamFactoryNet/)
 
 # .NET SDK for the DreamFactory REST API
@@ -9,10 +9,10 @@ The .NET SDK provides classes and interfaces to access the DreamFactory REST API
 - [Solution structure](#solution-structure)
 - [Distribution](#distribution)
 	- [Dependencies](#dependencies)
-	- [Building from Source Code](#building-from-source-code)
+	- [Supported platforms](#supported-platforms)
 - [Demo](#demo)
-	- [Running the Console Demo](#running-the-console-demo)
 	- [Running the Address Book demo](#running-the-address-book-demo)
+	- [Running the Console Demo](#running-the-console-demo)
 - [API overview](#api)
 	- [User](#user-api)
 	- [CustomSettings](#customsettings-api)
@@ -26,9 +26,9 @@ The .NET SDK provides classes and interfaces to access the DreamFactory REST API
 The Visual Studio solution has these projects:
 
 * DreamFactory       : the API library
+* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
 * DreamFactory.Demo  : console program demonstrating API usage (with some integration tests)
 * DreamFactory.Tests : Unit Tests (MSTest)
-* DreamFactory.AddressBook : ASP.NET MVC web app demonstrating API usage in a real world example.
 
 The solution folder also contains:
 
@@ -59,46 +59,20 @@ unirest-net, in turn, has the following dependencies:
 - `Newtonsoft.Json (≥ 7.0.1)`
 - `Microsoft.Net.Http (≥ 2.2.29)`
 
-The .NET SDK has been tested on the following platforms:
+### Supported platforms
 
-* Windows 7 with Visual Studio 2012 and 2013
-* Windows 8.1 with Visual Studio 2013
-* Windows 10 with Visual Studio 2015 CTP
-* Mac OS X (Yosemite) with Xamarin 
+* ASP.NET 4.5, 4,6
+* ASP.NET 5
+* Android (Xamarin)
+* iOS (Xamarin)
+* WinRT and WinRT Phone (Windows 8 and Phone 8.1)
+* Windows Phone Silverlight 8
 
-### Building from Source Code
-
-Pull the release snapshot and build the solution with Visual Studio 2012 or newer. Note that you will need [NuGet Package Manager extension](https://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) to be installed.
-You can change the target .NET Framework version if needed. The implementation does not use any of 4.5.x specific features, so it can be built with .NET 4.0.
-When changing the target framework version, pay attention to the dependent package versions - you will need to reinstall them:
-
-```powershell
-	update-package -reinstall -ignoreDependencies
-```
+At this moment UAP10.0 (Universal App Platform) is not supported because of the dependancy on unirest-net that doesn't support that target.
 
 ## Demo
 
-To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) on your machine.
-
-### Running the Console Demo
-
-Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
-```csharp
-	internal const string BaseAddress = "http://localhost:8080";
-	internal const string AppName = "<app_name>";
-	internal const string AppApiKey = "<app_api_key>";
-	internal const string Email = "<user_email>";
-	internal const string Password = "<user_password>";
-```
-
- > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
-
-* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
-* Open Program.cs and modify the settings;
-* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
-* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
-* A console window will appear with demo output;
-* If the demo has been completed successfully, you will see the total number of tests executed. 
+To run the demos, you need to install [DreamFactory stack](https://bitnami.com/stack/dreamfactory) version 2.0+ on your machine.
 
 ### Running the Address Book Demo
 
@@ -129,7 +103,7 @@ Configure the DreamFactory instance to run the app:
 	- Save changes.
 
 - Import the package file for the app.
-	- From the Apps tab in the admin console, click Import and the DreamFactory.AddressBook project for add_dotnet.dfpkg in App_Package folder. The Address Book package contains the application description, schemas, and sample data.
+	- From the Apps tab in the admin console, click Import and locate add_dotnet.dfpkg file in DreamFactory.AddressBook/App_Package folder. The Address Book package contains the application description, schemas, and sample data.
 	- Leave storage service and folder blank because this app will be running locally.
 	- Click the Import button. If successful, your app will appear on the Apps tab. You may have to refresh the page to see your new app in the list.
 	
@@ -147,6 +121,26 @@ Configure the DreamFactory instance to run the app:
 
 You can now run the app by starting the DreamFactory.AddressBook project in your browser. When the app starts up you can register a new user, or log in as an existing user (ex. admin you've set up first time you opened DreamFactory admin app).
 
+### Running the Console Demo
+
+Console demo requires a test user to be specified in Program.cs file. Open the file and modify the settings to match your setup.
+```csharp
+	internal const string BaseAddress = "http://localhost:8080";
+	internal const string AppName = "<app_name>";
+	internal const string AppApiKey = "<app_api_key>";
+	internal const string Email = "<user_email>";
+	internal const string Password = "<user_password>";
+```
+
+ > Note that the test user must have a role which allows any HTTP verbs on any services/resources.
+
+* Open DreamFactoryNet solution in Visual Studio 2012 or newer;
+* Open Program.cs and modify the settings;
+* In *Solution Explorer* window find *DreamFactory.Demo* project, right-click on it and select *Set as StartUp project*;
+* In Visual Studio main menu, select *DEBUG -> Run without debugging*;
+* A console window will appear with demo output;
+* If the demo has been completed successfully, you will see the total number of tests executed. 
+
 ## API
 
 ### Basics
@@ -162,7 +156,7 @@ The IO-bound calls (HTTP request and stream IO) have `ConfigureAwait(false)`.
 
 ### Errors handling
 
-- On wrong arguments (preconditions), expect `Argument*Exception` to be thrown.
+- On wrong arguments (preconditions), expect `ArgumentException` to be thrown.
 - On Bad HTTP status codes, expect `DreamFactoryException` to be thrown.
 > `DreamFactoryException` is normally supplied with a reasonable message provided by DreamFactory server, unless it fails with an HTML page returned with the response.
 
@@ -220,6 +214,8 @@ Specify service name for creating an interface to a named service:
 The API supports pluggable serialization. This SDK comes with the default `JsonContentSerializer` which is using [Json.NET](http://www.newtonsoft.com/json).
 To use your custom serializer, consider using the other `RestContext` constructor accepting a user-defined `IContentSerializer` instance.
 
+By default `JsonContentSerializer` uses `SnakeCaseContractResolver` to resolve property names which means it allows you to use pascal-cased convention in your code and change the names on serialization to follow snake-cased convention (ex MyProperty to my_property). To override this behavior you will have to provide your own `DefaultContractResolver` and plug it into `JsonContentSerializer`.
+
 #### SQL query parameters
 
 Most DreamFactory resources persist in the system database, e.g. Users, Apps, Services. When calling CRUD API methods accessing these resources be prepared to deal with related SQL query parameters. All such APIs accept a `SqlQuery` class instance. You can populate any fields of this class, but do check swagger contract for the service you about to use. The API implementation will set any non-null fields as query parameters.
@@ -245,8 +241,6 @@ See the [demo program](https://github.com/dreamfactorysoftware/.net-sdk/blob/mas
 
 > See [IUserApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IUserApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/UserDemo.cs)
 
-##### Notes on user session management
-
 All API calls require Application-Name header as well as Application-Api-Key to be set and many others require Session-ID header. Here is how these headers are managed by SDK:
 
 * Both Application-Name and Application-Api-Key are being set when initializng `RestContaxt`.
@@ -261,8 +255,6 @@ To use/set another Application-Name and Application-Api-Key you have to instanti
 > See [ICustomSettingsApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/ICustomSettingsApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/CustomSettingsDemo.cs)
 
 The API can be created for user and system namespace.
-
-Custom settings are key value pairs, value being string type. Therefore if you wish to save a DTO as a setting you will have to serialize the DTO prior to creating `Custom Request` .
 Please refer to the demo for sample API usage.
 
 #### Files API
@@ -270,19 +262,18 @@ Please refer to the demo for sample API usage.
 > See [IFilesApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IFilesApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/FilesDemo.cs)
 
 Summary on supported features:
+
 * CRUD operations on folders and files,
-* Bulk files uploading/downloading in ZIP format,
-* Text and binary files reading/writing.
+* Bulk files upload/download in ZIP format,
+* Text and binary files read/write.
 
-##### Notes on metadata support
-
-Reading/Writing of metadata associated with file entities (folder, file) are not supported yet.
+Reading/Writing of metadata associated with file entities (folder, file) are not supported.
 
 #### Database API
 
 > See [IDatabaseApi](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Api/IDatabaseApi.cs) and [DEMO](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory.Demo/Demo/DatabaseDemo.cs)
 
-#### Notes on schema management
+##### Notes on schema management
 
 To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class that implement Code First approach:
 ```csharp
@@ -300,17 +291,35 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
 	builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
 ```
 
-For more advanced scenarios and relationship building you should build up your own TableSchema object.
+For more advanced scenarios and relationship building you should build up your own TableSchema object:
+```csharp
+	TableSchema schema = new TableSchema();
+	schema.Name = "<table_name>";
+	schema.Field = new List<FieldSchema>
+	{
+		// fields...
+		new FieldSchema
+		{
+			Name = "<foreign_key_column_name>",
+			Type = "reference",
+			AllowNull = false,
+			RefTable = "<related_table_name>",
+			RefFields = "<related_table_column_name>"
+		},
+		// more fields...
+	};
+	
+	await databaseApi.CreateTableAsync(staffSchema);
+```
+
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.
-Related entities (records) are not retrieved (see related query parameter).
 
-#### Notes on table records operations
+##### Notes on table records operations
 
-* Input/Output is always a user-defined POCO classes that must match the corresponding table's schema;
-* `CreateRecordsAsync` returns the created records back to user with key fields (IDs) updated;
-* `GetRecordsAsync` has three overloads to retrieve: all records, records by ids and by given SQL query.
+* Input are user-defined POCO classes that must match the corresponding table's schema;
+* Output is instance of [DatabaseResourceWrapper](https://github.com/dreamfactorysoftware/.net-sdk/blob/master/DreamFactory/Model/Database/DatabaseResourceWrapper.cs) containing records and metadata if it was requested.
 
-#### Notes on stored procedures/functions
+##### Notes on stored procedures/functions
 
 When calling a stored procedure or function, some overloads use a collection of `StoreProcParams` instances. To simplify creating such a collection, consider using `StoreProcParamsBuilder` class.
 When response (or return values) is expected, a user must define `TStoredProcResponse` POCO that shall have fields for OUT-parameters and for wrapper.
