@@ -1,0 +1,43 @@
+﻿{
+  "resource": [
+    {
+      "name": "Events",
+      "label": "Events",
+      "plural": "Events",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    },
+    {
+      "name": "staff",
+      "label": "Staff",
+      "plural": "Staffs",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    },
+    {
+      "name": "todo",
+      "label": "Todo",
+      "plural": "Todos",
+      "access": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "MERGE",
+        "DELETE"
+      ]
+    }
+  ]
+}

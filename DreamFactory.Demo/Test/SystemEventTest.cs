@@ -5,32 +5,42 @@
     using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.System.Event;
     using DreamFactory.Rest;
 
     public class SystemEventTest : IRunnable
     {
-// ReSharper disable PossibleMultipleEnumeration
         public async Task RunAsync(IRestContext context)
         {
-            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            ISystemEventApi eventApi = context.Factory.CreateSystemEventApi();
 
-            IEnumerable<EventCacheResponse> events = await systemApi.GetEventsAsync(true);
-            Console.WriteLine("User events:");
-            var paths = events.Single(x => x.name == "user").paths;
-            IEnumerable<string> userEvents = from p in paths
-                                             from v in p.verbs
-                                             from fv in FlattenVerbs(v)
-                                             select p.path + " " + fv;
-            foreach (string userEvent in userEvents)
-            {
-                Console.WriteLine("\t{0}", userEvent);
-            }
+            IEnumerable<string> events = (await eventApi.GetEventsAsync()).ToList();
+            Console.WriteLine("GetEventsAsync(): Found {0} events", events.Count());
+
+            string eventName = events.First();
+
+            // create
+            EventScriptRequest createRequest = CreateEventScript();
+            EventScriptResponse createResponse = await eventApi.CreateEventScriptAsync(eventName, new SqlQuery(), createRequest);
+            Console.WriteLine("CreateEventScriptAsync(): Created script {0}", createResponse.Name);
+            
+            // delete
+            EventScriptResponse deleteResponse = await eventApi.DeleteEventScriptAsync(eventName, new SqlQuery());
+            Console.WriteLine("DeleteEventScriptAsync(): Deleted script {0}", deleteResponse.Name);
         }
 
-        private static IEnumerable<string> FlattenVerbs(EventVerbs verbs)
+        private EventScriptRequest CreateEventScript()
         {
-            return verbs.@event.Select(@event => verbs.type.ToUpperInvariant() + " " + @event);
+            return new EventScriptRequest
+            {
+                Name = "my_event_script",
+                Type = "v8js",
+                IsActive = true,
+                AffectsProcess = true,
+                Content = "text",
+                Config = "text"
+            };
         }
     }
 }

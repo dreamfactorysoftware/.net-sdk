@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Model;
     using DreamFactory.Model.Database;
 
     /// <summary>
@@ -21,19 +22,19 @@
         /// <param name="includeSchemas">Also return the names of the tables where the schema is retrievable.</param>
         /// <param name="refresh">Refresh any cached copy of the resource list.</param>
         /// <returns>Table names.</returns>
-        Task<IEnumerable<string>> GetTableNamesAsync(bool includeSchemas = false, bool refresh = false);
+        Task<IEnumerable<TableInfo>> GetTableNamesAsync(bool includeSchemas = false, bool refresh = false);
 
         /// <summary>
         /// Creates a new table schema.
         /// </summary>
         /// <param name="tableSchema">Table schema.</param>
-        Task CreateTableAsync(TableSchema tableSchema);
+        Task<bool> CreateTableAsync(TableSchema tableSchema);
 
         /// <summary>
         /// Updates the existing table schema.
         /// </summary>
         /// <param name="tableSchema">Table schema.</param>
-        Task UpdateTableAsync(TableSchema tableSchema);
+        Task<bool> UpdateTableAsync(TableSchema tableSchema);
 
         /// <summary>
         /// Deletes the specified table (aka drop).
@@ -66,32 +67,37 @@
         /// <param name="records">Records to add.</param>
         /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
-        /// <returns>Sequence of created records.</returns>
-        Task<IEnumerable<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
+        /// <returns>Sequence of created records and metadata if specified in query.</returns>
+        Task<DatabaseResourceWrapper<TRecord>> CreateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// Update records in the specified table.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="records">Records to update.</param>
+        /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
-        Task UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
+        /// <returns>Sequence of updated records and metadata if specified in query.</returns>
+        Task<DatabaseResourceWrapper<TRecord>> UpdateRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// Get table records by filter.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="query">See <see cref="SqlQuery"/> class.</param>
-        /// <returns>Sequence of retrieved records.</returns>
-        Task<IEnumerable<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query);
+        /// <typeparam name="TRecord">Type of the records.</typeparam>
+        /// <returns>Sequence of queried records and metadata if specified in query.</returns>
+        Task<DatabaseResourceWrapper<TRecord>> GetRecordsAsync<TRecord>(string tableName, SqlQuery query);
 
         /// <summary>
         /// Delete one or more records.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="records">Records to delete.</param>
+        /// <param name="query">SQL query to return created records.</param>
         /// <typeparam name="TRecord">Type of the records.</typeparam>
-        Task DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records);
+        /// <returns>Sequence of deleted records and metadata if specified in query.</returns>
+        Task<DatabaseResourceWrapper<TRecord>> DeleteRecordsAsync<TRecord>(string tableName, IEnumerable<TRecord> records, SqlQuery query);
 
         /// <summary>
         /// List callable stored procedures.

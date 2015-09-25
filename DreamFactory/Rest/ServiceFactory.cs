@@ -54,5 +54,45 @@
         {
             return new CustomSettingsApi(baseAddress, httpFacade, contentSerializer, baseHeaders, "system");
         }
+
+        public ISystemAdminApi CreateSystemAdminApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemAppApi CreateSystemAppApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemAppGroupApi CreateSystemAppGroupApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemEmailTemplateApi CreateSystemEmailTemplateApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemEventApi CreateSystemEventApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemRoleApi CreateSystemRoleApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemServiceApi CreateSystemServiceApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
+
+        public ISystemUserApi CreateSystemUserApi()
+        {
+            return new SystemApi(baseAddress, httpFacade, contentSerializer, baseHeaders);
+        }
     }
 }

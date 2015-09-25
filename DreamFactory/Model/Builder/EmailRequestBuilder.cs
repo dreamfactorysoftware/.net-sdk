@@ -29,7 +29,7 @@
                 throw new ArgumentNullException("email");
             }
 
-            addresses.Add(new EmailAddress { email = email });
+            addresses.Add(new EmailAddress { Email = email });
             return this;
         }
 
@@ -75,7 +75,7 @@
                 throw new DreamFactoryException("Email body was not provided.");
             }
 
-            return new EmailRequest { to = addresses, subject = subjectCopy, body_text = bodyCopy };
+            return new EmailRequest { To = addresses, Subject = subjectCopy, BodyText = bodyCopy };
         }
     }
 }

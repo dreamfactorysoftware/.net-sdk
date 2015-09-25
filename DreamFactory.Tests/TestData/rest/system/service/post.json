@@ -1,0 +1,19 @@
+﻿{
+  "resource": [
+    {
+      "id": 1,
+      "name": "system",
+      "label": "System Management",
+      "description": "Service for managing system resources.",
+      "is_active": true,
+      "type": "system",
+      "mutable": false,
+      "deletable": false,
+      "created_date": "2015-08-24 22:27:07",
+      "last_modified_date": "2015-08-24 22:27:07",
+      "created_by_id": null,
+      "last_modified_by_id": null,
+      "config": []
+    }
+  ]
+}

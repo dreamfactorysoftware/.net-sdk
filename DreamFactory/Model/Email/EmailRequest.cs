@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.Email
+﻿namespace DreamFactory.Model.Email
 {
     using global::System.Collections.Generic;
 
@@ -11,61 +10,61 @@ namespace DreamFactory.Model.Email
         /// <summary>
         /// Template name to base email on.
         /// </summary>
-        public string template { get; set; }
+        public string Template { get; set; }
 
         /// <summary>
         /// Email Template id to base email on.
         /// </summary>
-        public int? template_id { get; set; }
+        public int? TemplateId { get; set; }
 
         /// <summary>
         /// Required single or multiple receiver addresses.
         /// </summary>
-        public List<EmailAddress> to { get; set; }
+        public List<EmailAddress> To { get; set; }
 
         /// <summary>
         /// Optional CC receiver addresses.
         /// </summary>
-        public List<EmailAddress> cc { get; set; }
+        public List<EmailAddress> Cc { get; set; }
 
         /// <summary>
         /// Optional BCC receiver addresses.
         /// </summary>
-        public List<EmailAddress> bcc { get; set; }
+        public List<EmailAddress> Bcc { get; set; }
 
         /// <summary>
         /// Text only subject line.
         /// </summary>
-        public string subject { get; set; }
+        public string Subject { get; set; }
 
         /// <summary>
         /// Text only version of the body.
         /// </summary>
-        public string body_text { get; set; }
+        public string BodyText { get; set; }
 
         /// <summary>
         /// Escaped HTML version of the body.
         /// </summary>
-        public string body_html { get; set; }
+        public string BodyHtml { get; set; }
 
         /// <summary>
         /// Required sender name.
         /// </summary>
-        public string from_name { get; set; }
+        public string FromName { get; set; }
 
         /// <summary>
         /// Required sender email.
         /// </summary>
-        public string from_email { get; set; }
+        public string FromEmail { get; set; }
 
         /// <summary>
         /// Optional reply to name.
         /// </summary>
-        public string reply_to_name { get; set; }
+        public string ReplyToName { get; set; }
 
         /// <summary>
         /// Optional reply to email.
         /// </summary>
-        public string reply_to_email { get; set; }
+        public string ReplyToEmail { get; set; }
     }
 }

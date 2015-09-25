@@ -1,0 +1,11 @@
+﻿{
+	"session_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJfaWQiOjIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODc2NVwvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6IjE0NDA2MTk0NDUiLCJleHAiOiIxNDQwNjIzMDQ1IiwibmJmIjoiMTQ0MDYxOTQ0NSIsImp0aSI6ImU4ZDhmOWJlOGVkYzk2ZTY5ZDdhZGVmYWVmNDNjNmJhIn0.-DyPDFqmqhKWs0qNTjg5lHQeNyoN9TMPRHMRiSEVVt0",
+	"session_id": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJfaWQiOjIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODc2NVwvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6IjE0NDA2MTk0NDUiLCJleHAiOiIxNDQwNjIzMDQ1IiwibmJmIjoiMTQ0MDYxOTQ0NSIsImp0aSI6ImU4ZDhmOWJlOGVkYzk2ZTY5ZDdhZGVmYWVmNDNjNmJhIn0.-DyPDFqmqhKWs0qNTjg5lHQeNyoN9TMPRHMRiSEVVt0",
+	"id": 1,
+	"name": "SuperAdmin",
+	"first_name": "sa",
+	"last_name": "sa",
+	"email": "dream@factory.com",
+	"is_sys_admin": true,
+	"last_login_date": "2015-08-31 20:28:45"
+}

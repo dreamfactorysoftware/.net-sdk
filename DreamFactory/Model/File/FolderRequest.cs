@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-namespace DreamFactory.Model.File
+﻿namespace DreamFactory.Model.File
 {
     using global::System.Collections.Generic;
 
@@ -11,21 +10,21 @@ namespace DreamFactory.Model.File
         /// <summary>
         /// Gets Identifier/Name for the folder, localized to requested resource.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Full path of the folder, from the service including container.
         /// </summary>
-        public string path { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// An array of sub-folders to create.
         /// </summary>
-        public List<FolderRequest> folder { get; set; }
+        public List<FolderRequest> Folder { get; set; }
 
         /// <summary>
         /// An array of files to create.
         /// </summary>
-        public List<FileRequest> file { get; set; }
+        public List<FileRequest> File { get; set; }
     }
 }

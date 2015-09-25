@@ -9,9 +9,13 @@
     {
         public async Task RunAsync(IRestContext context)
         {
-            IUserApi userApi = context.Factory.CreateUserApi();
-            bool success = await userApi.LogoutAsync();
+            ISystemApi systemApi = context.Factory.CreateSystemApi();
+            bool success = await systemApi.LogoutAdminAsync();
             Console.WriteLine("Logged out, success={0}", success);
+
+            //IUserApi userApi = context.Factory.CreateUserApi();
+            //bool success = await userApi.LogoutAsync();
+            //Console.WriteLine("Logged out, success={0}", success);
         }
     }
 }

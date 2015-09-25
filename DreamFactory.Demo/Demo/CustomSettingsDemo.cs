@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DreamFactory.Api;
+    using DreamFactory.Model.System.Custom;
     using DreamFactory.Rest;
 
     public class CustomSettingsDemo : IRunnable
@@ -13,42 +15,40 @@
             ICustomSettingsApi settingsApi = context.Factory.CreateUserCustomSettingsApi();
 
             // Setting some preferences
-            UserPreferences preferences = new UserPreferences
+            List<CustomRequest> customSettings = new List<CustomRequest>
             {
-                flag = true,
-                array = new[] { "a", "b", "c" },
-                entity = new UserPreferences.Entity { rank = 4, role = "user" }
+                new CustomRequest
+                {
+                    Name = "Language",
+                    Value = "en-us"
+                },
+                new CustomRequest
+                {
+                    Name = "TimeZone",
+                    Value = "ET"
+                }
             };
 
-            if (await settingsApi.SetCustomSettingAsync("preferences", preferences))
+            if ((await settingsApi.SetCustomSettingsAsync(customSettings)).Records.Any())
             {
                 Console.WriteLine("Created custom settings: preferences");
             }
 
             // Retrieving custom settings names
-            IEnumerable<string> names = await settingsApi.GetCustomSettingsAsync();
+            IEnumerable<string> names = (await settingsApi.GetCustomSettingsAsync()).Records.Select(x => x.Name);
             string flatList = string.Join(", ", names);
             Console.WriteLine("Retrieved available setting names: [{0}]", flatList);
 
             // Retrieving preferences back
-            UserPreferences instance = await settingsApi.GetCustomSettingAsync<UserPreferences>("preferences");
+            CustomResponse custom = await settingsApi.GetCustomSettingAsync("Language");
             Console.WriteLine("Retrieved preferences back:");
-            Console.WriteLine("\tpreferences.flag={0}, preferences.entity.rank={1}", instance.flag, instance.entity.rank);
-        }
+            Console.WriteLine("\tName={0}, Value={1}", "Language", custom.Value);
 
-// ReSharper disable InconsistentNaming
-        internal class UserPreferences
-        {
-            public bool flag { get; set; }
-            public string[] array { get; set; }
-            public Entity entity { get; set; }
-
-            internal class Entity
-            {
-                public int rank { get; set; }
-                public string role { get; set; }
-            }
+            // Deleting preferences
+            await settingsApi.DeleteCustomSettingAsync("Language");
+            Console.WriteLine("Deleted Language preferences!");
+            await settingsApi.DeleteCustomSettingAsync("TimeZone");
+            Console.WriteLine("Deleted TimeZone preferences!");
         }
-// ReSharper restore InconsistentNaming
     }
 }

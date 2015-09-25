@@ -1,7 +1,7 @@
 ﻿namespace DreamFactory.Tests.Api
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using DreamFactory.Api;
     using DreamFactory.Api.Implementation;
     using DreamFactory.Http;
@@ -14,8 +14,6 @@
     [TestClass]
     public class UserApiTests
     {
-        private const string BaseAddress = "http://localhost";
-
         #region --- Session ---
 
         [TestMethod]
@@ -25,11 +23,15 @@
             IUserApi userApi = CreateUserApi();
 
             // Act
-            Session session = userApi.LoginAsync("admin", "user@mail.com", "userdream").Result;
+            Session session = userApi.LoginAsync("demo@factory.com", "dreamfactory").Result;
 
             // Assert
-            session.display_name.ShouldBe("Andrei Smirnov");
-            session.session_id.ShouldNotBeEmpty();
+            session.Name.ShouldBe("demo");
+            session.SessionId.ShouldNotBeNullOrEmpty();
+
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync(null, "dreamfactory"));
+            Should.Throw<ArgumentNullException>(() => userApi.LoginAsync("demo@factory.com", null));
+            Should.Throw<ArgumentOutOfRangeException>(() => userApi.LoginAsync("demo@factory.com", "dreamfactory", -9999));
         }
 
         [TestMethod]
@@ -37,13 +39,36 @@
         {
             // Arrange
             IUserApi userApi = CreateUserApi();
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Act
             Session session = userApi.GetSessionAsync().Result;
 
             // Assert
-            session.session_id.ShouldNotBeEmpty();
+            session.SessionId.ShouldNotBeNullOrEmpty();
+        }
+
+        [TestMethod]
+        public void RegisterShouldChangeBaseHeadersIfLoginTrue()
+        {
+            // Arrange
+            HttpHeaders headers;
+            IUserApi userApi = CreateUserApi(out headers);
+            Register register = new Register
+            {
+                Email = "test@mail.com",
+                FirstName = "first",
+                LastName = "last",
+                Name = "display",
+                NewPassword = "qwerty"
+            };
+
+            // Act
+            userApi.RegisterAsync(register, true).Wait();
+
+            // Assert
+            Dictionary<string, object> dictionary = headers.Build();
+            dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
         }
 
         [TestMethod]
@@ -54,13 +79,11 @@
             IUserApi userApi = CreateUserApi(out headers);
 
             // Act
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Assert
             Dictionary<string, object> dictionary = headers.Build();
-            dictionary.ContainsKey(HttpHeaders.DreamFactoryApplicationHeader).ShouldBe(true);
             dictionary.ContainsKey(HttpHeaders.DreamFactorySessionTokenHeader).ShouldBe(true);
-            dictionary[HttpHeaders.DreamFactoryApplicationHeader].ShouldBe("admin");
         }
 
         [TestMethod]
@@ -82,7 +105,7 @@
             // Arrange
             HttpHeaders headers;
             IUserApi userApi = CreateUserApi(out headers);
-            userApi.LoginAsync("admin", "user@mail.com", "userdream").Wait();
+            userApi.LoginAsync("demo@factory.com", "dreamfactory").Wait();
 
             // Act
             userApi.LogoutAsync().Wait();
@@ -105,7 +128,7 @@
             ProfileResponse profile = userApi.GetProfileAsync().Result;
 
             // Assert
-            profile.display_name.ShouldBe("pinebit");
+            profile.Name.ShouldBe("pinebit");
         }
 
         [TestMethod]
@@ -115,14 +138,14 @@
             IUserApi userApi = CreateUserApi();
             ProfileRequest profileRequest = new ProfileRequest
                                             {
-                                                first_name = "Alex",
-                                                last_name = "Smith",
-                                                display_name = "Alex Smith",
-                                                default_app_id = 1,
-                                                email = "alex@user.com",
-                                                phone = null,
-                                                security_question = "to be or not to be?",
-                                                security_answer = "maybe",
+                                                FirstName = "Alex",
+                                                LastName = "Smith",
+                                                DisplayName = "Alex Smith",
+                                                DefaultAppId = 1,
+                                                Email = "alex@user.com",
+                                                Phone = null,
+                                                SecurityQuestion = "to be or not to be?",
+                                                SecurityAnswer = "maybe",
                                             };
 
             // Act
@@ -130,45 +153,8 @@
 
             // Assert
             success.ShouldBe(true);
-        }
 
-        #endregion
-
-        #region --- Device ---
-
-        [TestMethod]
-        public void ShouldGetDevicesAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-
-            // Act
-            List<DeviceResponse> devices = userApi.GetDevicesAsync().Result.ToList();
-
-            // Assert
-            devices.ShouldNotBeEmpty();
-            devices.First().platform.ShouldBe("windows");
-        }
-
-        [TestMethod]
-        public void ShouldSetDeviceAsync()
-        {
-            // Arrange
-            IUserApi userApi = CreateUserApi();
-            DeviceRequest request = new DeviceRequest
-                                    {
-                                        id = 1,
-                                        uuid = "1",
-                                        platform = "windows",
-                                        model = "new",
-                                        version = "1"
-                                    };
-
-            // Act
-            bool ok = userApi.SetDeviceAsync(request).Result;
-
-            // Assert
-            ok.ShouldBe(true);
+            Should.Throw<ArgumentNullException>(() => userApi.UpdateProfileAsync(null));
         }
 
         #endregion
@@ -182,11 +168,11 @@
             IUserApi userApi = CreateUserApi();
             Register register = new Register
             {
-                email = "test@mail.com",
-                first_name = "first",
-                last_name = "last",
-                display_name = "display",
-                new_password = "qwerty"
+                Email = "test@mail.com",
+                FirstName = "first",
+                LastName = "last",
+                Name = "display",
+                NewPassword = "qwerty"
             };
 
             // Act
@@ -194,6 +180,8 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.RegisterAsync(null));
         }
 
         #endregion
@@ -212,6 +200,9 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.ChangePasswordAsync("abc", null));
+            Should.Throw<ArgumentNullException>(() => userApi.ChangePasswordAsync(null, "cba"));
         }
 
         [TestMethod]
@@ -224,7 +215,9 @@
             PasswordResponse response = userApi.RequestPasswordResetAsync("user@mail.com").Result;
 
             // Assert
-            response.security_question.ShouldBe("to be or not to be?");
+            response.SecurityQuestion.ShouldBe("to be or not to be?");
+
+            Should.Throw<ArgumentNullException>(() => userApi.RequestPasswordResetAsync(null));
         }
 
         [TestMethod]
@@ -238,6 +231,10 @@
 
             // Assert
             ok.ShouldBe(true);
+
+            Should.Throw<ArgumentNullException>(() => userApi.CompletePasswordResetAsync(null, "qwerty", answer: "maybe"));
+            Should.Throw<ArgumentNullException>(() => userApi.CompletePasswordResetAsync("user@mail.com", null, answer: "maybe"));
+            Should.Throw<ArgumentException>(() => userApi.CompletePasswordResetAsync("user@mail.com", "qwerty", answer: "maybe", code: "not"));
         }
 
         #endregion
@@ -251,7 +248,7 @@
         private static IUserApi CreateUserApi(out HttpHeaders headers, string suffix = null)
         {
             IHttpFacade httpFacade = new TestDataHttpFacade(suffix);
-            HttpAddress address = new HttpAddress(BaseAddress, RestApiVersion.V1);
+            HttpAddress address = new HttpAddress("http://base_address", RestApiVersion.V1);
             headers = new HttpHeaders();
             return new UserApi(address, httpFacade, new JsonContentSerializer(), headers);
         }

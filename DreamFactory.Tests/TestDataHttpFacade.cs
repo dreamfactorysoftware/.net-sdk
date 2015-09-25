@@ -91,7 +91,7 @@
 
         private string CreateErrorResponse(int code, string message)
         {
-            Error errorData = new Error { code = code, message = message };
+            Error errorData = new Error { Code = code, Message = message };
             var error = new { error = new List<Error> { errorData } };
             return serializer.Serialize(error);
         }

@@ -1,0 +1,49 @@
+﻿@model DreamFactory.AddressBook.Models.Entities.ContactInfo
+
+<h3>@Html.DisplayTextFor(x => x.InfoType)</h3>
+<div class="well">
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.Phone)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.Email)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.Address)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.City, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.City)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.State)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Zip, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.Zip)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <p class="form-control-static">@Html.DisplayTextFor(x => x.Country)</p>
+        </div>
+    </div>
+</div>

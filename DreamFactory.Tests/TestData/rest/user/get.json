@@ -1,25 +1,19 @@
 ﻿{
-    "resource": [
-        {
-            "name": "custom"
-        },
-        {
-            "name": "device"
-        },
-        {
-            "name": "password"
-        },
-        {
-            "name": "profile"
-        },
-        {
-            "name": "register"
-        },
-        {
-            "name": "session"
-        },
-        {
-            "name": "ticket"
-        }
-    ]
+	"resource": [
+		{
+			"name": "password"
+		},
+		{
+			"name": "profile"
+		},
+		{
+			"name": "register"
+		},
+		{
+			"name": "session"
+		},
+		{
+			"name": "custom"
+		}
+	]
 }

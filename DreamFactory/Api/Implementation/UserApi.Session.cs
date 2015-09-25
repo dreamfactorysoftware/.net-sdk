@@ -7,13 +7,8 @@
 
     internal partial class UserApi
     {
-        public async Task<Session> LoginAsync(string applicationName, string email, string password, int duration)
+        public async Task<Session> LoginAsync(string email, string password, int duration)
         {
-            if (applicationName == null)
-            {
-                throw new ArgumentNullException("applicationName");
-            }
-
             if (email == null)
             {
                 throw new ArgumentNullException("email");
@@ -29,47 +24,41 @@
                 throw new ArgumentOutOfRangeException("duration");
             }
 
-            var address = baseAddress.WithResource("session");
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactoryApplicationHeader, applicationName);
+            Session session = await base.RequestWithPayloadAsync<Login, Session>(
+                method: HttpMethod.Post,
+                resource: "session",
+                query: null,
+                payload: new Login { Email = email, Password = password, Duration = duration }
+                );
 
-            Login login = new Login { email = email, password = password, duration = duration };
-            string loginContent = contentSerializer.Serialize(login);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post,
-                                                   address.Build(),
-                                                   baseHeaders,
-                                                   loginContent);
-
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            Session session = contentSerializer.Deserialize<Session>(response.Body);
-            baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+            base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
             return session;
         }
 
-        public async Task<Session> GetSessionAsync()
+        public Task<Session> GetSessionAsync()
         {
-            var address = baseAddress.WithResource("session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Get, address.Build(), baseHeaders);
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<Session>(response.Body);
+            return base.RequestAsync<Session>(
+                method: HttpMethod.Get, 
+                resource: "session", 
+                query: null
+                );
         }
 
         public async Task<bool> LogoutAsync()
         {
-            var address = baseAddress.WithResource("session");
-            IHttpRequest request = new HttpRequest(HttpMethod.Delete, address.Build(), baseHeaders);
+            Logout logout = await base.RequestAsync<Logout>(
+                method: HttpMethod.Delete, 
+                resource: "session", 
+                query: null
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            if (logout.Success ?? false)
+            {
+                base.BaseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
+            }
 
-            baseHeaders.Delete(HttpHeaders.DreamFactorySessionTokenHeader);
-
-            var logout = new { success = false };
-            return contentSerializer.Deserialize(response.Body, logout).success;
+            return logout.Success ?? false;
         }
     }
 }

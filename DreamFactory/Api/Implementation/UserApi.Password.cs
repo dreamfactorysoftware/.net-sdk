@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using DreamFactory.Http;
+    using DreamFactory.Model.Database;
     using DreamFactory.Model.User;
 
     internal partial class UserApi
@@ -19,33 +20,32 @@
                 throw new ArgumentNullException("newPassword");
             }
 
-            var address = baseAddress.WithResource("password");
-            PasswordRequest data = new PasswordRequest { old_password = oldPassword, new_password = newPassword };
-            string content = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+                method: HttpMethod.Post, 
+                resource: "password", 
+                query: null,
+                payload: new PasswordRequest { OldPassword = oldPassword, NewPassword = newPassword }
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
+            return response.Success ?? false;
         }
 
-        public async Task<PasswordResponse> RequestPasswordResetAsync(string email)
+        public Task<PasswordResponse> RequestPasswordResetAsync(string email)
         {
             if (email == null)
             {
                 throw new ArgumentNullException("email");
             }
 
-            var address = baseAddress.WithResource("password").WithParameter("reset", true);
-            PasswordRequest data = new PasswordRequest { email = email };
-            string content = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("reset", true);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            return contentSerializer.Deserialize<PasswordResponse>(response.Body);
+            return base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+                method: HttpMethod.Post,
+                resource: "password",
+                query: query,
+                payload: new PasswordRequest { Email = email }
+            );
         }
 
         public async Task<bool> CompletePasswordResetAsync(string email, string newPassword, string code, string answer)
@@ -65,22 +65,23 @@
                 throw new ArgumentException("You must specify either code or answer parameters but not both.", "answer");
             }
 
-            var address = baseAddress.WithResource("password").WithParameter("login", true);
-            PasswordRequest data = new PasswordRequest { email = email, new_password = newPassword, code = code, security_answer = answer };
-            string content = contentSerializer.Serialize(data);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, address.Build(), baseHeaders, content);
+            SqlQuery query = new SqlQuery { Fields = null };
+            query.CustomParameters.Add("login", true);
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
+            PasswordResponse response = await base.RequestWithPayloadAsync<PasswordRequest, PasswordResponse>(
+                method: HttpMethod.Post,
+                resource: "password",
+                query: query, 
+                payload: new PasswordRequest { Email = email, NewPassword = newPassword, Code = code, SecurityAnswer = answer }
+                );
 
-            bool success = contentSerializer.Deserialize<PasswordResponse>(response.Body).success ?? false;
-            if (success)
+            if (response.Success ?? false)
             {
                 Session session = await GetSessionAsync();
-                baseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.session_id);
+                base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
             }
 
-            return success;
+            return response.Success ?? false;
         }
     }
 }

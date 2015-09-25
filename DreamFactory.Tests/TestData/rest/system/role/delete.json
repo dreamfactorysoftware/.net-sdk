@@ -1,0 +1,14 @@
+﻿{
+  "resource": [
+    {
+      "id": 1,
+      "name": "AddressBookUser",
+      "description": "This role can access address book.",
+      "is_active": true,
+      "created_date": "2015-09-02 19:56:35",
+      "last_modified_date": "2015-09-02 19:56:35",
+      "created_by_id": 1,
+      "last_modified_by_id": null
+    }
+  ]
+}

@@ -1,1 +1,4 @@
-﻿{"success": "true"}
+﻿{
+	"success": true,
+	"session_token": null
+}

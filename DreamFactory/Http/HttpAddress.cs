@@ -19,7 +19,7 @@
         {
             this.baseAddress = baseAddress;
             this.version = version;
-            
+
             resources = new List<string>();
             parameters = new Dictionary<string, object>();
         }
@@ -51,6 +51,7 @@
 
         public IHttpAddress WithParameter(string name, object value)
         {
+
             Dictionary<string, object> temp = new Dictionary<string, object>(parameters) { { name, value } };
             return new HttpAddress(baseAddress, version, resources, temp);
         }
@@ -66,7 +67,7 @@
                     break;
 
                 case RestApiVersion.V2:
-                    address += "api/v2.0/";
+                    address += "api/v2/";
                     break;
 
                 default:

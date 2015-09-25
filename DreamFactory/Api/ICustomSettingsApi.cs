@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using DreamFactory.Model;
+    using DreamFactory.Model.Database;
+    using DreamFactory.Model.System.Custom;
 
     /// <summary>
     /// Custom Settings API.
@@ -11,31 +14,48 @@
         /// <summary>
         /// Retrieve all custom user|system settings.
         /// </summary>
-        /// <returns>Sequence of settings (names).</returns>
-        Task<IEnumerable<string>> GetCustomSettingsAsync();
+        /// <param name="query">SQL query to return created records.</param>
+        /// <returns>Sequence of custom settings.</returns>
+        Task<ResourceWrapper<CustomResponse>> GetCustomSettingsAsync(SqlQuery query = null);
 
         /// <summary>
-        /// Set or update one custom user|system setting.
+        /// Set custom user|system settings.
         /// </summary>
-        /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <param name="entity">Instance of the TEntity type.</param>
-        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
-        /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> SetCustomSettingAsync<TEntity>(string settingName, TEntity entity) where TEntity : class, new();
+        /// <param name="customs">Collection of CustomRequest type.</param>
+        /// <param name="query">SQL query to return created records.</param>
+        /// <returns>Custom records created.</returns>
+        Task<ResourceWrapper<CustomResponse>> SetCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
+
+        /// <summary>
+        /// Update custom user|system settings.
+        /// </summary>
+        /// <param name="customs">Collection of CustomRequest type.</param>
+        /// <param name="query">SQL query to return updated records.</param>
+        /// <returns>Custom records updated.</returns>
+        Task<ResourceWrapper<CustomResponse>> UpdateCustomSettingsAsync(List<CustomRequest> customs, SqlQuery query = null);
 
         /// <summary>
         /// Retrieve one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to retrieve.</param>
-        /// <typeparam name="TEntity">User defined type for the setting.</typeparam>
-        /// <returns>CustomSetting data.</returns>
-        Task<TEntity> GetCustomSettingAsync<TEntity>(string settingName) where TEntity : class, new();
+        /// <returns cref="CustomResponse">Custom setting record.</returns>
+        Task<CustomResponse> GetCustomSettingAsync(string settingName);
+
+        /// <summary>
+        /// Set or update one custom user|system setting.
+        /// </summary>
+        /// <param name="settingName">Name of the setting to retrieve.</param>
+        /// <param name="custom">Instance of the CustomRequest type.</param>
+        /// <param name="query">SQL query to return updated records.</param>
+        /// <returns cref="CustomResponse">Custom setting record updated.</returns>
+        Task<CustomResponse> UpdateCustomSettingAsync(string settingName, CustomRequest custom, SqlQuery query = null);
 
         /// <summary>
         /// Delete one custom user|system setting.
         /// </summary>
         /// <param name="settingName">Name of the setting to delete.</param>
-        /// <returns>True when API call was successful, false or error otherwise.</returns>
-        Task<bool> DeleteCustomSettingAsync(string settingName); 
+        /// <param name="query">SQL query to return deleted records.</param>
+        /// <returns cref="CustomResponse">Custom setting record deleted.</returns>
+        Task<CustomResponse> DeleteCustomSettingAsync(string settingName, SqlQuery query = null);
     }
 }

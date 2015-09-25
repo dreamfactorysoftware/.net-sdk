@@ -6,19 +6,16 @@
     using DreamFactory.Model.Email;
     using DreamFactory.Serialization;
 
-    internal class EmailApi : IEmailApi
+    internal class EmailApi : BaseApi, IEmailApi
     {
-        private readonly IHttpAddress baseAddress;
-        private readonly IHttpFacade httpFacade;
-        private readonly IContentSerializer contentSerializer;
-        private readonly IHttpHeaders baseHeaders;
-
-        public EmailApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, IHttpHeaders baseHeaders, string serviceName)
+        public EmailApi(
+            IHttpAddress baseAddress, 
+            IHttpFacade httpFacade, 
+            IContentSerializer contentSerializer, 
+            HttpHeaders baseHeaders, 
+            string serviceName)
+            : base(baseAddress, httpFacade, contentSerializer, baseHeaders, serviceName)
         {
-            this.baseAddress = baseAddress.WithResource(serviceName);
-            this.httpFacade = httpFacade;
-            this.contentSerializer = contentSerializer;
-            this.baseHeaders = baseHeaders;
         }
 
         public async Task<int> SendEmailAsync(EmailRequest emailRequest)
@@ -28,14 +25,14 @@
                 throw new ArgumentNullException("emailRequest");
             }
 
-            string content = contentSerializer.Serialize(emailRequest);
-            IHttpRequest request = new HttpRequest(HttpMethod.Post, baseAddress.Build(), baseHeaders, content);
+            EmailResponse response = await base.RequestWithPayloadAsync<EmailRequest, EmailResponse>(
+                method: HttpMethod.Post,
+                resourceParts: null,
+                query: null,
+                payload: emailRequest
+                );
 
-            IHttpResponse response = await httpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, contentSerializer);
-
-            var emailsSent = new { count = 0 };
-            return contentSerializer.Deserialize(response.Body, emailsSent).count;
+            return response.Count ?? 0;
         }
     }
 }
