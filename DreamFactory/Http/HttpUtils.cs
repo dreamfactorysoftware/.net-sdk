@@ -126,11 +126,11 @@
             try
             {
                 string message = @default;
-                var error = new { error = new List<Error>() };
-                error = serializer.Deserialize(response.Body, error);
-                if (error != null && error.error != null)
+                var body = new { error = new Error() };
+                body = serializer.Deserialize(response.Body, body);
+                if (body != null && body.error != null)
                 {
-                    message = error.error.First().Message;
+                    message = body.error.Message;
                 }
 
                 return string.Format("{0} - {1}", response.Code, message);
