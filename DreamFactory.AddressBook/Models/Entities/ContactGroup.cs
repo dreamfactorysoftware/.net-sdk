@@ -7,8 +7,10 @@
 
     public class ContactGroup
     {
+        [JsonProperty(PropertyName = "id")]
         public int? Id { get; set; }
 
+        [JsonProperty(PropertyName = "name")]
         [Display(Name = "Name")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessage = null)]
         [MaxLength(128, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessage_MaxLength", ErrorMessage = null)]

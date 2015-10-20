@@ -17,61 +17,73 @@
         /// <summary>
         /// Identifier of this service.
         /// </summary>
+        [JsonProperty(PropertyName = "id")]
         public int? Id { get; set; }
 
         /// <summary>
         /// Displayable name of this service.
         /// </summary>
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
         /// Label of this service.
         /// </summary>
+        [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }
 
         /// <summary>
         /// Description of this service.
         /// </summary>
+        [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
         /// True if this service is active for use.
         /// </summary>
+        [JsonProperty(PropertyName = "is_active")]
         public bool? IsActive { get; set; }
 
         /// <summary>
         /// One of the supported service types.
         /// </summary>
+        [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
         /// <summary>
         /// Indicates whether this service is mutable.
         /// </summary>
+        [JsonProperty(PropertyName = "mutable")]
         public bool? Mutable { get; set; }
 
         /// <summary>
         /// Indicates whether this service can be deleted.
         /// </summary>
+        [JsonProperty(PropertyName = "deletable")]
         public bool? Deletable { get; set; }
 
         /// <summary>
         /// Date this service was created.
         /// </summary>
+        [JsonProperty(PropertyName = "created_date")]
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// Date this service was last modified.
         /// </summary>
+        [JsonProperty(PropertyName = "last_modified_date")]
         public DateTime? LastModifiedDate { get; set; }
 
         /// <summary>
         /// Id of the user that created this service.
         /// </summary>
+        [JsonProperty(PropertyName = "created_by_id")]
         public int? CreatedById { get; set; }
 
         /// <summary>
         /// Id of the user that last modified this service.
         /// </summary>
+        [JsonProperty(PropertyName = "last_modified_by_id")]
         public int? LastModifiedById { get; set; }
 
         /// <summary>

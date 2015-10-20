@@ -57,7 +57,7 @@
             firstRecord.FirstName = "Andrei 2";
             await databaseApi.UpdateRecordsAsync(TableName, records, new SqlQuery());
 
-            SqlQuery query = new SqlQuery { Filter = "age > 30", Order = "age", Fields = "*" };
+            SqlQuery query = new SqlQuery { Filter = "Age > 30", Order = "Age", Fields = "*" };
             IEnumerable<StaffRecord> selection = (await databaseApi.GetRecordsAsync<StaffRecord>(TableName, query)).Records;
             string ages = selection.Select(x => x.Age.ToString(CultureInfo.InvariantCulture)).ToStringList();
             Console.WriteLine("Get records with SqlQuery: ages={0}", ages);
@@ -85,7 +85,7 @@
         private static TableSchema CreateTestTableSchema()
         {
             ITableSchemaBuilder builder = new TableSchemaBuilder();
-            return builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+            return builder.WithName(TableName).WithFieldsFrom<StaffRecord>().WithKeyField("Uid").Build();
         }
 
         internal class StaffRecord
