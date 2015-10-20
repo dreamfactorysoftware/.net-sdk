@@ -105,7 +105,7 @@
         /// <summary>
         /// Validations to be performed on this field.
         /// </summary>
-        public List<string> Validation { get; set; }
+        public object Validation { get; set; }
 
         /// <summary>
         /// Selectable string values for client menus and picklist validation.
