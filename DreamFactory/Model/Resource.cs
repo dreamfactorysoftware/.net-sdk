@@ -1,5 +1,7 @@
 ﻿namespace DreamFactory.Model
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Resource.
     /// </summary>
@@ -8,6 +10,7 @@
         /// <summary>
         /// Name of the resource.
         /// </summary>
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
     }
 }

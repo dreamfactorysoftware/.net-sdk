@@ -4,6 +4,7 @@
     using DreamFactory.Serialization;
     using global::System;
     using global::System.Collections.Generic;
+    using global::System.Linq;
     using global::System.Reflection;
 
     /// <summary>
@@ -14,7 +15,6 @@
         private readonly List<FieldSchema> fields;
 
         private string tableName;
-        private readonly IPropertyNameResolver propertyNameResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableSchemaBuilder"/> class.
@@ -22,17 +22,6 @@
         public TableSchemaBuilder()
         {
             fields = new List<FieldSchema>();
-            propertyNameResolver = new SnakeCasePropertyNameResolver();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TableSchemaBuilder"/> class.
-        /// <param name="propertyNameResolver">Resolver to be used when serializing property names.</param>
-        /// </summary>
-        public TableSchemaBuilder(IPropertyNameResolver propertyNameResolver)
-        {
-            fields = new List<FieldSchema>();
-            this.propertyNameResolver = propertyNameResolver;
         }
 
         /// <inheritdoc />
@@ -62,16 +51,27 @@
         /// <inheritdoc />
         public ITableSchemaBuilder WithKeyField(string fieldName)
         {
-            FieldSchema field = new FieldSchema
+            FieldSchema field = fields.FirstOrDefault(x => x.Name == fieldName);
+            if (field == null)
             {
-                Name = fieldName,
-                Required = true,
-                Type = "id",
-                IsPrimaryKey = true,
-                AutoIncrement = true
-            };
+                field = new FieldSchema
+                {
+                    Name = fieldName,
+                    Required = true,
+                    Type = "id",
+                    IsPrimaryKey = true,
+                    AutoIncrement = true
+                };
+                fields.Add(field);
+            }
+            else
+            {
+                field.Required = true;
+                field.Type = "id";
+                field.IsPrimaryKey = true;
+                field.AutoIncrement = true;
+            }
 
-            fields.Add(field);
             return this;
         }
 
@@ -81,14 +81,14 @@
             IEnumerable<PropertyInfo> properties = (typeof(TRecord)).GetTypeInfo().DeclaredProperties;
             foreach (PropertyInfo propertyInfo in properties)
             {
-                if (string.Compare(propertyNameResolver.Resolve(propertyInfo.Name), "id", StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(propertyInfo.Name, "id", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     if (!propertyInfo.PropertyType.GetTypeInfo().IsValueType)
                     {
                         throw new NotSupportedException("Field 'id' must be of a value type");
                     }
 
-                    WithKeyField(propertyNameResolver.Resolve(propertyInfo.Name));
+                    WithKeyField(propertyInfo.Name);
                     continue;
                 }
 
@@ -96,7 +96,7 @@
 
                 FieldSchema field = new FieldSchema
                 {
-                    Name = propertyNameResolver.Resolve(propertyInfo.Name),
+                    Name = propertyInfo.Name,
                     Required = false,
                     Type = typeName
                 };

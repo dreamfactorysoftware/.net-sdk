@@ -1,6 +1,7 @@
 ﻿namespace DreamFactory.Model
 {
     using global::System.Collections.Generic;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Wrapper for request resources.
@@ -11,6 +12,7 @@
         /// <summary>
         /// Collection of identifiers.
         /// </summary>
+        [JsonProperty(PropertyName = "ids")]
         public int?[] Ids { get; set; }
     }
 }

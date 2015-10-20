@@ -1,5 +1,7 @@
 ﻿namespace DreamFactory.Model.Database
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Wrapper for database response resources.
     /// </summary>
@@ -10,6 +12,7 @@
         /// Metadata for requested resources.
         /// </summary>
         /// <remarks>Property is populated only if request query contained IncludeSchema or IncludeCount parameter.</remarks>
+        [JsonProperty(PropertyName = "meta")]
         public QueryMetadata Meta { get; set; }
     }
 }

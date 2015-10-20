@@ -23,106 +23,127 @@
         /// <summary>
         /// Identifier of this user.
         /// </summary>
+        [JsonProperty(PropertyName = "id")]
         public int? Id { get; set; }
 
         /// <summary>
         /// Displayable name of this user.
         /// </summary>
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
         /// The first name for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "first_name")]
         public string FirstName { get; set; }
 
         /// <summary>
         /// The last name for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "last_name")]
         public string LastName { get; set; }
 
         /// <summary>
         /// Date this user last logged in.
         /// </summary>
+        [JsonProperty(PropertyName = "last_login_date")]
         public DateTime? LastLoginDate { get; set; }
 
         /// <summary>
         /// The email address required for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
         /// <summary>
         /// The set-able, but never readable, password.
         /// </summary>
+        [JsonProperty(PropertyName = "password")]
         public string Password { get; set; }
 
         /// <summary>
         /// True if this user is system admin.
         /// </summary>
+        [JsonProperty(PropertyName = "is_sys_admin")]
         public bool? IsSysAdmin { get; set; }
 
         /// <summary>
         /// True if this user is active for use.
         /// </summary>
+        [JsonProperty(PropertyName = "is_active")]
         public bool? IsActive { get; set; }
 
         /// <summary>
         /// Phone number for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "phone")]
         public string Phone { get; set; }
 
         /// <summary>
         /// Security question for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "security_question")]
         public string SecurityQuestion { get; set; }
 
         /// <summary>
         /// Security answer for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "security_answer")]
         public string SecurityAnswer { get; set; }
 
         /// <summary>
         /// Confirm code for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "confirm_code")]
         public string ConfirmCode { get; set; }
 
         /// <summary>
         /// The id of the default launched app for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "default_app_id")]
         public int DefaultAppId { get; set; }
 
         /// <summary>
         /// Remember token for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "remember_token")]
         public string RememberToken { get; set; }
 
         /// <summary>
         /// Adldap for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "adldap")]
         public string Adldap { get; set; }
 
         /// <summary>
         /// OAuth provider for this user.
         /// </summary>
+        [JsonProperty(PropertyName = "oauth_provider")]
         public string OauthProvider { get; set; }
 
         /// <summary>
         /// Date this user was created.
         /// </summary>
+        [JsonProperty(PropertyName = "created_date")]
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// User Id of who created this user.
         /// </summary>
+        [JsonProperty(PropertyName = "created_by_id")]
         public int? CreatedById { get; set; }
 
         /// <summary>
         /// Date this user was last modified.
         /// </summary>
+        [JsonProperty(PropertyName = "last_modified_date")]
         public DateTime? LastModifiedDate { get; set; }
 
         /// <summary>
         /// User Id of who last modified this user.
         /// </summary>
+        [JsonProperty(PropertyName = "last_modified_by_id")]
         public int? LastModifiedById { get; set; }
 
         /// <summary>

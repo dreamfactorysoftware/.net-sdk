@@ -171,7 +171,7 @@
         private static IRestContext CreateRestContext()
         {
             IHttpFacade httpFacade = new TestDataHttpFacade();
-            IRestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, httpFacade, new JsonContentSerializer());
+            IRestContext context = new RestContext("http://base_address", "app_name", "app_api_key", null, httpFacade, new JsonContentSerializer(), RestApiVersion.V1);
             return context;
         }
     }

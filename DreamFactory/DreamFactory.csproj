@@ -180,10 +180,7 @@
     <Compile Include="Rest\RestContext.cs" />
     <Compile Include="Rest\ServiceFactory.cs" />
     <Compile Include="Serialization\IContentSerializer.cs" />
-    <Compile Include="Serialization\IPropertyNameResolver.cs" />
     <Compile Include="Serialization\JsonContentSerializer.cs" />
-    <Compile Include="Serialization\SnakeCaseContractResolver.cs" />
-    <Compile Include="Serialization\SnakeCasePropertyNameResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

@@ -21,7 +21,7 @@
         /// <param name="applicationName">Application name.</param>
         /// <param name="applicationApiKey">Application API key.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, string applicationName, string applicationApiKey, RestApiVersion apiVersion = RestApiVersion.V1)
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, RestApiVersion apiVersion = RestApiVersion.V2)
             : this(baseAddress, applicationName, applicationApiKey, null, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
         {
         }
@@ -34,7 +34,7 @@
         /// <param name="applicationApiKey">Application API key.</param>
         /// <param name="sessionId">SessionId to be added to base headers.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, RestApiVersion apiVersion = RestApiVersion.V1)
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, RestApiVersion apiVersion = RestApiVersion.V2)
             : this(baseAddress, applicationName, applicationApiKey, sessionId, new UnirestHttpFacade(), new JsonContentSerializer(), apiVersion)
         {
         }
@@ -49,7 +49,7 @@
         /// <param name="httpFacade">User defined instance of <see cref="IHttpFacade"/>.</param>
         /// <param name="serializer">User defined instance of <see cref="IContentSerializer"/>.</param>
         /// <param name="apiVersion">REST API version to use.</param>
-        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, IHttpFacade httpFacade, IContentSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V1)
+        public RestContext(string baseAddress, string applicationName, string applicationApiKey, string sessionId, IHttpFacade httpFacade, IContentSerializer serializer, RestApiVersion apiVersion = RestApiVersion.V2)
         {
             HttpUtils.CheckUrlString(baseAddress);
 

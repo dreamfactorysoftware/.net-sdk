@@ -214,7 +214,7 @@ Specify service name for creating an interface to a named service:
 The API supports pluggable serialization. This SDK comes with the default `JsonContentSerializer` which is using [Json.NET](http://www.newtonsoft.com/json).
 To use your custom serializer, consider using the other `RestContext` constructor accepting a user-defined `IContentSerializer` instance.
 
-By default `JsonContentSerializer` uses `SnakeCaseContractResolver` to resolve property names which means it allows you to use pascal-cased convention in your code and change the names on serialization to follow snake-cased convention (ex MyProperty to my_property). To override this behavior you will have to provide your own `DefaultContractResolver` and plug it into `JsonContentSerializer`.
+By default Json.NET resolves property names as they are defined in the class unless specified otherwise with JsonPropertyAttribute. 
 
 #### SQL query parameters
 
@@ -294,22 +294,22 @@ To simplify `TableSchema` construction, SDK offers `TableSchemaBuilder` class th
 For more advanced scenarios and relationship building you should build up your own TableSchema object:
 ```csharp
 	TableSchema schema = new TableSchema();
-	schema.Name = "<table_name>";
-	schema.Field = new List<FieldSchema>
-	{
-		// fields...
-		new FieldSchema
-		{
-			Name = "<foreign_key_column_name>",
-			Type = "reference",
-			AllowNull = false,
-			RefTable = "<related_table_name>",
-			RefFields = "<related_table_column_name>"
-		},
-		// more fields...
-	};
-	
-	await databaseApi.CreateTableAsync(staffSchema);
+    schema.Name = "<table_name>";
+    schema.Field = new List<FieldSchema>
+    {
+        // fields...
+        new FieldSchema
+        {
+            Name = "<foreign_key_column_name>",
+            Type = "reference",
+            AllowNull = false,
+            RefTable = "<related_table_name>",
+            RefFields = "<related_table_column_name>"
+        },
+        // more fields...
+    };
+    
+    await databaseApi.CreateTableAsync(staffSchema);
 ```
 
 API does not offer schema operations on dedicated fields. Use `UpdateTableAsync` method to update any table's schema.

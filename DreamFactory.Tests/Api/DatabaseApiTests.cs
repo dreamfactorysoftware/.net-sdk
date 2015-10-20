@@ -12,6 +12,7 @@
     using DreamFactory.Rest;
     using DreamFactory.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Newtonsoft.Json;
     using Shouldly;
 
     [TestClass]
@@ -331,7 +332,7 @@
         private static TableSchema CreateTestTableSchema()
         {
             ITableSchemaBuilder builder = new TableSchemaBuilder();
-            return builder.WithName("staff").WithFieldsFrom<StaffRecord>().WithKeyField("uid").Build();
+            return builder.WithName("staff").WithFieldsFrom<StaffRecord>().WithKeyField("Uid").Build();
         }
 
         private static IEnumerable<StaffRecord> CreateStaffRecords()
@@ -343,17 +344,25 @@
 
         internal class StaffRecord
         {
+            [JsonProperty(PropertyName = "uid")]
             public int Uid { get; set; }
+            [JsonProperty(PropertyName = "first_name")]
             public string FirstName { get; set; }
+            [JsonProperty(PropertyName = "last_name")]
             public string LastName { get; set; }
+            [JsonProperty(PropertyName = "age")]
             public int Age { get; set; }
+            [JsonProperty(PropertyName = "active")]
             public bool Active { get; set; }
         }
 
         internal class ProcResponse
         {
+            [JsonProperty(PropertyName = "dataset")]
             public List<StaffRecord> Dataset { get; set; }
+            [JsonProperty(PropertyName = "foo")]
             public int Foo { get; set; }
+            [JsonProperty(PropertyName = "bar")]
             public string Bar { get; set; }
         }
     }
