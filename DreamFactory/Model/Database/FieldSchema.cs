@@ -83,6 +83,16 @@
         public bool? IsForeignKey { get; set; }
 
         /// <summary>
+        /// Is this field unique.
+        /// </summary>
+        public bool? IsUnique { get; set; }
+
+        /// <summary>
+        /// Is this field used as an index.
+        /// </summary>
+        public bool? IsIndex { get; set; }
+
+        /// <summary>
         /// For foreign keys, the referenced table name.
         /// </summary>
         public string RefTable { get; set; }
