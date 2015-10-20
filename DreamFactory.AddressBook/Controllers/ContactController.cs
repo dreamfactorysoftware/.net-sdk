@@ -57,8 +57,21 @@
 
                 contacts = result.Records.Select(x => x.Contact);
 
-                ViewBag.GroupName = result.Records.Select(x => x.ContactGroup.Name).FirstOrDefault();
                 ViewBag.TotalResults = result.Meta.Count;
+                if (result.Records.Any())
+                {
+                    ViewBag.GroupName = result.Records.Select(x => x.ContactGroup.Name).FirstOrDefault();
+                }
+                else
+                {
+                    query = new SqlQuery
+                    {
+                        Filter = "id = " + groupId
+                    };
+
+                    DatabaseResourceWrapper<ContactGroup> contactGroupResult = await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
+                    ViewBag.GroupName = contactGroupResult.Records.Select(x => x.Name).FirstOrDefault();
+                }
             }
             else
             {
@@ -106,7 +119,11 @@
                 return View(model);
             }
 
-            model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
+            string result = await UploadImage(model.ImageUpload);
+            if (result != null)
+            {
+                model.Contact.ImageUrl = DreamFactoryContext.BaseAddress + "/files/" + result;
+            }
 
             IEnumerable<Contact> records = new List<Contact> { model.Contact };
             records = (await databaseApi.CreateRecordsAsync("contact", records, new SqlQuery())).Records;
@@ -170,7 +187,12 @@
                 return View(model);
             }
 
-            model.Contact.ImageUrl = await UploadImage(model.ImageUpload) ?? model.Contact.ImageUrl;
+            string result = await UploadImage(model.ImageUpload);
+            if (result != null)
+            {
+                model.Contact.ImageUrl = DreamFactoryContext.BaseAddress + "/files/" + result;
+            }
+
             await databaseApi.UpdateRecordsAsync("contact", new List<Contact> { model.Contact }, new SqlQuery());
 
             return RedirectToAction("List", Request.QueryString.ToRouteValues(new { GroupId = model.GroupId }));
@@ -189,7 +211,7 @@
             string imageData = string.Empty;
             if (!string.IsNullOrEmpty(contact.ImageUrl))
             {
-                imageData = await filesApi.GetTextFileAsync(contact.ImageUrl);
+                imageData = await filesApi.GetTextFileAsync(contact.ImageUrl.Split('/').Last());
             }
 
             ContactViewModel model = new ContactViewModel

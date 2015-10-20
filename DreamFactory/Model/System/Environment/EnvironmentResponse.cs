@@ -13,21 +13,25 @@
         /// <summary>
         /// Platform info.
         /// </summary>
+        [JsonProperty(PropertyName = "platform")]
         public PlatformSection Platform { get; set; }
 
         /// <summary>
         /// Authentication metadata.
         /// </summary>
+        [JsonProperty(PropertyName = "authentication")]
         public object Authentication { get; set; }
 
         /// <summary>
         /// Server metadata.
         /// </summary>
+        [JsonProperty(PropertyName = "server")]
         public object Server { get; set; }
 
         /// <summary>
         /// Config metadata.
         /// </summary>
+        [JsonProperty(PropertyName = "config")]
         public object Config { get; set; }
 
         /// <summary>

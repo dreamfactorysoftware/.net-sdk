@@ -388,19 +388,6 @@
         }
 
         /// <summary>
-        /// Executes given IHttpRequest and returns response body.
-        /// </summary>
-        /// <param name="request">Request to be executed.</param>
-        /// <returns>Response body.</returns>
-        /// <exception cref="DreamFactoryException">Thrown when there was an error executing request.</exception>
-        internal async Task<string> ExecuteRequest(IHttpRequest request)
-        {
-            IHttpResponse response = await HttpFacade.RequestAsync(request);
-            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
-            return response.Body;
-        }
-
-        /// <summary>
         /// Executes given IHttpRequest and returns deserialized response body.
         /// </summary>
         /// <typeparam name="TResponse">Type response body will be deserialized to.</typeparam>
@@ -412,6 +399,19 @@
         {
             string body = await ExecuteRequest(request);
             return ContentSerializer.Deserialize<TResponse>(body);
+        }
+
+        /// <summary>
+        /// Executes given IHttpRequest and returns response body.
+        /// </summary>
+        /// <param name="request">Request to be executed.</param>
+        /// <returns>Response body.</returns>
+        /// <exception cref="DreamFactoryException">Thrown when there was an error executing request.</exception>
+        internal async Task<string> ExecuteRequest(IHttpRequest request)
+        {
+            IHttpResponse response = await HttpFacade.RequestAsync(request);
+            HttpUtils.ThrowOnBadStatus(response, ContentSerializer);
+            return response.Body;
         }
     }
 }

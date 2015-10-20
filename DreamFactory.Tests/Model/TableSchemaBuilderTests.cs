@@ -66,10 +66,10 @@
 
             // Assert
             schema.Field.Count.ShouldBe(4);
-            schema.Field.Single(x => x.Name == "id").Type.ShouldBe("id");
-            schema.Field.Single(x => x.Name == "name").Type.ShouldBe("string");
-            schema.Field.Single(x => x.Name == "age").Type.ShouldBe("integer");
-            schema.Field.Single(x => x.Name == "active").Type.ShouldBe("boolean");
+            schema.Field.Single(x => x.Name == "Id").Type.ShouldBe("id");
+            schema.Field.Single(x => x.Name == "Name").Type.ShouldBe("string");
+            schema.Field.Single(x => x.Name == "Age").Type.ShouldBe("integer");
+            schema.Field.Single(x => x.Name == "Active").Type.ShouldBe("boolean");
         }
 
         private class Record
