@@ -57,8 +57,21 @@
 
                 contacts = result.Records.Select(x => x.Contact);
 
-                ViewBag.GroupName = result.Records.Select(x => x.ContactGroup.Name).FirstOrDefault();
                 ViewBag.TotalResults = result.Meta.Count;
+                if (result.Records.Any())
+                {
+                    ViewBag.GroupName = result.Records.Select(x => x.ContactGroup.Name).FirstOrDefault();
+                }
+                else
+                {
+                    query = new SqlQuery
+                    {
+                        Filter = "id = " + groupId
+                    };
+
+                    DatabaseResourceWrapper<ContactGroup> contactGroupResult = await databaseApi.GetRecordsAsync<ContactGroup>("contact_group", query);
+                    ViewBag.GroupName = contactGroupResult.Records.Select(x => x.Name).FirstOrDefault();
+                }
             }
             else
             {
