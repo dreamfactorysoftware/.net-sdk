@@ -3,6 +3,8 @@
 
 # .NET SDK for the DreamFactory REST API
 
+[![Join the chat at https://gitter.im/dreamfactorysoftware/.net-sdk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dreamfactorysoftware/.net-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The .NET SDK provides classes and interfaces to access the DreamFactory REST API.
 
 ## Quick links
