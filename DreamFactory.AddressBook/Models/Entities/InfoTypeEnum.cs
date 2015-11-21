@@ -1,10 +1,12 @@
 ﻿namespace DreamFactory.AddressBook.Models.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public enum InfoType
     {
-        Work,
-        Home,
-        Mobile,
-        Other
+        work,
+        home,
+        mobile,
+        other
     }
 }

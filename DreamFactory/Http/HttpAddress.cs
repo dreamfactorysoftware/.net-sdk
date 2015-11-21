@@ -81,8 +81,22 @@
                 return address;
             }
 
-            string temp = string.Join("&", parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value.ToString().ToLowerInvariant())));
+            string temp = string.Join("&", parameters.Select(x => string.Format("{0}={1}", x.Key, GetStringValue(x.Value))));
             return string.Format("{0}?{1}", address, Uri.EscapeUriString(temp));
+        }
+
+        private string GetStringValue(object value)
+        {
+            var type = value.GetType();
+
+            if (type == typeof(bool))
+            {
+                return value.ToString().ToLowerInvariant();
+            }
+            else
+            {
+                return value.ToString();
+            }
         }
     }
 }

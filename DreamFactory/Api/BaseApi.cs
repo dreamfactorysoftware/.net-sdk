@@ -11,10 +11,10 @@
 
     internal abstract class BaseApi
     {
-        protected IHttpFacade HttpFacade { get; }
-        protected IContentSerializer ContentSerializer { get; }
-        protected IHttpAddress BaseAddress { get; }
-        protected HttpHeaders BaseHeaders { get; }
+        protected IHttpFacade HttpFacade { get; private set; }
+        protected IContentSerializer ContentSerializer { get; private set; }
+        protected IHttpAddress BaseAddress { get; private set; }
+        protected HttpHeaders BaseHeaders { get; private set; }
 
         protected BaseApi(IHttpAddress baseAddress, IHttpFacade httpFacade, IContentSerializer contentSerializer, HttpHeaders baseHeaders, string apiName)
         {
