@@ -162,6 +162,7 @@
     <Compile Include="Model\System\User\RelatedUser.cs" />
     <Compile Include="Model\System\User\UserRequest.cs" />
     <Compile Include="Model\System\User\UserResponse.cs" />
+    <Compile Include="Model\User\LdapLogin.cs" />
     <Compile Include="Model\User\Login.cs" />
     <Compile Include="Model\User\Logout.cs" />
     <Compile Include="Model\User\PasswordRequest.cs" />
