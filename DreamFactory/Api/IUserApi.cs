@@ -30,6 +30,20 @@
         Task<Session> LoginAsync(string email, string password, int duration = 0);
 
         /// <summary>
+        /// Login and create a new user session using ldap service.
+        /// </summary>
+        /// <remarks>
+        /// Successful login operation will set ApplicationName and SessionToken headers.
+        /// If using with v1 of the api you do not need to specify the applicationApiKey.
+        /// </remarks>
+        /// <param name="email">Email.</param>
+        /// <param name="password">Password.</param>
+        /// /// <param name="loginServiceName">Login Service Name.</param>
+        /// <param name="duration">Session duration.</param>
+        /// <returns>Session object instance.</returns>
+        Task<Session> LdapLoginAsync(string email, string password, string loginServiceName, int duration = 0);
+
+        /// <summary>
         /// Retrieve the current user session information.
         /// </summary>
         /// <returns>Session object instance.</returns>

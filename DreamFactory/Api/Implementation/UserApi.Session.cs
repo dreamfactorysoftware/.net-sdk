@@ -1,4 +1,6 @@
-﻿namespace DreamFactory.Api.Implementation
+﻿using DreamFactory.Model.Database;
+
+namespace DreamFactory.Api.Implementation
 {
     using System;
     using System.Threading.Tasks;
@@ -30,6 +32,40 @@
                 query: null,
                 payload: new Login { Email = email, Password = password, Duration = duration }
                 );
+
+            base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
+
+            return session;
+        }
+
+        public async Task<Session> LdapLoginAsync(string username, string password, string loginServiceName, int duration)
+        {
+            if (username == null)
+            {
+                throw new ArgumentNullException("username");
+            }
+
+            if (password == null)
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            if (loginServiceName == null)
+            {
+                throw new ArgumentNullException("loginServiceName");
+            }
+
+            if (duration < 0)
+            {
+                throw new ArgumentOutOfRangeException("duration");
+            }
+
+            Session session = await base.RequestWithPayloadAsync<LdapLogin, Session>(
+                method: HttpMethod.Post,
+                resource: "session",
+                query: null,
+                payload: new LdapLogin { Username = username, Password = password, Duration = duration, Service = loginServiceName }
+            );
 
             base.BaseHeaders.AddOrUpdate(HttpHeaders.DreamFactorySessionTokenHeader, session.SessionId);
 
